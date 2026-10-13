@@ -22,10 +22,10 @@
 
   /* ===== Links diretos de WhatsApp: usam o número configurado acima ===== */
   $$('[data-whats]').forEach((a) => {
-    a.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('Olá, Matheus! Vim pelo site do Studio Saldanha.')}`;
+    a.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('Olá, Matheus! Vim pelo site do Studio Saldanha e quero saber mais sobre o diagnóstico gratuito.')}`;
   });
 
-  /* ===== Botões "Solicitar orçamento": rolam até o formulário e focam o primeiro campo ===== */
+  /* ===== Botões "Diagnóstico gratuito": rolam até o formulário e focam o primeiro campo ===== */
   const nameInput = $('#nome');
   $$('[data-cta]').forEach((cta) => {
     cta.addEventListener('click', () => {
@@ -108,6 +108,7 @@
       '.pillar', '.cta-row', '.trio > div', '.offer', '.dt-bands', '.dt-steps > li', '.dt-loop',
       '.dt-loop-note', '.fly-art', '.flycard', '.steps > li', '.tabs', '.case-video', '.tile',
       '.faq details', '.contact-lead', '.contact-actions', '.form-box',
+      '.results-title', '.results-lead', '.res-group', '.res-card', '.res-note', '.cases-title', '.about-photo', '.about-facts',
     ].join(','));
     items.forEach((el) => el.classList.add('reveal'));
 
@@ -161,10 +162,10 @@
     const name = nameInput.value.trim();
     const digits = whatsInput.value.replace(/\D/g, '');
 
-    setError(nameInput, name.length < 2 ? 'Informe o seu nome.' : '');
-    setError(whatsInput, digits.length < 10 ? 'Informe o WhatsApp com DDD.' : '');
-    setError(areaInput, areaInput.value ? '' : 'Escolha a sua área de atuação.');
-    setError(needInput, needInput.value ? '' : 'Escolha o que você quer resolver primeiro.');
+    setError(nameInput, name.length < 2 ? 'Informa o teu nome.' : '');
+    setError(whatsInput, digits.length < 10 ? 'Informa o teu WhatsApp com DDD.' : '');
+    setError(areaInput, areaInput.value ? '' : 'Escolhe a tua área de atuação.');
+    setError(needInput, needInput.value ? '' : 'Escolhe o que tu quer resolver primeiro.');
 
     [nameInput, whatsInput, areaInput, needInput].forEach((el) => {
       if (el.getAttribute('aria-invalid') === 'true') errors.push(el);
@@ -197,7 +198,7 @@
     };
 
     const message = [
-      'Olá, Matheus! Vim pelo site do Studio Saldanha e quero solicitar um orçamento.',
+      'Olá, Matheus! Vim pelo site do Studio Saldanha e quero agendar o diagnóstico gratuito.',
       '',
       `Nome: ${data.nome}`,
       `WhatsApp: ${data.whatsapp}`,
@@ -221,7 +222,12 @@
     success.hidden = false;
     success.focus();
 
-    const opened = window.open(url, '_blank', 'noopener');
-    if (!opened) window.location.href = url; // navegador bloqueou a nova aba
+    // Obs.: com 'noopener' o navegador sempre devolve null e a página atual também seguiria para o WhatsApp.
+    const opened = window.open(url, '_blank');
+    if (opened) {
+      try { opened.opener = null; } catch (_) { /* sem problema */ }
+    } else {
+      window.location.href = url; // navegador bloqueou a nova aba
+    }
   });
 })();
