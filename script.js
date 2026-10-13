@@ -4,10 +4,10 @@
 
   /* ===== Configuração =====
      WHATSAPP: número que recebe os pedidos (DDI + DDD + número, só dígitos).
-     FORM_ENDPOINT: opcional. Se preencher com um endpoint (ex.: Formspree), cada pedido
-     também é guardado ali, mesmo que a pessoa não envie a mensagem no WhatsApp. */
+     FORM_ENDPOINT: Google Apps Script que grava cada pedido na planilha de leads
+     (aba "Leads do site"), mesmo que a pessoa não envie a mensagem no WhatsApp, mesmo que a pessoa não envie a mensagem no WhatsApp. */
   const WHATSAPP = '5553991662471';
-  const FORM_ENDPOINT = '';
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxz0w309r9CgBcf29xokl2zxi_-n6OgVLRoQLsQO1O5FITaPDCd5GKFbWNvoIpfQ3QL6Q/exec';
 
   const $ = (sel, el = document) => el.querySelector(sel);
   const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
@@ -71,6 +71,29 @@
       e.preventDefault();
       selectTab(tabs[next], true);
     });
+  });
+
+  /* ===== Vídeos do Instagram: só carregam quando a pessoa clica ===== */
+  const reelBox = $('#reelBox');
+  const reelFrame = $('#reelFrame');
+  const reelLink = $('#reelLink');
+  let reelTrigger = null;
+  $$('[data-reel]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.reel;
+      reelTrigger = btn;
+      reelFrame.title = btn.dataset.title || 'Vídeo do Instagram';
+      reelFrame.src = `https://www.instagram.com/reel/${id}/embed/`;
+      reelLink.href = `https://www.instagram.com/${btn.dataset.user}/reel/${id}/`;
+      if (typeof reelBox.showModal === 'function') reelBox.showModal();
+      else window.open(reelLink.href, '_blank', 'noopener');
+    });
+  });
+  $('#reelClose').addEventListener('click', () => reelBox.close());
+  reelBox.addEventListener('click', (e) => { if (e.target === reelBox) reelBox.close(); });
+  reelBox.addEventListener('close', () => {
+    reelFrame.removeAttribute('src');
+    if (reelTrigger) reelTrigger.focus({ preventScroll: true });
   });
 
   /* ===== Imagens do case: ampliar ===== */
@@ -211,7 +234,8 @@
     if (FORM_ENDPOINT) {
       fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(data),
         keepalive: true,
       }).catch(() => {});

@@ -330,7 +330,7 @@ section[id] { scroll-margin-top: var(--header-h); }
 .results { margin-top: clamp(32px, 5vw, 56px); }
 .results-title, .cases-title { font-size: 1.5rem; }
 .results-lead { margin-top: 10px; color: var(--dim); }
-.res-group { margin-top: 36px; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.res-group { display: flex; align-items: center; gap: 12px; margin-top: 36px; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
 .res-cards { margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .res-card {
   display: flex; flex-direction: column;
@@ -574,3 +574,22 @@ section[id] { scroll-margin-top: var(--header-h); }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .rise { opacity: 1; transform: none; }
 }
+
+/* ---------- Vídeos dos resultados ---------- */
+.res-avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; object-fit: cover; }
+.res-play {
+  margin-top: auto; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-radius: 999px;
+  background: none; border: 1px solid var(--line-2); color: var(--text);
+  font: inherit; font-weight: 600; font-size: .9rem; cursor: pointer;
+  transition: border-color .2s ease, color .2s ease;
+}
+.res-card .metrics { margin-bottom: 20px; }
+.res-play svg { width: 16px; height: 16px; fill: currentColor; }
+.res-play:hover { border-color: var(--c); color: var(--c); }
+.res-play:focus-visible { outline: 2px solid var(--c); outline-offset: 3px; }
+.reel-box iframe { display: block; width: min(94vw, 420px); height: min(78vh, 740px); margin: 0 auto; border: 0; border-radius: 10px; background: #000; }
+.reel-box p a { color: var(--dim); text-decoration: underline; text-underline-offset: 3px; }
+.reel-box p a:hover { color: var(--text); }
+.reel-box { margin: auto; inset: 0; width: fit-content; height: fit-content; }
