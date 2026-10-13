@@ -64,6 +64,18 @@
   ]
 }
   </script>
+  <!-- Google Analytics 4: só grava cookies depois que a pessoa aceita o aviso -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+    try { if (localStorage.getItem('ss-consent') === 'granted') gtag('consent', 'update', { analytics_storage: 'granted' }); } catch (e) {}
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G07LSLMLHE"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-G07LSLMLHE');
+  </script>
   <!-- Vercel Web Analytics: mede visitas sem cookies e sem identificar a pessoa -->
   <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -820,6 +832,14 @@
 
 <div class="sticky-cta" id="stickyCta">
   <a class="btn btn-solid btn-block" href="#orcamento" data-cta>Diagnóstico gratuito</a>
+</div>
+
+<div class="consent" id="consent" role="region" aria-label="Aviso de cookies" hidden>
+  <p>Uso o Google Analytics, com cookies, pra entender como o site é usado. Tu escolhe se aceita. <a href="privacidade.html#cookies">Saiba mais</a></p>
+  <div class="consent-actions">
+    <button type="button" class="btn btn-solid" id="consentYes">Aceitar</button>
+    <button type="button" class="btn btn-outline" id="consentNo">Recusar</button>
+  </div>
 </div>
 
 <dialog class="lightbox" id="lightbox" aria-label="Imagem ampliada">

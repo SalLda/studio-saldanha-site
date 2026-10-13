@@ -254,4 +254,18 @@
       window.location.href = url; // navegador bloqueou a nova aba
     }
   });
+  /* ===== Aviso de cookies (Google Analytics só depois do aceite) ===== */
+  const consentBox = $('#consent');
+  if (consentBox) {
+    let saved = null;
+    try { saved = localStorage.getItem('ss-consent'); } catch (_) {}
+    if (!saved) consentBox.hidden = false;
+    const decide = (granted) => {
+      try { localStorage.setItem('ss-consent', granted ? 'granted' : 'denied'); } catch (_) {}
+      if (granted && typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      consentBox.hidden = true;
+    };
+    $('#consentYes').addEventListener('click', () => decide(true));
+    $('#consentNo').addEventListener('click', () => decide(false));
+  }
 })();
