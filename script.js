@@ -51,28 +51,6 @@
       .observe(formSection);
   }
 
-  /* ===== Cases em abas ===== */
-  const tabs = $$('.tab');
-  const selectTab = (tab, focus = false) => {
-    tabs.forEach((t) => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', String(on));
-      t.tabIndex = on ? 0 : -1;
-      $(`#${t.getAttribute('aria-controls')}`).hidden = !on;
-    });
-    if (focus) tab.focus();
-  };
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => selectTab(tab));
-    tab.addEventListener('keydown', (e) => {
-      const last = tabs.length - 1;
-      const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
-      if (next === undefined) return;
-      e.preventDefault();
-      selectTab(tabs[next], true);
-    });
-  });
-
   /* ===== Vídeos do Instagram: só carregam quando a pessoa clica ===== */
   const reelBox = $('#reelBox');
   const reelFrame = $('#reelFrame');
@@ -127,11 +105,11 @@
      IntersectionObserver e a pessoa não pediu menos movimento). */
   if (document.documentElement.classList.contains('rv')) {
     const items = $$([
-      '.section .eyebrow', '.section h2', '.section-lead', '.prose p', '.mirror', '.fear', '.bridge',
-      '.pillar', '.cta-row', '.trio > div', '.offer', '.dt-bands', '.dt-steps > li', '.dt-loop',
-      '.dt-loop-note', '.fly-art', '.flycard', '.steps > li', '.tabs', '.case-video', '.tile',
+      '.section .eyebrow', '.section h2', '.section-lead', '.prose p', '.mirror',
+      '.cta-row', '.trio > div', '.offer', '.dt-bands', '.dt-steps > li', '.dt-loop',
+      '.dt-loop-note', '.fly-art', '.flycard', '.steps > li', '.case-video', '.tile',
       '.faq details', '.contact-lead', '.contact-actions', '.form-box',
-      '.results-title', '.results-lead', '.res-group', '.res-card', '.res-note', '.cases-title', '.about-photo', '.about-facts',
+      '.block-title', '.block-lead', '.brand-case h4', '.res-group', '.res-card', '.res-note', '.about-photo', '.about-facts',
     ].join(','));
     items.forEach((el) => el.classList.add('reveal'));
 
