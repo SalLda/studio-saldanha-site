@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fotos 31 de outubro</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+/* Layout: cabeçalho com a data grande, grade de fotos em colunas, botão de baixar em cada foto, rodapé com chamada de orçamento.
+   Identidade do site omatsaldanha: base escura, âmbar, verde musgo, Fraunces + Space Grotesk. */
+:root {
+  --bg: #1c1c1c;
+  --surface: #262625;
+  --line: #3a3a37;
+  --fg: #f4f1ea;
+  --muted: #a9a79f;
+  --amber: #f0b429;
+  --on-amber: #1c1c1c;
+  --moss: #7a9b7e;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f6f3ea; --surface: #ffffff; --line: #dcd8cb; --fg: #1c1c1c; --muted: #5f5d56;
+    --amber: #c98a00; --on-amber: #ffffff; --moss: #4f7355; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f6f3ea; --surface: #ffffff; --line: #dcd8cb; --fg: #1c1c1c; --muted: #5f5d56;
+  --amber: #c98a00; --on-amber: #ffffff; --moss: #4f7355; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-block: 28px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+header { display: flex; flex-direction: column; gap: 10px; }
+.eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--moss); font-weight: 500; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(44px, 12vw, 84px); line-height: .98; margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+h1 span { color: var(--amber); }
+.lead { color: var(--muted); max-width: 52ch; margin: 0; }
+.lead b { color: var(--fg); font-weight: 500; }
+
+.ig { border: 1px solid var(--amber); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; background: var(--surface); }
+.ig strong { color: var(--amber); font-weight: 700; }
+.ig p { margin: 0; font-size: 15px; }
+
+.bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border-block: 1px solid var(--line); padding-block: 12px; }
+.bar .count { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; font: 700 15px var(--body); text-decoration: none; cursor: pointer; border: 1.5px solid var(--amber); color: var(--amber); background: transparent; }
+.btn.solid { background: var(--amber); color: var(--on-amber); }
+.btn:hover { filter: brightness(1.08); }
+.btn:focus-visible, .tile a:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+
+.grid { columns: 2; column-gap: 12px; }
+@media (min-width: 640px) { .grid { columns: 3; column-gap: 16px; } }
+@media (min-width: 900px) { .grid { columns: 4; } }
+.tile { break-inside: avoid; margin: 0 0 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+@media (min-width: 640px) { .tile { margin-bottom: 16px; } }
+.tile img { display: block; width: 100%; height: auto; background: var(--line); }
+.tile .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; }
+.tile .num { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: .04em; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tile .dl { font-weight: 700; font-size: 14px; color: var(--on-amber); background: var(--amber); text-decoration: none; padding: 8px 14px; border-radius: 999px; min-height: 36px; display: inline-flex; align-items: center; }
+
+footer { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 28px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+footer h2 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 6vw, 38px); line-height: 1.1; margin: 0; text-wrap: balance; }
+footer p { margin: 0; color: var(--muted); }
+footer .tel { color: var(--fg); font-variant-numeric: tabular-nums; font-weight: 500; user-select: all; }
+.handle { color: var(--muted); font-size: 14px; }
+@media (prefers-reduced-motion: no-preference) { .btn { transition: filter .15s; } }
+</style>
+
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Fotos em alta qualidade</div>
+    <h1>31 de <span>outubro</span></h1>
+    <p class="lead">Ache a sua foto, toque em <b>Baixar</b> e ela vem no tamanho original, sem perder qualidade.</p>
+  </header>
+
+  <div class="ig" id="ig" hidden>
+    <strong>Abra no navegador para baixar</strong>
+    <p>Pelo Instagram a foto pode vir com qualidade baixa. Toque nos três pontinhos no canto da tela e escolha <b>Abrir no navegador</b> (ou Abrir no Safari / Chrome). Depois é só baixar.</p>
+  </div>
+
+  <div class="bar">
+    <span class="count" id="count"></span>
+    <a class="btn" href="https://drive.google.com/drive/folders/1KKV29R8mKEZcGv0OOz5-QWTc_5f_jgvz?usp=sharing" target="_blank" rel="noopener">Ver todas no Drive</a>
+  </div>
+
+  <main class="grid" id="grid" aria-label="Fotos"></main>
+
+  <footer>
+    <h2>Dúvida ou orçamento para eventos?</h2>
+    <p>Chame aqui no WhatsApp: <span class="tel">53 99166-2471</span></p>
+    <a class="btn solid" href="https://wa.me/5553991662471?text=Oi!%20Vi%20as%20fotos%20de%2031%20de%20outubro%20e%20queria%20um%20or%C3%A7amento%20para%20evento." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+    <span class="handle">@omatsaldanha</span>
+  </footer>
+</div>
+
+<script>
+var ITEMS = [["9098", "1YWWk1HpeyE4S-6nrbCSwOehDrCHF975C"], ["9100", "1zmJNCLeX13AzZ3gKRkW7Z2zemgQzZCSC"], ["9106", "1x9ccOjDk7xabhsEr7-OmiqXf-y8Hrh-_"], ["9109", "1PF__rlTu7lETa6wxMoLbBdjf6Idm6kdO"], ["9111", "1J3XAUvVdmfdvUIfMS2NbZn7hGymbd2ui"], ["9114", "1W--SvGD6aW8syfZYr-NL_u8Vq6XDpTnU"], ["9115", "15j5k9XCghNZzDuTZBIiey06EtmNt0TMA"], ["9117", "10Y38rXjLKmp_9WpYtjy-BCk6AfVR5lwf"], ["9120", "1OfaZu0k2fv9kYEDti6pTVGxv7OYu4-RW"], ["9121", "1_xW5Utljja25eN6PDaMD1y49iweGFK44"], ["9122", "1nHaTsMK6mOmOXBShz9nVQZwxUplKh1nb"], ["9124", "1gcPvz_blRANOzGinRgOUAhJHbwNYkOAU"], ["9127", "1sYSyZJxnuC4ZG9a-jjFpDKUL4kj8G7F8"], ["9128", "1HqqVQleSHLVr0jeDnuX5Ph_Msl345gAG"], ["9129", "1b255NLzHbKIQkswo_3N6Jnty5RzgPvPF"], ["9130", "1IRVHEwnrVmzSCX_HXsE3_EP6HgX9pjFF"], ["9131", "1D8_XIzXakTHwB8LE4JlKMzAMUICf7xHx"], ["9132", "1mzJ4Eq1hh1whPtMJvSdS9f_x5sPYg2Lp"], ["9133", "1Xv-k2R0m9lvRy4SSWHwBljmz4e5ybhow"], ["9136", "1OCy_Ms6-ThiH6aG6txCL1hadtYR-iM59"], ["9138", "1ZtNN-pr0DG0wx5kveBZLSSg9FKmG1DJw"], ["9139", "14FBn1j85L6JA3SilCDP31gSojA1mYnm7"], ["9142", "177wlp-vCvwe1ILwyIFiyGwmmfWWh2BlH"], ["9143", "1gPdLbOyYiVE98jecaNiTYr4MhB1v1_Uf"], ["9148", "1OcXR73Ad2UXczKWqjFtjakmfGVH_jVew"], ["9149", "1BDM4wIY-mBdL5O732sIn9Nr970zPAWeA"], ["9150", "1rrD5JWs4qkso1z_jZE5Q2n0xXpT3Pi3w"], ["9151", "1ZQMaXXNwZ-zN97CVzJdhhBBpsJPAArg3"], ["9152", "1XQKkD6fq3EtVJ4prwa0hlEeyfNCWxOHG"], ["9158", "1YqG-JJLeOB9eRmpPW8wC6jJPWoegOuFj"], ["9159", "1OGdhrzx5d2Tonnu5nLlXnc7GQRWKS28k"], ["9161", "1FdLoIlY5lze15GdyOQXm5aWtWnuIsf2a"], ["9162", "1PaStLSC9-l3v3uaPB_KTVxbJL1L7N1-j"], ["9163", "1-cg2CkOfCacqD7bvpStpyxGhDzxi1_MP"], ["9164", "1w0GOGME5vOwnDzBXnoR5zpNtBYw_xFJp"], ["9171", "1AFJP-ecwcxB5txBECjIKhBUOjztN3vFd"], ["9176", "1ZcVvQCui1M5ubWCPgUf3IwW5ZjWfBQdn"], ["9179", "14XlmWfey0vwKT1N9wLam9fZZ-BFpPU6D"], ["9184", "1hevRHStK-8rh9FA-Q-Ub29bPQo9ejWHS"], ["9210", "1itVEjqtU39xUd8UBiIenXgldwyJZkzfT"], ["9214", "134RbB05Pm9fkmo1yhdXk7E1BLXzyNdmK"], ["9217", "1lGMIHW6Q7Yzax-LS2DuIRjQYuB-0M-Dr"], ["9223", "18WpqK7g5yxEIQSYWql1v8_hsF7mPdiOH"]];
+var grid = document.getElementById('grid');
+ITEMS.forEach(function (it) {
+  var n = it[0], id = it[1];
+  var t = document.createElement('figure');
+  t.className = 'tile';
+  var url = 'https://drive.google.com/uc?export=download&id=' + id;
+  t.innerHTML =
+    '<img src="/fotos/IMG_' + n + '.jpg" alt="Foto ' + n + '" loading="lazy" decoding="async">' +
+    '<figcaption class="row"><span class="num">Foto ' + n + '</span>' +
+    '<a class="dl" href="' + url + '" target="_blank" rel="noopener" aria-label="Baixar foto ' + n + ' em alta qualidade">Baixar</a></figcaption>';
+  grid.appendChild(t);
+});
+document.getElementById('count').textContent = ITEMS.length + ' fotos';
+if (/Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent || '')) document.getElementById('ig').hidden = false;
+</script>
+
+</body>
+</html>
