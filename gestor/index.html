@@ -486,7 +486,7 @@ async function renderClient() {
   const curIdx = firstOpen ? STG[firstOpen[0]].i : (S.posts.length ? 10 : 0);
   const unseen = S.approvals.filter(a => !a.seen);
   const ig = handleOf(c.instagram), tt = handleOf(c.tiktok), yt = handleOf(c.youtube);
-  const shareUrl = location.origin + '/aprovar/?c=' + c.share_token;
+  const shareUrl = location.origin + '/gestor/aprovar.html?c=' + c.share_token;
   const waitingClient = S.posts.filter(x => CLIENT_STAGES.includes(x.status)).length;
   const list = S.posts.filter(x => !S.stage || x.status === S.stage);
   $('#main').innerHTML = `
@@ -580,7 +580,7 @@ async function advance(p) {
   if (to === 'post_aprovar' && !(p.media || []).length && !confirm('Esse post ainda não tem arquivo. Mandar mesmo assim?')) return;
   const { error } = await sb.from('posts').update(row).eq('id', p.id); if (error) return fail(error);
   toast('Movido para ' + STG[to].label);
-  if (CLIENT_STAGES.includes(to)) { const c = S.clients.find(x => x.id === S.tab); shareApproval(c, location.origin + '/aprovar/?c=' + c.share_token, true); }
+  if (CLIENT_STAGES.includes(to)) { const c = S.clients.find(x => x.id === S.tab); shareApproval(c, location.origin + '/gestor/aprovar.html?c=' + c.share_token, true); }
   rerender();
 }
 function shareApproval(c, url, quiet) {

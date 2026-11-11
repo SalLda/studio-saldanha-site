@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#F7F3EA">
+<title>Aprovação de conteúdo | Studio S</title>
+<meta property="og:title" content="Conteúdo para a sua aprovação">
+<meta property="og:description" content="Veja as pautas, legendas e posts do mês. Aprove ou peça ajuste em um toque.">
+<meta property="og:image" content="https://omatsaldanha.com/gestor/og-aprovar.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/gestor/favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:'Fraunces';font-weight:600;font-display:swap;src:url('/assets/fonts/fraunces-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Fraunces';font-weight:600;font-style:italic;font-display:swap;src:url('/assets/fonts/fraunces-latin-600-italic.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:400;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:500;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:600;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-600-normal.woff2') format('woff2')}
+:root{--bg:#F7F3EA;--card:#fff;--bg3:#F1EBDD;--line:#E7DFCD;--line2:#D3C8B1;--text:#1F1C17;--dim:#685F50;--amber:#E7B64A;--amber-ink:#8A6413;--amber-soft:#FBEFD2;--ok:#3F7550;--ok-soft:#E1EEDF;--warn:#B4572F;--warn-soft:#F8E3D8;--serif:'Fraunces',Georgia,serif;--sans:'Space Grotesk',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;padding:0 clamp(16px,4vw,32px) 80px}
+button,input,textarea{font:inherit;color:inherit}
+.wrap{max-width:1040px;margin:0 auto}
+.hero{padding:40px 0 24px;display:grid;gap:14px}
+.who{display:flex;align-items:center;gap:12px;color:var(--dim);font-size:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.av{width:48px;height:48px;border-radius:50%;background:var(--amber-soft);display:grid;place-items:center;overflow:hidden;font-family:var(--serif);color:var(--amber-ink);flex:none;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--amber)}
+.av img{width:100%;height:100%;object-fit:cover}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,7vw,64px);line-height:1;margin:0;letter-spacing:-.02em}
+h1 em{color:var(--amber-ink)}
+.lede{color:var(--dim);max-width:60ch;margin:0}
+.goal{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;gap:12px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
+.tabs button{border:1px solid var(--line2);background:#fff;border-radius:99px;padding:8px 14px;cursor:pointer;font-weight:500}
+.tabs button[aria-pressed=true]{background:var(--text);color:#fff;border-color:var(--text)}
+.tabs b{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:11px;background:var(--amber);color:var(--text);font-size:12px;margin-left:6px;padding:0 6px}
+.bar{position:sticky;top:0;z-index:5;background:rgba(247,243,234,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin:18px calc(clamp(16px,4vw,32px)*-1) 0;padding:10px clamp(16px,4vw,32px)}
+.bar-in{max-width:1040px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar input{width:min(230px,50vw);padding:7px 10px;border:1px solid var(--line2);border-radius:8px;background:#fff}
+.post{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:clamp(18px,5vw,48px);padding:36px 0;border-bottom:1px solid var(--line);align-items:start}
+.post.text{grid-template-columns:minmax(0,1fr)}
+@media (max-width:760px){.post{grid-template-columns:minmax(0,1fr)}}
+.track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:14px}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:start;position:relative;margin:0}
+.slide img{display:block;width:100%;height:auto;border-radius:14px;background:var(--bg3)}
+.slide figcaption{position:absolute;top:10px;right:10px;font-size:12px;font-weight:600;background:rgba(0,0,0,.65);color:#fff;padding:2px 9px;border-radius:99px}
+video{width:100%;border-radius:16px;background:#000;display:block;max-height:80vh}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line2)}
+.dots i.on{background:var(--text);width:20px;border-radius:4px}
+.info{display:grid;gap:14px;min-width:0}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:6px;background:var(--bg3);color:var(--dim)}
+.tag.d{background:var(--text);color:#fff}.tag.s{background:var(--amber-soft);color:var(--amber-ink)}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,34px);line-height:1.1;margin:0}
+.box{border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px 16px}
+.box b.k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.cap{white-space:pre-wrap;overflow-wrap:anywhere}
+.btn{min-height:48px;padding:0 18px;border-radius:12px;border:1.5px solid var(--line2);background:#fff;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--text)}
+.btn.ok{background:var(--text);border-color:var(--text);color:#fff}
+.btn.warn{border-color:var(--warn);color:var(--warn)}
+.btn.sm{min-height:34px;padding:0 12px;font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.actions .btn{flex:1 1 150px}
+.form{display:grid;gap:10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:34px;padding:0 12px;border-radius:99px;border:1.5px solid var(--line2);background:transparent;cursor:pointer;font-size:14px}
+.chip[aria-pressed=true]{background:var(--text);color:#fff;border-color:var(--text)}
+textarea{width:100%;min-height:100px;padding:10px 12px;border:1.5px solid var(--line2);border-radius:10px;resize:vertical}
+.res{padding:12px 14px;border-radius:14px}
+.res.ap{background:var(--ok-soft);color:var(--ok)}.res.aj{background:var(--warn-soft);color:#5b2c16}
+.hist{font-size:14px;color:var(--dim)}
+.hist li{margin:4px 0}
+.empty{padding:60px 0;text-align:center;color:var(--dim)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:99px;opacity:0;transition:.2s;pointer-events:none;z-index:20}
+.toast.on{opacity:1}
+.foot{margin-top:40px;font-size:13px;color:var(--dim);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="empty">Carregando…</div></div>
+<div class="toast" id="toast"></div>
+<script src="/gestor/vendor/supabase.js"></script>
+<script>
+(() => {
+const CFG = window.GESTOR_CFG || { url: 'https://uwpbvolvzftrcnjuwoao.supabase.co', key: 'sb_publishable_Yfi_WJXhCwcNJ0DvklVjfA_Uz3RVOBu' };
+const sb = supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: false } });
+const TOKEN = new URLSearchParams(location.search).get('c');
+const STUDIO_WA = '5553991662471';
+const GATES = { pauta_aprovar: ['pauta', 'Pautas', 'Ideias do mês: tema, objetivo e como cada uma ajuda no objetivo do período.'], copy_aprovar: ['copy', 'Legendas e roteiros', 'Textos que vão junto com cada post.'], post_aprovar: ['post', 'Posts e Reels', 'As peças prontas, do jeito que vão ao ar.'] };
+const FMT = { reels: 'Reels', carrossel: 'Carrossel', estatico: 'Estático', stories: 'Stories' };
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtD = s => s ? new Date(s + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }) : 'Data a definir';
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2400); }
+let D = null, gate = null, name = ''; try { name = localStorage.getItem('aprov-nome') || ''; } catch (_) {}
+const done = {}; // respostas desta visita
+
+async function load() {
+  if (!TOKEN) { $('#app').innerHTML = '<div class="empty">Link incompleto. Peça o link de aprovação de novo.</div>'; return; }
+  const { data, error } = await sb.rpc('client_board', { p_token: TOKEN });
+  if (error) { $('#app').innerHTML = `<div class="empty">${/inválido/.test(error.message) ? 'Esse link não vale mais. Peça um novo ao Studio S.' : 'Não consegui carregar agora. Tente de novo em instantes.'}</div>`; return; }
+  D = data; const waiting = k => D.posts.filter(p => p.status === k).length;
+  if (!gate || !waiting(gate)) gate = Object.keys(GATES).find(k => waiting(k)) || 'pauta_aprovar';
+  render();
+}
+function render() {
+  const c = D.client, plan = (D.plans || []).slice(-1)[0];
+  const ig = (c.instagram || '').replace(/^@/, '');
+  const av = c.avatar_url || (ig ? `https://unavatar.io/instagram/${encodeURIComponent(ig)}?fallback=false` : '');
+  const L = D.posts.filter(p => p.status === gate || (done[p.id] && done[p.id].gate === gate));
+  const total = Object.keys(GATES).reduce((a, k) => a + D.posts.filter(p => p.status === k).length, 0);
+  $('#app').innerHTML = `
+  <header class="hero">
+    <div class="who"><span class="av">${av ? `<img src="${esc(av)}" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.textContent='${esc((c.name || '?')[0])}'">` : esc((c.name || '?')[0])}</span>Studio S · ${esc(c.name)}</div>
+    <h1>Conteúdo para a sua <em>aprovação</em></h1>
+    <p class="lede">${total ? `Tem ${total} ${total === 1 ? 'item esperando' : 'itens esperando'} você. Veja cada um e toque em Aprovar, ou em Pedir ajuste e diga o que mudar.` : 'Tudo respondido por aqui. Obrigado! Quando tiver material novo, ele aparece neste mesmo link.'}</p>
+    ${plan?.objective ? `<div class="goal"><span style="font-size:22px">🎯</span><div><b>Objetivo do mês</b><div>${esc(plan.objective)}</div></div></div>` : ''}
+    <div class="tabs">${Object.entries(GATES).map(([k, g]) => { const n = D.posts.filter(p => p.status === k).length; return `<button aria-pressed="${gate === k}" data-gate="${k}">${g[1]}${n ? `<b>${n}</b>` : ''}</button>`; }).join('')}</div>
+  </header>
+  <div class="bar"><div class="bar-in"><span style="color:var(--dim);font-size:14px">${esc(GATES[gate][2])}</span><span style="flex:1"></span><label style="font-size:14px;color:var(--dim)">Seu nome <input id="who" value="${esc(name)}" placeholder="Seu nome" autocomplete="name" maxlength="60"></label></div></div>
+  <main>${L.length ? L.map(postHtml).join('') : '<div class="empty">Nada para aprovar nesta etapa agora.</div>'}</main>
+  <div class="foot">Prefere falar direto? <a href="https://wa.me/${STUDIO_WA}" target="_blank" rel="noopener">Chamar o Studio S no WhatsApp</a></div>`;
+  $('#who').oninput = e => { name = e.target.value; try { localStorage.setItem('aprov-nome', name); } catch (_) {} };
+  $$('[data-gate]').forEach(b => b.onclick = () => { gate = b.dataset.gate; render(); scrollTo(0, 0); });
+  $$('.post').forEach(bind);
+}
+function mediaHtml(p) {
+  const M = p.media || [], vid = M.find(m => m.type === 'video'), imgs = M.filter(m => m.type === 'image');
+  if (gate === 'pauta_aprovar' || gate === 'copy_aprovar') return '';
+  if (vid) return `<div><video controls playsinline preload="metadata" src="${esc(vid.url)}" poster="${esc(vid.poster || '')}"></video></div>`;
+  if (imgs.length) return `<div><div class="track">${imgs.map((m, i) => `<figure class="slide"><img src="${esc(m.url)}" alt="${esc(p.title)}, ${i + 1} de ${imgs.length}" loading="lazy" ${m.w ? `width="${m.w}" height="${m.h}"` : ''}><figcaption>${i + 1}/${imgs.length}</figcaption></figure>`).join('')}</div>${imgs.length > 1 ? `<div class="dots">${imgs.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>` : ''}</div>`;
+  return '<div class="box" style="text-align:center;color:var(--dim)">Arquivo final em produção</div>';
+}
+function targets(p) {
+  const t = [['geral', gate === 'pauta_aprovar' ? 'Ideia toda' : 'Tudo']];
+  if (gate === 'post_aprovar') { const imgs = (p.media || []).filter(m => m.type === 'image'); if ((p.media || []).some(m => m.type === 'video')) t.push(['vídeo', 'Vídeo']); else imgs.forEach((_, i) => t.push(['slide ' + (i + 1), 'Slide ' + (i + 1)])); }
+  if (gate !== 'pauta_aprovar') { if (p.copy) t.push(['legenda', 'Legenda']); if (p.script) t.push(['roteiro', 'Roteiro']); }
+  return t;
+}
+function postHtml(p) {
+  const d = done[p.id], med = mediaHtml(p);
+  const hist = (p.history || []).filter(h => h.decision === 'ajuste');
+  return `<article class="post ${med ? '' : 'text'}" data-id="${p.id}">${med}
+    <div class="info">
+      <div class="tags"><span class="tag d">${fmtD(p.publish_date)}</span><span class="tag">${esc(FMT[p.format] || p.format)}</span>${p.pillar ? `<span class="tag">${esc(p.pillar)}</span>` : ''}${p.round > 1 ? `<span class="tag s">Rodada ${p.round} · revisado</span>` : ''}</div>
+      <h2>${esc(p.title)}</h2>
+      ${p.objective ? `<div class="box"><b class="k">Objetivo deste post</b>${esc(p.objective)}</div>` : ''}
+      ${p.relation ? `<div class="box"><b class="k">Como ajuda no objetivo do mês</b>${esc(p.relation)}</div>` : ''}
+      ${gate !== 'pauta_aprovar' && p.script ? `<div class="box"><b class="k">Roteiro</b><div class="cap">${esc(p.script)}</div></div>` : ''}
+      ${gate !== 'pauta_aprovar' && p.copy ? `<div class="box"><b class="k" style="display:flex;justify-content:space-between">Legenda <button class="btn sm" data-copy>Copiar</button></b><div class="cap">${esc(p.copy)}</div></div>` : ''}
+      ${hist.length ? `<details class="hist"><summary>O que você pediu antes</summary><ul>${hist.map(h => `<li><b>Rodada ${h.round}</b>${h.target && h.target !== 'geral' ? ' (' + esc(h.target) + ')' : ''}: ${esc(h.comment)}</li>`).join('')}</ul></details>` : ''}
+      ${d ? `<div class="res ${d.decision === 'aprovado' ? 'ap' : 'aj'}"><b>${d.decision === 'aprovado' ? 'Aprovado. Obrigado!' : 'Pedido de ajuste enviado.'}</b>${d.comment ? `<div>${esc(d.comment)}</div>` : ''}</div>` : `
+      <div class="actions"><button class="btn ok" data-ok>Aprovar</button><button class="btn warn" data-adj>Pedir ajuste</button></div>
+      <form class="form" hidden><div class="chips">${targets(p).map(([v, l], i) => `<button type="button" class="chip" data-t="${esc(v)}" aria-pressed="${i === 0}">${esc(l)}</button>`).join('')}</div>
+        <textarea placeholder="O que precisa mudar? Quanto mais detalhe, melhor."></textarea>
+        <div class="actions"><button class="btn warn">Enviar pedido</button><button type="button" class="btn" data-cancel>Cancelar</button></div></form>`}
+    </div></article>`;
+}
+function bind(el) {
+  const p = D.posts.find(x => x.id === el.dataset.id), tr = $('.track', el);
+  if (tr) tr.addEventListener('scroll', () => { const i = Math.round(tr.scrollLeft / tr.clientWidth); $$('.dots i', el).forEach((d, j) => d.classList.toggle('on', i === j)); }, { passive: true });
+  const cp = $('[data-copy]', el); if (cp) cp.onclick = () => navigator.clipboard?.writeText(p.copy).then(() => toast('Legenda copiada'));
+  const form = $('form', el); if (!form) return;
+  let target = 'geral';
+  $$('[data-t]', el).forEach(b => b.onclick = () => { target = b.dataset.t; $$('[data-t]', el).forEach(x => x.setAttribute('aria-pressed', x === b)); });
+  $('[data-ok]', el).onclick = () => decide(p, 'aprovado', '', 'geral');
+  $('[data-adj]', el).onclick = () => { form.hidden = false; $('.actions', el).hidden = true; $('textarea', form).focus(); };
+  $('[data-cancel]', el).onclick = () => { form.hidden = true; $('.actions', el).hidden = false; };
+  form.onsubmit = e => { e.preventDefault(); const t = $('textarea', form).value.trim(); if (!t) { toast('Escreva o que precisa mudar'); return; } decide(p, 'ajuste', t, target); };
+}
+async function decide(p, decision, comment, target) {
+  if (!name.trim()) { const n = prompt('Seu nome, para o Studio S saber quem respondeu:'); if (n) { name = n.trim(); try { localStorage.setItem('aprov-nome', name); } catch (_) {} } }
+  const { error } = await sb.rpc('client_decide', { p_token: TOKEN, p_post: p.id, p_decision: decision, p_comment: comment, p_name: name || 'Cliente', p_target: target });
+  if (error) { toast(/aguardando/.test(error.message) ? 'Esse item já foi respondido.' : 'Não consegui enviar. Tente de novo.'); return load(); }
+  done[p.id] = { decision, comment, gate }; toast(decision === 'aprovado' ? 'Aprovado' : 'Ajuste enviado ao Studio S');
+  const y = scrollY; render(); scrollTo(0, y);
+}
+load();
+})();
+</script>
+</body>
+</html>
