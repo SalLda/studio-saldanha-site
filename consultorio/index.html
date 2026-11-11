@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,add,apps,auto_awesome,bookmark_add,calendar_month,check,chevron_left,chevron_right,content_copy,done,download,edit_note,event,event_available,event_busy,event_repeat,group,local_fire_department,logout,movie,music_note,open_in_new,payments,person_add,photo_camera,psychology,receipt_long,savings,smart_display,space_dashboard,sync,task_alt,verified,wb_sunny&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,auto_awesome,bookmark_add,calendar_month,check,chevron_left,chevron_right,content_copy,done,download,edit_note,event,event_available,event_busy,event_repeat,group,local_fire_department,logout,movie,music_note,open_in_new,payments,person_add,photo_camera,psychology,receipt_long,savings,smart_display,space_dashboard,sync,task_alt,verified,wb_sunny&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -218,6 +218,7 @@ dialog form{padding:24px}
     <button class="nav" data-view="recibos"><span class="pill"><span class="ms">receipt_long</span></span>Recibos</button>
     <button class="nav" data-view="conteudo"><span class="pill"><span class="ms">auto_awesome</span></span>Conteúdo</button>
     <div class="sp"></div>
+    <button class="icon-btn logout" id="railProfile" title="Meu perfil"><span class="ms">account_circle</span></button>
     <button class="icon-btn logout" id="logout" title="Sair"><span class="ms">logout</span></button>
   </nav>
   <main class="main"><div class="wrap" id="view"></div></main>
@@ -314,6 +315,24 @@ dialog form{padding:24px}
     <div class="field"><label>Link da fonte</label><input name="source_url" type="url"></div>
   </div>
   <div class="dact"><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
+</form></dialog>
+
+<dialog id="dlgProfile"><form id="fProfile">
+  <div class="title-l">Meu perfil</div>
+  <div class="small muted" id="profEmail" style="margin-top:4px"></div>
+  <div class="grid2">
+    <div class="field"><label>Nome</label><input name="name" maxlength="120"></div>
+    <div class="field"><label>CRP</label><input name="crp" maxlength="20" placeholder="00/000000"></div>
+  </div>
+  <div class="title-m" style="margin-top:22px">Padrões para novos pacientes</div>
+  <div class="grid3">
+    <div class="field"><label>Duração da sessão (min)</label><input name="session_minutes" type="number" min="10" max="240"></div>
+    <div class="field"><label>% cobrado na falta</label><input name="no_show_pct" type="number" min="0" max="100"></div>
+    <div class="field"><label>% no cancelamento</label><input name="cancel_pct" type="number" min="0" max="100"></div>
+  </div>
+  <div class="title-m" style="margin-top:22px">Trocar senha</div>
+  <div class="field"><label>Nova senha (deixe em branco para manter)</label><input name="password" type="password" minlength="8" autocomplete="new-password"></div>
+  <div class="dact"><button type="button" class="btn danger" id="profLogout"><span class="ms" style="font-size:18px">logout</span>Sair</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
 </form></dialog>
 
 <div class="snack" id="snack"></div>
@@ -493,7 +512,7 @@ async function viewInicio() {
   const name = (S.profile?.name || S.user.email.split('@')[0]).split(' ')[0];
   const today = S.sessions.filter(s => s.date === todayISO());
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}</div>
+  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
   <div class="kpis"></div>`;
   $('.kpis').innerHTML = [
     kpi('event_available', 'var(--primary-container)', M.realizadas, 'Sessões realizadas', 'agenda'),
@@ -525,6 +544,7 @@ async function viewInicio() {
   </section>
   <div class="foot">Não registre informações clínicas aqui. Este sistema é administrativo.</div>`);
   bindMonth();
+  $('#topProfile').onclick = openProfile;
   $$('[data-to]').forEach(el => el.onclick = () => jump(el.dataset.to));
   $$('[data-go]').forEach(el => el.onclick = () => go(el.dataset.go));
   $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat)));
@@ -778,6 +798,25 @@ $('#fPost').onsubmit = async e => { e.preventDefault(); const f = e.target; cons
   if (error) return fail(/duplicate|unique/i.test(error.message) ? new Error('Esse post já está no swipe file') : error); $('#dlgPost').close(); snack('Salvo no swipe file'); go('conteudo'); };
 $('#poDel').onclick = async () => { if (!editingPost || !confirm('Excluir este post do swipe file?')) return; const { error } = await sb.from('swipe_posts').delete().eq('id', editingPost.id); if (error) return fail(error); $('#dlgPost').close(); go('conteudo'); };
 $('#fTrend').onsubmit = async e => { e.preventDefault(); const f = e.target; const { error } = await sb.from('trends').insert({ topic: f.topic.value, angle: f.angle.value || null, hook: f.hook.value || null, source_name: f.source_name.value || null, source_url: f.source_url.value || null, owner: S.user.id }); if (error) return fail(error); $('#dlgTrend').close(); go('conteudo'); };
+
+/* ---------- PERFIL ---------- */
+function openProfile() {
+  const f = $('#fProfile'), p = S.profile || {}; f.reset();
+  $('#profEmail').textContent = S.user.email;
+  f.name.value = p.name || ''; f.crp.value = p.crp || ''; f.session_minutes.value = p.session_minutes ?? 50;
+  f.no_show_pct.value = p.no_show_pct ?? 100; f.cancel_pct.value = p.cancel_pct ?? 0;
+  $('#dlgProfile').showModal();
+}
+$('#railProfile').onclick = openProfile;
+$('#profLogout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+$('#fProfile').onsubmit = async e => {
+  e.preventDefault(); const f = e.target;
+  const row = { id: S.user.id, name: f.name.value.trim() || null, crp: f.crp.value.trim() || null, session_minutes: Number(f.session_minutes.value || 50), no_show_pct: Number(f.no_show_pct.value || 0), cancel_pct: Number(f.cancel_pct.value || 0) };
+  const { data, error } = await sb.from('profiles').upsert(row).select().maybeSingle(); if (error) return fail(error);
+  S.profile = data || row;
+  if (f.password.value) { const r = await sb.auth.updateUser({ password: f.password.value }); if (r.error) return fail(r.error); }
+  $('#dlgProfile').close(); snack('Perfil salvo'); go(S.view);
+};
 
 $$('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
 boot();
