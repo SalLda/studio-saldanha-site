@@ -282,6 +282,8 @@ dialog h2{font-size:24px}
 
 <dialog id="clientDlg"><form method="dialog" id="clientForm">
   <h2 id="clientTitle">Cliente</h2>
+  <div class="row" style="margin-top:12px"><span id="clientAv"></span><div><button type="button" class="btn small" id="clientPhotoBtn">Trocar foto</button><div class="sub" style="margin-top:4px">O Instagram bloqueia puxar a foto automaticamente. Salve a foto de perfil do cliente e suba aqui (fica comprimida em 320 px).</div></div></div>
+  <input type="file" id="clientPhoto" accept="image/*" class="hidden">
   <div class="fr"><div><label>Nome</label><input name="name" required maxlength="80"></div><div><label>Nicho</label><input name="niche" maxlength="60" placeholder="Psicólogo, Médico, Veterinário…"></div></div>
   <div class="fr"><div><label>Instagram (@ ou link)</label><input name="instagram" placeholder="@perfil"></div><div><label>TikTok</label><input name="tiktok" placeholder="@perfil"></div></div>
   <div class="fr"><div><label>YouTube</label><input name="youtube" placeholder="@canal"></div><div><label>Site</label><input name="site" placeholder="https://"></div></div>
@@ -695,14 +697,24 @@ const clientDlg = $('#clientDlg'), clientForm = $('#clientForm'); let editingCli
 function openClient(c) {
   editingClient = c || null; clientForm.reset(); $('#clientTitle').textContent = c ? 'Editar cliente' : 'Novo cliente';
   ['name', 'niche', 'instagram', 'tiktok', 'youtube', 'site', 'whatsapp', 'planner_url'].forEach(k => clientForm[k].value = c?.[k] || '');
-  $('#clientDel').classList.toggle('hidden', !c); clientDlg.showModal();
+  $('#clientDel').classList.toggle('hidden', !c); $('#clientAv').innerHTML = c ? avatar(c, 'xl') : ''; $('#clientPhotoBtn').parentNode.parentNode.classList.toggle('hidden', !c); clientDlg.showModal();
 }
+$('#clientPhotoBtn').onclick = () => $('#clientPhoto').click();
+$('#clientPhoto').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f || !editingClient) return;
+  try {
+    const out = await GMedia.compressImage(f, 320, 0.88), path = `${editingClient.id}/avatar-${Date.now()}.jpg`;
+    const { error } = await sb.storage.from('media').upload(path, out.blob, { contentType: 'image/jpeg', upsert: false }); if (error) throw error;
+    const url = sb.storage.from('media').getPublicUrl(path).data.publicUrl;
+    const r = await sb.from('clients').update({ avatar_url: url }).eq('id', editingClient.id); if (r.error) throw r.error;
+    editingClient.avatar_url = url; $('#clientAv').innerHTML = avatar(editingClient, 'xl'); await loadClients(); renderTabs(); toast('Foto atualizada');
+  } catch (err) { fail(err); }
+};
 $('#addClient').onclick = () => openClient();
 clientForm.addEventListener('submit', async e => {
   e.preventDefault(); const f = clientForm;
   const row = { name: f.name.value.trim(), niche: f.niche.value.trim() || null, instagram: handleOf(f.instagram.value) || null, tiktok: handleOf(f.tiktok.value) || null, youtube: handleOf(f.youtube.value) || null, site: f.site.value.trim() || null, whatsapp: f.whatsapp.value.trim() || null, planner_url: f.planner_url.value.trim() || null, handle: handleOf(f.instagram.value) ? '@' + handleOf(f.instagram.value) : null };
-  if (editingClient && editingClient.instagram !== row.instagram) row.avatar_url = null;
-  if (!editingClient) row.position = S.clients.length + 1;
+    if (!editingClient) row.position = S.clients.length + 1;
   const { data, error } = editingClient ? await sb.from('clients').update(row).eq('id', editingClient.id).select().single() : await sb.from('clients').insert(row).select().single();
   if (error) return fail(error); clientDlg.close(); await loadClients(); S.tab = data.id; renderTabs(); route(); toast('Cliente salvo');
 });
