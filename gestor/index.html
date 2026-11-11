@@ -9,12 +9,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gestor">
 <title>Gestor | Studio Saldanha</title>
-<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <style>
-@font-face{font-family:'Fraunces';font-weight:600;font-display:swap;src:url('../assets/fonts/fraunces-latin-600-normal.woff2') format('woff2')}
-@font-face{font-family:'Space Grotesk';font-weight:400;font-display:swap;src:url('../assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2')}
-@font-face{font-family:'Space Grotesk';font-weight:500;font-display:swap;src:url('../assets/fonts/space-grotesk-latin-500-normal.woff2') format('woff2')}
-@font-face{font-family:'Space Grotesk';font-weight:600;font-display:swap;src:url('../assets/fonts/space-grotesk-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Fraunces';font-weight:600;font-display:swap;src:url('/assets/fonts/fraunces-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:400;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:500;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-500-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:600;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-600-normal.woff2') format('woff2')}
 :root{
   --bg:#1C1C1C;--bg2:#262420;--bg3:#2E2B26;--line:#312E29;--line2:#46423A;
   --text:#EBE3D5;--dim:#A39B8E;--faint:#857E71;
@@ -201,8 +201,8 @@ dialog h2{font-size:22px}
 <input type="file" id="csvInput" accept=".csv,text/csv" class="hidden">
 <div class="toast" id="toast"></div>
 
-<script src="vendor/supabase.js"></script>
-<script src="vendor/papaparse.min.js"></script>
+<script src="/gestor/vendor/supabase.js"></script>
+<script src="/gestor/vendor/papaparse.min.js"></script>
 <script>
 (() => {
 const SUPABASE_URL = 'https://uwpbvolvzftrcnjuwoao.supabase.co';
@@ -267,7 +267,7 @@ async function boot(){
 }
 function showLogin(){ $('#appView').classList.add('hidden'); $('#loginView').classList.remove('hidden'); }
 let registering = false;
-const REDIRECT = location.origin + location.pathname;
+const REDIRECT = location.origin + '/gestor/';
 $('#toggleMode').addEventListener('click', e => {
   e.preventDefault(); registering = !registering;
   $('#pass2Wrap').classList.toggle('hidden', !registering);
