@@ -6,12 +6,27 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F7FAF7">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Consultório">
-<title>Consultório</title>
+<meta name="apple-mobile-web-app-title" content="Gestaopsi">
+<title>Gestaopsi</title>
+<meta name="description" content="Agenda, cobranças, recibos do Receita Saúde e conteúdo, num lugar só para o consultório de psicologia.">
+<link rel="icon" href="/consultorio/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/consultorio/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gestaopsi">
+<meta property="og:title" content="Gestaopsi">
+<meta property="og:description" content="Agenda, cobranças, recibos do Receita Saúde e conteúdo, num lugar só para o consultório de psicologia.">
+<meta property="og:url" content="https://omatsaldanha.com/consultorio/">
+<meta property="og:image" content="https://omatsaldanha.com/consultorio/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gestaopsi">
+<meta name="twitter:image" content="https://omatsaldanha.com/consultorio/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,auto_awesome,bookmark_add,calendar_month,check,chevron_left,chevron_right,content_copy,done,download,edit_note,event,event_available,event_busy,event_repeat,group,local_fire_department,logout,movie,music_note,open_in_new,payments,person_add,photo_camera,psychology,receipt_long,savings,smart_display,space_dashboard,sync,task_alt,verified,wb_sunny&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,auto_awesome,badge,bookmark_add,calendar_month,check,check_circle,chevron_left,chevron_right,content_copy,database,delete,done,download,edit_note,event,event_available,event_busy,event_repeat,gpp_maybe,group,help,lightbulb,link,local_fire_department,logout,movie,music_note,open_in_new,payments,person_add,photo_camera,play_arrow,psychology,receipt_long,savings,smart_display,space_dashboard,sync,task_alt,trending_down,verified,warning,wb_sunny&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -21,7 +36,7 @@
   --warn:#8A5100;--warn-container:#FFDDB8;
   --surface:#F6FBF6;--surface-dim:#D6DBD7;--surface-c-lowest:#FFFFFF;--surface-c-low:#F0F5F0;--surface-c:#EAEFEA;--surface-c-high:#E4EAE5;--surface-c-highest:#DFE4DF;
   --on-surface:#171D1A;--on-surface-variant:#404944;--outline:#707973;--outline-variant:#C0C9C2;
-  --chart-1:#2E6A55;--chart-2:#3D6373;--chart-3:#8A5100;--chart-4:#BA1A1A;
+  --chart-1:#2E6A55;--chart-2:#3D6373;--chart-3:#8A5100;--chart-4:#BA1A1A;--chart-5:#7D5260;--chart-6:#4C662B;
   --font:'Roboto Flex',Roboto,system-ui,-apple-system,'Segoe UI',sans-serif;
   --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:28px;
   --e1:0 1px 2px rgba(0,0,0,.18),0 1px 3px 1px rgba(0,0,0,.08);
@@ -35,7 +50,7 @@
   --warn:#FFB95F;--warn-container:#693C00;
   --surface:#0F1512;--surface-dim:#0F1512;--surface-c-lowest:#0A0F0D;--surface-c-low:#171D1A;--surface-c:#1B211E;--surface-c-high:#252B28;--surface-c-highest:#303633;
   --on-surface:#DEE4DF;--on-surface-variant:#C0C9C2;--outline:#8A938C;--outline-variant:#404944;
-  --chart-1:#96D4B9;--chart-2:#A5CCDF;--chart-3:#FFB95F;--chart-4:#FFB4AB;
+  --chart-1:#96D4B9;--chart-2:#A5CCDF;--chart-3:#FFB95F;--chart-4:#FFB4AB;--chart-5:#EFB8C8;--chart-6:#B1D18A;
 }}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--surface);color:var(--on-surface);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
@@ -53,7 +68,7 @@ h1,h2,h3{margin:0;font-weight:500}
 .small{font-size:13px}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border-radius:20px;border:none;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.01em;background:var(--primary);color:var(--on-primary);transition:box-shadow .15s,filter .15s;white-space:nowrap}
+.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border-radius:20px;border:none;cursor:pointer;font-weight:600;font-size:14px;letter-spacing:.01em;background:var(--primary);color:var(--on-primary);transition:box-shadow .15s,filter .15s;white-space:nowrap}
 .btn:hover{box-shadow:var(--e1);filter:brightness(1.05)}
 .btn.tonal{background:var(--secondary-container);color:var(--on-secondary-container)}
 .btn.outlined{background:transparent;color:var(--primary);border:1px solid var(--outline)}
@@ -163,6 +178,47 @@ h1,h2,h3{margin:0;font-weight:500}
 .post .hook{font-weight:600}
 .post .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .post .act{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+.post .thumb{position:relative;cursor:pointer;border:none;width:100%;padding:0;aspect-ratio:4/3;color:#fff}
+.post .thumb.ig{background:linear-gradient(135deg,#F58529,#DD2A7B 50%,#8134AF)}
+.post .thumb.tt{background:linear-gradient(135deg,#111,#25F4EE 160%)}
+.post .thumb.yt{background:linear-gradient(135deg,#C4302B,#5a0d0b)}
+.post .thumb .play{width:56px;height:56px;border-radius:28px;background:rgba(0,0,0,.45);display:grid;place-items:center;backdrop-filter:blur(4px)}
+.post .thumb .play .ms{font-size:34px;color:#fff}
+.post .thumb .net{position:absolute;left:10px;top:10px;font-size:12px;font-weight:600;background:rgba(0,0,0,.45);padding:3px 10px;border-radius:12px}
+.av img{width:100%;height:100%;border-radius:inherit;object-fit:cover;display:block}
+.cprev{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;border-radius:var(--r-md);background:var(--surface-c-lowest)}
+.cprev:empty{display:none}
+.cprev .av{width:48px;height:48px;border-radius:24px;background:var(--secondary-container);display:grid;place-items:center;font-weight:700;overflow:hidden;flex:none}
+.ethics{margin-top:12px;border-radius:var(--r-md);padding:12px 14px;background:var(--warn-container);font-size:13px}
+.ethics:empty{display:none}
+.ethics ul{margin:6px 0 0;padding-left:18px}
+.ethics.ok{background:var(--primary-container)}
+.embed{width:100%;aspect-ratio:9/16;max-height:72dvh;border:0;border-radius:var(--r-md);background:#000;display:block}
+.steps{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.step{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);background:var(--surface-c-lowest)}
+.step .n{width:28px;height:28px;border-radius:14px;background:var(--surface-c-highest);display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+.step.done .n{background:var(--primary);color:var(--on-primary)}
+.step .grow{min-width:0;flex:1}
+.step .k{font-size:12px;font-weight:600;color:var(--on-surface-variant)}
+.step .v{font-weight:600;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.step .v.missing{color:var(--error)}
+.faq details{border-bottom:1px solid var(--outline-variant);padding:12px 4px}
+.faq details:last-child{border-bottom:none}
+.faq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:8px;align-items:flex-start}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+';font-weight:700;color:var(--primary);width:14px;flex:none}
+.faq details[open] summary::before{content:'–'}
+.faq p{margin:8px 0 0 22px;color:var(--on-surface-variant);font-size:14px}
+.notice{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--r-lg);margin-bottom:12px}
+.notice .ms{flex:none;margin-top:1px}
+.notice.warn{background:var(--warn-container)}
+.notice.err{background:var(--error-container);color:var(--on-error-container)}
+.notice.info{background:var(--tertiary-container)}
+.brief{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.brief .box{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:14px}
+.brief .box ul{margin:6px 0 0;padding-left:18px}
+.tagcloud{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+@media (max-width:860px){.brief{grid-template-columns:1fr}}
 
 /* dialog */
 dialog{border:none;border-radius:var(--r-xl);background:var(--surface-c-high);color:var(--on-surface);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px)}
@@ -195,7 +251,7 @@ dialog form{padding:24px}
 
 <div id="authView" class="auth hidden">
   <form class="card elev" id="authForm" style="border-radius:28px">
-    <div class="brandmark"><div class="logo"><span class="ms fill">psychology</span></div><div><div class="title-l">Consultório</div><div class="muted small">Agenda, cobranças, recibos e conteúdo</div></div></div>
+    <div class="brandmark"><div class="logo"><span class="ms fill">psychology</span></div><div><div class="title-l">Gestaopsi</div><div class="muted small">Agenda, cobranças, recibos e conteúdo</div></div></div>
     <div id="nameField" class="field hidden"><label for="aName">Seu nome</label><input id="aName" autocomplete="name"></div>
     <div class="field"><label for="aEmail">E-mail</label><input id="aEmail" type="email" autocomplete="username" required></div>
     <div class="field"><label for="aPass">Senha</label><input id="aPass" type="password" autocomplete="current-password" required minlength="8"></div>
@@ -246,17 +302,18 @@ dialog form{padding:24px}
     <div class="field"><label>% no cancelamento</label><input name="cancel_pct" type="number" min="0" max="100"></div>
   </div>
   <div class="grid2">
-    <div class="field"><label>CPF do paciente</label><input name="patient_cpf" inputmode="numeric" maxlength="14"></div>
+    <div class="field"><label>Tabela de valor</label><select name="social"><option value="false">Valor padrão</option><option value="true">Valor social</option></select></div>
     <div class="field"><label>Início</label><input name="start_date" type="date"></div>
+  </div>
+  <div class="grid2">
+    <div class="field"><label>CPF do paciente</label><input name="patient_cpf" inputmode="numeric" maxlength="14"></div>
+    <div class="field"><label>WhatsApp</label><input name="whatsapp" inputmode="tel"></div>
   </div>
   <div class="grid2">
     <div class="field"><label>Quem paga (se não for o paciente)</label><input name="payer_name"></div>
     <div class="field"><label>CPF de quem paga</label><input name="payer_cpf" inputmode="numeric" maxlength="14"></div>
   </div>
-  <div class="grid2">
-    <div class="field"><label>Responsável (se menor)</label><input name="guardian"></div>
-    <div class="field"><label>WhatsApp</label><input name="whatsapp" inputmode="tel"></div>
-  </div>
+  <div class="field"><label>Responsável (se menor)</label><input name="guardian"></div>
   <div class="field"><label>Observações administrativas (nada clínico)</label><textarea name="admin_notes" rows="2"></textarea></div>
   <div class="dact"><button type="button" class="btn danger" id="pDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
 </form></dialog>
@@ -282,12 +339,16 @@ dialog form{padding:24px}
 
 <dialog id="dlgCreator"><form id="fCreator">
   <div class="title-l">Creator de referência</div>
+  <div class="small muted" style="margin-top:4px">Cole o link do perfil (ou de um post dele) do Instagram, TikTok ou YouTube. A rede, o @, o nome e a foto entram sozinhos.</div>
+  <div class="field"><label>Link ou @ do perfil</label><input name="link" required placeholder="https://www.instagram.com/perfil ou @perfil" autocomplete="off"></div>
+  <div class="cprev" id="cPrev"></div>
   <div class="grid2">
-    <div class="field"><label>@ do perfil</label><input name="handle" required placeholder="@perfil"></div>
+    <div class="field"><label>Nome</label><input name="name" maxlength="80"></div>
     <div class="field"><label>Rede</label><select name="network"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div>
   </div>
-  <div class="field"><label>Assunto principal</label><input name="topic"></div>
-  <div class="field"><label>Por que acompanhar</label><textarea name="why" rows="2"></textarea></div>
+  <div class="field"><label>Assunto principal</label><input name="topic" list="topicList" placeholder="Ex.: ansiedade, relacionamentos, TDAH"></div>
+  <div class="chips" id="topicChips" style="margin-top:8px"></div>
+  <div class="field"><label>Por que acompanhar (para a sua psicologia)</label><textarea name="why" rows="3"></textarea></div>
   <div class="dact"><button type="button" class="btn danger" id="cDel">Remover</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
 </form></dialog>
 
@@ -302,6 +363,7 @@ dialog form{padding:24px}
   <div class="field"><label>Por que funcionou</label><textarea name="why" rows="2"></textarea></div>
   <div class="field"><label>Minha adaptação / roteiro</label><textarea name="adaptation" rows="3"></textarea></div>
   <div class="field"><label>Status</label><select name="status"><option value="ideia">Ideia</option><option value="roteiro">Roteiro</option><option value="gravado">Gravado</option><option value="publicado">Publicado</option></select></div>
+  <div class="ethics" id="poEthics"></div>
   <div class="dact"><button type="button" class="btn danger" id="poDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
 </form></dialog>
 
@@ -324,6 +386,7 @@ dialog form{padding:24px}
     <div class="field"><label>Nome</label><input name="name" maxlength="120"></div>
     <div class="field"><label>CRP</label><input name="crp" maxlength="20" placeholder="00/000000"></div>
   </div>
+  <div class="field"><label>Seu CPF (opcional, só para gerar o arquivo de lote do Receita Saúde)</label><input name="cpf" inputmode="numeric" maxlength="14" autocomplete="off"></div>
   <div class="title-m" style="margin-top:22px">Padrões para novos pacientes</div>
   <div class="grid3">
     <div class="field"><label>Duração da sessão (min)</label><input name="session_minutes" type="number" min="10" max="240"></div>
@@ -333,6 +396,55 @@ dialog form{padding:24px}
   <div class="title-m" style="margin-top:22px">Trocar senha</div>
   <div class="field"><label>Nova senha (deixe em branco para manter)</label><input name="password" type="password" minlength="8" autocomplete="new-password"></div>
   <div class="dact"><button type="button" class="btn danger" id="profLogout"><span class="ms" style="font-size:18px">logout</span>Sair</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
+</form></dialog>
+
+<dialog id="dlgReceipt" style="width:min(600px,calc(100vw - 24px))"><form id="fReceipt">
+  <div class="title-l" id="rcTitle">Recibo</div>
+  <div id="rcWarn" style="margin-top:12px"></div>
+  <div class="steps" id="rcSteps"></div>
+  <div class="field"><label>Nº do recibo gerado (opcional, para consulta)</label><input name="number" placeholder="Ex.: 315.231.25.00001" autocomplete="off"></div>
+  <div class="dact"><a class="btn text" href="https://cav.receita.fazenda.gov.br" target="_blank" rel="noopener"><span class="ms">open_in_new</span>Carnê-Leão (computador)</a><div class="sp"></div><button type="button" class="btn text" data-close>Fechar</button><button class="btn"><span class="ms">check_circle</span>Emiti no Receita Saúde</button></div>
+</form></dialog>
+
+<dialog id="dlgExp"><form id="fExp">
+  <div class="title-l">Despesa do consultório</div>
+  <div class="grid2">
+    <div class="field"><label>Categoria</label><select name="category"></select></div>
+    <div class="field"><label>Tipo</label><select name="kind"><option value="fixa">Fixa (todo mês)</option><option value="por_hora">Por hora de sala</option><option value="variavel">Variável</option></select></div>
+  </div>
+  <div id="expHour" class="hidden">
+    <div class="grid2">
+      <div class="field"><label>Horas no mês</label><input name="hours" type="number" step="0.5" min="0"></div>
+      <div class="field"><label>Valor da hora (R$)</label><input name="hourly_rate" type="number" step="0.01" min="0"></div>
+    </div>
+    <div class="small muted" style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="expHint"></span><button type="button" class="btn text sm" id="useHours">Usar essas horas</button></div>
+  </div>
+  <div class="grid2">
+    <div class="field"><label>Valor (R$)</label><input name="amount" type="number" step="0.01" min="0" required></div>
+    <div class="field"><label>Situação</label><select name="paid"><option value="false">A pagar</option><option value="true">Paga</option></select></div>
+  </div>
+  <div class="field"><label>Descrição (opcional)</label><input name="description" maxlength="120"></div>
+  <div class="dact"><button type="button" class="btn danger" id="eDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
+</form></dialog>
+
+<dialog id="dlgPreview"><form method="dialog" style="padding:16px">
+  <div class="cardhead" style="margin-bottom:10px"><div class="title-m" id="prevTitle">Preview</div><button class="icon-btn" value="x" aria-label="Fechar">✕</button></div>
+  <div id="prevBody"></div>
+  <div class="dact" style="margin-top:12px"><a class="btn text" id="prevOpen" target="_blank" rel="noopener"><span class="ms">open_in_new</span>Abrir na rede</a><button type="button" class="btn tonal" id="prevEdit">Editar</button></div>
+</form></dialog>
+
+<dialog id="dlgBrief" style="width:min(680px,calc(100vw - 24px))"><form id="fBrief">
+  <div class="title-l">Meu posicionamento</div>
+  <div class="small muted" style="margin-top:4px">Responda do seu jeito. Isso vira o tom de voz, os pilares de conteúdo e os alertas do que evitar.</div>
+  <div class="field"><label>Quem sou eu (formação, abordagem, como atendo)</label><textarea name="about" rows="3" placeholder="Ex.: psicóloga clínica, TCC, atendo adultos online e presencial em Pelotas"></textarea></div>
+  <div class="field"><label>Para quem eu falo</label><input name="audience" placeholder="Ex.: mulheres de 25 a 40 anos com ansiedade no trabalho"></div>
+  <div class="grid2">
+    <div class="field"><label>O que eu gosto (temas, formatos, referências)</label><textarea name="likes" rows="4" placeholder="Um por linha"></textarea></div>
+    <div class="field"><label>O que eu não gosto / não quero parecer</label><textarea name="dislikes" rows="4" placeholder="Um por linha. Ex.: dancinha, coach, frase motivacional vazia"></textarea></div>
+  </div>
+  <div class="field"><label>Objetivo do conteúdo</label><select name="goal"><option value="">—</option><option>Ser lembrada(o) como referência no tema</option><option>Atrair pacientes para o consultório</option><option>Educar e desmistificar a psicologia</option><option>Construir comunidade</option></select></div>
+  <div class="field"><label>Meu tom (escolha até 3)</label><div class="chips" id="toneChips" style="flex-wrap:wrap"></div></div>
+  <div class="dact"><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
 </form></dialog>
 
 <div class="snack" id="snack"></div>
@@ -367,6 +479,102 @@ const STATUS_BADGE = { agendada: 'b-neutral', realizada: 'b-ok', falta: 'b-err',
 const BILLING = { por_sessao: 'Por sessão', quinzenal: 'Quinzenal', quinzenal_retroativo: 'Quinzenal retroativo', mensal: 'Mensal', mensal_retroativo: 'Mensal retroativo' };
 const WD = ['', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 const NET_IC = { instagram: 'photo_camera', tiktok: 'music_note', youtube: 'smart_display' };
+const NET_NAME = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube' };
+
+/* ---------- links de redes ---------- */
+// Lê link de perfil ou de post e devolve { network, handle } (handle sem @)
+function parseProfile(input) {
+  let s = String(input || '').trim(); if (!s) return null;
+  if (/^@?[\w.\-]{2,40}$/.test(s)) return { network: null, handle: s.replace(/^@/, '') };
+  if (!/^https?:\/\//i.test(s)) s = 'https://' + s;
+  let u; try { u = new URL(s); } catch (_) { return null; }
+  const host = u.hostname.replace(/^www\.|^m\./, ''), parts = u.pathname.split('/').filter(Boolean);
+  if (/instagram\.com$/.test(host)) {
+    if (!parts.length || ['p', 'reel', 'reels', 'tv', 'stories', 'explore'].includes(parts[0])) return parts[0] === 'stories' && parts[1] ? { network: 'instagram', handle: parts[1] } : { network: 'instagram', handle: null, post: true };
+    return { network: 'instagram', handle: parts[0] };
+  }
+  if (/tiktok\.com$/.test(host)) { const h = parts.find(p => p.startsWith('@')); return { network: 'tiktok', handle: h ? h.slice(1) : null, post: !h }; }
+  if (/youtube\.com$|youtu\.be$/.test(host)) {
+    const h = parts.find(p => p.startsWith('@')); if (h) return { network: 'youtube', handle: h.slice(1) };
+    if (['c', 'user'].includes(parts[0]) && parts[1]) return { network: 'youtube', handle: parts[1] };
+    return { network: 'youtube', handle: null, post: true };
+  }
+  return null;
+}
+const profileUrl = (net, h) => ({ instagram: 'https://www.instagram.com/' + h + '/', tiktok: 'https://www.tiktok.com/@' + h, youtube: 'https://www.youtube.com/@' + h }[net]);
+const avatarUrl = (net, h) => `https://unavatar.io/${net}/${encodeURIComponent(h)}?fallback=false`;
+const prettyName = h => cap(String(h || '').replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d+$/, '').trim());
+function avHtml(c, cls = '') {
+  const h = (c.handle || '').replace(/^@/, '');
+  const ini = esc(initials(c.name || h));
+  const src = c.avatar_url || (c.network && h ? avatarUrl(c.network, h) : '');
+  return src ? `<img src="${esc(src)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ini}'}))">` : ini;
+}
+// nome público via oEmbed (TikTok responde sem chave; Instagram e YouTube de perfil não)
+async function fetchName(net, h) {
+  if (net !== 'tiktok') return null;
+  try { const r = await fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent('https://www.tiktok.com/@' + h)); if (!r.ok) return null; const j = await r.json(); return j.author_name || j.title || null; } catch (_) { return null; }
+}
+// Embed do post (preview dentro do app)
+function embedUrl(url) {
+  if (!url) return null; let u; try { u = new URL(url); } catch (_) { return null; }
+  const host = u.hostname.replace(/^www\.|^m\./, ''), parts = u.pathname.split('/').filter(Boolean);
+  if (/instagram\.com$/.test(host)) { const i = parts.findIndex(p => ['p', 'reel', 'reels', 'tv'].includes(p)); if (i >= 0 && parts[i + 1]) return 'https://www.instagram.com/' + (parts[i] === 'reels' ? 'reel' : parts[i]) + '/' + parts[i + 1] + '/embed/captioned/'; }
+  if (/tiktok\.com$/.test(host)) { const id = (u.pathname.match(/\/(?:video|photo)\/(\d+)/) || [])[1]; if (id) return 'https://www.tiktok.com/player/v1/' + id + '?description=1'; }
+  if (/youtu\.be$/.test(host) && parts[0]) return 'https://www.youtube.com/embed/' + parts[0];
+  if (/youtube\.com$/.test(host)) { const id = u.searchParams.get('v') || (parts[0] === 'shorts' || parts[0] === 'embed' ? parts[1] : null); if (id) return 'https://www.youtube.com/embed/' + id; }
+  return null;
+}
+function ytThumb(url) { try { const u = new URL(url); const p = u.pathname.split('/').filter(Boolean); const id = /youtu\.be/.test(u.hostname) ? p[0] : (u.searchParams.get('v') || (p[0] === 'shorts' ? p[1] : null)); return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null; } catch (_) { return null; } }
+const netOf = url => /tiktok/.test(url || '') ? 'tiktok' : /youtu/.test(url || '') ? 'youtube' : 'instagram';
+
+/* ---------- assuntos (sugestão automática de assunto e motivo) ---------- */
+const TOPICS = [
+  ['Ansiedade', /ansied|panico|pânico|calma|anxiety/i],
+  ['Relacionamentos', /casal|relacion|amor|namoro|casamento|couple|love/i],
+  ['TDAH e neurodivergência', /tdah|adhd|autis|neurodiv|tea\b/i],
+  ['Autoestima', /autoestima|autoconfian|self/i],
+  ['Maternidade e parentalidade', /mae|mãe|mama|mater|parent|filhos|infantil|crianç|kids/i],
+  ['Terapia cognitivo-comportamental', /tcc|cbt|cognitiv/i],
+  ['Psicanálise', /psican|freud|lacan|inconsciente/i],
+  ['Trauma', /trauma|abuso|tept/i],
+  ['Carreira e trabalho', /carreira|trabalho|burnout|lider|work/i],
+  ['Luto', /luto|perda|grief/i],
+  ['Saúde mental geral', /psi|mente|mental|terapia|therapy|emoc/i]
+];
+const WHY = {
+  'Ansiedade': 'Mostra como explicar sintomas de ansiedade em linguagem simples, sem prometer cura. Bom para observar ganchos de identificação ("se você sente...").',
+  'Relacionamentos': 'Tema com muito compartilhamento. Observe como fala de padrões de relação sem rotular pessoas (evitar "narcisista" como diagnóstico).',
+  'TDAH e neurodivergência': 'Conteúdo de alta procura. Repare como separa informação de autodiagnóstico e indica avaliação profissional.',
+  'Autoestima': 'Bom para formatos de reflexão e carrossel. Note a linguagem acolhedora e as chamadas para salvar.',
+  'Maternidade e parentalidade': 'Público engajado e fiel. Observe exemplos do cotidiano e como orienta sem culpabilizar os pais.',
+  'Terapia cognitivo-comportamental': 'Ensina técnicas de forma prática. Use como referência de didática, sem transformar técnica em receita para leigos (Art. 18).',
+  'Psicanálise': 'Referência de conteúdo mais reflexivo e conceitual. Observe como traduz conceitos para o público.',
+  'Trauma': 'Tema sensível. Observe cuidados com gatilhos e avisos de conteúdo, e como evita o sensacionalismo.',
+  'Carreira e trabalho': 'Aproxima a psicologia do dia a dia profissional. Bom para ganchos práticos e listas.',
+  'Luto': 'Tema delicado. Referência de tom sereno e respeitoso.',
+  'Saúde mental geral': 'Referência de formatos e frequência de postagem. Observe ganchos, roteiro e o que gera comentários.'
+};
+function guessTopic(...txt) { const s = txt.filter(Boolean).join(' '); const t = TOPICS.find(([, re]) => re.test(s)); return t ? t[0] : ''; }
+
+/* ---------- ética (Código de Ética Profissional do Psicólogo, Art. 20 e Art. 2º) ---------- */
+const ETHICS = [
+  [/\b(cura|curar|curado|cure)\b/i, 'Promessa de cura ou previsão de resultado (Art. 20, e)'],
+  [/garant|100\s?%|resultado(s)? (r[aá]pido|imediato|garantido)|em \d+ (dias|sess[oõ]es|semanas)/i, 'Previsão taxativa de resultado (Art. 20, e)'],
+  [/r\$\s?\d|\bpre[cç]o\b|\bvalor da sess|desconto|promo[cç][aã]o|\bgr[aá]tis\b|gratuit|black friday|\bcupom/i, 'Preço usado como propaganda (Art. 20, d)'],
+  [/chocante|bomba|urgente|ningu[eé]m te conta|segredo que|vai te destruir|perigos?o demais|\bpsicopata\b|\bloucos?\b|\bdoid[oa]s?\b/i, 'Tom sensacionalista ou estigmatizante (Art. 20, h)'],
+  [/\bnarcisista\b|voc[eê] (tem|é) (tdah|autista|bipolar|borderline|depressiv)/i, 'Rótulo ou "diagnóstico" à distância. Fale de comportamentos, não diagnostique o público'],
+  [/depoimento|meu paciente|minha paciente|um paciente (me )?(disse|contou)|caso real|antes e depois/i, 'Depoimento ou caso de paciente expõe sigilo e vira autopromoção (Art. 9º e Art. 20, f)'],
+  [/melhor psic[oó]log|[uú]nic[oa] (que|psic)|diferente dos outros psic|outros psic[oó]logos n[aã]o/i, 'Autopromoção em detrimento de outros profissionais (Art. 20, f)'],
+  [/agende (agora|j[aá])|[uú]ltimas vagas|vagas limitadas|s[oó] hoje/i, 'Pressão para contratar o serviço (Art. 2º, i: induzir a recorrer aos seus serviços)'],
+  [/constela[cç][aã]o|florais|reiki|tar[oô]|thetahealing|barras de access|qu[aâ]ntic/i, 'Prática não reconhecida pela Psicologia vinculada ao título (Art. 20, c)'],
+  [/\b(medica[cç][aã]o|rem[eé]dio|antidepressivo|ritalina|dose)\b/i, 'Orientação sobre medicação é atribuição de outra categoria (Art. 20, g)']
+];
+function ethicsCheck(...txt) { const s = txt.filter(Boolean).join(' \n '); return ETHICS.filter(([re]) => re.test(s)).map(([, m]) => m); }
+function ethicsHtml(list, okMsg) {
+  if (!list.length) return okMsg ? `<span class="ms" style="font-size:18px;vertical-align:-4px">verified</span> ${okMsg}` : '';
+  return `<b><span class="ms" style="font-size:18px;vertical-align:-4px">gpp_maybe</span> Revise antes de publicar</b><ul>${list.map(m => `<li>${esc(m)}</li>`).join('')}</ul><div class="small" style="margin-top:6px">Lembre: nome completo e CRP no perfil ou na legenda (Art. 20, a). Alerta automático, a decisão é sua.</div>`;
+}
 
 const S = { user: null, profile: null, view: 'inicio', month: fom(new Date()), patients: [], sessions: [], allOpen: [], finFilter: 'todos', creators: [], posts: [], trends: [], creatorFilter: null, postStatus: 'todos', started: false };
 
@@ -449,12 +657,15 @@ const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes
 $$('.nav').forEach(b => b.onclick = () => go(b.dataset.view));
 async function go(v, fromHash) {
   if (!VIEWS[v]) v = 'inicio';
+  const same = S.view === v && S.rendered, y = window.scrollY;
   S.view = v; try { localStorage.setItem('cons.view', v); } catch (_) {}
   if (!fromHash) history.replaceState(null, '', '#' + v);
   $$('.nav').forEach(b => b.classList.toggle('on', b.dataset.view === v));
   const fab = $('#fab'); fab.classList.add('hidden');
-  window.scrollTo(0, 0);
   try { await VIEWS[v](); } catch (e) { fail(e); }
+  S.rendered = true;
+  // só volta ao topo quando troca de aba; filtros, chips e salvar mantêm a posição
+  window.scrollTo(0, same ? y : 0);
 }
 function setFab(label, fn) { const f = $('#fab'); $('#fabLabel').textContent = label; f.onclick = fn; f.classList.remove('hidden'); }
 function monthSel() { return `<div class="monthsel"><button class="icon-btn" id="mPrev" aria-label="Mês anterior"><span class="ms">chevron_left</span></button><strong>${monthName(S.month)}</strong><button class="icon-btn" id="mNext" aria-label="Próximo mês"><span class="ms">chevron_right</span></button></div>`; }
@@ -471,6 +682,10 @@ async function loadMonth() {
   if (m.error) throw m.error; if (open.error) throw open.error;
   S.sessions = m.data; S.allOpen = open.data;
 }
+async function loadExpenses() {
+  const { data, error } = await sb.from('expenses').select('*').eq('month', iso(S.month)).order('created_at');
+  if (error) throw error; S.expenses = data; return data;
+}
 async function loadPaidInMonth() {
   const { data, error } = await sb.from('sessions').select('*').eq('paid', true).gte('paid_at', iso(S.month)).lte('paid_at', iso(eom(S.month)));
   if (error) throw error; return data;
@@ -484,7 +699,9 @@ function metrics(paidInMonth) {
     recebido: paidInMonth.reduce((a, s) => a + Number(s.amount), 0),
     areceber: S.sessions.filter(s => situation(s) === 'areceber').reduce((a, s) => a + Number(s.amount), 0),
     atraso: S.allOpen.reduce((a, s) => a + Number(s.amount), 0),
-    previsto: S.sessions.filter(s => s.status === 'agendada').reduce((a, s) => a + Number(s.amount), 0)
+    previsto: S.sessions.filter(s => s.status === 'agendada').reduce((a, s) => a + Number(s.amount), 0),
+    despesas: (S.expenses || []).reduce((a, e) => a + Number(e.amount), 0),
+    get lucro() { return this.recebido - this.despesas; }
   };
 }
 function alerts() {
@@ -503,12 +720,12 @@ function alerts() {
 
 /* ---------- INÍCIO ---------- */
 async function viewInicio() {
-  await loadPatients(); await loadMonth();
+  await loadPatients(); await loadMonth(); await loadExpenses();
   const paid = await loadPaidInMonth();
   const since = iso(new Date(Date.now() - 60 * 864e5));
   const { data: recent } = await sb.from('sessions').select('patient_id,date,status').gte('date', since).lte('date', todayISO());
   S.allSessions = recent || [];
-  const M = metrics(paid), al = alerts();
+  const M = metrics(paid), al = alerts(), pend = await pendingReceipts(), lateRec = pend.filter(s => s.paid_at < todayISO());
   const name = (S.profile?.name || S.user.email.split('@')[0]).split(' ')[0];
   const today = S.sessions.filter(s => s.date === todayISO());
   $('#view').innerHTML = `
@@ -518,13 +735,16 @@ async function viewInicio() {
     kpi('event_available', 'var(--primary-container)', M.realizadas, 'Sessões realizadas', 'agenda'),
     kpi('event_busy', 'var(--error-container)', M.faltas, 'Faltas no mês', 'agenda'),
     kpi('account_balance_wallet', 'var(--secondary-container)', brl(M.recebido), 'Recebido no mês', 'financeiro:pago'),
-    kpi('receipt_long', 'var(--tertiary-container)', (await pendingReceipts()).length, 'Recibos a emitir', 'recibos')
+    kpi('receipt_long', 'var(--tertiary-container)', receiptGroups(pend).length, 'Recibos a emitir', 'recibos')
   ].join('');
+  if (lateRec.length) $('.kpis').insertAdjacentHTML('beforebegin', `<div class="notice warn" style="cursor:pointer" data-go="recibos"><span class="ms">warning</span><div><b>${receiptGroups(lateRec).length} recibo(s) do Receita Saúde atrasado(s).</b> O recibo é emitido na data do pagamento; a multa é de R$ 100 por mês. Toque para emitir.</div></div>`);
   const bars = [
     { k: 'gerado', l: 'Gerado', v: M.gerado, c: 'var(--chart-1)', to: 'financeiro:todos' },
     { k: 'recebido', l: 'Recebido', v: M.recebido, c: 'var(--chart-2)', to: 'financeiro:pago' },
     { k: 'areceber', l: 'A receber', v: M.areceber, c: 'var(--chart-3)', to: 'financeiro:areceber' },
-    { k: 'atraso', l: 'Em atraso', v: M.atraso, c: 'var(--chart-4)', to: 'financeiro:atrasado' }
+    { k: 'atraso', l: 'Em atraso', v: M.atraso, c: 'var(--chart-4)', to: 'financeiro:atrasado' },
+    { k: 'despesas', l: 'Despesas', v: M.despesas, c: 'var(--chart-5)', to: 'financeiro:despesas' },
+    { k: 'lucro', l: 'Lucro', v: M.lucro, c: 'var(--chart-6)', to: 'financeiro:despesas' }
   ];
   $('#view').insertAdjacentHTML('beforeend', `
   <div class="dash">
@@ -554,15 +774,15 @@ async function viewInicio() {
 function kpi(ic, bg, v, l, to) { return `<button class="kpi" data-to="${to}"><div class="k-ic" style="background:${bg}"><span class="ms">${ic}</span></div><div class="v">${v}</div><div class="l">${l}</div></button>`; }
 function jump(to) { const [v, f] = to.split(':'); if (f) S.finFilter = f; go(v); }
 function barChart(bars) {
-  const W = innerWidth < 600 ? 340 : 560, H = innerWidth < 600 ? 230 : 260, pad = innerWidth < 600 ? 8 : 36, base = H - 34, max = Math.max(1, ...bars.map(b => b.v)) * 1.15;
+  const sm = innerWidth < 600, W = sm ? 340 : 600, H = sm ? 240 : 270, pad = sm ? 4 : 28, base = H - 34, max = Math.max(1, ...bars.map(b => Math.abs(b.v))) * 1.15;
   const bw = (W - pad * 2) / bars.length;
   let g = '';
   for (let i = 0; i <= 4; i++) { const y = base - (base - 16) * i / 4; g += `<line x1="${pad}" x2="${W - 8}" y1="${y}" y2="${y}" stroke="var(--outline-variant)" stroke-width="1" ${i ? 'stroke-dasharray="2 4"' : ''}/>`; }
   bars.forEach((b, i) => {
-    const h = (base - 16) * b.v / max, x = pad + i * bw + bw * .2, w = bw * .6, y = base - h;
+    const h = (base - 16) * Math.max(0, b.v) / max, x = pad + i * bw + bw * .18, w = bw * .64, y = base - h;
     g += `<g class="bar" data-to="${b.to}" role="button" tabindex="0" aria-label="${b.l}: ${brl(b.v)}"><rect x="${x}" y="${y}" width="${w}" height="${Math.max(h, 2)}" rx="8" fill="${b.c}"/><rect x="${pad + i * bw}" y="16" width="${bw}" height="${base - 16}" fill="transparent"/>
-      <text class="val" x="${x + w / 2}" y="${y - 8}" text-anchor="middle">${brl(b.v).replace(',00', '')}</text>
-      <text x="${x + w / 2}" y="${base + 20}" text-anchor="middle">${b.l}</text></g>`;
+      <text class="val" x="${x + w / 2}" y="${y - 8}" text-anchor="middle" ${sm ? 'style="font-size:10.5px"' : ''} ${b.v < 0 ? 'fill="var(--error)"' : ''}>${brl(b.v).replace(',00', '').replace('R$', sm ? '' : 'R$').trim()}</text>
+      <text x="${x + w / 2}" y="${base + 20}" text-anchor="middle" ${sm ? 'style="font-size:10.5px"' : ''}>${b.l}</text></g>`;
   });
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico financeiro do mês">${g}</svg>`;
 }
@@ -586,12 +806,9 @@ function sessionRow(s) {
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="badge ${STATUS_BADGE[s.status]}">${STATUS[s.status]}</span>${Number(s.amount) > 0 ? `<span class="small"><span class="num">${brl(s.amount)}</span> · ${SIT[sit][0]}</span>` : ''}</div></div>`;
 }
 function bindSessionRows() { $$('[data-sess]').forEach(el => el.onclick = () => openSession(S.sessions.find(s => s.id === el.dataset.sess) || S.finList?.find(s => s.id === el.dataset.sess))); }
-async function generateMonth() {
-  const act = S.patients.filter(p => p.status === 'ativo' && p.weekday);
-  if (!act.length) return snack('Cadastre pacientes ativos com dia fixo primeiro.');
-  const existing = new Set(S.sessions.map(s => s.patient_id + s.date));
-  const rows = [], first = S.month, last = eom(S.month);
-  for (const p of act) {
+function buildSessions(patients, month, existing = new Set()) {
+  const rows = [], first = fom(month), last = eom(month);
+  for (const p of patients.filter(p => p.status === 'ativo' && p.weekday)) {
     const jsWd = p.weekday % 7; // 1..6 -> seg..sáb, 7 -> domingo(0)
     const dates = [];
     for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) if (d.getDay() === jsWd) dates.push(new Date(d));
@@ -607,9 +824,57 @@ async function generateMonth() {
       rows.push({ patient_id: p.id, date: ds, time: p.session_time, status: 'agendada', amount: Number(p.session_price), due_date: dueDate(p, ds) });
     }
   }
+  return rows;
+}
+async function generateMonth() {
+  if (!S.patients.some(p => p.status === 'ativo' && p.weekday)) return snack('Cadastre pacientes ativos com dia fixo primeiro.');
+  const rows = buildSessions(S.patients, S.month, new Set(S.sessions.map(s => s.patient_id + s.date)));
   if (!rows.length) return snack('A agenda do mês já está completa.');
   const { error } = await sb.from('sessions').insert(rows); if (error) return fail(error);
   snack(rows.length + ' sessões criadas'); go('agenda');
+}
+
+/* ---------- dados de exemplo ---------- */
+const DEMO_NAMES = ['Ana Beatriz Moura', 'Bruno Carvalho', 'Camila Duarte', 'Daniel Fogaça', 'Eduarda Lins', 'Felipe Antunes', 'Gabriela Rocha', 'Heitor Bastos', 'Isabela Prates', 'João Pedro Lemos', 'Karina Sales', 'Lucas Teixeira', 'Mariana Quadros', 'Natália Ribas', 'Otávio Pires', 'Paula Vergara', 'Rafael Nunes', 'Sabrina Tavares', 'Thiago Brum', 'Vitória Lacerda', 'Wagner Dornelles', 'Yasmin Corrêa', 'Laura Fontoura (menor)', 'Igor Schneider', 'Helena Mattos'];
+async function loadDemo() {
+  if (!confirm('Carregar 25 pacientes fictícios com sessões de 2 meses e despesas de exemplo? Dá para remover tudo depois com um toque.')) return;
+  const B = ['por_sessao', 'por_sessao', 'por_sessao', 'mensal', 'quinzenal', 'mensal_retroativo'];
+  const start = iso(addM(S.month, -2));
+  const pats = DEMO_NAMES.map((n, i) => {
+    const social = i % 2 === 1 && i < 24; // 12 com valor social
+    return { name: n, demo: true, social, session_price: social ? 80 : 130, status: i === 24 ? 'pausa' : 'ativo', weekday: (i % 5) + 1, session_time: String(8 + (i % 11)).padStart(2, '0') + ':00', frequency: i % 7 === 3 ? 'quinzenal' : i === 20 ? 'mensal' : 'semanal', billing: B[i % B.length], modality: i % 5 < 3 ? 'presencial' : 'online', no_show_pct: 100, cancel_pct: i % 4 === 0 ? 50 : 0, start_date: start, guardian: /menor/.test(n) ? 'Responsável fictício' : null, payer_name: /menor/.test(n) ? 'Responsável fictício' : null, admin_notes: 'Paciente fictício (exemplo)', patient_cpf: '000.000.0' + String(i + 10).padStart(2, '0') + '-00', payer_cpf: /menor/.test(n) ? '000.000.099-00' : null };
+  });
+  const { data: P, error } = await sb.from('patients').insert(pats).select(); if (error) return fail(error);
+  const today = todayISO(), rows = [];
+  [addM(S.month, -1), S.month].forEach((m, mi) => buildSessions(P, m).forEach((r, k) => {
+    const past = r.date < today, p = P.find(x => x.id === r.patient_id);
+    if (past) {
+      const roll = (k * 37 + mi * 11) % 20;
+      r.status = roll === 0 ? 'falta' : roll === 1 ? 'cancelada_paciente' : 'realizada';
+      r.amount = Number(p.session_price) * chargePct(p, r.status);
+      const late = roll === 5 || roll === 9; // alguns em atraso
+      if (r.amount > 0 && !late && r.due_date <= today) { r.paid = true; r.paid_at = r.due_date < r.date ? r.date : r.due_date; r.method = ['Pix', 'Pix', 'Cartão', 'Dinheiro'][k % 4]; r.receipt_issued = k % 9 !== 0 && r.paid_at < today; if (r.receipt_issued) { r.receipt_at = r.paid_at; r.receipt_number = '255.000.' + String(k).padStart(5, '0'); } }
+    }
+    rows.push(r);
+  }));
+  for (let i = 0; i < rows.length; i += 200) { const { error: e2 } = await sb.from('sessions').insert(rows.slice(i, i + 200)); if (e2) return fail(e2); }
+  const exp = [];
+  [addM(S.month, -1), S.month].forEach(m => exp.push(
+    { month: iso(m), category: 'Aluguel de sala (por hora)', kind: 'por_hora', hours: 0, hourly_rate: 35, amount: 0, demo: true },
+    { month: iso(m), category: 'Supervisão clínica', kind: 'fixa', amount: 400, demo: true, paid: m < S.month },
+    { month: iso(m), category: 'Plataforma e software', description: 'Videochamada e agenda', kind: 'fixa', amount: 60, demo: true, paid: true },
+    { month: iso(m), category: 'Anuidade do CRP', description: 'Parcela', kind: 'fixa', amount: 52, demo: true, paid: m < S.month },
+    { month: iso(m), category: 'Terapia pessoal', kind: 'fixa', amount: 320, demo: true, paid: m < S.month }));
+  // horas de sala = sessões presenciais (não canceladas) do mês
+  exp.filter(e => e.kind === 'por_hora').forEach(e => { const m = e.month.slice(0, 7); e.hours = rows.filter(r => r.date.startsWith(m) && P.find(p => p.id === r.patient_id).modality === 'presencial' && !/cancelada|remarcada/.test(r.status)).length; e.amount = e.hours * e.hourly_rate; e.paid = parse(e.month) < S.month; });
+  const { error: e3 } = await sb.from('expenses').insert(exp); if (e3) return fail(e3);
+  snack('25 pacientes de exemplo carregados'); go('pacientes');
+}
+async function clearDemo() {
+  if (!confirm('Remover todos os pacientes de exemplo, as sessões deles e as despesas de exemplo?')) return;
+  const a = await sb.from('patients').delete().eq('demo', true); if (a.error) return fail(a.error);
+  const b = await sb.from('expenses').delete().eq('demo', true); if (b.error) return fail(b.error);
+  snack('Exemplos removidos'); go('pacientes');
 }
 
 /* ---------- PACIENTES ---------- */
@@ -618,29 +883,30 @@ async function viewPacientes() {
   const { data: open } = await sb.from('sessions').select('patient_id,amount').eq('paid', false).gt('amount', 0).lt('due_date', todayISO());
   const debt = {}; (open || []).forEach(s => debt[s.patient_id] = (debt[s.patient_id] || 0) + Number(s.amount));
   $('#view').innerHTML = `
-  <div class="topbar"><div class="display">Pacientes</div><div class="sp"></div><span class="badge b-neutral">${S.patients.filter(p => p.status === 'ativo').length} ativos</span></div>
+  <div class="topbar"><div class="display">Pacientes</div><div class="sp"></div><span class="badge b-neutral">${S.patients.filter(p => p.status === 'ativo').length} ativos</span>${S.patients.some(p => p.demo) ? '<button class="btn danger sm" id="demoOff"><span class="ms" style="font-size:18px">delete</span>Remover exemplos</button>' : '<button class="btn outlined sm" id="demoOn"><span class="ms" style="font-size:18px">database</span>Carregar 25 pacientes de exemplo</button>'}</div>
   <div class="field" style="margin:0 0 14px"><input id="q" placeholder="Buscar paciente" style="border-radius:28px;background:var(--surface-c-high);border-color:transparent"></div>
   <section class="card elev"><div class="list" id="plist"></div></section>`;
   const render = q => { const L = S.patients.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
     $('#plist').innerHTML = L.length ? L.map(p => `<div class="row click" data-pat="${p.id}"><div class="avatar">${esc(initials(p.name))}</div><div class="grow"><div class="t">${esc(p.name)}</div><div class="s">${p.weekday ? WD[p.weekday] + (p.session_time ? ' ' + p.session_time.slice(0, 5) : '') + ' · ' : ''}${esc(cap(p.frequency))} · ${BILLING[p.billing]}</div></div>
-      <div style="text-align:right"><div class="num">${brl(p.session_price)}</div>${debt[p.id] ? `<span class="badge b-err">${brl(debt[p.id])} em atraso</span>` : `<span class="badge ${p.status === 'ativo' ? 'b-ok' : 'b-neutral'}">${cap(p.status)}</span>`}</div></div>`).join('')
+      <div style="text-align:right"><div class="num">${brl(p.session_price)}${p.social ? ' <span class="badge b-info">Social</span>' : ''}</div>${debt[p.id] ? `<span class="badge b-err">${brl(debt[p.id])} em atraso</span>` : `<span class="badge ${p.status === 'ativo' ? 'b-ok' : 'b-neutral'}">${cap(p.status)}</span>`}</div></div>`).join('')
       : `<div class="empty"><span class="ms">person_add</span>Nenhum paciente ainda. Toque em “Paciente” para cadastrar.</div>`;
     $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat))); };
   render(''); $('#q').oninput = e => render(e.target.value);
+  const on = $('#demoOn'), off = $('#demoOff'); if (on) on.onclick = loadDemo; if (off) off.onclick = clearDemo;
   setFab('Paciente', () => openPatient());
 }
 let editingPatient = null;
 function openPatient(p) {
   editingPatient = p || null; const f = $('#fPatient'); f.reset();
   $('#pTitle').textContent = p ? 'Editar paciente' : 'Novo paciente';
-  const d = p || { status: 'ativo', modality: 'presencial', frequency: 'semanal', billing: 'por_sessao', no_show_pct: S.profile?.no_show_pct ?? 100, cancel_pct: S.profile?.cancel_pct ?? 0, start_date: todayISO() };
-  for (const k of ['name', 'status', 'session_price', 'modality', 'weekday', 'session_time', 'frequency', 'billing', 'no_show_pct', 'cancel_pct', 'patient_cpf', 'start_date', 'payer_name', 'payer_cpf', 'guardian', 'whatsapp', 'admin_notes'])
+  const d = p || { social: false, status: 'ativo', modality: 'presencial', frequency: 'semanal', billing: 'por_sessao', no_show_pct: S.profile?.no_show_pct ?? 100, cancel_pct: S.profile?.cancel_pct ?? 0, start_date: todayISO() };
+  for (const k of ['name', 'status', 'session_price', 'modality', 'weekday', 'session_time', 'frequency', 'billing', 'no_show_pct', 'cancel_pct', 'patient_cpf', 'start_date', 'payer_name', 'payer_cpf', 'guardian', 'whatsapp', 'admin_notes', 'social'])
     if (f[k]) f[k].value = d[k] == null ? '' : (k === 'session_time' && d[k] ? d[k].slice(0, 5) : d[k]);
   $('#pDel').classList.toggle('hidden', !p); $('#dlgPatient').showModal();
 }
 $('#fPatient').onsubmit = async e => {
   e.preventDefault(); const f = e.target, v = k => f[k].value.trim();
-  const row = { name: v('name'), status: v('status'), session_price: Number(v('session_price') || 0), modality: v('modality'), weekday: v('weekday') ? Number(v('weekday')) : null, session_time: v('session_time') || null, frequency: v('frequency'), billing: v('billing'), no_show_pct: Number(v('no_show_pct') || 0), cancel_pct: Number(v('cancel_pct') || 0), patient_cpf: v('patient_cpf') || null, start_date: v('start_date') || null, payer_name: v('payer_name') || null, payer_cpf: v('payer_cpf') || null, guardian: v('guardian') || null, whatsapp: v('whatsapp') || null, admin_notes: v('admin_notes') || null };
+  const row = { name: v('name'), status: v('status'), session_price: Number(v('session_price') || 0), modality: v('modality'), weekday: v('weekday') ? Number(v('weekday')) : null, session_time: v('session_time') || null, frequency: v('frequency'), billing: v('billing'), no_show_pct: Number(v('no_show_pct') || 0), cancel_pct: Number(v('cancel_pct') || 0), patient_cpf: v('patient_cpf') || null, start_date: v('start_date') || null, payer_name: v('payer_name') || null, payer_cpf: v('payer_cpf') || null, guardian: v('guardian') || null, whatsapp: v('whatsapp') || null, admin_notes: v('admin_notes') || null, social: v('social') === 'true' };
   const { error } = editingPatient ? await sb.from('patients').update(row).eq('id', editingPatient.id) : await sb.from('patients').insert(row);
   if (error) return fail(error); $('#dlgPatient').close(); snack('Paciente salvo'); go(S.view);
 };
@@ -679,10 +945,36 @@ $('#fSession').onsubmit = async e => {
 $('#sDel').onclick = async () => { if (!editingSession || !confirm('Excluir esta sessão?')) return; const { error } = await sb.from('sessions').delete().eq('id', editingSession.id); if (error) return fail(error); $('#dlgSession').close(); go(S.view); };
 
 /* ---------- FINANCEIRO ---------- */
+const EXP_CATS = { 'Aluguel de sala (fixo)': 'fixa', 'Aluguel de sala (por hora)': 'por_hora', 'Supervisão clínica': 'fixa', 'Terapia pessoal': 'fixa', 'Anuidade do CRP': 'fixa', 'Plataforma e software': 'fixa', 'Contador': 'fixa', 'Marketing e anúncios': 'variavel', 'Cursos e formação': 'variavel', 'Material e testes': 'variavel', 'Transporte': 'variavel', 'Outros': 'variavel' };
 async function viewFinanceiro() {
-  await loadPatients(); await loadMonth();
+  await loadPatients(); await loadMonth(); await loadExpenses();
   const paid = await loadPaidInMonth(); const M = metrics(paid);
   const F = S.finFilter;
+  const chip = (k, l, v) => `<button class="chip ${F === k ? 'on' : ''}" data-f="${k}">${F === k ? '<span class="ms" style="font-size:18px">check</span>' : ''}${l} · ${brl(v)}</button>`;
+  const head = `<div class="topbar"><div class="display">Financeiro</div><div class="sp"></div>${monthSel()}</div>
+  <div class="chips" style="margin-bottom:14px">${chip('todos', 'Gerado', M.gerado)}${chip('pago', 'Recebido', M.recebido)}${chip('areceber', 'A receber', M.areceber)}${chip('atrasado', 'Em atraso', M.atraso)}${chip('despesas', 'Despesas', M.despesas)}</div>`;
+  if (F === 'despesas') {
+    const E = S.expenses;
+    $('#view').innerHTML = head + `
+    <div class="kpis" style="margin-bottom:16px">
+      ${kpiStatic('account_balance_wallet', 'var(--secondary-container)', brl(M.recebido), 'Recebido')}
+      ${kpiStatic('trending_down', 'var(--error-container)', brl(M.despesas), 'Despesas')}
+      ${kpiStatic('savings', 'var(--primary-container)', brl(M.lucro), 'Lucro (recebido − despesas)')}
+      ${kpiStatic('payments', 'var(--warn-container)', brl(E.filter(e => !e.paid).reduce((a, e) => a + Number(e.amount), 0)), 'Despesas a pagar')}
+    </div>
+    <section class="card elev"><div class="cardhead"><div class="title-m">Despesas do consultório</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn text sm" id="copyFixed"><span class="ms" style="font-size:18px">content_copy</span>Repetir fixas do mês anterior</button></div></div>
+    <div class="list">${E.length ? E.map(e => `<div class="row click" data-exp="${e.id}"><div class="avatar" style="background:var(--surface-c-highest)"><span class="ms" style="font-size:20px">${e.kind === 'por_hora' ? 'event' : 'receipt_long'}</span></div>
+      <div class="grow"><div class="t">${esc(e.category)}${e.demo ? ' <span class="badge b-neutral">exemplo</span>' : ''}</div><div class="s">${e.kind === 'por_hora' ? `${Number(e.hours || 0).toLocaleString('pt-BR')} h × ${brl(e.hourly_rate)}` : e.kind === 'fixa' ? 'Fixa' : 'Variável'}${e.description ? ' · ' + esc(e.description) : ''}</div></div>
+      <div style="text-align:right"><div class="num">${brl(e.amount)}</div><span class="badge ${e.paid ? 'b-ok' : 'b-warn'}">${e.paid ? 'Paga' : 'A pagar'}</span></div></div>`).join('')
+      : `<div class="empty"><span class="ms">trending_down</span>Sem despesas em ${monthName(S.month).toLowerCase()}. Toque em “Despesa” para lançar aluguel de sala, supervisão, CRP...</div>`}</div></section>
+    <div class="foot">Aluguel por hora: o app conta as sessões presenciais do mês (agendadas, realizadas e faltas) como horas de sala.</div>`;
+    bindMonth();
+    $$('[data-f]').forEach(b => b.onclick = () => { S.finFilter = b.dataset.f; go('financeiro'); });
+    $$('[data-exp]').forEach(r => r.onclick = () => openExpense(E.find(e => e.id === r.dataset.exp)));
+    $('#copyFixed').onclick = copyFixed;
+    setFab('Despesa', () => openExpense());
+    return;
+  }
   const lists = {
     todos: S.sessions.filter(s => Number(s.amount) > 0 && s.status !== 'agendada'),
     pago: paid,
@@ -692,10 +984,7 @@ async function viewFinanceiro() {
   const L = (lists[F] || lists.todos).slice().sort((a, b) => (a.due_date || a.date).localeCompare(b.due_date || b.date));
   S.finList = L;
   const tot = L.reduce((a, s) => a + Number(s.amount), 0);
-  const chip = (k, l, v) => `<button class="chip ${F === k ? 'on' : ''}" data-f="${k}">${F === k ? '<span class="ms" style="font-size:18px">check</span>' : ''}${l} · ${brl(v)}</button>`;
-  $('#view').innerHTML = `
-  <div class="topbar"><div class="display">Financeiro</div><div class="sp"></div>${monthSel()}</div>
-  <div class="chips" style="margin-bottom:14px">${chip('todos', 'Gerado', M.gerado)}${chip('pago', 'Recebido', M.recebido)}${chip('areceber', 'A receber', M.areceber)}${chip('atrasado', 'Em atraso', M.atraso)}</div>
+  $('#view').innerHTML = head + `
   <section class="card elev"><div class="cardhead"><div class="title-m">${L.length} lançamentos</div><div class="num">${brl(tot)}</div></div>
   <div class="list">${L.length ? L.map(s => { const p = pById(s.patient_id), sit = situation(s);
     return `<div class="row"><div class="avatar">${esc(initials(p?.name))}</div><div class="grow click" data-sess="${s.id}" style="cursor:pointer"><div class="t">${esc(p?.name || '')}</div><div class="s">Sessão ${fmtDate(s.date)} · ${STATUS[s.status]} · vence ${fmtDate(s.due_date)}</div></div>
@@ -703,32 +992,181 @@ async function viewFinanceiro() {
     : `<div class="empty"><span class="ms">savings</span>Nada por aqui neste filtro.</div>`}</div></section>`;
   bindMonth(); bindSessionRows();
   $$('[data-f]').forEach(b => b.onclick = () => { S.finFilter = b.dataset.f; go('financeiro'); });
-  $$('[data-pay]').forEach(b => b.onclick = async () => { const { error } = await sb.from('sessions').update({ paid: true, paid_at: todayISO() }).eq('id', b.dataset.pay); if (error) return fail(error); snack('Marcado como pago'); go('financeiro'); });
+  $$('[data-pay]').forEach(b => b.onclick = async () => { const { error } = await sb.from('sessions').update({ paid: true, paid_at: todayISO() }).eq('id', b.dataset.pay); if (error) return fail(error); snack('Marcado como pago. Emita o recibo no Receita Saúde hoje.'); go('financeiro'); });
+}
+function kpiStatic(ic, bg, v, l) { return `<div class="kpi" style="cursor:default"><div class="k-ic" style="background:${bg}"><span class="ms">${ic}</span></div><div class="v">${v}</div><div class="l">${l}</div></div>`; }
+function roomHours() { return S.sessions.filter(s => pById(s.patient_id)?.modality === 'presencial' && !/cancelada|remarcada/.test(s.status)).length; }
+let editingExp = null;
+function openExpense(e) {
+  editingExp = e || null; const f = $('#fExp'); f.reset();
+  f.category.innerHTML = Object.keys(EXP_CATS).map(c => `<option>${c}</option>`).join('');
+  const d = e || { category: 'Aluguel de sala (fixo)', kind: 'fixa', paid: false };
+  f.category.value = d.category in EXP_CATS ? d.category : 'Outros'; f.kind.value = d.kind; f.description.value = d.description || '';
+  f.amount.value = d.amount ?? ''; f.hours.value = d.hours ?? ''; f.hourly_rate.value = d.hourly_rate ?? ''; f.paid.value = String(!!d.paid);
+  expKind(); $('#eDel').classList.toggle('hidden', !e); $('#dlgExp').showModal();
+}
+function expKind() {
+  const f = $('#fExp'), hr = f.kind.value === 'por_hora';
+  $('#expHour').classList.toggle('hidden', !hr); f.amount.readOnly = hr;
+  if (hr) { f.amount.value = (Number(f.hours.value || 0) * Number(f.hourly_rate.value || 0)).toFixed(2); $('#expHint').textContent = `Sessões presenciais em ${monthName(S.month).toLowerCase()}: ${roomHours()} (1 sessão = 1 hora de sala).`; }
+}
+{ const f = $('#fExp');
+  f.category.addEventListener('change', () => { f.kind.value = EXP_CATS[f.category.value] || 'variavel'; expKind(); });
+  ['kind', 'hours', 'hourly_rate'].forEach(k => f[k].addEventListener('input', expKind));
+  $('#useHours').onclick = () => { f.hours.value = roomHours(); expKind(); }; }
+$('#fExp').onsubmit = async ev => {
+  ev.preventDefault(); const f = ev.target, hr = f.kind.value === 'por_hora';
+  const row = { month: iso(S.month), category: f.category.value, kind: f.kind.value, description: f.description.value.trim() || null, hours: hr ? Number(f.hours.value || 0) : null, hourly_rate: hr ? Number(f.hourly_rate.value || 0) : null, amount: hr ? Number(f.hours.value || 0) * Number(f.hourly_rate.value || 0) : Number(f.amount.value || 0), paid: f.paid.value === 'true' };
+  const { error } = editingExp ? await sb.from('expenses').update(row).eq('id', editingExp.id) : await sb.from('expenses').insert(row);
+  if (error) return fail(error); $('#dlgExp').close(); snack('Despesa salva'); S.finFilter = 'despesas'; go('financeiro');
+};
+$('#eDel').onclick = async () => { if (!editingExp || !confirm('Excluir esta despesa?')) return; const { error } = await sb.from('expenses').delete().eq('id', editingExp.id); if (error) return fail(error); $('#dlgExp').close(); go('financeiro'); };
+async function copyFixed() {
+  const prev = iso(addM(S.month, -1));
+  const { data, error } = await sb.from('expenses').select('*').eq('month', prev).in('kind', ['fixa', 'por_hora']); if (error) return fail(error);
+  const have = new Set(S.expenses.map(e => e.category));
+  const rows = (data || []).filter(e => !have.has(e.category)).map(e => ({ month: iso(S.month), category: e.category, kind: e.kind, description: e.description, hourly_rate: e.hourly_rate, hours: e.kind === 'por_hora' ? roomHours() : null, amount: e.kind === 'por_hora' ? roomHours() * Number(e.hourly_rate || 0) : e.amount, paid: false, demo: e.demo }));
+  if (!rows.length) return snack('Nada novo para repetir do mês anterior.');
+  const r = await sb.from('expenses').insert(rows); if (r.error) return fail(r.error); snack(rows.length + ' despesas repetidas'); go('financeiro');
 }
 
-/* ---------- RECIBOS ---------- */
+/* ---------- RECIBOS (Receita Saúde, IN RFB nº 2.240/2024; Manual de Orientação v2.1, out/2025) ---------- */
 async function pendingReceipts() { const { data, error } = await sb.from('sessions').select('*').eq('paid', true).eq('receipt_issued', false).gt('amount', 0).order('paid_at'); if (error) throw error; return data; }
+const onlyDigits = v => String(v || '').replace(/\D/g, '');
+const fmtCpf = v => { const d = onlyDigits(v); return d.length === 11 ? d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : (v || ''); };
+const money = n => Number(n).toFixed(2).replace('.', ',');
+const ddmm = s => s ? s.slice(8, 10) + '/' + s.slice(5, 7) : '';
+// prazo da emissão retroativa: último dia de fevereiro do ano seguinte ao pagamento (ADE Cofis nº 11/2025)
+const lastFeb = y => iso(new Date(y, 2, 0));
+// um recibo por pagamento: mesmo paciente + mesma data de pagamento
+function receiptGroups(L) {
+  const G = {};
+  for (const s of L) { const pa = s.paid_at || s.date, k = s.patient_id + '|' + pa; (G[k] = G[k] || { key: k, patient_id: s.patient_id, paid_at: pa, sessions: [], amount: 0 }); G[k].sessions.push(s); G[k].amount += Number(s.amount); }
+  return Object.values(G).map(g => {
+    const p = pById(g.patient_id) || {}, same = !p.payer_name && (!p.payer_cpf || onlyDigits(p.payer_cpf) === onlyDigits(p.patient_cpf));
+    g.sessions.sort((a, b) => a.date.localeCompare(b.date));
+    const dates = g.sessions.map(x => ddmm(x.date));
+    return Object.assign(g, {
+      p, same, pagador: same ? p.name : (p.payer_name || p.guardian || p.name), benef: p.name,
+      cpfPag: same ? p.patient_cpf : (p.payer_cpf || ''), cpfBen: p.patient_cpf || '',
+      desc: `Atendimento psicológico (${g.sessions.length > 1 ? g.sessions.length + ' sessões: ' : 'sessão '}${dates.join(', ')})`,
+      deadline: lastFeb(Number(g.paid_at.slice(0, 4)) + 1), late: g.paid_at < todayISO()
+    });
+  }).sort((a, b) => a.paid_at.localeCompare(b.paid_at));
+}
+function missing(g) { const m = []; if (onlyDigits(g.cpfPag).length !== 11) m.push('CPF do pagador'); if (!g.same && onlyDigits(g.cpfBen).length !== 11) m.push('CPF do paciente'); return m; }
+const FAQ = [
+  ['Quem é obrigado a emitir?', 'Desde 1º/01/2025, psicólogos que atendem como pessoa física (além de médicos, dentistas, fisioterapeutas, fonoaudiólogos e terapeutas ocupacionais). Quem atende por CNPJ emite nota fiscal, não o Receita Saúde.'],
+  ['Quando emitir?', 'Na data do pagamento. Pagamento parcelado gera um recibo para cada parcela paga. Pacote mensal pago de uma vez gera um recibo só, com o valor total.'],
+  ['Esqueci de emitir. E agora?', 'Dá para emitir com data retroativa até o último dia de fevereiro do ano seguinte ao pagamento (ADE Cofis nº 11/2025), desde que a Receita não tenha iniciado procedimento de ofício. Depois, ajuste o Carnê-Leão do mês.'],
+  ['Qual é a multa?', 'R$ 100 por mês-calendário ou fração, para quem não emite ou emite com erro (art. 4º da IN RFB nº 2.240/2024).'],
+  ['O que preciso antes do primeiro recibo?', 'Conta gov.br nível prata ou ouro, registro ativo no CRP e cadastro do ano no Carnê-Leão Web (Portal e-CAC) como trabalhador autônomo, com a ocupação Psicólogo e o número do CRP. O cadastro no Carnê-Leão é renovado a cada ano.'],
+  ['Onde emito?', 'No app Receita Federal (celular ou tablet) em Receita Saúde, perfil Profissional. Ou no computador, pelo Carnê-Leão Web, ficha Rendimentos, botão “+ Receita Saúde”.'],
+  ['Não aparece o perfil Profissional', 'O CRP envia seus dados à Receita no máximo uma vez por mês. Se o registro é antigo, confirme com o CRP se os dados foram enviados.'],
+  ['Emiti errado. Dá para cancelar?', 'Sim, em até 10 dias da emissão, pelo próprio Receita Saúde. Recibos de lote podem ser desfeitos em “Histórico da Escrituração” no Carnê-Leão.'],
+  ['Posso emitir vários de uma vez?', 'Sim. O botão “Arquivo de lote” gera o CSV no formato do Carnê-Leão (Escrituração > Importar Escrituração), até 1.000 linhas, todos do mesmo ano.'],
+  ['Alguém pode emitir por mim?', 'Sim. Dê uma procuração eletrônica no e-CAC (Senhas e Procurações) com a opção “IRPF – Carnê Leão Web” para a pessoa que vai emitir.'],
+  ['Emito nota fiscal. Preciso do Receita Saúde também?', 'Sim, se você presta o serviço como pessoa física. A nota comprova o serviço; o Receita Saúde comprova o pagamento.'],
+  ['O paciente precisa guardar o recibo?', 'Não. O recibo vai direto para a declaração pré-preenchida do paciente, que pode conferir em Validação Receita Saúde no app.'],
+  ['Ainda tenho dúvida', 'Escreva para receitasaude.cofis@rfb.gov.br (canal indicado no manual da Receita).']
+];
 async function viewRecibos() {
-  await loadPatients(); const L = await pendingReceipts();
-  const info = s => { const p = pById(s.patient_id) || {}; return { pagador: p.payer_name || p.name, cpfPag: p.payer_cpf || p.patient_cpf || '', benef: p.name, cpfBen: p.patient_cpf || '', desc: `Sessão de psicoterapia em ${fmtDate(s.date)}` }; };
+  await loadPatients(); const L = await pendingReceipts(); const G = receiptGroups(L); S.rGroups = G;
+  const since = iso(new Date(Date.now() - 30 * 864e5));
+  const { data: issued } = await sb.from('sessions').select('*').eq('receipt_issued', true).gte('receipt_at', since).order('receipt_at', { ascending: false }).limit(60);
+  const IG = receiptGroups(issued || []).reverse().slice(0, 10);
+  const late = G.filter(g => g.late), expired = G.filter(g => g.deadline < todayISO());
+  const y = new Date().getFullYear(), febSoon = new Date().getMonth() <= 1;
+  const prof = S.profile || {};
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Recibos</div><div class="muted">Pagamentos sem recibo no Receita Saúde (atendimento como pessoa física)</div></div><div class="sp"></div>${L.length ? '<button class="btn outlined" id="csv"><span class="ms">download</span>Baixar CSV</button>' : ''}</div>
-  <section class="card elev"><div class="list">${L.length ? L.map(s => { const i = info(s); const miss = !i.cpfPag;
-    return `<div class="row"><div class="avatar">${esc(initials(i.benef))}</div><div class="grow"><div class="t">${esc(i.pagador)}${i.pagador !== i.benef ? ` <span class="s">(paciente: ${esc(i.benef)})</span>` : ''}</div>
-      <div class="s">Pago em ${fmtDate(s.paid_at)} · ${esc(i.desc)} · CPF ${miss ? '<span class="badge b-warn">faltando</span>' : esc(i.cpfPag)}</div></div>
-      <div class="num">${brl(s.amount)}</div><button class="icon-btn" title="Copiar dados" data-copy="${s.id}"><span class="ms">content_copy</span></button><button class="btn tonal sm" data-iss="${s.id}">Emitido</button></div>`; }).join('')
-    : `<div class="empty"><span class="ms">task_alt</span>Nenhum recibo pendente.</div>`}</div></section>
+  <div class="topbar"><div><div class="display">Recibos</div><div class="muted">Receita Saúde · atendimento como pessoa física</div></div><div class="sp"></div>
+    ${G.length ? '<button class="btn outlined sm" id="lote"><span class="ms" style="font-size:18px">download</span>Arquivo de lote</button><button class="btn text sm" id="csv">Planilha</button>' : ''}</div>
+  ${expired.length ? `<div class="notice err"><span class="ms">warning</span><div><b>${expired.length} recibo(s) passaram do prazo de emissão retroativa.</b> O prazo era o último dia de fevereiro do ano seguinte ao pagamento. Fale com seu contador.</div></div>` : ''}
+  ${late.length ? `<div class="notice warn"><span class="ms">warning</span><div><b>${late.length} recibo(s) atrasado(s).</b> O recibo deve ser emitido na data do pagamento. A multa é de R$ 100 por mês. Emitindo com data retroativa, ajuste o Carnê-Leão do mês.</div></div>` : ''}
+  ${febSoon ? `<div class="notice info"><span class="ms">event</span><div>Último dia para emitir recibos de pagamentos feitos em ${y - 1}: <b>${fmtDate(lastFeb(y))}</b>.</div></div>` : ''}
+  <section class="card elev"><div class="cardhead"><div class="title-m">${G.length ? G.length + ' recibo(s) a emitir · ' + brl(G.reduce((a, g) => a + g.amount, 0)) : 'Recibos a emitir'}</div></div>
+  <div class="list">${G.length ? G.map((g, i) => { const m = missing(g); return `<div class="row"><div class="avatar">${esc(initials(g.benef))}</div><div class="grow"><div class="t">${esc(g.pagador)}${!g.same ? ` <span class="s">(paciente: ${esc(g.benef)})</span>` : ''}</div>
+      <div class="s">Pago em ${fmtDate(g.paid_at)} · ${g.sessions.length} sessão(ões) ${g.late ? '<span class="badge b-warn">atrasado</span>' : '<span class="badge b-info">emitir hoje</span>'} ${m.length ? `<span class="badge b-err">falta ${m.join(' e ')}</span>` : ''}</div></div>
+      <div class="num">${brl(g.amount)}</div><button class="btn sm" data-emit="${i}">Emitir</button></div>`; }).join('')
+    : `<div class="empty"><span class="ms">task_alt</span>Nenhum recibo pendente. Quando você marcar uma sessão como paga, ela aparece aqui.</div>`}</div></section>
+  ${IG.length ? `<section class="card elev"><div class="cardhead"><div class="title-m">Emitidos nos últimos 30 dias</div></div><div class="list">${IG.map(g => { const at = g.sessions[0].receipt_at || g.paid_at, canc = iso(new Date(parse(at).getTime() + 10 * 864e5)); return `<div class="row"><div class="avatar">${esc(initials(g.benef))}</div><div class="grow"><div class="t">${esc(g.pagador)}</div><div class="s">Emitido em ${fmtDate(at)}${g.sessions[0].receipt_number ? ' · nº ' + esc(g.sessions[0].receipt_number) : ''} · ${canc >= todayISO() ? 'cancelável até ' + fmtDate(canc) : 'prazo de cancelamento encerrado'}</div></div><div class="num">${brl(g.amount)}</div></div>`; }).join('')}</div></section>` : ''}
+  <section class="card elev">
+    <details ${prof.crp ? '' : 'open'}><summary class="title-m" style="cursor:pointer">Antes do primeiro recibo</summary>
+      <div class="steps">
+        ${[['Conta gov.br prata ou ouro', 'O Receita Saúde só abre com nível prata ou ouro.'], ['Cadastro do ano no Carnê-Leão Web', 'Portal e-CAC > Declarações e Demonstrativos > Acessar Carnê-Leão. Em Configuração marque “Trabalhador autônomo: Sim”; em Identificação, ocupação Psicólogo e o nº do CRP. Refaça todo ano.'], ['CRP no seu perfil aqui', prof.crp ? 'CRP ' + prof.crp : 'Preencha em Meu perfil para aparecer no passo a passo.'], ['CPF no seu perfil (só para o arquivo de lote)', prof.cpf ? 'Preenchido' : 'Opcional. Necessário apenas para gerar o arquivo de lote.']].map(([t, d], i) => `<div class="step ${i === 2 && prof.crp || i === 3 && prof.cpf ? 'done' : ''}"><span class="n">${i + 1}</span><div class="grow"><div class="v">${t}</div><div class="small muted">${esc(d)}</div></div></div>`).join('')}
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn text sm" href="https://cav.receita.fazenda.gov.br" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Portal e-CAC</a><button class="btn text sm" id="profFromRec">Meu perfil</button></div>
+    </details>
+  </section>
+  <section class="card elev faq"><div class="cardhead"><div class="title-m"><span class="ms">help</span> Dúvidas sobre o Receita Saúde</div></div>
+    ${FAQ.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}
+    <div class="small muted" style="margin-top:10px">Fonte: Manual de Orientação Tributária Receita Saúde, versão 2.1 (Receita Federal, out/2025). Isto é orientação geral, não substitui seu contador.</div>
+  </section>
   <div class="foot">Nota fiscal de serviço (atendimento por CNPJ) não é emitida por este sistema.</div>`;
-  $$('[data-copy]').forEach(b => b.onclick = async () => { const s = L.find(x => x.id === b.dataset.copy), i = info(s);
-    const t = `Pagador: ${i.pagador}\nCPF do pagador: ${i.cpfPag}\nBeneficiário: ${i.benef}\nCPF do beneficiário: ${i.cpfBen}\nValor: ${brl(s.amount)}\nData do pagamento: ${fmtDate(s.paid_at)}\nDescrição: ${i.desc}`;
-    try { await navigator.clipboard.writeText(t); snack('Dados copiados'); } catch (_) { prompt('Copie os dados:', t); } });
-  $$('[data-iss]').forEach(b => b.onclick = async () => { const { error } = await sb.from('sessions').update({ receipt_issued: true, receipt_at: todayISO() }).eq('id', b.dataset.iss); if (error) return fail(error); snack('Recibo marcado como emitido'); go('recibos'); });
+  $$('[data-emit]').forEach(b => b.onclick = () => openReceipt(G[Number(b.dataset.emit)]));
+  $('#profFromRec').onclick = openProfile;
   const c = $('#csv'); if (c) c.onclick = () => {
     const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
     const lines = [['Data do pagamento', 'Pagador', 'CPF do pagador', 'Beneficiário', 'CPF do beneficiário', 'Valor', 'Descrição'].map(q).join(';')]
-      .concat(L.map(s => { const i = info(s); return [fmtDate(s.paid_at), i.pagador, i.cpfPag, i.benef, i.cpfBen, Number(s.amount).toFixed(2).replace('.', ','), i.desc].map(q).join(';'); }));
-    const blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'recibos-pendentes.csv'; a.click(); };
+      .concat(G.map(g => [fmtDate(g.paid_at), g.pagador, fmtCpf(g.cpfPag), g.benef, fmtCpf(g.cpfBen), money(g.amount), g.desc].map(q).join(';')));
+    download('recibos-pendentes.csv', '﻿' + lines.join('\n'));
+  };
+  const lt = $('#lote'); if (lt) lt.onclick = () => loteFile(G);
 }
+function download(name, text) { const blob = new Blob([text], { type: 'text/csv;charset=utf-8' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+// layout do manual (pergunta 24): data;R01.001.001;255;valor;;descrição;PF;cpf pagador;cpf beneficiário;;;;;S;cpf profissional;registro
+async function loteFile(G) {
+  const prof = S.profile || {};
+  if (onlyDigits(prof.cpf).length !== 11) { snack('Preencha seu CPF em Meu perfil para gerar o arquivo de lote.'); return openProfile(); }
+  const ok = G.filter(g => !missing(g).length && g.deadline >= todayISO()), skip = G.length - ok.length;
+  if (!ok.length) return snack('Nenhum recibo com CPFs completos para o lote.');
+  const ascii = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/;/g, ',').slice(0, 255);
+  const byYear = {}; ok.forEach(g => (byYear[g.paid_at.slice(0, 4)] = byYear[g.paid_at.slice(0, 4)] || []).push(g));
+  for (const [yy, list] of Object.entries(byYear)) {
+    const rows = list.map(g => [fmtDate(g.paid_at), 'R01.001.001', '255', money(g.amount), '', ascii(g.desc), 'PF', onlyDigits(g.cpfPag), onlyDigits(g.same ? g.cpfPag : g.cpfBen), '', '', '', '', 'S', onlyDigits(prof.cpf), (prof.crp || '').slice(0, 15)].join(';'));
+    download(`receita-saude-lote-${yy}.csv`, rows.join('\r\n') + '\r\n');
+  }
+  snack(`Arquivo com ${ok.length} recibo(s)${skip ? ` · ${skip} ficaram de fora (CPF faltando ou fora do prazo)` : ''}`);
+  setTimeout(async () => {
+    if (!confirm(`Depois de importar o arquivo no Carnê-Leão (Escrituração > Importar Escrituração) e ver os recibos gerados, marque aqui.\n\nMarcar ${ok.length} recibo(s) como emitidos?`)) return;
+    const ids = ok.flatMap(g => g.sessions.map(x => x.id));
+    const { error } = await sb.from('sessions').update({ receipt_issued: true, receipt_at: todayISO() }).in('id', ids); if (error) return fail(error);
+    snack('Recibos marcados como emitidos'); go('recibos');
+  }, 900);
+}
+let emitting = null;
+function openReceipt(g) {
+  emitting = g; const prof = S.profile || {}, m = missing(g);
+  const fields = [
+    ['CPF do pagador', fmtCpf(g.cpfPag), g.pagador],
+    ['Pagador é o beneficiário do serviço?', g.same ? 'Sim, marque a caixa' : 'Não, deixe a caixa desmarcada', null, true],
+    ...(g.same ? [] : [['CPF do beneficiário', fmtCpf(g.cpfBen), g.benef]]),
+    ['Valor (R$)', money(g.amount)],
+    ['Data do pagamento', fmtDate(g.paid_at)],
+    ['Especialidade / registro', 'Psicólogo' + (prof.crp ? ' · CRP ' + prof.crp : ''), prof.crp ? null : 'Preencha o CRP em Meu perfil', true],
+    ['Descrição (opcional)', g.desc, 'Sem informação clínica'],
+    ['Data do atendimento (opcional)', fmtDate(g.sessions[0].date)]
+  ];
+  $('#rcTitle').textContent = 'Recibo · ' + g.pagador;
+  $('#rcWarn').innerHTML = [
+    m.length ? `<div class="notice err"><span class="ms">warning</span><div><b>Falta ${m.join(' e ')}.</b> Complete no cadastro do paciente antes de emitir. <button type="button" class="btn text sm" id="rcEditPat">Editar paciente</button></div></div>` : '',
+    g.deadline < todayISO() ? `<div class="notice err"><span class="ms">warning</span><div>Passou o prazo de emissão retroativa (${fmtDate(g.deadline)}).</div></div>` : g.late ? `<div class="notice warn"><span class="ms">warning</span><div>Emissão retroativa (o pagamento foi em ${fmtDate(g.paid_at)}). É permitida até ${fmtDate(g.deadline)}; lembre de ajustar o Carnê-Leão do mês.</div></div>` : '',
+    g.p.guardian && g.same ? `<div class="notice info"><span class="ms">help</span><div>Paciente menor? Quem paga costuma ser o responsável: o CPF do pagador é o dele e o do paciente vai como beneficiário.</div></div>` : ''
+  ].join('');
+  $('#rcSteps').innerHTML = `<div class="small muted" style="margin-bottom:4px">App Receita Federal > Receita Saúde > perfil Profissional > Novo recibo. Copie campo por campo:</div>` + fields.map(([k, v, sub, noCopy], i) =>
+    `<div class="step" data-i="${i}"><span class="n">${i + 1}</span><div class="grow"><div class="k">${esc(k)}</div><div class="v ${!v || v === ',' ? 'missing' : ''}">${esc(v || 'faltando')}</div>${sub ? `<div class="small muted">${esc(sub)}</div>` : ''}</div>${noCopy ? '<button type="button" class="icon-btn" data-ok aria-label="Feito"><span class="ms">check</span></button>' : `<button type="button" class="icon-btn" data-cp="${esc(v)}" aria-label="Copiar ${esc(k)}"><span class="ms">content_copy</span></button>`}</div>`).join('');
+  $$('#rcSteps [data-cp]').forEach(b => b.onclick = async () => { const v = b.dataset.cp; try { await navigator.clipboard.writeText(v); } catch (_) { prompt('Copie:', v); } b.closest('.step').classList.add('done'); b.closest('.step').querySelector('.n').innerHTML = '<span class="ms" style="font-size:16px">check</span>'; snack('Copiado'); });
+  $$('#rcSteps [data-ok]').forEach(b => b.onclick = () => { const st = b.closest('.step'); st.classList.add('done'); st.querySelector('.n').innerHTML = '<span class="ms" style="font-size:16px">check</span>'; });
+  const ep = $('#rcEditPat'); if (ep) ep.onclick = () => { $('#dlgReceipt').close(); openPatient(g.p); };
+  $('#fReceipt').number.value = '';
+  $('#dlgReceipt').showModal();
+}
+$('#fReceipt').onsubmit = async e => {
+  e.preventDefault(); if (!emitting) return;
+  const ids = emitting.sessions.map(x => x.id), n = e.target.number.value.trim() || null;
+  const { error } = await sb.from('sessions').update({ receipt_issued: true, receipt_at: todayISO(), receipt_number: n }).in('id', ids); if (error) return fail(error);
+  $('#dlgReceipt').close(); snack('Recibo registrado como emitido'); go('recibos');
+};
 
 /* ---------- CONTEÚDO ---------- */
 async function viewConteudo() {
@@ -739,12 +1177,22 @@ async function viewConteudo() {
   ]);
   for (const r of [c, p, t]) if (r.error) throw r.error;
   S.creators = c.data; S.posts = p.data; S.trends = t.data;
+  await healCreators();
+  const wk = new Date(); wk.setHours(0, 0, 0, 0); wk.setDate(wk.getDate() - ((wk.getDay() + 6) % 7));
+  const { data: rl } = await sb.from('refresh_log').select('at').eq('kind', 'swipe').gte('at', wk.toISOString());
+  S.refreshUsed = (rl || []).length;
+  if (S.aiOk === undefined) S.aiOk = !!(await ai('ping'));
   const lastRefresh = S.creators.map(x => x.last_refresh).filter(Boolean).sort().pop();
   const L = S.posts.filter(x => (!S.creatorFilter || x.creator_id === S.creatorFilter) && (S.postStatus === 'todos' || x.status === S.postStatus));
-  const crName = id => S.creators.find(c => c.id === id)?.handle || '';
+  const crName = id => { const c = S.creators.find(c => c.id === id); return c ? (c.name || c.handle) : ''; };
+  const crScroll = $('.creators')?.scrollLeft || 0;
+  const B = S.profile?.briefing || {};
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Conteúdo</div><div class="muted">Referências, swipe file e assuntos em alta no mesmo lugar</div></div><div class="sp"></div>
-    <span class="badge b-neutral"><span class="ms" style="font-size:16px">sync</span>${lastRefresh ? 'Atualizado em ' + new Date(lastRefresh).toLocaleDateString('pt-BR') : 'Atualização semanal automática'}</span></div>
+  <div class="topbar"><div><div class="display">Conteúdo</div><div class="muted">Posicionamento, referências, swipe file e assuntos em alta no mesmo lugar</div></div><div class="sp"></div>
+    <span class="badge b-neutral"><span class="ms" style="font-size:16px">sync</span>${lastRefresh ? 'Atualizado em ' + new Date(lastRefresh).toLocaleDateString('pt-BR') : 'Ainda sem atualização'}</span>
+    <button class="btn tonal sm" id="refresh" ${S.refreshUsed >= 2 ? 'disabled style="opacity:.5"' : ''} title="Busca posts novos dos creators cadastrados. Até 2 vezes por semana."><span class="ms" style="font-size:18px">sync</span>${S.refreshUsed >= 2 ? 'Atualizado 2x esta semana' : 'Atualizar · resta' + (2 - S.refreshUsed > 1 ? 'm ' : ' ') + (2 - S.refreshUsed) + ' esta semana'}</button></div>
+
+  ${briefCard(B)}
 
   <section class="card" style="background:var(--surface-c)">
     <div class="cardhead"><div class="title-m"><span class="ms" style="color:var(--warn)">local_fire_department</span> Em alta esta semana</div><button class="btn text sm" id="addTrend"><span class="ms">add</span>Assunto</button></div>
@@ -755,34 +1203,172 @@ async function viewConteudo() {
   <section class="card elev">
     <div class="cardhead"><div class="title-m">Creators que você acompanha</div><button class="btn text sm" id="addCreator"><span class="ms">person_add</span>Adicionar</button></div>
     <div class="creators"><button class="creator ${!S.creatorFilter ? 'on' : ''}" data-cr=""><div class="av"><span class="ms">apps</span></div><div class="h">Todos</div></button>
-      ${S.creators.map(x => `<button class="creator ${S.creatorFilter === x.id ? 'on' : ''}" data-cr="${x.id}" title="${esc(x.topic || '')}"><div class="av"><span class="ms" style="font-size:16px;position:absolute;transform:translate(22px,22px);background:var(--surface-c-lowest);border-radius:10px;padding:2px">${NET_IC[x.network]}</span>${esc(initials(x.handle.replace('@', '')))}</div><div class="h">${esc(x.handle)}</div></button>`).join('')}</div>
+      ${S.creators.map(x => `<button class="creator ${S.creatorFilter === x.id ? 'on' : ''}" data-cr="${x.id}" title="${esc((x.topic || '') + (x.why ? ' · ' + x.why : ''))}"><div class="av">${avHtml(x)}<span class="ms" style="font-size:14px;position:absolute;right:-4px;bottom:-4px;background:var(--surface-c-lowest);color:var(--on-surface);border-radius:10px;padding:3px">${NET_IC[x.network]}</span></div><div class="h">${esc(x.name || x.handle)}</div><div class="h muted" style="font-size:11px">${esc(x.topic || x.handle)}</div></button>`).join('')}</div>
+    ${S.creatorFilter ? (() => { const x = S.creators.find(c => c.id === S.creatorFilter); return x ? `<div class="notice info" style="margin:8px 0 0"><span class="ms">lightbulb</span><div class="grow"><b>${esc(x.name || x.handle)}</b> · ${esc(x.handle)} · ${NET_NAME[x.network]}${x.topic ? ' · ' + esc(x.topic) : ''}<div class="small">${esc(x.why || '')}</div><div style="margin-top:6px;display:flex;gap:6px"><a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Abrir perfil</a><button class="btn text sm" id="editCr">Editar</button></div></div></div>` : ''; })() : '<div class="small muted">Toque num creator para filtrar o swipe file. Segure (ou clique com o botão direito) para editar.</div>'}
   </section>
 
   <div class="topbar" style="margin:20px 0 10px"><div class="title-l">Swipe file${S.creatorFilter ? ' · ' + esc(crName(S.creatorFilter)) : ''}</div><div class="sp"></div>
     <div class="chips">${['todos', 'ideia', 'roteiro', 'gravado', 'publicado'].map(k => `<button class="chip ${S.postStatus === k ? 'on' : ''}" data-ps="${k}">${cap(k)}</button>`).join('')}</div></div>
-  <div class="feed">${L.length ? L.map(x => `<article class="post"><div class="thumb" ${x.thumbnail ? `style="background-image:url('${esc(x.thumbnail)}')"` : ''}>${x.thumbnail ? '' : `<span class="ms">${NET_IC[x.network] || 'movie'}</span>`}</div><div class="body">
-      <div class="meta">${x.format ? `<span class="badge b-info">${esc(x.format)}</span>` : ''}<span class="badge ${x.status === 'publicado' ? 'b-ok' : x.status === 'ideia' ? 'b-neutral' : 'b-warn'}">${cap(x.status)}</span>${x.source === 'auto' ? '<span class="badge b-neutral">novo da semana</span>' : ''}</div>
+  <div class="feed">${L.length ? L.map(x => { const net = x.network || netOf(x.url), th = x.thumbnail || (net === 'youtube' ? ytThumb(x.url) : null), eth = ethicsCheck(x.hook, x.caption, x.adaptation);
+    return `<article class="post"><button class="thumb ${{ instagram: 'ig', tiktok: 'tt', youtube: 'yt' }[net]}" data-prev="${x.id}" ${th ? `style="background-image:url('${esc(th)}')"` : ''} aria-label="Ver preview"><span class="net">${NET_NAME[net]}</span>${x.url && embedUrl(x.url) ? '<span class="play"><span class="ms fill">play_arrow</span></span>' : `<span class="ms">${NET_IC[net] || 'movie'}</span>`}</button><div class="body">
+      <div class="meta">${x.format ? `<span class="badge b-info">${esc(x.format)}</span>` : ''}<span class="badge ${x.status === 'publicado' ? 'b-ok' : x.status === 'ideia' ? 'b-neutral' : 'b-warn'}">${cap(x.status)}</span>${x.source === 'auto' ? '<span class="badge b-neutral">novo da semana</span>' : ''}${eth.length ? `<span class="badge b-err" title="${esc(eth.join(' · '))}"><span class="ms" style="font-size:14px">gpp_maybe</span>Ética</span>` : ''}</div>
       ${x.creator_id ? `<div class="small muted">${esc(crName(x.creator_id))}${x.views ? ' · ' + Number(x.views).toLocaleString('pt-BR') + ' views' : ''}${x.likes ? ' · ' + Number(x.likes).toLocaleString('pt-BR') + ' curtidas' : ''}</div>` : ''}
       ${x.hook ? `<div class="hook">${esc(x.hook)}</div>` : x.caption ? `<div class="small">${esc(x.caption.slice(0, 140))}…</div>` : ''}
       ${x.why ? `<div class="small muted"><b>Por que funcionou:</b> ${esc(x.why)}</div>` : ''}
       ${x.adaptation ? `<div class="small"><b>Minha adaptação:</b> ${esc(x.adaptation)}</div>` : ''}
-      <div class="act">${x.url ? `<a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Ver post</a>` : ''}<button class="btn tonal sm" data-post="${x.id}">Editar</button></div></div></article>`).join('')
-    : `<div class="empty" style="grid-column:1/-1"><span class="ms">bookmark_add</span>Salve aqui posts que funcionaram. Os posts novos dos creators cadastrados entram toda semana.</div>`}</div>`;
+      <div class="act">${x.url ? `<a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Abrir</a>` : ''}<button class="btn tonal sm" data-post="${x.id}">Editar</button></div></div></article>`; }).join('')
+    : `<div class="empty" style="grid-column:1/-1"><span class="ms">bookmark_add</span>Salve aqui posts que funcionaram. Cole o link do post e o preview aparece aqui.</div>`}</div>`;
+  $('.creators').scrollLeft = crScroll;
   $('#addCreator').onclick = () => openCreator();
   $('#addTrend').onclick = () => { $('#fTrend').reset(); $('#dlgTrend').showModal(); };
-  $$('[data-cr]').forEach(b => { b.onclick = () => { S.creatorFilter = b.dataset.cr || null; go('conteudo'); }; if (b.dataset.cr) b.ondblclick = () => openCreator(S.creators.find(x => x.id === b.dataset.cr)); b.oncontextmenu = e => { if (!b.dataset.cr) return; e.preventDefault(); openCreator(S.creators.find(x => x.id === b.dataset.cr)); }; });
+  $('#editBrief').onclick = openBrief;
+  const ab = $('#aiBrief'); if (ab) ab.onclick = aiBrief;
+  const ec = $('#editCr'); if (ec) ec.onclick = () => openCreator(S.creators.find(x => x.id === S.creatorFilter));
+  $('#refresh').onclick = refreshSwipe;
+  $$('[data-prev]').forEach(b => b.onclick = () => openPreview(S.posts.find(x => x.id === b.dataset.prev)));
+  $$('[data-cr]').forEach(b => { b.onclick = () => { S.creatorFilter = b.dataset.cr || null; go('conteudo'); }; if (b.dataset.cr) b.ondblclick = () => openCreator(S.creators.find(x => x.id === b.dataset.cr)); b.oncontextmenu = e => { if (!b.dataset.cr) return; e.preventDefault(); openCreator(S.creators.find(x => x.id === b.dataset.cr)); };
+    let lp; b.addEventListener('touchstart', () => { lp = setTimeout(() => { if (b.dataset.cr) openCreator(S.creators.find(x => x.id === b.dataset.cr)); }, 600); }, { passive: true }); b.addEventListener('touchend', () => clearTimeout(lp)); b.addEventListener('touchmove', () => clearTimeout(lp), { passive: true }); });
   $$('[data-ps]').forEach(b => b.onclick = () => { S.postStatus = b.dataset.ps; go('conteudo'); });
   $$('[data-post]').forEach(b => b.onclick = () => openPost(S.posts.find(x => x.id === b.dataset.post)));
   $$('[data-usetrend]').forEach(b => b.onclick = () => { const t = S.trends.find(x => x.id === b.dataset.usetrend); openPost({ hook: t.hook || t.topic, why: t.angle ? 'Assunto em alta: ' + t.topic : '', status: 'roteiro', format: 'Reels' }, true); });
   setFab('Post', () => openPost());
 }
+/* ---------- IA (função no Supabase; sem chave configurada, o app usa as regras locais) ---------- */
+async function ai(action, payload = {}) {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const r = await fetch(CFG.url + '/functions/v1/ai', { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: CFG.key, Authorization: 'Bearer ' + (session?.access_token || CFG.key) }, body: JSON.stringify({ action, ...payload }) });
+    if (!r.ok) return null; const j = await r.json(); return j && j.ok ? j : null;
+  } catch (_) { return null; }
+}
+
+/* ---------- posicionamento (briefing) ---------- */
+const TONES = {
+  'Acolhedor': 'Valide antes de explicar ("faz sentido você sentir isso"). Frases curtas e calmas.',
+  'Direto': 'Entregue a ideia principal no primeiro segundo. Sem rodeios nem introdução longa.',
+  'Didático': 'Um conceito por post, com um exemplo do cotidiano e um passo prático.',
+  'Bem-humorado': 'Humor leve sobre situações do dia a dia, nunca sobre sofrimento, diagnóstico ou pacientes.',
+  'Científico': 'Cite a fonte (pesquisa, manual, autor) na legenda e diferencie evidência de opinião.',
+  'Reflexivo': 'Perguntas abertas, pausas e um fechamento que convida a pensar, não a comprar.',
+  'Sereno': 'Ritmo lento, linguagem gentil, sem urgência nem alarmismo.',
+  'Provocador': 'Questione crenças comuns com respeito, sem sensacionalismo nem "ninguém te conta".'
+};
+const lines = s => String(s || '').split(/\n|;|,(?=\s*[A-ZÁÉÍÓÚa-z])/).map(x => x.trim()).filter(Boolean);
+function briefInsights(B) {
+  const tone = (B.tone || []).filter(t => TONES[t]);
+  const groups = {}; S.creators.forEach(c => { const k = c.topic || guessTopic(c.handle, c.name) || 'Outros'; (groups[k] = groups[k] || []).push(c); });
+  const pillarCount = {}; const bump = t => { if (t) pillarCount[t] = (pillarCount[t] || 0) + 1; };
+  lines(B.likes).forEach(l => bump(guessTopic(l))); Object.entries(groups).forEach(([k, v]) => k !== 'Outros' && (pillarCount[k] = (pillarCount[k] || 0) + v.length));
+  const pillars = Object.entries(pillarCount).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k]) => k);
+  const formats = lines(B.likes).filter(l => /reel|carross|v[ií]deo|live|story|stories|podcast|texto/i.test(l));
+  const avoid = lines(B.dislikes);
+  const pos = [B.about && `Sou ${B.about.replace(/^sou\s+/i, '').replace(/\.$/, '')}`, B.audience && `e falo com ${B.audience.replace(/\.$/, '')}`, tone.length && `com um tom ${tone.map(t => t.toLowerCase()).join(', ')}`, B.goal && `para ${B.goal.charAt(0).toLowerCase() + B.goal.slice(1)}`].filter(Boolean).join(' ');
+  return { tone, groups, pillars, formats, avoid, pos: pos ? pos + '.' : '' };
+}
+function briefCard(B) {
+  const has = B.about || B.likes || B.dislikes || (B.tone || []).length;
+  if (!has) return `<section class="card elev"><div class="cardhead"><div><div class="title-m"><span class="ms" style="color:var(--primary)">badge</span> Meu posicionamento</div><div class="small muted">Quem é você, o que gosta e o que não gosta. Vira o seu tom de voz e os pilares de conteúdo.</div></div><button class="btn sm" id="editBrief">Preencher</button></div></section>`;
+  const I = briefInsights(B), aiText = B.ai;
+  return `<section class="card elev"><div class="cardhead"><div class="title-m"><span class="ms" style="color:var(--primary)">badge</span> Meu posicionamento</div><div style="display:flex;gap:6px">${S.aiOk ? '<button class="btn tonal sm" id="aiBrief"><span class="ms" style="font-size:18px">auto_awesome</span>Insights com IA</button>' : ''}<button class="btn text sm" id="editBrief">Editar</button></div></div>
+    ${I.pos ? `<p style="margin:0 0 12px;font-size:16px">${esc(I.pos)}</p>` : ''}
+    <div class="brief">
+      <div class="box"><div class="label">TOM DE VOZ</div>${I.tone.length ? `<ul>${I.tone.map(t => `<li><b>${t}:</b> ${esc(TONES[t])}</li>`).join('')}</ul>` : '<div class="small muted">Escolha até 3 palavras de tom no briefing.</div>'}</div>
+      <div class="box"><div class="label">PILARES DE CONTEÚDO</div>${I.pillars.length ? `<div class="tagcloud">${I.pillars.map(p => `<span class="badge b-ok">${esc(p)}</span>`).join('')}</div>` : '<div class="small muted">Cadastre creators e temas que você gosta.</div>'}${I.formats.length ? `<div class="small" style="margin-top:8px"><b>Formatos:</b> ${esc(I.formats.join(', '))}</div>` : ''}</div>
+      <div class="box"><div class="label">REFERÊNCIAS AGRUPADAS</div>${Object.keys(I.groups).length ? Object.entries(I.groups).map(([k, v]) => `<div style="margin-top:8px"><b class="small">${esc(k)}</b><div class="tagcloud" style="margin-top:4px">${v.map(c => `<span class="badge b-neutral">${esc(c.name || c.handle)} · ${NET_NAME[c.network]}</span>`).join('')}</div></div>`).join('') : '<div class="small muted">Adicione creators abaixo.</div>'}</div>
+      <div class="box"><div class="label">EVITAR</div><ul>${I.avoid.map(a => `<li>${esc(a)}</li>`).join('')}<li>Preço como propaganda, promessa de resultado e sensacionalismo (Código de Ética, Art. 20)</li><li>Casos e falas de pacientes, mesmo sem nome (sigilo, Art. 9º)</li></ul></div>
+    </div>
+    ${aiText ? `<div class="notice info" style="margin:12px 0 0"><span class="ms">auto_awesome</span><div class="small" style="white-space:pre-wrap">${esc(aiText)}</div></div>` : ''}
+  </section>`;
+}
+function openBrief() {
+  const f = $('#fBrief'), B = S.profile?.briefing || {}; f.reset();
+  ['about', 'audience', 'likes', 'dislikes', 'goal'].forEach(k => f[k].value = B[k] || '');
+  const sel = new Set(B.tone || []);
+  $('#toneChips').innerHTML = Object.keys(TONES).map(t => `<button type="button" class="chip ${sel.has(t) ? 'on' : ''}" data-tone="${t}">${t}</button>`).join('');
+  $$('[data-tone]').forEach(b => b.onclick = () => { if (!b.classList.contains('on') && $$('[data-tone].on').length >= 3) return snack('Escolha até 3'); b.classList.toggle('on'); });
+  $('#dlgBrief').showModal();
+}
+$('#fBrief').onsubmit = async e => {
+  e.preventDefault(); const f = e.target, old = S.profile?.briefing || {};
+  const B = { ...old, about: f.about.value.trim(), audience: f.audience.value.trim(), likes: f.likes.value.trim(), dislikes: f.dislikes.value.trim(), goal: f.goal.value, tone: $$('[data-tone].on').map(b => b.dataset.tone), updated_at: new Date().toISOString() };
+  const { data, error } = await sb.from('profiles').upsert({ id: S.user.id, briefing: B }).select().maybeSingle(); if (error) return fail(error);
+  S.profile = data || { ...(S.profile || {}), briefing: B }; $('#dlgBrief').close(); snack('Posicionamento salvo'); go('conteudo');
+};
+async function aiBrief() {
+  const b = $('#aiBrief'); b.disabled = true; b.textContent = 'Gerando…';
+  const r = await ai('brief', { briefing: S.profile?.briefing || {}, creators: S.creators.map(c => ({ name: c.name, handle: c.handle, network: c.network, topic: c.topic })) });
+  if (!r) { b.disabled = false; return snack('Não consegui gerar agora. Tente de novo mais tarde.'); }
+  const B = { ...(S.profile?.briefing || {}), ai: r.text };
+  await sb.from('profiles').upsert({ id: S.user.id, briefing: B }); S.profile.briefing = B; go('conteudo');
+}
+
+/* ---------- atualizar swipe (limite de 2 por semana, travado no banco) ---------- */
+async function refreshSwipe() {
+  if (!S.creators.length) return snack('Cadastre pelo menos um creator primeiro.');
+  const { error } = await sb.from('refresh_log').insert({ kind: 'swipe' });
+  if (error) return snack(/Limite/.test(error.message) ? 'Você já usou as 2 atualizações desta semana. Volta na segunda.' : 'Erro: ' + error.message);
+  snack('Buscando posts novos…');
+  const r = await ai('refresh');
+  snack(r ? `${r.added || 0} posts novos no swipe file` : 'Pedido registrado. A busca automática roda assim que a integração com as redes estiver ativa.');
+  go('conteudo');
+}
+
+/* ---------- preview do post ---------- */
+let previewing = null;
+function openPreview(x) {
+  if (!x) return; previewing = x; const src = embedUrl(x.url), net = x.network || netOf(x.url);
+  $('#prevTitle').textContent = (S.creators.find(c => c.id === x.creator_id)?.name || NET_NAME[net]) + (x.format ? ' · ' + x.format : '');
+  $('#prevBody').innerHTML = src ? `<iframe class="embed" src="${esc(src)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>` : `<div class="empty"><span class="ms">movie</span>${x.url ? 'Essa rede não deixa mostrar o preview desse link aqui. Abra na rede.' : 'Esse item não tem link. Edite e cole o link do post.'}</div>`;
+  const o = $('#prevOpen'); o.classList.toggle('hidden', !x.url); if (x.url) o.href = x.url;
+  $('#dlgPreview').showModal();
+}
+$('#dlgPreview').addEventListener('close', () => $('#prevBody').innerHTML = '');
+$('#prevEdit').onclick = () => { $('#dlgPreview').close(); openPost(previewing); };
+
 let editingCreator = null;
-function openCreator(c) { editingCreator = c || null; const f = $('#fCreator'); f.reset(); if (c) { f.handle.value = c.handle; f.network.value = c.network; f.topic.value = c.topic || ''; f.why.value = c.why || ''; } $('#cDel').classList.toggle('hidden', !c); $('#dlgCreator').showModal(); }
-$('#fCreator').onsubmit = async e => { e.preventDefault(); const f = e.target; let h = f.handle.value.trim(); if (!h.startsWith('@')) h = '@' + h;
-  const url = { instagram: 'https://www.instagram.com/', tiktok: 'https://www.tiktok.com/@', youtube: 'https://www.youtube.com/@' }[f.network.value] + h.slice(1);
-  const row = { handle: h, network: f.network.value, url, topic: f.topic.value || null, why: f.why.value || null };
+let cAuto = { name: true, topic: true, why: true }, cParsed = null, cNameReq = 0;
+function openCreator(c) {
+  editingCreator = c || null; const f = $('#fCreator'); f.reset(); cParsed = null;
+  cAuto = { name: !c?.name, topic: !c?.topic, why: !c?.why };
+  if (c) { f.link.value = c.url || c.handle; f.name.value = c.name || ''; f.network.value = c.network; f.topic.value = c.topic || ''; f.why.value = c.why || ''; }
+  $('#topicChips').innerHTML = TOPICS.map(([t]) => `<button type="button" class="chip" data-topic="${esc(t)}">${esc(t)}</button>`).join('');
+  $$('[data-topic]').forEach(b => b.onclick = () => { f.topic.value = b.dataset.topic; cAuto.topic = false; if (cAuto.why) f.why.value = WHY[b.dataset.topic] || ''; });
+  readCreatorLink(); $('#cDel').classList.toggle('hidden', !c); $('#dlgCreator').showModal();
+}
+async function readCreatorLink() {
+  const f = $('#fCreator'), p = parseProfile(f.link.value);
+  if (!p) { $('#cPrev').innerHTML = f.link.value.trim() ? '<span class="small muted">Não reconheci esse link. Use o link do perfil ou o @.</span>' : ''; cParsed = null; return; }
+  if (p.post && !p.handle) { $('#cPrev').innerHTML = '<span class="small muted">Esse é o link de um post. Cole o link do perfil (ou o @) para eu achar o creator.</span>'; cParsed = null; return; }
+  const net = p.network || f.network.value; f.network.value = net; cParsed = { network: net, handle: p.handle };
+  if (cAuto.name) f.name.value = prettyName(p.handle);
+  if (cAuto.topic) f.topic.value = guessTopic(p.handle, f.name.value);
+  if (cAuto.why) f.why.value = WHY[f.topic.value] || WHY['Saúde mental geral'];
+  const draw = () => $('#cPrev').innerHTML = `<div class="av">${avHtml({ network: net, handle: p.handle, name: f.name.value })}</div><div class="grow" style="min-width:0"><div class="title-m">${esc(f.name.value || p.handle)}</div><div class="small muted">@${esc(p.handle)} · ${NET_NAME[net]}</div></div>`;
+  draw();
+  const req = ++cNameReq, nm = await fetchName(net, p.handle);
+  if (nm && req === cNameReq && cAuto.name) { f.name.value = nm; if (cAuto.topic) { f.topic.value = guessTopic(p.handle, nm) || f.topic.value; if (cAuto.why) f.why.value = WHY[f.topic.value] || f.why.value; } draw(); }
+}
+{ const f = $('#fCreator'); let t; f.link.addEventListener('input', () => { clearTimeout(t); t = setTimeout(readCreatorLink, 350); });
+  f.network.addEventListener('change', readCreatorLink);
+  f.name.addEventListener('input', () => cAuto.name = false); f.topic.addEventListener('input', () => cAuto.topic = false); f.why.addEventListener('input', () => cAuto.why = false); }
+$('#fCreator').onsubmit = async e => { e.preventDefault(); const f = e.target;
+  if (!cParsed) { await readCreatorLink(); if (!cParsed) return snack('Cole o link do perfil ou o @ do creator'); }
+  const { network, handle } = cParsed;
+  const row = { handle: '@' + handle, name: f.name.value.trim() || prettyName(handle), network, url: profileUrl(network, handle), avatar_url: avatarUrl(network, handle), topic: f.topic.value.trim() || null, why: f.why.value.trim() || null };
   const { error } = editingCreator ? await sb.from('creators').update(row).eq('id', editingCreator.id) : await sb.from('creators').insert(row); if (error) return fail(error);
-  $('#dlgCreator').close(); snack('Creator salvo. Os posts novos entram na próxima atualização semanal.'); go('conteudo'); };
+  $('#dlgCreator').close(); snack('Creator salvo'); go('conteudo'); };
+// conserta creators salvos com o link inteiro no lugar do @ (versão anterior)
+async function healCreators() {
+  for (const c of S.creators) {
+    if (!/https?:|\.com/i.test(c.handle) && c.name) continue;
+    const p = parseProfile(c.handle.replace(/^@(?=https?:)/, '')) || parseProfile(c.url);
+    if (!p?.handle) continue;
+    const net = p.network || c.network, row = { handle: '@' + p.handle, network: net, url: profileUrl(net, p.handle), name: c.name || prettyName(p.handle), avatar_url: c.avatar_url || avatarUrl(net, p.handle) };
+    if (!c.name) { const nm = await fetchName(net, p.handle); if (nm) row.name = nm; }
+    if (!c.topic) { row.topic = guessTopic(p.handle, row.name) || null; if (!c.why && row.topic) row.why = WHY[row.topic]; }
+    const { error } = await sb.from('creators').update(row).eq('id', c.id); if (!error) Object.assign(c, row);
+  }
+}
 $('#cDel').onclick = async () => { if (!editingCreator || !confirm('Parar de acompanhar este creator?')) return; const { error } = await sb.from('creators').delete().eq('id', editingCreator.id); if (error) return fail(error); $('#dlgCreator').close(); S.creatorFilter = null; go('conteudo'); };
 let editingPost = null;
 function openPost(x, isNew) {
@@ -790,8 +1376,12 @@ function openPost(x, isNew) {
   f.creator_id.innerHTML = '<option value="">—</option>' + S.creators.map(c => `<option value="${c.id}">${esc(c.handle)}</option>`).join('');
   if (x) { f.url.value = x.url || ''; f.creator_id.value = x.creator_id || ''; f.format.value = x.format || 'Reels'; f.hook.value = x.hook || ''; f.why.value = x.why || ''; f.adaptation.value = x.adaptation || ''; f.status.value = x.status || 'ideia'; }
   else if (S.creatorFilter) f.creator_id.value = S.creatorFilter;
-  $('#poDel').classList.toggle('hidden', !editingPost); $('#dlgPost').showModal();
+  $('#poDel').classList.toggle('hidden', !editingPost); postEthics(); $('#dlgPost').showModal();
 }
+function postEthics() { const f = $('#fPost'), list = ethicsCheck(f.hook.value, f.why.value, f.adaptation.value), box = $('#poEthics');
+  box.className = 'ethics' + (list.length ? '' : ' ok'); box.innerHTML = (f.hook.value || f.adaptation.value) ? ethicsHtml(list, 'Nenhum alerta do Código de Ética nesse texto.') : ''; }
+['hook', 'why', 'adaptation'].forEach(k => $('#fPost')[k].addEventListener('input', postEthics));
+$('#fPost').url.addEventListener('change', () => { const f = $('#fPost'), pr = parseProfile(f.url.value); if (!pr?.handle || f.creator_id.value) return; const c = S.creators.find(c => c.handle.replace('@', '').toLowerCase() === pr.handle.toLowerCase()); if (c) f.creator_id.value = c.id; });
 $('#fPost').onsubmit = async e => { e.preventDefault(); const f = e.target; const cr = S.creators.find(c => c.id === f.creator_id.value);
   const row = { url: f.url.value.trim() || null, creator_id: f.creator_id.value || null, network: cr?.network || (/tiktok/.test(f.url.value) ? 'tiktok' : /youtu/.test(f.url.value) ? 'youtube' : 'instagram'), format: f.format.value, hook: f.hook.value || null, why: f.why.value || null, adaptation: f.adaptation.value || null, status: f.status.value };
   const { error } = editingPost ? await sb.from('swipe_posts').update(row).eq('id', editingPost.id) : await sb.from('swipe_posts').insert(row);
@@ -803,7 +1393,7 @@ $('#fTrend').onsubmit = async e => { e.preventDefault(); const f = e.target; con
 function openProfile() {
   const f = $('#fProfile'), p = S.profile || {}; f.reset();
   $('#profEmail').textContent = S.user.email;
-  f.name.value = p.name || ''; f.crp.value = p.crp || ''; f.session_minutes.value = p.session_minutes ?? 50;
+  f.name.value = p.name || ''; f.crp.value = p.crp || ''; f.cpf.value = p.cpf || ''; f.session_minutes.value = p.session_minutes ?? 50;
   f.no_show_pct.value = p.no_show_pct ?? 100; f.cancel_pct.value = p.cancel_pct ?? 0;
   $('#dlgProfile').showModal();
 }
@@ -811,7 +1401,7 @@ $('#railProfile').onclick = openProfile;
 $('#profLogout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
 $('#fProfile').onsubmit = async e => {
   e.preventDefault(); const f = e.target;
-  const row = { id: S.user.id, name: f.name.value.trim() || null, crp: f.crp.value.trim() || null, session_minutes: Number(f.session_minutes.value || 50), no_show_pct: Number(f.no_show_pct.value || 0), cancel_pct: Number(f.cancel_pct.value || 0) };
+  const row = { id: S.user.id, name: f.name.value.trim() || null, crp: f.crp.value.trim() || null, cpf: f.cpf.value.trim() || null, session_minutes: Number(f.session_minutes.value || 50), no_show_pct: Number(f.no_show_pct.value || 0), cancel_pct: Number(f.cancel_pct.value || 0) };
   const { data, error } = await sb.from('profiles').upsert(row).select().maybeSingle(); if (error) return fail(error);
   S.profile = data || row;
   if (f.password.value) { const r = await sb.auth.updateUser({ password: f.password.value }); if (r.error) return fail(r.error); }
