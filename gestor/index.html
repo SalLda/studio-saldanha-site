@@ -4,84 +4,144 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#1C1C1C">
+<meta name="theme-color" content="#F7F3EA">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Gestor">
-<title>Gestor | Studio Saldanha</title>
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-title" content="GestaoS">
+<title>GestaoS | Studio S</title>
+<meta name="description" content="Central de conteúdo do Studio S: pautas, copy, aprovação, agendamento e métricas dos clientes.">
+<link rel="icon" href="/gestor/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/gestor/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GestaoS">
+<meta property="og:title" content="GestaoS">
+<meta property="og:description" content="Central de conteúdo do Studio S: pautas, copy, aprovação, agendamento e métricas.">
+<meta property="og:url" content="https://omatsaldanha.com/gestor/">
+<meta property="og:image" content="https://omatsaldanha.com/gestor/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GestaoS">
+<meta name="twitter:image" content="https://omatsaldanha.com/gestor/og.jpg">
 <style>
 @font-face{font-family:'Fraunces';font-weight:600;font-display:swap;src:url('/assets/fonts/fraunces-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Fraunces';font-weight:600;font-style:italic;font-display:swap;src:url('/assets/fonts/fraunces-latin-600-italic.woff2') format('woff2')}
 @font-face{font-family:'Space Grotesk';font-weight:400;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2')}
 @font-face{font-family:'Space Grotesk';font-weight:500;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-500-normal.woff2') format('woff2')}
 @font-face{font-family:'Space Grotesk';font-weight:600;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-600-normal.woff2') format('woff2')}
 :root{
-  --bg:#1C1C1C;--bg2:#262420;--bg3:#2E2B26;--line:#312E29;--line2:#46423A;
-  --text:#EBE3D5;--dim:#A39B8E;--faint:#857E71;
-  --amber:#E7B64A;--sage:#819A80;--terra:#D69475;--red:#E07A6A;--blue:#8FA9C9;--purple:#B79BC9;
+  --bg:#F7F3EA;--bg2:#FFFFFF;--bg3:#F1EBDD;--line:#E7DFCD;--line2:#D3C8B1;
+  --text:#1F1C17;--dim:#685F50;--faint:#968C7B;
+  --amber:#E7B64A;--amber-ink:#8A6413;--amber-soft:#FBEFD2;
+  --sage:#4E7A57;--sage-soft:#E1EEDF;--terra:#B4572F;--terra-soft:#F8E3D8;--red:#B3261E;--red-soft:#FADCD8;
+  --blue:#3B5E8C;--blue-soft:#DEE7F3;--purple:#71508D;--purple-soft:#ECE2F3;--teal:#2D6E73;--teal-soft:#D9EDEE;
   --serif:'Fraunces',Georgia,serif;--sans:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --r:14px;
+  --r:16px;--sh:0 1px 2px rgba(60,40,0,.06),0 4px 14px rgba(60,40,0,.06);
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
-a{color:var(--amber)}
+a{color:var(--amber-ink)}
 .hidden{display:none!important}
 h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.01em}
-.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 18px}
+label{display:block;font-size:13px;color:var(--dim);margin:12px 0 6px;font-weight:500}
+input,select,textarea{width:100%;background:#fff;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--amber-ink);box-shadow:0 0 0 3px var(--amber-soft)}
+textarea{min-height:90px;resize:vertical}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line2);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap;text-decoration:none;color:var(--text);font-weight:500}
+.btn:hover{border-color:var(--dim)}
+.btn.primary{background:var(--text);border-color:var(--text);color:#fff}
+.btn.amber{background:var(--amber);border-color:var(--amber);color:#1F1C17;font-weight:600}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:var(--bg3)}
+.btn.danger{color:var(--red);border-color:#E8C3BE;background:#fff}
+.btn.small{padding:5px 11px;font-size:13px}
+.btn svg{width:16px;height:16px;flex:none}
+.err{color:var(--red);font-size:13px;min-height:18px;margin-top:10px}
+.sub{color:var(--dim);font-size:13px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sp{flex:1}
 /* login */
 .login{min-height:100dvh;display:grid;place-items:center;padding:24px 16px}
-.login form{width:100%;max-width:360px;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:28px}
-.login h1{font-size:28px;margin-bottom:4px}
-.login p{color:var(--dim);margin:0 0 20px}
-label{display:block;font-size:13px;color:var(--dim);margin:12px 0 6px}
-input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--amber)}
-textarea{min-height:90px;resize:vertical}
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg3);border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap}
-.btn:hover{border-color:var(--dim)}
-.btn.primary{background:var(--amber);border-color:var(--amber);color:#1C1C1C;font-weight:600}
-.btn.ghost{background:transparent}
-.btn.danger{color:var(--red);border-color:#5a3530}
-.btn.small{padding:5px 10px;font-size:13px}
-.err{color:var(--red);font-size:13px;min-height:18px;margin-top:10px}
+.login form{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:var(--sh)}
+.login h1{font-size:34px;margin-bottom:4px}
+.login h1 em,.brand em{color:var(--amber-ink);font-style:italic}
+.login p{color:var(--dim);margin:0 0 18px}
 /* header */
-header{position:sticky;top:0;z-index:20;background:rgba(28,28,28,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.top{display:flex;align-items:center;gap:12px;padding:12px 0}
-.brand{font-family:var(--serif);font-size:20px}
-.brand span{color:var(--amber)}
-.top .sp{flex:1}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+header{position:sticky;top:0;z-index:20;background:rgba(247,243,234,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;gap:12px;padding:12px 0 10px}
+.brand{font-family:var(--serif);font-size:24px;font-weight:600}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{border:1px solid var(--line2);background:transparent;border-radius:999px;padding:7px 14px;cursor:pointer;white-space:nowrap;color:var(--dim)}
-.tab.on{background:var(--text);color:#1C1C1C;border-color:var(--text);font-weight:600}
-main{padding:20px 0 80px}
-.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tab{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);background:#fff;border-radius:999px;padding:5px 14px 5px 5px;cursor:pointer;white-space:nowrap;color:var(--dim);font-weight:500}
+.tab.plain{padding:7px 14px}
+.tab .av{width:26px;height:26px}
+.tab.on{background:var(--text);color:#fff;border-color:var(--text)}
+.tab .dotn{background:var(--terra);color:#fff;border-radius:99px;font-size:11px;padding:0 6px;font-weight:600}
+main{padding:20px 0 90px}
+/* avatar */
+.av{width:44px;height:44px;border-radius:50%;background:var(--amber-soft);color:var(--amber-ink);display:grid;place-items:center;font-weight:600;overflow:hidden;flex:none;font-family:var(--serif)}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.av.xl{width:76px;height:76px;font-size:28px;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--amber)}
+/* cards */
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-top:16px;box-shadow:var(--sh)}
+.card>h2,.card .h2{font-size:21px}
+.hero{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
+.hero h1{font-size:32px;line-height:1.1}
+.links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .monthnav{display:flex;align-items:center;gap:8px}
-.monthnav strong{font-family:var(--serif);font-size:22px;min-width:180px;text-align:center}
-section.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:16px}
-section.card>h2{font-size:20px;margin-bottom:12px}
-.sub{color:var(--dim);font-size:13px}
-/* status */
-.status{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.stat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px}
-.stat b{display:block;font-family:var(--serif);font-size:30px;line-height:1.1}
-.stat span{font-size:13px;color:var(--dim)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
-.s-copy_aprovar{--c:var(--terra)}.s-editar{--c:var(--purple)}.s-pronto{--c:var(--sage)}.s-programar{--c:var(--blue)}.s-publicado{--c:var(--amber)}
-.stat .dot,.chip .dot{background:var(--c)}
-.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--bg);margin-top:12px}
-.bar i{display:block;height:100%;background:var(--c)}
+.monthnav strong{font-family:var(--serif);font-size:22px;min-width:190px;text-align:center}
+.obj{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.obj .ic{width:40px;height:40px;border-radius:12px;background:var(--amber-soft);display:grid;place-items:center;font-size:20px}
+.obj textarea{min-height:56px;border-color:transparent;background:var(--bg);font-size:16px}
+/* etapas */
+.flow{display:flex;gap:0;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.st{flex:1 0 80px;position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;border:none;background:none;cursor:pointer;padding:4px 4px 0;color:var(--dim);text-align:center}
+.st::before{content:'';position:absolute;top:22px;left:-50%;right:50%;height:3px;background:var(--line)}
+.st:first-child::before{display:none}
+.st.past::before,.st.cur::before{background:var(--c)}
+.st .n{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:600;background:#fff;border:2px solid var(--line2);color:var(--faint);font-size:14px}
+.st.has .n{background:var(--c);border-color:var(--c);color:#fff}
+.st.client .n{border-style:dashed}
+.st.has.client .n{border-style:solid}
+.st.sel .n{box-shadow:0 0 0 4px var(--amber-soft),0 0 0 6px var(--amber)}
+.st .l{font-size:11.5px;line-height:1.2;font-weight:500;max-width:92px}
+.st .who{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.st.has .l{color:var(--text)}
+.next{display:flex;gap:12px;align-items:center;background:var(--amber-soft);border-radius:12px;padding:12px 14px;margin-top:8px}
+.next b{font-family:var(--serif)}
+/* posts */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:14px}
+.pc{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.pc:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.pc .th{aspect-ratio:4/5;background:var(--bg3);background-size:cover;background-position:center;position:relative;display:grid;place-items:center;color:var(--faint);font-family:var(--serif);font-size:15px;padding:18px;text-align:center}
+.pc .th .fmt{position:absolute;left:10px;top:10px;background:rgba(31,28,23,.75);color:#fff;font-size:11px;padding:3px 9px;border-radius:99px;letter-spacing:.04em;font-family:var(--sans)}
+.pc .th .cnt{position:absolute;right:10px;top:10px;background:rgba(31,28,23,.75);color:#fff;font-size:11px;padding:3px 9px;border-radius:99px;font-family:var(--sans)}
+.pc .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pc h3{font-size:17px;line-height:1.25}
+.pc .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pc .act{margin-top:auto;padding-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--bg3);color:var(--dim);white-space:nowrap}
+.badge.stg{background:var(--cs);color:var(--c)}
+.badge.warn{background:var(--terra-soft);color:var(--terra)}
+.badge.ok{background:var(--sage-soft);color:var(--sage)}
+.fb{font-size:13px;background:var(--terra-soft);border-radius:10px;padding:8px 10px;color:#5b2c16}
+/* cores das etapas */
+.k-pauta{--c:#8C7A55;--cs:#F1EBDD}.k-pauta_aprovar{--c:var(--amber-ink);--cs:var(--amber-soft)}
+.k-copy{--c:var(--blue);--cs:var(--blue-soft)}.k-copy_aprovar{--c:var(--amber-ink);--cs:var(--amber-soft)}
+.k-producao{--c:var(--purple);--cs:var(--purple-soft)}.k-edicao{--c:var(--purple);--cs:var(--purple-soft)}
+.k-revisao{--c:var(--teal);--cs:var(--teal-soft)}.k-post_aprovar{--c:var(--amber-ink);--cs:var(--amber-soft)}
+.k-agendar{--c:var(--terra);--cs:var(--terra-soft)}.k-agendado{--c:var(--sage);--cs:var(--sage-soft)}.k-publicado{--c:#1F1C17;--cs:#E9E4D8}
 /* calendar */
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
 .cal .wd{font-size:12px;color:var(--faint);text-align:center;padding-bottom:2px}
-.day{min-height:96px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
-.day:hover{border-color:var(--line2)}
-.day.out{opacity:.35}
-.day.today{border-color:var(--amber)}
+.day{min-height:100px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.day:hover{border-color:var(--line2);background:#fff}
+.day.out{opacity:.4}
+.day.today{border-color:var(--amber);background:#fff}
 .day .n{font-size:12px;color:var(--dim)}
-.chip{display:block;width:100%;text-align:left;font-size:12px;line-height:1.25;background:var(--bg3);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:6px;padding:4px 6px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fmt{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);margin-right:4px}
+.chip{display:block;width:100%;text-align:left;font-size:12px;line-height:1.25;background:var(--cs);border:none;border-left:3px solid var(--c);border-radius:6px;padding:4px 6px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.fmt{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);margin-right:4px}
 .agenda{display:none}
 .agenda .it{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
 .agenda .d{min-width:52px;color:var(--dim);font-size:13px}
@@ -103,32 +163,52 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 /* swipe */
 .swipe{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
-.sw{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.sw{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
 .sw h3{font-size:17px}
 .tag{display:inline-block;font-size:11px;border:1px solid var(--line2);border-radius:99px;padding:2px 8px;color:var(--dim);margin-right:4px}
-.tag.n{color:var(--amber);border-color:#5b4a22}
-.sw .hook{font-family:var(--serif);font-size:15px;color:var(--text);border-left:2px solid var(--amber);padding-left:10px}
+.tag.n{color:var(--amber-ink);border-color:#E9CF8E;background:var(--amber-soft)}
+.sw .hook{font-family:var(--serif);font-size:15px;color:var(--text);border-left:3px solid var(--amber);padding-left:10px}
 .sw p{margin:0;font-size:13px;color:var(--dim)}
 .sw .act{margin-top:auto;display:flex;gap:6px}
 /* modal */
-dialog{border:1px solid var(--line2);background:var(--bg2);color:var(--text);border-radius:18px;padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
-dialog::backdrop{background:rgba(0,0,0,.6)}
-dialog form{padding:20px}
-dialog h2{font-size:22px}
+dialog{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:20px;padding:0;width:min(600px,calc(100vw - 20px));max-height:calc(100dvh - 20px);box-shadow:0 20px 60px rgba(40,30,10,.25)}
+dialog.wide{width:min(860px,calc(100vw - 20px))}
+dialog::backdrop{background:rgba(31,28,23,.42)}
+dialog form{padding:22px}
+dialog h2{font-size:24px}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap;position:sticky;bottom:-22px;background:#fff;padding:12px 0 4px}
 .mact .sp{flex:1}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--text);color:#1C1C1C;padding:10px 16px;border-radius:99px;font-weight:500;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+.sect{font-family:var(--serif);font-size:17px;margin:20px 0 2px;padding-top:14px;border-top:1px solid var(--line)}
+/* mídia */
+.media{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:8px}
+.mi{position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:var(--bg3);border:1px solid var(--line)}
+.mi img,.mi video{width:100%;height:100%;object-fit:cover;display:block}
+.mi .ix{position:absolute;left:6px;top:6px;background:rgba(31,28,23,.75);color:#fff;font-size:11px;border-radius:99px;padding:1px 7px}
+.mi .ops{position:absolute;inset:auto 4px 4px 4px;display:flex;gap:4px;justify-content:space-between}
+.mi .ops button{border:none;background:rgba(255,255,255,.92);border-radius:8px;width:26px;height:26px;cursor:pointer;font-size:13px;line-height:1}
+.drop{border:2px dashed var(--line2);border-radius:12px;padding:16px;text-align:center;color:var(--dim);cursor:pointer;background:var(--bg)}
+.drop.on{border-color:var(--amber);background:var(--amber-soft)}
+.prog{height:6px;border-radius:99px;background:var(--bg3);overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--amber);width:0;transition:width .2s}
+.hist{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.hist li{font-size:13px;border-left:3px solid var(--line2);padding:2px 0 2px 10px}
+.hist li.aj{border-color:var(--terra)}.hist li.ap{border-color:var(--sage)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:99px;font-weight:500;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100vw - 32px)}
 .toast.on{opacity:1}
-.empty{color:var(--faint);font-size:14px;padding:8px 0}
+.empty{color:var(--faint);font-size:14px;padding:14px 0;text-align:center}
+.notice{display:flex;gap:12px;align-items:flex-start;background:var(--terra-soft);border-radius:14px;padding:12px 14px;margin-top:16px}
 @media (max-width:760px){
-  .status{grid-template-columns:repeat(2,1fr)}
-  .status .stat:last-child{grid-column:span 2}
+  .hero{grid-template-columns:auto 1fr}.hero .side{grid-column:1/-1}
+  .hero h1{font-size:26px}
   .kpis{grid-template-columns:repeat(2,1fr)}
-  .grid2{grid-template-columns:1fr}
+  .grid2,.fr,.fr3{grid-template-columns:1fr}
   .cal{display:none}.agenda{display:block}
   .monthnav strong{min-width:0;font-size:19px}
-  .fr{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .pc h3{font-size:15px}
+  .st{flex-basis:86px}
 }
 </style>
 </head>
@@ -136,15 +216,15 @@ dialog h2{font-size:22px}
 
 <div id="loginView" class="login hidden">
   <form id="loginForm" autocomplete="on">
-    <h1>Gestor</h1>
-    <p>Área privada do Studio Saldanha.</p>
+    <h1>Gestao<em>S</em></h1>
+    <p>Central de conteúdo do Studio S.</p>
     <label for="email">E-mail</label>
     <input id="email" type="email" autocomplete="username" required>
     <label for="pass">Senha</label>
     <input id="pass" type="password" autocomplete="current-password" required minlength="8">
     <div id="pass2Wrap" class="hidden"><label for="pass2">Repita a senha</label>
     <input id="pass2" type="password" autocomplete="new-password" minlength="8"></div>
-    <div style="margin-top:18px"><button class="btn primary" type="submit" id="loginBtn" style="width:100%;justify-content:center">Entrar</button></div>
+    <div style="margin-top:18px"><button class="btn primary" type="submit" id="loginBtn" style="width:100%">Entrar</button></div>
     <div class="err" id="loginErr"></div>
     <div style="display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:13px">
       <a href="#" id="toggleMode">Primeiro acesso? Criar conta</a>
@@ -157,8 +237,9 @@ dialog h2{font-size:22px}
   <header>
     <div class="wrap">
       <div class="top">
-        <div class="brand">Gestor<span>.</span></div>
+        <div class="brand">Gestao<em>S</em></div>
         <div class="sp"></div>
+        <button class="btn small ghost" id="addClient">+ Cliente</button>
         <button class="btn small ghost" id="logout">Sair</button>
       </div>
       <nav class="tabs" id="tabs"></nav>
@@ -167,20 +248,47 @@ dialog h2{font-size:22px}
   <main class="wrap" id="main"></main>
 </div>
 
-<dialog id="postDlg"><form method="dialog" id="postForm">
-  <h2 id="postTitle">Post</h2>
-  <div class="fr">
+<dialog id="postDlg" class="wide"><form method="dialog" id="postForm">
+  <div class="row"><h2 id="postTitle">Post</h2><div class="sp"></div><span id="postStageBadge"></span></div>
+  <div class="fr3">
     <div><label>Data de publicação</label><input type="date" name="publish_date"></div>
-    <div><label>Formato</label><select name="format">
-      <option value="reels">Reels</option><option value="carrossel">Carrossel</option><option value="estatico">Estático</option><option value="stories">Stories</option></select></div>
+    <div><label>Formato</label><select name="format"><option value="reels">Reels</option><option value="carrossel">Carrossel</option><option value="estatico">Estático</option><option value="stories">Stories</option></select></div>
+    <div><label>Etapa</label><select name="status"></select></div>
   </div>
-  <label>Tema / título</label><input name="title" required maxlength="200">
-  <label>Status</label><select name="status"></select>
-  <label>Copy / roteiro</label><textarea name="copy" rows="6"></textarea>
-  <label>Observações</label><textarea name="notes" rows="2"></textarea>
+  <label>Tema / pauta</label><input name="title" required maxlength="200" placeholder="A ideia em uma frase">
+  <div class="fr">
+    <div><label>Objetivo deste post</label><input name="objective" maxlength="200" placeholder="Ex.: atrair quem ainda não conhece (topo)"></div>
+    <div><label>Pilar</label><input name="pillar" maxlength="60" list="pillars" placeholder="Ex.: educativo, bastidor, prova"></div>
+  </div>
+  <label>Como ajuda no objetivo do mês</label><textarea name="relation" rows="2" style="min-height:60px"></textarea>
+  <div class="sect">Copy e roteiro</div>
+  <label>Legenda</label><textarea name="copy" rows="6"></textarea>
+  <label>Roteiro (Reels)</label><textarea name="script" rows="4" placeholder="Um bloco por linha"></textarea>
+  <div class="sect">Arquivos do post</div>
+  <div class="sub">Carrossel: suba as artes na ordem. Reels: o vídeo e, se quiser, a capa. Tudo é comprimido aqui antes de subir (imagem até 1080 px; vídeo em 720p, leva o tempo do vídeo).</div>
+  <div class="media" id="mediaList"></div>
+  <div class="drop" id="drop" style="margin-top:10px">Arraste aqui ou <b>toque para escolher</b> imagens e vídeos
+    <label style="margin:8px 0 0;display:flex;gap:6px;align-items:center;justify-content:center;font-size:12px"><input type="checkbox" id="compressVid" checked style="width:auto"> comprimir vídeo</label></div>
+  <input type="file" id="mediaInput" accept="image/*,video/*" multiple class="hidden">
+  <div id="upState" class="sub hidden" style="margin-top:8px"><span id="upMsg"></span><div class="prog"><i id="upBar"></i></div></div>
+  <div class="sect">Publicação</div>
+  <label>Observações internas</label><textarea name="notes" rows="2" style="min-height:60px"></textarea>
   <label>Link do post publicado</label><input name="permalink" type="url" placeholder="https://www.instagram.com/p/...">
+  <div id="postHist"></div>
   <div class="mact"><button type="button" class="btn danger" id="postDel">Excluir</button><div class="sp"></div>
-    <button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar</button></div>
+    <button type="button" class="btn ghost" data-close>Fechar</button><button class="btn primary" value="save">Salvar</button></div>
+</form></dialog>
+<datalist id="pillars"><option>Educativo</option><option>Bastidor</option><option>Prova / resultado</option><option>Posicionamento</option><option>Comercial</option><option>Relacionamento</option><option>Mito × fato</option></datalist>
+
+<dialog id="clientDlg"><form method="dialog" id="clientForm">
+  <h2 id="clientTitle">Cliente</h2>
+  <div class="fr"><div><label>Nome</label><input name="name" required maxlength="80"></div><div><label>Nicho</label><input name="niche" maxlength="60" placeholder="Psicólogo, Médico, Veterinário…"></div></div>
+  <div class="fr"><div><label>Instagram (@ ou link)</label><input name="instagram" placeholder="@perfil"></div><div><label>TikTok</label><input name="tiktok" placeholder="@perfil"></div></div>
+  <div class="fr"><div><label>YouTube</label><input name="youtube" placeholder="@canal"></div><div><label>Site</label><input name="site" placeholder="https://"></div></div>
+  <label>WhatsApp do cliente (com DDD)</label><input name="whatsapp" inputmode="tel" placeholder="53 99999-9999">
+  <label>Link do Planejador do Meta Business Suite</label><input name="planner_url" type="url" placeholder="https://business.facebook.com/latest/content_calendar?asset_id=...">
+  <div class="sub" style="margin-top:6px">Abra o Planejador do cliente no Meta Business Suite e cole aqui o endereço da página (ele leva o asset_id da conta certa).</div>
+  <div class="mact"><button type="button" class="btn danger" id="clientDel">Excluir</button><div class="sp"></div><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar</button></div>
 </form></dialog>
 
 <dialog id="swDlg"><form method="dialog" id="swForm">
@@ -203,21 +311,35 @@ dialog h2{font-size:22px}
 
 <script src="/gestor/vendor/supabase.js"></script>
 <script src="/gestor/vendor/papaparse.min.js"></script>
+<script src="/gestor/media.js"></script>
 <script>
 (() => {
-const SUPABASE_URL = 'https://uwpbvolvzftrcnjuwoao.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_Yfi_WJXhCwcNJ0DvklVjfA_Uz3RVOBu'; // chave pública: os dados ficam protegidos pelo login + RLS
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+const CFG = window.GESTOR_CFG || { url: 'https://uwpbvolvzftrcnjuwoao.supabase.co', key: 'sb_publishable_Yfi_WJXhCwcNJ0DvklVjfA_Uz3RVOBu' }; // chave pública: dados protegidos por login + RLS
+const sb = supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: true, autoRefreshToken: true } });
+const STUDIO_WA = '5553991662471';
 
-const STATUS = [
-  ['copy_aprovar','A aprovar copy'],['editar','A editar'],['pronto','Prontos'],['programar','A programar'],['publicado','Publicados']
+// Fluxo padrão de social media (briefing → pauta → copy → produção → revisão → aprovação → agendamento → publicação → relatório)
+const STAGES = [
+  ['pauta', 'Pautas', 'Studio', 'Escrever as pautas do mês: tema, objetivo de cada post e como ele ajuda no objetivo do período.', 'Enviar pauta ao cliente'],
+  ['pauta_aprovar', 'Aprovação das pautas', 'Cliente', 'O cliente aprova as ideias pelo link de aprovação.', null],
+  ['copy', 'Copy e roteiro', 'Studio', 'Escrever legendas e roteiros das pautas aprovadas.', 'Enviar copy ao cliente'],
+  ['copy_aprovar', 'Aprovação da copy', 'Cliente', 'O cliente aprova legendas e roteiros.', null],
+  ['producao', 'Produção', 'Studio', 'Gravar os vídeos e desenhar os carrosséis.', 'Produzido, ir para edição'],
+  ['edicao', 'Edição', 'Studio', 'Editar vídeos e finalizar as artes. Suba os arquivos no post.', 'Editado, revisar'],
+  ['revisao', 'Revisão interna', 'Studio', 'Conferir ortografia, legenda, CRP/CRM/CRMV, áreas seguras do story e ética do conselho antes de mandar.', 'Enviar post ao cliente'],
+  ['post_aprovar', 'Aprovação do post', 'Cliente', 'O cliente aprova o post ou Reels pronto.', null],
+  ['agendar', 'A agendar', 'Studio', 'Agendar no Planejador do Meta Business Suite.', 'Agendei no Meta'],
+  ['agendado', 'Agendado', 'Meta', 'Agendado. Depois de ir ao ar, cole o link e marque como publicado.', 'Foi publicado'],
+  ['publicado', 'Publicado', 'Feito', 'No ar. As métricas entram pelo CSV do Meta no fim do mês.', null]
 ];
-const STATUS_ONE = {copy_aprovar:'A aprovar copy',editar:'A editar',pronto:'Pronto',programar:'A programar',publicado:'Publicado'};
-const FMT = {reels:'Reels',carrossel:'Carrossel',estatico:'Estático',stories:'Stories'};
+const STG = Object.fromEntries(STAGES.map((s, i) => [s[0], { i, key: s[0], label: s[1], who: s[2], tip: s[3], action: s[4] }]));
+const NEXT = { pauta: 'pauta_aprovar', copy: 'copy_aprovar', producao: 'edicao', edicao: 'revisao', revisao: 'post_aprovar', agendar: 'agendado', agendado: 'publicado' };
+const CLIENT_STAGES = ['pauta_aprovar', 'copy_aprovar', 'post_aprovar'];
+const FMT = { reels: 'Reels', carrossel: 'Carrossel', estatico: 'Estático', stories: 'Stories' };
 const DEFAULT_CLIENTS = [
-  {name:'Weinerth',handle:'',niche:'',position:1},
-  {name:'Clínica Varela',handle:'',niche:'Médico',position:2},
-  {name:'omatsaldanha',handle:'@omatsaldanha',niche:'Pessoal',position:3}
+  { name: 'Weinerth', niche: 'Médico veterinário', position: 1 },
+  { name: 'Clínica Varela', instagram: 'clinicavarelapelotas', niche: 'Médico', position: 2 },
+  { name: 'omatsaldanha', instagram: 'omatsaldanha', niche: 'Pessoal', position: 3 }
 ];
 const SEED_SWIPE = [
   {niche:'Psicólogo',format:'Reels',title:'Pergunta que o paciente não faz em voz alta',hook:'“Será que eu tô exagerando?” Essa é a dúvida que mais aparece antes da primeira sessão.',structure:'Abre com a frase entre aspas na tela → 2 ou 3 sinais concretos de quando vale procurar ajuda → fecha com uma frase curta, sem promessa.',why:'O espectador vê a própria dúvida escrita e manda para quem precisa ouvir. Gera compartilhamento por Direct, que é o sinal que mais distribui Reels hoje.'},
@@ -240,38 +362,53 @@ const SEED_SWIPE = [
   {niche:'Geral',format:'Carrossel',title:'Antes de / depois de entender (didático)',hook:'O que muda quando você entende como o seu corpo responde ao estresse',structure:'Capa → conceito explicado em 4–6 slides com 1 ideia por slide → resumo final → CTA para salvar.',why:'Carrossel educativo é o formato com mais salvamentos; bom para quem não quer aparecer em vídeo.'}
 ];
 
-const S = { user:null, clients:[], tab:null, month:firstOfMonth(new Date()), posts:[], metrics:[], prevMetrics:[], report:null, swipe:[], niche:'Todos' };
-const $ = (s, el=document) => el.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S = { user: null, clients: [], tab: null, month: firstOfMonth(new Date()), posts: [], metrics: [], prevMetrics: [], report: null, plan: null, swipe: [], niche: 'Todos', stage: null, unseen: {} };
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmtN = n => (n ?? 0).toLocaleString('pt-BR');
-const pct = n => isFinite(n) ? (n*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%' : '–';
-function firstOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
-function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-function addMonths(d,n){ return new Date(d.getFullYear(), d.getMonth()+n, 1); }
-function monthLabel(d){ const s=d.toLocaleDateString("pt-BR",{month:"long",year:"numeric"}); return s[0].toUpperCase()+s.slice(1); }
-function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2400); }
-function fail(e){ console.error(e); toast('Erro: '+(e.message||e)); }
+const pct = n => isFinite(n) ? (n * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%' : '–';
+function firstOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function addMonths(d, n) { return new Date(d.getFullYear(), d.getMonth() + n, 1); }
+function monthLabel(d) { const s = d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }); return s[0].toUpperCase() + s.slice(1); }
+const fmtD = s => s ? new Date(s + 'T12:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '') : 'Sem data';
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2600); }
+function fail(e) { console.error(e); toast('Erro: ' + (e.message || e)); }
+const initials = n => (n || '?').replace(/^@/, '').split(/[\s._]+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const handleOf = v => { v = String(v || '').trim(); if (!v) return ''; const m = v.match(/(?:instagram|tiktok|youtube)\.com\/@?([\w.\-]+)/i); return (m ? m[1] : v).replace(/^@/, '').replace(/\/$/, ''); };
+function avatar(c, cls = '') {
+  const h = handleOf(c.instagram), src = c.avatar_url || (h ? `https://unavatar.io/instagram/${encodeURIComponent(h)}?fallback=false` : '');
+  const ini = esc(initials(c.name));
+  return `<span class="av ${cls}">${src ? `<img src="${esc(src)}" alt="" referrerpolicy="no-referrer" loading="lazy" onerror="this.parentNode.textContent='${ini}'">` : ini}</span>`;
+}
+const waLink = (num, text) => 'https://wa.me/' + String(num || '').replace(/\D/g, '').replace(/^(?!55)(\d{10,11})$/, '55$1') + '?text=' + encodeURIComponent(text);
+const ICON = {
+  ig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>',
+  tt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.7 5.7 0 1 0 4.9 5.7V9a7.4 7.4 0 0 0 4.3 1.4V7.3a4.3 4.3 0 0 1-3.2-1.5z"/></svg>',
+  yt: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg>',
+  web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+  wa: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.8-2.7-1.1-4.4-3.9-4.6-4.1-.1-.2-1.1-1.5-1.1-2.8 0-1.4.7-2 1-2.3.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>',
+  cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>'
+};
 
 // ---------- auth ----------
-async function boot(){
-  const { data:{ session } } = await sb.auth.getSession();
+async function boot() {
+  const { data: { session } } = await sb.auth.getSession();
   if (session) start(session.user); else showLogin();
   sb.auth.onAuthStateChange(async (ev, s) => {
-    if (ev==='SIGNED_OUT') showLogin();
-    if (ev==='PASSWORD_RECOVERY') {
-      const np = prompt('Digite a nova senha (mínimo 8 caracteres):');
-      if (np && np.length>=8) { const { error } = await sb.auth.updateUser({ password: np }); toast(error ? 'Não consegui trocar a senha' : 'Senha atualizada'); }
-    }
-    if (ev==='SIGNED_IN' && s && !S.user) start(s.user);
+    if (ev === 'SIGNED_OUT') showLogin();
+    if (ev === 'PASSWORD_RECOVERY') { const np = prompt('Digite a nova senha (mínimo 8 caracteres):'); if (np && np.length >= 8) { const { error } = await sb.auth.updateUser({ password: np }); toast(error ? 'Não consegui trocar a senha' : 'Senha atualizada'); } }
+    if (ev === 'SIGNED_IN' && s && !S.user) start(s.user);
   });
 }
-function showLogin(){ $('#appView').classList.add('hidden'); $('#loginView').classList.remove('hidden'); }
+function showLogin() { $('#appView').classList.add('hidden'); $('#loginView').classList.remove('hidden'); }
 let registering = false;
 const REDIRECT = location.origin + '/gestor/';
 $('#toggleMode').addEventListener('click', e => {
   e.preventDefault(); registering = !registering;
-  $('#pass2Wrap').classList.toggle('hidden', !registering);
-  $('#pass2').required = registering;
+  $('#pass2Wrap').classList.toggle('hidden', !registering); $('#pass2').required = registering;
   $('#pass').autocomplete = registering ? 'new-password' : 'current-password';
   $('#loginBtn').textContent = registering ? 'Criar conta' : 'Entrar';
   $('#toggleMode').textContent = registering ? 'Já tenho conta. Entrar' : 'Primeiro acesso? Criar conta';
@@ -284,154 +421,298 @@ $('#forgot').addEventListener('click', async e => {
   $('#loginErr').textContent = 'Se esse e-mail tiver conta, chegou um link para trocar a senha.';
 });
 $('#loginForm').addEventListener('submit', async e => {
-  e.preventDefault(); $('#loginErr').textContent='';
+  e.preventDefault(); $('#loginErr').textContent = '';
   const email = $('#email').value.trim(), password = $('#pass').value;
   if (registering) {
     if (password !== $('#pass2').value) { $('#loginErr').textContent = 'As senhas não batem.'; return; }
     const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: REDIRECT } });
     if (error) { $('#loginErr').textContent = /fechado|Database error/i.test(error.message) ? 'Esse e-mail não tem acesso a este gestor.' : error.message; return; }
     if (data.session) { start(data.user); return; }
-    $('#loginErr').textContent = 'Conta criada. Abra o e-mail de confirmação e depois entre aqui.';
-    $('#toggleMode').click(); return;
+    $('#loginErr').textContent = 'Conta criada. Abra o e-mail de confirmação e depois entre aqui.'; $('#toggleMode').click(); return;
   }
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
   if (error) { $('#loginErr').textContent = /confirm/i.test(error.message) ? 'Confirme seu e-mail antes de entrar.' : 'E-mail ou senha incorretos.'; return; }
-  $('#pass').value=''; start(data.user);
+  $('#pass').value = ''; start(data.user);
 });
 $('#logout').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
 
-async function start(user){
-  if (S.started) return; S.started = true;
-  S.user = user;
+async function start(user) {
+  if (S.started) return; S.started = true; S.user = user;
   $('#loginView').classList.add('hidden'); $('#appView').classList.remove('hidden');
   try {
     await loadClients();
     if (!S.clients.length) { await sb.from('clients').insert(DEFAULT_CLIENTS).throwOnError(); await loadClients(); }
-    const { count } = await sb.from('swipe').select('id',{count:'exact',head:true});
+    const { count } = await sb.from('swipe').select('id', { count: 'exact', head: true });
     if (!count && SEED_SWIPE.length) await sb.from('swipe').insert(SEED_SWIPE).throwOnError();
-  } catch(e){ fail(e); }
-  let saved=null; try{ saved=localStorage.getItem('gestor.tab'); }catch(_){}
-  S.tab = (saved && (saved==='swipe' || S.clients.some(c=>c.id===saved))) ? saved : (S.clients[0]?.id || 'swipe');
-  renderTabs(); route();
+  } catch (e) { fail(e); }
+  let saved = null; try { saved = localStorage.getItem('gestor.tab'); } catch (_) {}
+  S.tab = (saved && (saved === 'swipe' || S.clients.some(c => c.id === saved))) ? saved : (S.clients[0]?.id || 'swipe');
+  await loadUnseen(); renderTabs(); route();
 }
-async function loadClients(){
-  const { data, error } = await sb.from('clients').select('*').order('position'); if (error) throw error; S.clients = data;
+async function loadClients() { const { data, error } = await sb.from('clients').select('*').order('position'); if (error) throw error; S.clients = data; }
+async function loadUnseen() {
+  const { data } = await sb.from('approvals').select('client_id').eq('seen', false);
+  S.unseen = {}; (data || []).forEach(a => S.unseen[a.client_id] = (S.unseen[a.client_id] || 0) + 1);
 }
 
-// ---------- tabs ----------
-function renderTabs(){
-  const t = $('#tabs');
-  t.innerHTML = S.clients.map(c => `<button class="tab ${S.tab===c.id?'on':''}" data-tab="${c.id}">${esc(c.name)}</button>`).join('')
-    + `<button class="tab ${S.tab==='swipe'?'on':''}" data-tab="swipe">Swipe file</button>`;
-  t.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { S.tab=b.dataset.tab; try{localStorage.setItem('gestor.tab',S.tab);}catch(_){} renderTabs(); route(); });
+// ---------- abas ----------
+function renderTabs() {
+  $('#tabs').innerHTML = S.clients.map(c => `<button class="tab ${S.tab === c.id ? 'on' : ''}" data-tab="${c.id}">${avatar(c)}${esc(c.name)}${S.unseen[c.id] ? `<span class="dotn">${S.unseen[c.id]}</span>` : ''}</button>`).join('')
+    + `<button class="tab plain ${S.tab === 'swipe' ? 'on' : ''}" data-tab="swipe">Swipe file</button>`;
+  $$('#tabs [data-tab]').forEach(b => b.onclick = () => { if (S.tab !== b.dataset.tab) { S.stage = null; window.scrollTo(0, 0); } S.tab = b.dataset.tab; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} renderTabs(); route(); });
 }
-function route(){ if (S.tab==='swipe') renderSwipe(); else renderClient(); }
+function route() { if (S.tab === 'swipe') renderSwipe(); else renderClient(); }
+async function rerender() { const y = scrollY; await renderClient(); scrollTo(0, y); }
 
-// ---------- client ----------
-async function renderClient(){
-  const c = S.clients.find(x=>x.id===S.tab); if (!c) return;
-  const m = S.month, start = iso(m), end = iso(addMonths(m,1));
-  const prevStart = iso(addMonths(m,-1));
+// ---------- cliente ----------
+async function renderClient() {
+  const c = S.clients.find(x => x.id === S.tab); if (!c) return;
+  const m = S.month, start = iso(m), end = iso(addMonths(m, 1)), prevStart = iso(addMonths(m, -1));
   try {
-    const [p, mt, pm, r] = await Promise.all([
-      sb.from('posts').select('*').eq('client_id',c.id).gte('publish_date',start).lt('publish_date',end).order('publish_date'),
-      sb.from('metrics').select('*').eq('client_id',c.id).gte('published_at',start).lt('published_at',end),
-      sb.from('metrics').select('*').eq('client_id',c.id).gte('published_at',prevStart).lt('published_at',start),
-      sb.from('reports').select('*').eq('client_id',c.id).eq('month',start).maybeSingle()
+    const [p, und, mt, pm, r, pl, ap] = await Promise.all([
+      sb.from('posts').select('*').eq('client_id', c.id).gte('publish_date', start).lt('publish_date', end).order('publish_date'),
+      sb.from('posts').select('*').eq('client_id', c.id).is('publish_date', null).order('created_at'),
+      sb.from('metrics').select('*').eq('client_id', c.id).gte('published_at', start).lt('published_at', end),
+      sb.from('metrics').select('*').eq('client_id', c.id).gte('published_at', prevStart).lt('published_at', start),
+      sb.from('reports').select('*').eq('client_id', c.id).eq('month', start).maybeSingle(),
+      sb.from('month_plans').select('*').eq('client_id', c.id).eq('month', start).maybeSingle(),
+      sb.from('approvals').select('*').eq('client_id', c.id).order('at', { ascending: false }).limit(200)
     ]);
-    for (const x of [p,mt,pm,r]) if (x.error) throw x.error;
-    S.posts=p.data; S.metrics=mt.data; S.prevMetrics=pm.data; S.report=r.data;
-  } catch(e){ fail(e); return; }
-
-  const counts = Object.fromEntries(STATUS.map(([k])=>[k,0]));
-  S.posts.forEach(x => counts[x.status]++);
-  const total = S.posts.length || 1;
+    for (const x of [p, und, mt, pm, r, pl, ap]) if (x.error) throw x.error;
+    S.posts = p.data.concat(und.data); S.metrics = mt.data; S.prevMetrics = pm.data; S.report = r.data; S.plan = pl.data; S.approvals = ap.data;
+  } catch (e) { fail(e); return; }
+  const counts = Object.fromEntries(STAGES.map(([k]) => [k, 0])); S.posts.forEach(x => counts[x.status] = (counts[x.status] || 0) + 1);
+  const firstOpen = STAGES.find(([k]) => k !== 'publicado' && counts[k]);
+  const curIdx = firstOpen ? STG[firstOpen[0]].i : (S.posts.length ? 10 : 0);
+  const unseen = S.approvals.filter(a => !a.seen);
+  const ig = handleOf(c.instagram), tt = handleOf(c.tiktok), yt = handleOf(c.youtube);
+  const shareUrl = location.origin + '/aprovar/?c=' + c.share_token;
+  const waitingClient = S.posts.filter(x => CLIENT_STAGES.includes(x.status)).length;
+  const list = S.posts.filter(x => !S.stage || x.status === S.stage);
   $('#main').innerHTML = `
-    <div class="row" style="justify-content:space-between">
-      <div><h1 style="font-size:30px">${esc(c.name)}</h1><div class="sub">${esc([c.handle,c.niche].filter(Boolean).join(' · '))}</div></div>
+    <section class="card hero">
+      ${avatar(c, 'xl')}
+      <div style="min-width:0"><h1>${esc(c.name)}</h1><div class="sub">${esc([ig && '@' + ig, c.niche].filter(Boolean).join(' · ')) || 'Complete o perfil do cliente'}</div>
+        <div class="links">
+          ${ig ? `<a class="btn small" href="https://www.instagram.com/${esc(ig)}/" target="_blank" rel="noopener">${ICON.ig}Instagram</a>` : ''}
+          ${tt ? `<a class="btn small" href="https://www.tiktok.com/@${esc(tt)}" target="_blank" rel="noopener">${ICON.tt}TikTok</a>` : ''}
+          ${yt ? `<a class="btn small" href="https://www.youtube.com/@${esc(yt)}" target="_blank" rel="noopener">${ICON.yt}YouTube</a>` : ''}
+          ${c.site ? `<a class="btn small" href="${esc(/^https?:/.test(c.site) ? c.site : 'https://' + c.site)}" target="_blank" rel="noopener">${ICON.web}Site</a>` : ''}
+          ${c.whatsapp ? `<a class="btn small" href="${waLink(c.whatsapp, '')}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a>` : ''}
+          <a class="btn small amber" href="${esc(c.planner_url || 'https://business.facebook.com/latest/content_calendar')}" target="_blank" rel="noopener">${ICON.cal}Planejador do Meta</a>
+        </div></div>
+      <div class="side" style="display:flex;flex-direction:column;gap:8px;align-items:stretch">
+        <button class="btn primary" id="shareLink">${ICON.link}Link de aprovação${waitingClient ? ` · ${waitingClient}` : ''}</button>
+        <button class="btn small ghost" id="editClient">Editar cliente</button>
+      </div>
+    </section>
+
+    ${unseen.length ? `<div class="notice"><span style="font-size:20px">💬</span><div style="flex:1"><b>${unseen.length} resposta(s) nova(s) do cliente</b>
+      <ul class="hist">${unseen.slice(0, 6).map(a => { const p = S.posts.find(x => x.id === a.post_id); return `<li class="${a.decision === 'ajuste' ? 'aj' : 'ap'}"><b>${esc(a.by_name || 'Cliente')}</b> ${a.decision === 'aprovado' ? 'aprovou' : 'pediu ajuste em'} ${esc(STG[a.stage + '_aprovar']?.label.toLowerCase().replace('aprovação d', '') || a.stage)} de “${esc(p?.title || 'post')}”${a.target && a.target !== 'geral' ? ' (' + esc(a.target) + ')' : ''}${a.comment ? `: ${esc(a.comment)}` : ''}</li>`; }).join('')}</ul></div><button class="btn small" id="seenAll">Ok, vi</button></div>` : ''}
+
+    <div class="row" style="justify-content:space-between;margin-top:22px">
       <div class="monthnav"><button class="btn small" id="prevM" aria-label="Mês anterior">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="nextM" aria-label="Próximo mês">›</button></div>
+      <button class="btn amber" id="addPost">+ Pauta</button>
     </div>
 
-    <section class="card"><h2>Status do mês</h2>
-      <div class="status">${STATUS.map(([k,l])=>`<div class="stat s-${k}"><b>${counts[k]}</b><span><i class="dot"></i>${l}</span></div>`).join('')}</div>
-      <div class="bar">${STATUS.map(([k])=>`<i class="s-${k}" style="width:${counts[k]/total*100}%"></i>`).join('')}</div>
-      <div class="sub" style="margin-top:8px">${S.posts.length} posts no calendário de ${monthLabel(m)}</div>
+    <section class="card obj"><div class="ic">🎯</div><div><div class="sub" style="font-weight:600;color:var(--text)">Objetivo de ${monthLabel(m).toLowerCase()}</div>
+      <textarea id="planObj" placeholder="Ex.: lançar a consulta domiciliar de filhotes e gerar 15 agendamentos pelo WhatsApp">${esc(S.plan?.objective || '')}</textarea>
+      <div class="sub">Cada pauta diz como ajuda nesse objetivo. O cliente vê isso na página de aprovação.</div></div></section>
+
+    <section class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 class="h2">Etapas do mês</h2><span class="sub">${S.posts.length} peça(s) · toque numa etapa para filtrar</span></div>
+      <div class="flow">${STAGES.map(([k, l, who], i) => `<button class="st k-${k} ${counts[k] ? 'has' : ''} ${who === 'Cliente' ? 'client' : ''} ${i < curIdx ? 'past' : ''} ${i === curIdx ? 'cur' : ''} ${S.stage === k ? 'sel' : ''}" data-stage="${k}" title="${esc(STG[k].tip)}"><span class="n">${counts[k] || i + 1}</span><span class="l">${l}</span><span class="who">${who}</span></button>`).join('')}</div>
+      <div class="next">${firstOpen ? `<span style="font-size:20px">👉</span><div><b>Próximo passo: ${esc(STG[firstOpen[0]].label)}</b> <span class="sub">(${counts[firstOpen[0]]} peça(s))</span><div class="sub">${esc(STG[firstOpen[0]].tip)}</div></div>` : S.posts.length ? '<span style="font-size:20px">✅</span><div><b>Tudo publicado neste mês.</b><div class="sub">Importe o CSV do Meta para fechar o relatório.</div></div>' : '<span style="font-size:20px">✍️</span><div><b>Comece pelas pautas.</b><div class="sub">Defina o objetivo do mês e crie as pautas com “+ Pauta”.</div></div>'}</div>
+      ${S.stage ? `<div class="row" style="margin-top:12px"><span class="badge stg k-${S.stage}">${esc(STG[S.stage].label)}</span><button class="btn small ghost" id="clearStage">Mostrar todas</button>${STG[S.stage].action && list.length > 1 ? `<button class="btn small" id="bulkNext">${esc(STG[S.stage].action)} (todas)</button>` : ''}</div>` : ''}
+      <div class="pgrid">${list.length ? list.map(postCard).join('') : `<div class="empty" style="grid-column:1/-1">${S.stage ? 'Nada nesta etapa.' : 'Nenhuma pauta neste mês ainda.'}</div>`}</div>
     </section>
 
     <section class="card">
-      <div class="row" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">Calendário de conteúdo</h2><button class="btn small primary" id="addPost">+ Post</button></div>
+      <div class="row" style="justify-content:space-between;margin-bottom:12px"><h2 class="h2">Calendário</h2><span class="sub">Toque num dia para criar uma pauta nele</span></div>
       <div id="cal"></div>
     </section>
 
     <section class="card">
-      <div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 style="margin:0">Métricas dos posts publicados</h2>
-        <button class="btn small" id="importCsv">Importar CSV do Meta</button></div>
-      <div class="sub">Exporte em Meta Business Suite → Insights → Conteúdo → Exportar dados (CSV, só posts do feed e Reels). Linhas repetidas são atualizadas, não duplicadas.</div>
+      <div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 class="h2">Métricas dos posts publicados</h2><button class="btn small" id="importCsv">Importar CSV do Meta</button></div>
+      <div class="sub">Meta Business Suite → Insights → Conteúdo → Exportar dados (CSV). Linhas repetidas são atualizadas, não duplicadas.</div>
       <div id="metrics"></div>
     </section>
 
-    <section class="card"><h2>Análise do mês</h2>
-      <div class="sub" style="margin-bottom:8px">Leitura qualitativa e próximos passos (é aqui que entra a análise que eu te mando todo mês).</div>
-      <textarea id="reportBody" rows="8" placeholder="Escreva ou cole a análise do mês…">${esc(S.report?.body||'')}</textarea>
-      <div class="mact" style="margin-top:10px"><button class="btn small primary" id="saveReport">Salvar análise</button></div>
+    <section class="card"><h2 class="h2">Análise do mês</h2>
+      <div class="sub" style="margin:4px 0 8px">Leitura qualitativa e próximos passos.</div>
+      <textarea id="reportBody" rows="8" placeholder="Escreva ou cole a análise do mês…">${esc(S.report?.body || '')}</textarea>
+      <div class="mact" style="position:static"><button class="btn small primary" id="saveReport">Salvar análise</button></div>
     </section>`;
-  $('#prevM').onclick=()=>{S.month=addMonths(S.month,-1);renderClient();};
-  $('#nextM').onclick=()=>{S.month=addMonths(S.month,1);renderClient();};
-  $('#addPost').onclick=()=>openPost({publish_date:iso(new Date()<addMonths(m,1)&&new Date()>=m?new Date():m)});
-  $('#importCsv').onclick=()=>$('#csvInput').click();
-  $('#saveReport').onclick=saveReport;
+  $('#prevM').onclick = () => { S.month = addMonths(S.month, -1); renderClient(); };
+  $('#nextM').onclick = () => { S.month = addMonths(S.month, 1); renderClient(); };
+  $('#addPost').onclick = () => openPost({ publish_date: iso(new Date() < addMonths(m, 1) && new Date() >= m ? new Date() : m), status: 'pauta' });
+  $('#importCsv').onclick = () => $('#csvInput').click();
+  $('#saveReport').onclick = saveReport;
+  $('#editClient').onclick = () => openClient(c);
+  $('#shareLink').onclick = () => shareApproval(c, shareUrl);
+  const sa = $('#seenAll'); if (sa) sa.onclick = async () => { await sb.from('approvals').update({ seen: true }).eq('client_id', c.id).eq('seen', false); delete S.unseen[c.id]; renderTabs(); rerender(); };
+  $('#planObj').onchange = async e => { const { error } = await sb.from('month_plans').upsert({ client_id: c.id, month: start, objective: e.target.value.trim(), updated_at: new Date().toISOString() }, { onConflict: 'client_id,month' }); if (error) return fail(error); toast('Objetivo salvo'); };
+  $$('[data-stage]').forEach(b => b.onclick = () => { S.stage = S.stage === b.dataset.stage ? null : b.dataset.stage; rerender(); });
+  const cs = $('#clearStage'); if (cs) cs.onclick = () => { S.stage = null; rerender(); };
+  const bn = $('#bulkNext'); if (bn) bn.onclick = async () => { const to = NEXT[S.stage]; const ids = list.map(x => x.id); if (!confirm(`Mover ${ids.length} peça(s) para “${STG[to].label}”?`)) return; const { error } = await sb.from('posts').update({ status: to, needs_changes: false }).in('id', ids); if (error) return fail(error); if (CLIENT_STAGES.includes(to)) shareApproval(c, shareUrl); S.stage = to; rerender(); };
+  $$('[data-post]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-adv]')) return; openPost(S.posts.find(p => p.id === el.dataset.post)); }));
+  $$('[data-adv]').forEach(b => b.onclick = () => advance(S.posts.find(p => p.id === b.dataset.adv)));
   renderCalendar(); renderMetrics();
 }
+function thumbOf(p) { const md = p.media || []; const img = md.find(x => x.type === 'image') || md.find(x => x.poster); return img ? (img.type === 'image' ? img.url : img.poster) : null; }
+function postCard(p) {
+  const st = STG[p.status] || STG.pauta, th = thumbOf(p), md = p.media || [];
+  const last = (S.approvals || []).find(a => a.post_id === p.id);
+  return `<article class="pc k-${p.status}" data-post="${p.id}">
+    <div class="th" ${th ? `style="background-image:url('${esc(th)}')"` : ''}><span class="fmt">${esc(FMT[p.format] || '')}</span>${md.length ? `<span class="cnt">${md.length} arq.</span>` : ''}${th ? '' : esc(p.title || 'Sem título')}</div>
+    <div class="bd"><div class="meta"><span class="badge">${fmtD(p.publish_date)}</span><span class="badge stg">${esc(st.label)}</span>${p.round > 1 ? `<span class="badge">Rodada ${p.round}</span>` : ''}</div>
+      <h3>${esc(p.title || '(sem título)')}</h3>
+      ${p.objective ? `<div class="sub">🎯 ${esc(p.objective)}</div>` : ''}
+      ${p.needs_changes && last && last.decision === 'ajuste' ? `<div class="fb"><b>Ajuste pedido${last.target && last.target !== 'geral' ? ' (' + esc(last.target) + ')' : ''}:</b> ${esc(last.comment || '')}</div>` : ''}
+      <div class="act">${st.action ? `<button class="btn small ${CLIENT_STAGES.includes(NEXT[p.status]) ? 'amber' : ''}" data-adv="${p.id}">${esc(p.needs_changes && CLIENT_STAGES.includes(NEXT[p.status]) ? 'Reenviar com ajuste' : st.action)} →</button>` : CLIENT_STAGES.includes(p.status) ? '<span class="badge">⏳ Aguardando cliente</span>' : ''}</div></div></article>`;
+}
+async function advance(p) {
+  const to = NEXT[p.status]; if (!to) return;
+  if (to === 'publicado' && !p.permalink) { const l = prompt('Cole o link do post publicado (opcional):'); if (l) p.permalink = l; }
+  const row = { status: to, needs_changes: false };
+  if (CLIENT_STAGES.includes(to) && p.needs_changes) row.round = (p.round || 1) + 1;
+  if (to === 'publicado' && p.permalink) row.permalink = p.permalink;
+  if (to === 'post_aprovar' && !(p.media || []).length && !confirm('Esse post ainda não tem arquivo. Mandar mesmo assim?')) return;
+  const { error } = await sb.from('posts').update(row).eq('id', p.id); if (error) return fail(error);
+  toast('Movido para ' + STG[to].label);
+  if (CLIENT_STAGES.includes(to)) { const c = S.clients.find(x => x.id === S.tab); shareApproval(c, location.origin + '/aprovar/?c=' + c.share_token, true); }
+  rerender();
+}
+function shareApproval(c, url, quiet) {
+  const n = S.posts.filter(x => CLIENT_STAGES.includes(x.status)).length;
+  const msg = `Oi! Tem ${n || 'novos'} ${n === 1 ? 'item' : 'itens'} de conteúdo esperando a tua aprovação. É só abrir, aprovar ou pedir ajuste:\n${url}`;
+  if (quiet && !confirm('Avisar o cliente pelo WhatsApp agora?')) return;
+  if (c.whatsapp) { window.open(waLink(c.whatsapp, msg), '_blank', 'noopener'); return; }
+  navigator.clipboard?.writeText(url).then(() => toast('Link de aprovação copiado'), () => prompt('Copie o link:', url));
+}
 
-function renderCalendar(){
-  const m=S.month, first=new Date(m), startDow=(first.getDay()+6)%7; // segunda primeiro
-  const gridStart=new Date(m.getFullYear(), m.getMonth(), 1-startDow);
-  const byDay={}; S.posts.forEach(p=>{(byDay[p.publish_date]=byDay[p.publish_date]||[]).push(p);});
-  const today=iso(new Date());
-  let cal='<div class="cal">'+['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(d=>`<div class="wd">${d}</div>`).join('');
-  for(let i=0;i<42;i++){
-    const d=new Date(gridStart.getFullYear(),gridStart.getMonth(),gridStart.getDate()+i), k=iso(d);
-    if(i>=35 && d.getMonth()!==m.getMonth()) break;
-    cal+=`<div class="day ${d.getMonth()!==m.getMonth()?'out':''} ${k===today?'today':''}" data-day="${k}"><span class="n">${d.getDate()}</span>${(byDay[k]||[]).map(chip).join('')}</div>`;
+// ---------- calendário ----------
+function renderCalendar() {
+  const m = S.month, first = new Date(m), startDow = (first.getDay() + 6) % 7;
+  const gridStart = new Date(m.getFullYear(), m.getMonth(), 1 - startDow);
+  const byDay = {}; S.posts.filter(p => p.publish_date).forEach(p => (byDay[p.publish_date] = byDay[p.publish_date] || []).push(p));
+  const today = iso(new Date());
+  let cal = '<div class="cal">' + ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => `<div class="wd">${d}</div>`).join('');
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i), k = iso(d);
+    if (i >= 35 && d.getMonth() !== m.getMonth()) break;
+    cal += `<div class="day ${d.getMonth() !== m.getMonth() ? 'out' : ''} ${k === today ? 'today' : ''}" data-day="${k}"><span class="n">${d.getDate()}</span>${(byDay[k] || []).map(chip).join('')}</div>`;
   }
-  cal+='</div>';
-  const days=Object.keys(byDay).sort();
-  let ag='<div class="agenda">'+(days.length?days.map(k=>{const d=new Date(k+'T12:00');return `<div class="it"><div class="d">${d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit'})}</div><div style="flex:1;display:grid;gap:6px">${byDay[k].map(chip).join('')}</div></div>`;}).join(''):'<div class="empty">Nenhum post neste mês ainda.</div>')+'</div>';
-  $('#cal').innerHTML=cal+ag;
-  $('#cal').querySelectorAll('[data-day]').forEach(el=>el.addEventListener('click',e=>{ if(e.target.closest('[data-post]'))return; openPost({publish_date:el.dataset.day}); }));
-  $('#cal').querySelectorAll('[data-post]').forEach(el=>el.addEventListener('click',()=>openPost(S.posts.find(p=>p.id===el.dataset.post))));
+  cal += '</div>';
+  const days = Object.keys(byDay).sort();
+  const ag = '<div class="agenda">' + (days.length ? days.map(k => { const d = new Date(k + 'T12:00'); return `<div class="it"><div class="d">${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' })}</div><div style="flex:1;display:grid;gap:6px">${byDay[k].map(chip).join('')}</div></div>`; }).join('') : '<div class="empty">Nenhum post com data neste mês.</div>') + '</div>';
+  $('#cal').innerHTML = cal + ag;
+  $$('#cal [data-day]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-cpost]')) return; openPost({ publish_date: el.dataset.day, status: 'pauta' }); }));
+  $$('#cal [data-cpost]').forEach(el => el.addEventListener('click', () => openPost(S.posts.find(p => p.id === el.dataset.cpost))));
 }
-function chip(p){ return `<button type="button" class="chip s-${p.status}" data-post="${p.id}" title="${esc(STATUS_ONE[p.status])}"><i class="dot"></i><span class="fmt">${esc(FMT[p.format]||'')}</span>${esc(p.title||'(sem título)')}</button>`; }
+function chip(p) { return `<button type="button" class="chip k-${p.status}" data-cpost="${p.id}" title="${esc(STG[p.status]?.label || '')}"><span class="fmt">${esc(FMT[p.format] || '')}</span>${esc(p.title || '(sem título)')}</button>`; }
 
-// post modal
-const postDlg=$('#postDlg'), postForm=$('#postForm');
-postForm.status.innerHTML=Object.entries(STATUS_ONE).map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
-let editingPost=null;
-function openPost(p){
-  editingPost=p&&p.id?p:null;
-  $('#postTitle').textContent=editingPost?'Editar post':'Novo post';
+// ---------- post (diálogo) ----------
+const postDlg = $('#postDlg'), postForm = $('#postForm');
+postForm.status.innerHTML = STAGES.map(([k, l]) => `<option value="${k}">${l}</option>`).join('');
+let editingPost = null, media = [];
+function openPost(p) {
+  editingPost = p && p.id ? p : null; media = [...(p?.media || [])];
+  $('#postTitle').textContent = editingPost ? 'Editar peça' : 'Nova pauta';
   postForm.reset();
-  postForm.publish_date.value=p?.publish_date||'';
-  postForm.format.value=p?.format||'carrossel';
-  postForm.title.value=p?.title||''; postForm.status.value=p?.status||'copy_aprovar';
-  postForm.copy.value=p?.copy||''; postForm.notes.value=p?.notes||''; postForm.permalink.value=p?.permalink||'';
-  $('#postDel').classList.toggle('hidden',!editingPost);
-  postDlg.showModal();
+  postForm.publish_date.value = p?.publish_date || ''; postForm.format.value = p?.format || 'carrossel';
+  ['title', 'objective', 'pillar', 'relation', 'copy', 'script', 'notes', 'permalink'].forEach(k => postForm[k].value = p?.[k] || '');
+  postForm.status.value = p?.status || 'pauta';
+  $('#postStageBadge').innerHTML = editingPost ? `<span class="badge stg k-${p.status}">${esc(STG[p.status]?.label)}</span>${p.round > 1 ? ` <span class="badge">Rodada ${p.round}</span>` : ''}` : '';
+  const H = (S.approvals || []).filter(a => a.post_id === p?.id).reverse();
+  $('#postHist').innerHTML = H.length ? `<div class="sect">Respostas do cliente</div><ul class="hist">${H.map(a => `<li class="${a.decision === 'ajuste' ? 'aj' : 'ap'}"><b>${a.decision === 'aprovado' ? 'Aprovado' : 'Ajuste'}</b> · ${esc(a.stage)} · rodada ${a.round} · ${esc(a.by_name || 'Cliente')} · ${new Date(a.at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}${a.target && a.target !== 'geral' ? ' · ' + esc(a.target) : ''}${a.comment ? `<div>${esc(a.comment)}</div>` : ''}</li>`).join('')}</ul>` : '';
+  $('#postDel').classList.toggle('hidden', !editingPost);
+  $('#upState').classList.add('hidden'); renderMedia(); postDlg.showModal();
 }
-postForm.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const f=postForm, row={client_id:S.tab,publish_date:f.publish_date.value||null,format:f.format.value,title:f.title.value.trim(),status:f.status.value,copy:f.copy.value||null,notes:f.notes.value||null,permalink:f.permalink.value||null};
-  const q=editingPost?sb.from('posts').update(row).eq('id',editingPost.id):sb.from('posts').insert(row);
-  const {error}=await q; if(error) return fail(error);
-  postDlg.close(); toast('Post salvo'); renderClient();
-});
-$('#postDel').onclick=async()=>{ if(!editingPost||!confirm('Excluir este post?'))return; const {error}=await sb.from('posts').delete().eq('id',editingPost.id); if(error)return fail(error); postDlg.close(); toast('Post excluído'); renderClient(); };
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+function postRow() {
+  const f = postForm;
+  return { client_id: S.tab, publish_date: f.publish_date.value || null, format: f.format.value, title: f.title.value.trim(), status: f.status.value, objective: f.objective.value.trim() || null, pillar: f.pillar.value.trim() || null, relation: f.relation.value.trim() || null, copy: f.copy.value || null, script: f.script.value || null, notes: f.notes.value || null, permalink: f.permalink.value || null, media };
+}
+async function savePost(close = true) {
+  const row = postRow(); if (!row.title) { toast('Dê um tema para a pauta'); postForm.title.focus(); return false; }
+  if (editingPost) { const { error } = await sb.from('posts').update(row).eq('id', editingPost.id); if (error) { fail(error); return false; } Object.assign(editingPost, row); }
+  else { const { data, error } = await sb.from('posts').insert(row).select().single(); if (error) { fail(error); return false; } editingPost = data; $('#postDel').classList.remove('hidden'); }
+  if (close) { postDlg.close(); toast('Salvo'); rerender(); }
+  return true;
+}
+postForm.addEventListener('submit', e => { e.preventDefault(); savePost(true); });
+$('#postDel').onclick = async () => { if (!editingPost || !confirm('Excluir esta peça e os arquivos dela?')) return;
+  const paths = (editingPost.media || []).flatMap(x => [x.path, x.poster_path]).filter(Boolean); if (paths.length) await sb.storage.from('media').remove(paths);
+  const { error } = await sb.from('posts').delete().eq('id', editingPost.id); if (error) return fail(error); postDlg.close(); toast('Excluído'); rerender(); };
+postDlg.addEventListener('close', () => { if (editingPost && !$('#upState').classList.contains('hidden')) rerender(); });
 
-async function saveReport(){
-  const body=$('#reportBody').value;
-  const {error}=await sb.from('reports').upsert({client_id:S.tab,month:iso(S.month),body},{onConflict:'client_id,month'});
-  if(error)return fail(error); toast('Análise salva');
+// ---------- mídia ----------
+function renderMedia() {
+  $('#mediaList').innerHTML = media.map((x, i) => `<div class="mi"><span class="ix">${i + 1}</span>${x.type === 'video' ? `<video src="${esc(x.url)}" poster="${esc(x.poster || '')}" muted playsinline preload="metadata"></video>` : `<img src="${esc(x.url)}" alt="">`}
+    <div class="ops"><button type="button" data-mv="${i}:-1" aria-label="Mover para trás">‹</button><button type="button" data-rm="${i}" aria-label="Remover">✕</button><button type="button" data-mv="${i}:1" aria-label="Mover para frente">›</button></div></div>`).join('');
+  $$('#mediaList [data-mv]').forEach(b => b.onclick = async () => { const [i, d] = b.dataset.mv.split(':').map(Number), j = i + d; if (j < 0 || j >= media.length) return; [media[i], media[j]] = [media[j], media[i]]; renderMedia(); if (editingPost) await savePost(false); });
+  $$('#mediaList [data-rm]').forEach(b => b.onclick = async () => { const x = media[+b.dataset.rm]; if (!confirm('Remover este arquivo?')) return; media.splice(+b.dataset.rm, 1); await sb.storage.from('media').remove([x.path, x.poster_path].filter(Boolean)); renderMedia(); if (editingPost) await savePost(false); });
+}
+const drop = $('#drop');
+drop.onclick = e => { if (e.target.closest('label')) return; $('#mediaInput').click(); };
+drop.ondragover = e => { e.preventDefault(); drop.classList.add('on'); };
+drop.ondragleave = () => drop.classList.remove('on');
+drop.ondrop = e => { e.preventDefault(); drop.classList.remove('on'); handleFiles([...e.dataTransfer.files]); };
+$('#mediaInput').onchange = e => { const fs = [...e.target.files]; e.target.value = ''; handleFiles(fs); };
+const kb = n => n > 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.round(n / 1024) + ' KB';
+async function handleFiles(files) {
+  files = files.filter(f => /^(image|video)\//.test(f.type)); if (!files.length) return;
+  let ac = null; try { if (files.some(f => f.type.startsWith('video/'))) ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {}
+  if (!(await savePost(false))) return;
+  const st = $('#upState'), msg = $('#upMsg'), bar = $('#upBar'); st.classList.remove('hidden');
+  const setP = (t, p) => { msg.textContent = t; bar.style.width = Math.round(p * 100) + '%'; };
+  const base = `${S.tab}/${editingPost.id}/`, rid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '' + Math.random()).replace(/-/g, '').slice(0, 16);
+  try {
+    for (const [n, f] of files.entries()) {
+      const tag = `(${n + 1}/${files.length}) ${f.name}`;
+      let out;
+      if (f.type.startsWith('image/')) { setP('Comprimindo ' + tag, 0.1); out = await GMedia.compressImage(f); }
+      else {
+        const doIt = $('#compressVid').checked && GMedia.canCompressVideo();
+        if (doIt) { out = await GMedia.compressVideo(f, p => setP(`Comprimindo vídeo ${tag} · ${Math.round(p * 100)}% (leva o tempo do vídeo)`, p * 0.9), ac); }
+        if (!out || out.blob.size > f.size) out = { blob: f, type: 'video', ext: (f.name.split('.').pop() || 'mp4').toLowerCase(), mime: f.type };
+        if (out.blob.size > 50 * 1048576) throw new Error(`O vídeo ficou com ${kb(out.blob.size)}. O limite do plano grátis é 50 MB por arquivo.`);
+      }
+      const path = base + rid() + '.' + out.ext;
+      setP(`Enviando ${tag} (${kb(f.size)} → ${kb(out.blob.size)})`, 0.92);
+      const { error } = await sb.storage.from('media').upload(path, out.blob, { contentType: out.mime, cacheControl: '31536000', upsert: false }); if (error) throw error;
+      const item = { type: out.type, url: sb.storage.from('media').getPublicUrl(path).data.publicUrl, path, w: out.w || null, h: out.h || null, size: out.blob.size, name: f.name };
+      if (out.type === 'video') { try { const pv = await GMedia.videoPoster(URL.createObjectURL(out.blob)); const pp = base + rid() + '.jpg'; const r2 = await sb.storage.from('media').upload(pp, pv.blob, { contentType: 'image/jpeg', upsert: false }); if (!r2.error) { item.poster = sb.storage.from('media').getPublicUrl(pp).data.publicUrl; item.poster_path = pp; } item.duration = Math.round(pv.duration || 0); item.w = item.w || pv.w; item.h = item.h || pv.h; } catch (_) {} }
+      media.push(item); renderMedia(); await savePost(false);
+    }
+    setP(`${files.length} arquivo(s) enviados`, 1); toast('Arquivos enviados');
+  } catch (e) { fail(e); setP('Falhou: ' + (e.message || e), 0); }
+  finally { try { ac && ac.close(); } catch (_) {} }
+}
+
+// ---------- cliente (diálogo) ----------
+const clientDlg = $('#clientDlg'), clientForm = $('#clientForm'); let editingClient = null;
+function openClient(c) {
+  editingClient = c || null; clientForm.reset(); $('#clientTitle').textContent = c ? 'Editar cliente' : 'Novo cliente';
+  ['name', 'niche', 'instagram', 'tiktok', 'youtube', 'site', 'whatsapp', 'planner_url'].forEach(k => clientForm[k].value = c?.[k] || '');
+  $('#clientDel').classList.toggle('hidden', !c); clientDlg.showModal();
+}
+$('#addClient').onclick = () => openClient();
+clientForm.addEventListener('submit', async e => {
+  e.preventDefault(); const f = clientForm;
+  const row = { name: f.name.value.trim(), niche: f.niche.value.trim() || null, instagram: handleOf(f.instagram.value) || null, tiktok: handleOf(f.tiktok.value) || null, youtube: handleOf(f.youtube.value) || null, site: f.site.value.trim() || null, whatsapp: f.whatsapp.value.trim() || null, planner_url: f.planner_url.value.trim() || null, handle: handleOf(f.instagram.value) ? '@' + handleOf(f.instagram.value) : null };
+  if (editingClient && editingClient.instagram !== row.instagram) row.avatar_url = null;
+  if (!editingClient) row.position = S.clients.length + 1;
+  const { data, error } = editingClient ? await sb.from('clients').update(row).eq('id', editingClient.id).select().single() : await sb.from('clients').insert(row).select().single();
+  if (error) return fail(error); clientDlg.close(); await loadClients(); S.tab = data.id; renderTabs(); route(); toast('Cliente salvo');
+});
+$('#clientDel').onclick = async () => { if (!editingClient || !confirm(`Excluir ${editingClient.name} com todos os posts, métricas e aprovações? Não dá para desfazer.`)) return; const { error } = await sb.from('clients').delete().eq('id', editingClient.id); if (error) return fail(error); clientDlg.close(); await loadClients(); S.tab = S.clients[0]?.id || 'swipe'; renderTabs(); route(); };
+$$('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
+
+async function saveReport() {
+  const body = $('#reportBody').value;
+  const { error } = await sb.from('reports').upsert({ client_id: S.tab, month: iso(S.month), body }, { onConflict: 'client_id,month' });
+  if (error) return fail(error); toast('Análise salva');
 }
 
 // ---------- metrics ----------
@@ -509,6 +790,7 @@ $('#csvInput').addEventListener('change',e=>{
   },error:fail});
 });
 
+
 // ---------- swipe ----------
 async function renderSwipe(){
   const {data,error}=await sb.from('swipe').select('*').order('created_at'); if(error)return fail(error); S.swipe=data;
@@ -539,6 +821,7 @@ swForm.addEventListener('submit',async e=>{
   swDlg.close(); toast('Salvo'); renderSwipe();
 });
 $('#swDel').onclick=async()=>{ if(!editingSw||!confirm('Excluir este formato?'))return; const {error}=await sb.from('swipe').delete().eq('id',editingSw.id); if(error)return fail(error); swDlg.close(); renderSwipe(); };
+
 
 boot();
 })();
