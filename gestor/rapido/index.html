@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F7F3EA">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lançar">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Lançar | GestaoS</title>
+<link rel="manifest" href="/gestor/rapido/manifest.webmanifest">
+<link rel="icon" href="/gestor/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/gestor/apple-touch-icon.png">
+<style>
+@font-face{font-family:'Space Grotesk';font-weight:400;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:600;font-display:swap;src:url('/assets/fonts/space-grotesk-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Fraunces';font-weight:600;font-display:swap;src:url('/assets/fonts/fraunces-latin-600-normal.woff2') format('woff2')}
+:root{--bg:#F7F3EA;--card:#fff;--line:#E7DFCD;--text:#1F1C17;--dim:#685F50;--amber:#E7B64A;--amber-soft:#FBEFD2;--sage:#4E7A57;--red:#B3261E}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font:16px/1.4 'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;height:100dvh;max-width:640px;margin:0 auto}
+.hidden{display:none!important}
+header{padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);background:var(--bg)}
+header b{font-family:'Fraunces',Georgia,serif;font-size:22px}header b i{font-style:normal;background:var(--text);color:var(--amber);border-radius:6px;padding:0 6px;margin-left:2px}
+header .sum{margin-left:auto;text-align:right;font-size:12px;color:var(--dim);line-height:1.25}header .sum strong{display:block;font-size:15px;color:var(--text)}
+#log{flex:1;overflow:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:88%;padding:10px 13px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word}
+.m.u{align-self:flex-end;background:var(--text);color:#fff;border-bottom-right-radius:4px}
+.m.b{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid #D3C8B1;background:#fff;border-radius:99px;padding:7px 13px;font:inherit;cursor:pointer;color:var(--text)}
+.chip.go{background:var(--text);color:#fff;border-color:var(--text)}.chip.am{background:var(--amber);border-color:var(--amber);font-weight:600}
+.chip:disabled{opacity:.45}
+.sumcard{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:14px;margin-top:6px}.sumcard span{color:var(--dim)}
+.big{font-family:'Fraunces',Georgia,serif;font-size:26px}.in{color:var(--sage)}
+form#f{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
+#t{flex:1;border:1px solid #D3C8B1;border-radius:99px;padding:12px 16px;font:inherit;background:#fff;outline:none;min-width:0}
+#t:focus{border-color:#8A6413;box-shadow:0 0 0 3px var(--amber-soft)}
+#go{border:0;background:var(--text);color:var(--amber);border-radius:99px;width:48px;font-size:20px;cursor:pointer}
+#login{padding:30px 20px}#login h1{font-family:'Fraunces',serif;margin:0 0 14px}#login input{width:100%;margin:6px 0;padding:12px;border:1px solid #D3C8B1;border-radius:12px;font:inherit}#login button{width:100%;margin-top:8px;padding:12px;border:0;border-radius:99px;background:var(--text);color:#fff;font:inherit}
+.hint{color:var(--dim);font-size:13px}
+</style>
+</head>
+<body>
+<div id="login" class="hidden"><h1>Gestao<span style="background:#1F1C17;color:#E7B64A;border-radius:6px;padding:0 6px">S</span></h1><p class="hint">Entre uma vez para lançar gastos por aqui.</p><input id="em" type="email" autocomplete="username" placeholder="E-mail"><input id="pw" type="password" autocomplete="current-password" placeholder="Senha"><button id="lb">Entrar</button><p id="le" class="hint" style="color:var(--red)"></p></div>
+<header id="hd" class="hidden"><b>Lançar<i>S</i></b><div class="sum"><span>Saldo estimado</span><strong id="bal">–</strong></div></header>
+<div id="log" class="hidden" aria-live="polite"></div>
+<form id="f" class="hidden" autocomplete="off"><input id="t" placeholder="uber 23,50 crédito · recebi 800 foto na rua" enterkeyhint="send" autocapitalize="sentences"><button id="go" aria-label="Enviar">↑</button></form>
+<script src="/gestor/vendor/supabase.js"></script>
+<script>
+(() => {
+const CFG = window.GESTOR_CFG || { url: 'https://uwpbvolvzftrcnjuwoao.supabase.co', key: 'sb_publishable_Yfi_WJXhCwcNJ0DvklVjfA_Uz3RVOBu' };
+const sb = supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: true, autoRefreshToken: true } });
+const $ = s => document.querySelector(s), BRL = n => (Number(n) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const pad = n => String(n).padStart(2, '0'), iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const PAYL = { pix: 'Pix', credito: 'Crédito', debito: 'Débito' };
+let U = null, REC = [], ENT = [], SET = {}, CLI = [], pending = null;
+
+// ---------- interpretação por palavras-chave ----------
+const IN_W = /\b(recebi|recebido|recebimento|entrou|entrada|ganhei|vendi|venda|pagou|caiu|salário|salario|depositou|depósito|deposito|bolsa|pens[aã]o)\b/;
+const CATS = [ // [categoria, tipo, escopo padrão, regex]
+  ['Foto na rua', 'in', 'pj', /foto na rua|fotos? (do|no) parque|foto avulsa|\bfotos?\b/],
+  ['Cliente', 'in', 'pj', /weinerth|varela|powerhouse|power house|psi ?[12]|cliente|mensalidade|contrato|jabá|briefing/],
+  ['Bolsa', 'in', 'pf', /bolsa|cnpq/], ['Pensão', 'in', 'pf', /pens[aã]o/],
+  ['Transporte', 'out', 'pf', /uber|99\b|[oô]nibus|gasolina|combust[ií]vel|passagem|t[aá]xi|estacionamento|pedágio/],
+  ['Mercado', 'out', 'pf', /mercado|supermercado|padaria|hortifruti|a[cç]ougue|feira|zaffari|nacional|bistek/],
+  ['Alimentação fora', 'out', 'pf', /ifood|lanche|restaurante|pizza|hamb[uú]rguer|burger|caf[eé]|almo[cç]o|janta|jantar|sorvete|a[cç]a[ií]|bar\b|cerveja|bebida|marmita|mc ?donald/],
+  ['Farmácia', 'out', 'pf', /farm[aá]cia|rem[eé]dio|minoxidil|cetoconazol|droga|vitamina|suplemento/],
+  ['Saúde', 'out', 'pf', /psi\b|psic[oó]log|terapia|consulta|exame|dentista|academia|26 ?fit|m[eé]dico/],
+  ['Moradia', 'out', 'pf', /aluguel|luz\b|energia|[aá]gua|internet|g[aá]s\b|condom[ií]nio|iptu|casa\b|m[oó]veis?|limpeza/],
+  ['Contas', 'out', 'pf', /claro|celular|telefone|plano|tim\b|vivo\b/],
+  ['Ferramentas', 'out', 'pj', /claude|capcut|canva|google one|assinatura|chatgpt|notion|figma|adobe|dom[ií]nio|hospedagem|vercel|app\b|software|licen[cç]a/],
+  ['Equipamento', 'out', 'pj', /c[aâ]mera|lente|tripé|trip[eé]|macbook|notebook|microfone|ilumina[cç][aã]o|cart[aã]o de mem[oó]ria|ssd|hd\b|equipamento|cabo|bateria/],
+  ['Anúncios', 'out', 'pj', /an[uú]ncio|tr[aá]fego|meta ads|impulsionar|impulsionamento|boost/],
+  ['Dívidas', 'out', 'pf', /formatura|parcela|empr[eé]stimo|fatura|cart[aã]o\b(?! de mem)/],
+  ['Educação', 'out', 'pf', /livro|curso|mensalidade da faculdade|apostila|xerox|c[oó]pia|ucpel/],
+  ['Viagem', 'out', 'pf', /viagem|hotel|hospedagem de viagem|passagem a[eé]rea|hostel/],
+  ['Investimento', 'out', 'pf', /invest|tesouro|cdb|poupan[cç]a|reserva/],
+  ['Lazer', 'out', 'pf', /cinema|show|jogo|steam|netflix|spotify|festa|ingresso|presente|roupa|t[eê]nis|corte de cabelo|barbeiro|lazer|role\b|rolê/]
+];
+function num(s) { s = String(s).replace(/\s/g, ''); if (/,\d{1,2}$/.test(s)) s = s.replace(/\./g, '').replace(',', '.'); else if (/\.\d{1,2}$/.test(s) && !/\.\d{3}$/.test(s)) { /* 12.5 */ } else s = s.replace(/[.,](?=\d{3}\b)/g, ''); return parseFloat(s); }
+function parse(raw) {
+  let t = ' ' + raw.trim() + ' '; const low = t.toLowerCase().normalize('NFC');
+  const r = { raw, name: '', amount: null, kind: null, pay: null, scope: null, category: null, date: iso(new Date()), client_id: null };
+  // data
+  if (/\bontem\b/.test(low)) { const d = new Date(); d.setDate(d.getDate() - 1); r.date = iso(d); t = t.replace(/ontem/i, ' '); }
+  else if (/\banteontem\b/.test(low)) { const d = new Date(); d.setDate(d.getDate() - 2); r.date = iso(d); t = t.replace(/anteontem/i, ' '); }
+  const dm = t.match(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/); if (dm) { const y = dm[3] ? (dm[3].length === 2 ? 2000 + +dm[3] : +dm[3]) : new Date().getFullYear(); r.date = `${y}-${pad(+dm[2])}-${pad(+dm[1])}`; t = t.replace(dm[0], ' '); }
+  t = t.replace(/\bhoje\b/i, ' ');
+  // valor
+  const am = t.match(/(?:r\$\s*)?(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|conto|contos|pila|pratas)?/i);
+  if (am) { r.amount = num(am[1]); if (/\bk\b/i.test(t.slice(am.index + am[0].length, am.index + am[0].length + 2))) r.amount *= 1000; t = t.replace(am[0], ' '); }
+  const l2 = t.toLowerCase();
+  // forma
+  if (/cr[eé]dito|cart[aã]o|nubank|\bcc\b|parcelad/.test(l2) && !/cart[aã]o de mem/.test(l2)) r.pay = 'credito'; else if (/d[eé]bito/.test(l2)) r.pay = 'debito'; else if (/\bpix\b|dinheiro|transfer|\bted\b|\bdoc\b|especie|espécie/.test(l2)) r.pay = 'pix';
+  // tipo
+  if (IN_W.test(l2) && !/paguei|comprei|gastei|\bpaga(r|do)\b/.test(l2)) r.kind = 'in'; else if (/paguei|comprei|gastei|gasto|\bpaga(r|do)\b|saiu|debitou|assinei/.test(l2)) r.kind = 'out';
+  // categoria
+  for (const [c, k, sc, re] of CATS) { if (re.test(l2) && (!r.kind || r.kind === k)) { r.category = c; r.kind = r.kind || k; r.scope = sc; break; } }
+  if (/\bpj\b|\bempresa\b|\bstudio\b|trabalho/.test(l2)) r.scope = 'pj'; else if (/\bpf\b|pessoal|\bmeu\b|\bminha\b/.test(l2) && !/minha (c[aâ]mera|empresa)/.test(l2)) r.scope = r.scope && /\bpf\b/.test(l2) ? 'pf' : r.scope || 'pf';
+  if (/\bpf\b/.test(l2)) r.scope = 'pf';
+  // cliente
+  const c = CLI.find(x => l2.includes(x.name.toLowerCase().split(' ')[0]) && x.name.length > 2 && (x.kind || 'cliente') !== 'pessoal'); if (c) { r.client_id = c.id; r.scope = 'pj'; if (!r.category) { r.category = 'Cliente'; r.kind = r.kind || 'in'; } }
+  // nome limpo
+  r.name = t.replace(/\b(paguei|comprei|gastei|recebi|entrou|ganhei|vendi|no|na|de|do|da|em|com|um|uma|pix|cr[eé]dito|d[eé]bito|cart[aã]o|pj|pf|hoje|reais|real|r\$)\b/gi, ' ').replace(/[^\p{L}\p{N}\s+\-]/gu, ' ').replace(/\s+/g, ' ').trim();
+  if (!r.name) r.name = r.category || 'Lançamento';
+  r.name = r.name.charAt(0).toUpperCase() + r.name.slice(1);
+  return r;
+}
+window.__parse = parse;
+
+// ---------- dados ----------
+async function load() {
+  const from = iso(new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1));
+  const [a, b, c, d] = await Promise.all([sb.from('fin_entries').select('*').gte('date', from), sb.from('fin_recurring').select('*'), sb.from('fin_settings').select('*'), sb.from('clients').select('id,name,kind')]);
+  ENT = a.data || []; REC = b.data || []; SET = {}; (c.data || []).forEach(s => SET[s.key] = s.value); CLI = d.data || [];
+  bal();
+}
+function bal() { const o = SET.opening || { amount: 0, date: '1970-01-01' }; let b = +o.amount; ENT.forEach(e => { if (e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (e.kind === 'in') b += +e.amount; else if (e.pay !== 'credito') b -= +e.amount; }); $('#bal').textContent = BRL(b); return b; }
+function monthSums() { const m = iso(new Date()).slice(0, 7); const E = ENT.filter(e => e.date.startsWith(m) && e.status === 'pago'); return { in: E.filter(e => e.kind === 'in').reduce((a, e) => a + +e.amount, 0), out: E.filter(e => e.kind === 'out').reduce((a, e) => a + +e.amount, 0) }; }
+
+// ---------- chat ----------
+const log = $('#log');
+function say(html, cls = 'b') { const d = document.createElement('div'); d.className = 'm ' + cls; d.innerHTML = html; log.appendChild(d); log.scrollTop = log.scrollHeight; return d; }
+function chips(el, list) { const w = document.createElement('div'); w.className = 'chips'; list.forEach(([label, fn, cls]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip ' + (cls || ''); b.textContent = label; b.onclick = () => { w.querySelectorAll('button').forEach(x => x.disabled = true); fn(); }; w.appendChild(b); }); el.appendChild(w); log.scrollTop = log.scrollHeight; }
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function findMatch(p) { // conta prevista que combina com o texto
+  const words = norm(p.raw).split(/[^a-z0-9]+/).filter(w => w.length > 2 && !/^(paguei|conta|pix|credito|debito|reais|hoje|ontem|recebi)$/.test(w));
+  let best = null, sc = 0;
+  ENT.filter(e => e.status === 'previsto' && e.kind === (p.kind || 'out')).forEach(e => { const nm = norm(e.name + ' ' + (e.category || '')); const s = words.filter(w => nm.includes(w)).length; if (s > sc) { sc = s; best = e; } });
+  return sc ? best : null;
+}
+async function handle(text) {
+  say(esc(text), 'u');
+  if (pending && pending.ask) { const f = pending.ask; pending.ask = null; return f(text); }
+  const p = parse(text); pending = { p };
+  const miss = [];
+  if (!isFinite(p.amount) || p.amount == null) return askAmount(p);
+  const m = findMatch(p);
+  if (m) {
+    const b = say(`Parece a conta <b>${esc(m.name)}</b> (${BRL(m.amount)}, vence ${m.date.slice(8)}/${m.date.slice(5, 7)}). Marco como ${m.kind === 'in' ? 'recebida' : 'paga'}${Math.abs(m.amount - p.amount) > 0.005 ? ` com o valor de ${BRL(p.amount)}` : ''}?`);
+    chips(b, [['Sim, é essa', () => markPaid(m, p), 'go'], ['Não, é um gasto novo', () => step(p)]]); return;
+  }
+  step(p);
+}
+function askAmount(p) { const b = say('Qual foi o valor?'); pending.ask = t => { const v = num((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { say('Não entendi o valor. Escreve só o número, tipo 23,50.'); pending.ask = f => askAmount(p) && 0; return askAmount(p); } p.amount = v; step(p); }; }
+function step(p) {
+  if (!p.kind) { const b = say(`${BRL(p.amount)}: entrou ou saiu?`); return chips(b, [['Gastei', () => { p.kind = 'out'; step(p); }], ['Recebi', () => { p.kind = 'in'; step(p); }, 'am']]); }
+  if (!p.category) { const cats = [...new Set([...REC.map(r => r.category), ...ENT.map(e => e.category)].filter(Boolean))].filter(c => !!c); const b = say('Em que categoria entra?'); return chips(b, cats.slice(0, 14).map(c => [c, () => { p.category = c; const hit = CATS.find(x => x[0] === c); if (hit && !p.scope) p.scope = hit[2]; step(p); }])); }
+  if (!p.scope) { const b = say('É PJ ou pessoa física?'); return chips(b, [['PJ', () => { p.scope = 'pj'; step(p); }], ['Pessoa física', () => { p.scope = 'pf'; step(p); }]]); }
+  if (p.kind === 'out' && !p.pay) { const b = say('Pagou como?'); return chips(b, [['Pix', () => { p.pay = 'pix'; step(p); }], ['Crédito', () => { p.pay = 'credito'; step(p); }], ['Débito', () => { p.pay = 'debito'; step(p); }]]); }
+  if (p.kind === 'in' && !p.pay) p.pay = 'pix';
+  confirm_(p);
+}
+function card(p) { return `<div class="big ${p.kind === 'in' ? 'in' : ''}">${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)}</div><div class="sumcard"><span>O quê</span><b>${esc(p.name)}</b><span>Categoria</span><b>${esc(p.category)}</b><span>Conta</span><b>${p.scope === 'pj' ? 'PJ' : 'Pessoa física'}</b><span>Forma</span><b>${PAYL[p.pay]}</b><span>Data</span><b>${p.date.slice(8)}/${p.date.slice(5, 7)}</b></div>`; }
+function confirm_(p) {
+  const b = say(card(p) + '<div class="hint" style="margin-top:6px">Salvo assim?</div>');
+  chips(b, [['Salvar', () => save(p), 'go'], ['Trocar categoria', () => { p.category = null; step(p); }], ['Trocar conta', () => { p.scope = null; step(p); }], ['Trocar forma', () => { p.pay = null; step(p); }], ['Cancelar', () => { pending = null; say('Cancelado.'); }]]);
+}
+async function save(p) {
+  const row = { kind: p.kind, scope: p.scope, name: p.name, amount: p.amount, date: p.date, status: 'pago', paid_on: p.date, pay: p.pay, category: p.category, client_id: p.client_id || null };
+  const { data, error } = await sb.from('fin_entries').insert(row).select(); if (error) return say('Não consegui salvar: ' + esc(error.message));
+  ENT.push(data[0]); pending = null; done(`Lançado: ${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)} em ${esc(p.category)}.`, p.category, p.scope, p.kind);
+}
+async function markPaid(m, p) {
+  const pay = m.pay === 'ambos' ? (p.pay || null) : (m.pay || p.pay);
+  const go = async pay => { const row = { status: 'pago', paid_on: p.date, pay: pay || 'pix', amount: p.amount }; const { error } = await sb.from('fin_entries').update(row).eq('id', m.id); if (error) return say('Não consegui salvar: ' + esc(error.message)); Object.assign(m, row); pending = null; done(`${esc(m.name)} marcada como ${m.kind === 'in' ? 'recebida' : 'paga'}.`, m.category, m.scope, m.kind); };
+  if (m.kind === 'out' && !pay) { const b = say('Pagou como?'); return chips(b, [['Pix', () => go('pix')], ['Crédito', () => go('credito')], ['Débito', () => go('debito')]]); }
+  go(pay);
+}
+function done(msg, cat, scope, kind) {
+  bal(); const s = monthSums(); let extra = '';
+  const bud = REC.find(r => r.active && r.rule === 'orcamento' && r.category === cat && r.scope === scope && r.kind === kind);
+  if (bud) { const used = ENT.filter(e => e.date.startsWith(iso(new Date()).slice(0, 7)) && e.kind === kind && e.category === cat && e.scope === scope).reduce((a, e) => a + +e.amount, 0); extra = `\n${esc(bud.name)}: ${BRL(used)} de ${BRL(bud.amount)} do mês.`; }
+  say(`${msg}\nSaldo estimado: ${BRL(bal())}. No mês: entrou ${BRL(s.in)}, saiu ${BRL(s.out)}.${extra}`);
+}
+
+// ---------- boot ----------
+$('#f').addEventListener('submit', ev => { ev.preventDefault(); const t = $('#t').value.trim(); if (!t) return; $('#t').value = ''; handle(t); });
+$('#lb').onclick = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $('#em').value.trim(), password: $('#pw').value }); if (error) { $('#le').textContent = 'E-mail ou senha incorretos.'; return; } $('#pw').value = ''; start(data.user); };
+async function start(user) { U = user; ['#login'].forEach(s => $(s).classList.add('hidden')); ['#hd', '#log', '#f'].forEach(s => $(s).classList.remove('hidden'));
+  try { await load(); } catch (e) { say('Erro ao carregar: ' + esc(e.message)); }
+  say('Oi! Escreve o que gastou ou recebeu, do jeito que sair.\nEx.: "uber 23,50 crédito", "mercado 87 pix", "recebi 800 foto na rua".'); $('#t').focus(); }
+(async () => { const { data } = await sb.auth.getSession(); if (data.session) start(data.session.user); else $('#login').classList.remove('hidden'); })();
+})();
+</script>
+</body>
+</html>
