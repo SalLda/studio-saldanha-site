@@ -129,7 +129,7 @@ h1,h2,h3{margin:0;font-weight:500}
 .cardhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
 
 /* dashboard */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .kpi{background:var(--surface-c-lowest);border-radius:var(--r-lg);padding:16px;box-shadow:var(--e1);cursor:pointer;border:none;text-align:left;transition:transform .12s}
 .kpi:hover{transform:translateY(-1px)}
 .kpi .k-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;margin-bottom:10px}
@@ -276,6 +276,31 @@ h1,h2,h3{margin:0;font-weight:500}
 .kv small{display:block;font-size:11px;font-weight:600;color:var(--on-surface-variant);letter-spacing:.03em}
 .kv b{font-weight:600;font-size:14px}
 .qs{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+/* destaques do início */
+.hero2{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:12px}
+.hero2 .big{background:var(--primary);color:#fff;border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--e1);border:none;text-align:left;cursor:pointer}
+.hero2 .big .l{font-size:13px;opacity:.85;letter-spacing:.02em}
+.hero2 .big .v{font-size:40px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1;margin:4px 0}
+.hero2 .big .s{font-size:13px;opacity:.85}
+.hero2 .big2{background:var(--surface-c-lowest);color:var(--on-surface);border:1px solid var(--outline-variant)}
+.hero2 .big2 .l,.hero2 .big2 .s{color:var(--on-surface-variant);opacity:1}
+.hero2 .big2 .v{color:var(--primary)}
+@media(max-width:700px){.hero2{grid-template-columns:1fr}.hero2 .big .v{font-size:34px}}
+/* arquivos do paciente */
+.pfile{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--outline-variant)}
+.pfile .grow{flex:1;min-width:0}.pfile .t{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pfile .s{font-size:12px;color:var(--on-surface-variant)}
+/* alicia */
+.al-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:900px){.al-grid{grid-template-columns:1fr}}
+.al-grid .grid2>*,.al-grid select,.al-grid textarea{min-width:0;max-width:100%;width:100%;box-sizing:border-box}
+.al-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.al-res{border:1px solid var(--outline-variant);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;background:var(--surface-c-lowest)}
+.al-res h4{margin:6px 0 4px;font-size:15px;line-height:1.35}
+.al-res .m{font-size:12px;color:var(--on-surface-variant)}
+.al-res details{margin-top:8px}.al-res summary{cursor:pointer;color:var(--primary);font-weight:600;font-size:13px}
+.al-res p{font-size:13.5px;line-height:1.55;margin:8px 0 0;white-space:pre-wrap}
+.al-syn{background:var(--primary-container);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:14px;line-height:1.6;font-size:14px}
+.al-syn h4{margin:12px 0 4px}.al-syn h4:first-child{margin-top:0}
 /* conquistas */
 .nav.special .pill{background:linear-gradient(135deg,#FFD978,#F2A65A);color:#4A2B00}
 .nav.special.on .pill{box-shadow:0 0 0 2px var(--primary)}
@@ -316,7 +341,8 @@ dialog form{padding:24px}
   .nav{width:auto;flex:1;font-size:11px}
   .nav .pill{width:52px}
   .main{padding:16px 16px 130px}
-  .kpis{grid-template-columns:repeat(2,1fr)}
+  .kpis{grid-template-columns:repeat(3,1fr)}
+  .kpi .v{font-size:20px}
   .dash{grid-template-columns:1fr}
   .grid2,.grid3{grid-template-columns:1fr}
   .fab{bottom:96px;right:16px}
@@ -351,6 +377,7 @@ dialog form{padding:24px}
     <button class="nav" data-view="financeiro"><span class="pill"><span class="ms">payments</span></span>Financeiro</button>
     <button class="nav" data-view="recibos"><span class="pill"><span class="ms">receipt_long</span></span>Recibos</button>
     <button class="nav" data-view="conteudo"><span class="pill"><span class="ms">auto_awesome</span></span>Conteúdo</button>
+    <button class="nav special" data-view="alicia"><span class="pill"><span class="ms fill">psychiatry</span></span>AlicIA</button>
     <button class="nav special" data-view="conquistas"><span class="pill"><span class="ms fill">emoji_events</span></span>Conquistas</button>
     <div class="sp"></div>
     <button class="icon-btn logout" id="railHello" title="Recado do Matheus (feedback)" style="background:var(--warn-container);color:var(--on-surface)"><span class="ms fill">campaign</span></button>
@@ -398,7 +425,10 @@ dialog form{padding:24px}
   </section>
   <section class="psec"><div class="psec-h"><span class="ms">folder</span>Documentação do paciente</div>
     <div class="field"><label>Link da pasta no Google Drive</label><div style="display:flex;gap:8px"><input name="docs_url" type="url" placeholder="https://drive.google.com/drive/folders/..." style="flex:1"><a class="btn tonal hidden" id="pDocs" target="_blank" rel="noopener" style="height:48px;border-radius:12px"><span class="ms">open_in_new</span>Abrir</a></div></div>
-    <div class="hint">Contrato, termos e documentos ficam no teu Drive. Aqui fica só o atalho.</div>
+    <div class="hint">Atalho para a pasta no Drive, se tu preferir manter lá.</div>
+    <div class="field" id="pFilesBox" style="margin-top:12px"><label>Arquivos do paciente</label><div id="pFiles"></div>
+      <label class="btn tonal sm" id="pFileBtn" style="margin-top:8px;cursor:pointer"><span class="ms">upload_file</span>Adicionar arquivo<input type="file" id="pFileIn" multiple hidden></label>
+      <div class="hint" id="pFileHint">Contrato, termos, laudos enviados. Privado: só tu acessa. Até 20 MB por arquivo. Evite guardar conteúdo clínico detalhado.</div></div>
     <div class="field"><label>Observações administrativas (nada clínico)</label><textarea name="admin_notes" rows="2"></textarea></div>
   </section>
   <div class="dact"><button type="button" class="btn danger" id="pDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
@@ -747,7 +777,7 @@ async function start(user) {
 window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== S.view && S.started) go(v, true); });
 
 /* ---------- navegação ---------- */
-const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
+const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, alicia: viewAlicia, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
 $$('.nav').forEach(b => b.onclick = () => go(b.dataset.view));
 async function go(v, fromHash) {
   if (!VIEWS[v]) v = 'inicio';
@@ -825,10 +855,13 @@ async function viewInicio() {
   $('#view').innerHTML = `
   <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="icon-btn" id="topHello" title="Recado do Matheus" style="background:var(--warn-container);color:var(--on-surface)"><span class="ms fill">campaign</span></button><button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
   <div class="kpis"></div>`;
+  const act = S.patients.filter(p => p.status === 'ativo'), pausa = S.patients.filter(p => p.status === 'pausa').length;
+  $('.kpis').insertAdjacentHTML('beforebegin', `<div class="hero2">
+    <button class="big" data-to="financeiro:pago"><div class="l">Recebido em ${esc(monthName(S.month).toLowerCase())}</div><div class="v">${brl(M.recebido)}</div><div class="s">${M.areceber > 0 ? 'Ainda a receber: ' + brl(M.areceber) : 'Tudo do mês recebido'}${M.previsto ? ' · previsto ' + brl(M.previsto) : ''}</div></button>
+    <button class="big big2" data-to="pacientes"><div class="l">Pacientes ativos</div><div class="v">${act.length}</div><div class="s">${pausa ? pausa + ' em pausa · ' : ''}${S.patients.length} no cadastro</div></button></div>`);
   $('.kpis').innerHTML = [
     kpi('event_available', 'var(--primary-container)', M.realizadas, 'Sessões realizadas', 'agenda'),
     kpi('event_busy', 'var(--error-container)', M.faltas, 'Faltas no mês', 'agenda'),
-    kpi('account_balance_wallet', 'var(--secondary-container)', brl(M.recebido), 'Recebido no mês', 'financeiro:pago'),
     kpi('receipt_long', 'var(--tertiary-container)', receiptGroups(pend).length, 'Recibos a emitir', 'recibos')
   ].join('');
   if (lateRec.length) $('.kpis').insertAdjacentHTML('beforebegin', `<div class="notice warn" style="cursor:pointer" data-go="recibos"><span class="ms">warning</span><div><b>${receiptGroups(lateRec).length} recibo(s) do Receita Saúde atrasado(s).</b> O recibo é emitido na data do pagamento; a multa é de R$ 100 por mês. Toque para emitir.</div></div>`);
@@ -1271,6 +1304,34 @@ async function viewPacientes() {
   setFab('Paciente', () => openPatient());
 }
 let editingPatient = null;
+const fmtSize = n => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+async function loadPFiles(p) {
+  const box = $('#pFiles'), btn = $('#pFileBtn'); if (!box) return;
+  if (!p) { box.innerHTML = '<div class="small muted">Salve o paciente primeiro para anexar arquivos.</div>'; btn.classList.add('hidden'); return; }
+  btn.classList.remove('hidden');
+  const { data, error } = await sb.from('patient_files').select('*').eq('patient_id', p.id).order('created_at', { ascending: false });
+  if (error) { box.innerHTML = '<div class="small muted">Não consegui carregar os arquivos.</div>'; return; }
+  box.innerHTML = (data || []).length ? data.map(f => `<div class="pfile"><span class="ms" style="color:var(--primary)">description</span><div class="grow"><div class="t">${esc(f.name)}</div><div class="s">${fmtSize(f.size || 0)} · ${fmtDate(f.created_at.slice(0, 10))}</div></div><button type="button" class="icon-btn" data-fdl="${f.id}" title="Abrir"><span class="ms">open_in_new</span></button><button type="button" class="icon-btn" data-fdel="${f.id}" title="Excluir" style="color:var(--error)"><span class="ms">delete</span></button></div>`).join('') : '<div class="small muted">Nenhum arquivo ainda.</div>';
+  const byId = id => data.find(f => f.id === id);
+  $$('[data-fdl]', box).forEach(b => b.onclick = async () => { const f = byId(b.dataset.fdl); const { data: u, error: e } = await sb.storage.from('patient-docs').createSignedUrl(f.path, 120); if (e) return fail(e); window.open(u.signedUrl, '_blank', 'noopener'); });
+  $$('[data-fdel]', box).forEach(b => b.onclick = async () => { const f = byId(b.dataset.fdel); if (!confirm('Excluir "' + f.name + '"? Não dá para desfazer.')) return;
+    await sb.storage.from('patient-docs').remove([f.path]); const { error: e } = await sb.from('patient_files').delete().eq('id', f.id); if (e) return fail(e); snack('Arquivo excluído'); loadPFiles(p); });
+}
+document.addEventListener('change', async e => {
+  if (e.target.id !== 'pFileIn' || !editingPatient) return;
+  const p = editingPatient, files = [...e.target.files]; e.target.value = '';
+  for (const file of files) {
+    if (file.size > 20 * 1048576) { snack('"' + file.name + '" passa de 20 MB'); continue; }
+    const safe = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w.\-]+/g, '_').slice(-80);
+    const path = S.user.id + '/' + p.id + '/' + crypto.randomUUID() + '-' + safe;
+    snack('Enviando ' + file.name + '…');
+    const up = await sb.storage.from('patient-docs').upload(path, file, { contentType: file.type || 'application/octet-stream' });
+    if (up.error) { fail(up.error); continue; }
+    const { error } = await sb.from('patient_files').insert({ patient_id: p.id, name: file.name, path, size: file.size, mime: file.type || null });
+    if (error) { await sb.storage.from('patient-docs').remove([path]); fail(error); continue; }
+  }
+  snack('Arquivo(s) anexado(s)'); loadPFiles(p);
+});
 function openPatient(p) {
   editingPatient = p || null; const f = $('#fPatient'); f.reset();
   $('#pTitle').textContent = p ? 'Editar paciente' : 'Novo paciente';
@@ -1279,7 +1340,7 @@ function openPatient(p) {
   const dl = $('#pDocs'); dl.classList.toggle('hidden', !p?.docs_url); if (p?.docs_url) dl.href = p.docs_url;
   for (const k of ['name', 'status', 'session_price', 'modality', 'weekday', 'session_time', 'frequency', 'billing', 'patient_cpf', 'start_date', 'payer_name', 'payer_cpf', 'guardian', 'whatsapp', 'admin_notes', 'docs_url'])
     if (f[k]) f[k].value = d[k] == null ? '' : (k === 'session_time' && d[k] ? d[k].slice(0, 5) : d[k]);
-  $('#pDel').classList.toggle('hidden', !p); $('#dlgPatient').showModal();
+  $('#pDel').classList.toggle('hidden', !p); $('#dlgPatient').showModal(); loadPFiles(p);
 }
 $('#fPatient').onsubmit = async e => {
   e.preventDefault(); const f = e.target, v = k => f[k].value.trim();
@@ -1791,6 +1852,86 @@ const SAVE = {
   brief: [60, 'Posicionamento definido', 'Tom de voz, pilares e o que evitar a partir do teu briefing.', 'badge']
 };
 const fmtMin = m => m < 60 ? Math.round(m) + ' min' : (Math.round(m / 6) / 10).toLocaleString('pt-BR') + ' h';
+/* ===== AlicIA: evidência científica para apoiar a formulação do caso ===== */
+const AL_TERMS = [['ansiedade generalizada', 'generalized anxiety disorder'], ['ansiedade social', 'social anxiety disorder'], ['ansiedade', 'anxiety'], ['depressão', 'depression'], ['depressao', 'depression'], ['pânico', 'panic disorder'], ['panico', 'panic disorder'],
+  ['tept', 'posttraumatic stress disorder'], ['estresse pós-traumático', 'posttraumatic stress disorder'], ['trauma', 'trauma'], ['toc', 'obsessive-compulsive disorder'], ['obsessivo', 'obsessive-compulsive disorder'], ['tdah', 'ADHD'], ['atenção', 'attention deficit'], ['autismo', 'autism spectrum disorder'], ['tea', 'autism spectrum disorder'],
+  ['luto', 'grief'], ['borderline', 'borderline personality disorder'], ['limítrofe', 'borderline personality disorder'], ['automutilação', 'self-harm'], ['suicid', 'suicidal ideation'], ['insônia', 'insomnia'], ['insonia', 'insomnia'], ['sono', 'sleep'], ['burnout', 'burnout'], ['estresse', 'stress'],
+  ['autoestima', 'self-esteem'], ['perfeccionismo', 'perfectionism'], ['procrastinação', 'procrastination'], ['relacionamento', 'relationship difficulties'], ['conjugal', 'couple distress'], ['casal', 'couple therapy'], ['família', 'family'], ['familiar', 'family'], ['raiva', 'anger'], ['agressividade', 'aggression'],
+  ['compulsão alimentar', 'binge eating disorder'], ['bulimia', 'bulimia nervosa'], ['anorexia', 'anorexia nervosa'], ['alimentar', 'eating disorder'], ['álcool', 'alcohol use disorder'], ['alcool', 'alcohol use disorder'], ['drogas', 'substance use disorder'], ['dependência', 'substance use disorder'], ['fobia', 'specific phobia'],
+  ['bipolar', 'bipolar disorder'], ['psicose', 'psychosis'], ['esquizofrenia', 'schizophrenia'], ['identidade de gênero', 'gender identity'], ['luto', 'bereavement'], ['solidão', 'loneliness'], ['bullying', 'bullying'], ['escola', 'school'], ['adolescente', 'adolescents'], ['criança', 'children'], ['idoso', 'older adults']];
+const AL_APP = { tcc: 'cognitive behavioral therapy', act: 'acceptance and commitment therapy', psicanalise: 'psychodynamic therapy', humanista: 'person-centered therapy', sistemica: 'systemic family therapy', dbt: 'dialectical behavior therapy', mindfulness: 'mindfulness-based' };
+const AL_GOAL = { intervencoes: '(psychotherapy OR "treatment outcome" OR efficacy OR effectiveness)', funcionamento: '(etiology OR "maintenance" OR "risk factors" OR "cognitive model" OR mechanisms)', necessidades: '(needs OR comorbidity OR assessment OR "clinical features")', avaliacao: '(assessment OR "psychometric" OR "screening" OR validation)' };
+const AL_AGE = { crianca: 'child', adolescente: 'adolescent', adulto: 'adult', idoso: 'aged' };
+function alEnglish(txt) { const t = (txt || '').toLowerCase(); const out = []; for (const [pt, en] of AL_TERMS) if (t.includes(pt) && !out.includes(en)) out.push(en); const lat = t.match(/[a-z]{4,}(?:\s+[a-z]{3,}){0,2}/g); if (!out.length && /^[\x00-\x7f]*$/.test(t) && t.trim()) out.push(t.trim()); return out.slice(0, 4); }
+const alLevel = pt => /meta-analysis/i.test(pt) ? [1, 'Meta-análise'] : /systematic review/i.test(pt) ? [2, 'Revisão sistemática'] : /randomized controlled/i.test(pt) ? [3, 'Ensaio randomizado'] : /guideline/i.test(pt) ? [2, 'Diretriz'] : /review/i.test(pt) ? [4, 'Revisão'] : [5, 'Estudo'];
+async function alPubmed(terms, ctx) {
+  const core = '(' + terms.map(t => '"' + t + '"[Title/Abstract]').join(' OR ') + ')';
+  const q = [core, ctx.app ? '"' + ctx.app + '"[Title/Abstract]' : '(psychotherapy[MeSH Terms] OR psychotherapy[Title/Abstract] OR "mental health"[Title/Abstract])', AL_GOAL[ctx.goal] || '', ctx.age ? AL_AGE[ctx.age] + '[MeSH Terms]' : '', '(meta-analysis[pt] OR systematic[sb] OR randomized controlled trial[pt] OR practice guideline[pt])', 'hasabstract', '(2010:3000[dp])'].filter(Boolean).join(' AND ');
+  const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+  const sr = await (await fetch(base + 'esearch.fcgi?db=pubmed&retmode=json&retmax=14&sort=relevance&term=' + encodeURIComponent(q))).json();
+  const ids = sr.esearchresult?.idlist || []; if (!ids.length) return { q, items: [] };
+  const xml = await (await fetch(base + 'efetch.fcgi?db=pubmed&retmode=xml&id=' + ids.join(','))).text();
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const items = [...doc.querySelectorAll('PubmedArticle')].map(a => {
+    const g = sel => a.querySelector(sel)?.textContent?.trim() || '';
+    const pts = [...a.querySelectorAll('PublicationType')].map(x => x.textContent).join('; ');
+    const [lv, lab] = alLevel(pts);
+    const ab = [...a.querySelectorAll('Abstract AbstractText')].map(x => (x.getAttribute('Label') ? x.getAttribute('Label') + ': ' : '') + x.textContent).join('\n');
+    const au = [...a.querySelectorAll('Author')].slice(0, 3).map(x => (x.querySelector('LastName')?.textContent || x.querySelector('CollectiveName')?.textContent || '')).filter(Boolean).join(', ');
+    const doi = [...a.querySelectorAll('ArticleId')].find(x => x.getAttribute('IdType') === 'doi')?.textContent;
+    return { src: 'PubMed', id: g('PMID'), title: g('ArticleTitle'), journal: g('Journal Title'), year: g('PubDate Year') || (g('PubDate MedlineDate') || '').slice(0, 4), authors: au, abstract: ab, doi, level: lv, label: lab, url: 'https://pubmed.ncbi.nlm.nih.gov/' + g('PMID') + '/' };
+  });
+  items.sort((x, y) => x.level - y.level || (y.year || 0) - (x.year || 0));
+  return { q, items };
+}
+async function alPT(text, ctx) {
+  const q = '(' + text.replace(/["()]/g, ' ').trim().split(/\s+/).slice(0, 8).join(' ') + ') AND (psicoterapia OR intervenção OR tratamento OR psicologia) AND LANG:por AND HAS_ABSTRACT:y';
+  const r = await (await fetch('https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core&pageSize=6&sort=RELEVANCE&query=' + encodeURIComponent(q))).json();
+  return (r.resultList?.result || []).map(x => ({ src: 'Europe PMC', id: x.pmid || x.id, title: (x.title || '').replace(/<[^>]+>/g, ''), journal: x.journalTitle || '', year: x.pubYear, authors: (x.authorString || '').split(',').slice(0, 3).join(','), abstract: (x.abstractText || '').replace(/<[^>]+>/g, ''), doi: x.doi, level: 5, label: 'Em português', url: x.doi ? 'https://doi.org/' + x.doi : 'https://europepmc.org/article/' + x.source + '/' + x.id }));
+}
+async function viewAlicia() {
+  await loadPatients();
+  const ps = S.patients.filter(p => p.status === 'ativo' || p.status === 'pausa');
+  $('#view').innerHTML = `
+  <div class="topbar"><div><div class="display">AlicIA</div><div class="muted">Melhor evidência disponível para pensar o caso. Apoio à decisão, não diagnostica.</div></div></div>
+  <div class="notice" style="background:var(--warn-container)"><span class="ms">shield</span><div><b>Sigilo.</b> Não escreva nome, CPF, endereço nem detalhes que identifiquem a pessoa (CFP, Art. 9). O que tu digitar aqui não é salvo no Gestaopsi.</div></div>
+  <div class="al-grid">
+    <section class="card elev"><form id="alForm">
+      <div class="field"><label>Paciente (opcional, usa só iniciais e dados de rotina)</label><select id="alPat"><option value="">Nenhum, caso hipotético</option>${ps.map(p => `<option value="${p.id}">${esc(initials(p.name))} · ${esc(p.name.split(' ')[0])}</option>`).join('')}</select></div>
+      <div class="grid2"><div class="field"><label>Faixa etária</label><select id="alAge"><option value="adulto">Adulto</option><option value="adolescente">Adolescente</option><option value="crianca">Criança</option><option value="idoso">Idoso</option></select></div>
+      <div class="field"><label>Abordagem</label><select id="alApp"><option value="">Melhor evidência (qualquer)</option><option value="tcc">TCC</option><option value="act">ACT</option><option value="dbt">DBT</option><option value="psicanalise">Psicodinâmica / psicanálise</option><option value="humanista">Centrada na pessoa</option><option value="sistemica">Sistêmica / familiar</option><option value="mindfulness">Mindfulness</option></select></div></div>
+      <div class="field"><label>Queixa / demanda (sem identificar)</label><textarea id="alQ" rows="4" required maxlength="800" placeholder="Ex.: ansiedade social com evitação no trabalho, início há 2 anos"></textarea></div>
+      <div class="field"><label>O que tu quer saber</label><div class="al-chips" id="alGoal">${[['intervencoes', 'Intervenções eficazes'], ['funcionamento', 'Como funciona / mantém'], ['necessidades', 'Necessidades e comorbidades'], ['avaliacao', 'Avaliação e instrumentos']].map(([k, l], i) => `<button type="button" class="chip ${i ? '' : 'on'}" data-g="${k}">${l}</button>`).join('')}</div></div>
+      <button class="btn" id="alGo" style="width:100%;margin-top:8px"><span class="ms">search</span>Buscar evidência</button>
+      <div class="hint" style="margin-top:10px">Busca em PubMed (meta-análises, revisões sistemáticas, ensaios e diretrizes) e em português no Europe PMC. Livros e bases pagas (PsycInfo, Web of Science) não estão incluídos.</div>
+    </form></section>
+    <section id="alOut"><div class="card elev"><div class="empty"><span class="ms">psychiatry</span>Descreva a queixa e eu busco o que a literatura diz.</div></div></section>
+  </div>`;
+  let goal = 'intervencoes';
+  $$('#alGoal .chip').forEach(c => c.onclick = () => { goal = c.dataset.g; $$('#alGoal .chip').forEach(x => x.classList.toggle('on', x === c)); });
+  $('#alForm').onsubmit = async e => {
+    e.preventDefault(); const out = $('#alOut'), btn = $('#alGo'); btn.disabled = true;
+    const txt = $('#alQ').value.trim(), pid = $('#alPat').value, p = pid ? pById(pid) : null;
+    out.innerHTML = '<div class="card elev"><div class="empty"><span class="ms">hourglass_top</span>Buscando nas bases…</div></div>';
+    const ctx = { goal, age: $('#alAge').value, app: AL_APP[$('#alApp').value] || '' };
+    try {
+      const terms = alEnglish(txt);
+      if (!terms.length) { out.innerHTML = '<div class="card elev"><div class="notice warn"><span class="ms">info</span><div>Não reconheci o tema. Cite o transtorno ou queixa (ex.: ansiedade, depressão, luto, TOC, insônia) ou escreva em inglês.</div></div></div>'; return; }
+      const [pm, pt] = await Promise.all([alPubmed(terms, ctx).catch(() => ({ items: [], err: 1 })), alPT(txt, ctx).catch(() => [])]);
+      const items = [...pm.items, ...pt];
+      let rot = null;
+      if (p) { const ss = (await sb.from('sessions').select('date,status,modality').eq('patient_id', p.id).order('date')).data || []; rot = { iniciais: initials(p.name), frequencia: p.frequency, formato: p.modality, meses: p.start_date ? Math.max(0, Math.round((Date.now() - new Date(p.start_date)) / 2629800000)) : null, realizadas: ss.filter(x => x.status === 'realizada').length, faltas: ss.filter(x => x.status === 'falta').length }; }
+      let syn = null;
+      if (items.length) { try { const { data, error } = await sb.functions.invoke('ai', { body: { task: 'alicia', age: ctx.age, approach: ctx.app, goal, complaint: txt, routine: rot, papers: items.slice(0, 12).map(x => ({ n: x.id, t: x.title, y: x.year, l: x.label, a: (x.abstract || '').slice(0, 1400) })) } }); if (!error && data?.text) syn = data.text; } catch (_) {} }
+      const sec = (title, arr) => arr.length ? `<div class="label" style="margin:14px 0 8px">${title}</div>` + arr.map(x => `<div class="al-res"><span class="badge ${x.level <= 2 ? 'b-ok' : 'b-neutral'}">${esc(x.label)}</span> <span class="m">${esc(x.src)}${x.year ? ' · ' + esc(x.year) : ''}</span><h4>${esc(x.title)}</h4><div class="m">${esc(x.authors)}${x.authors ? ' · ' : ''}${esc(x.journal)}</div>${x.abstract ? `<details><summary>Ler resumo</summary><p>${esc(x.abstract)}</p></details>` : ''}<div style="margin-top:8px"><a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms">open_in_new</span>${x.src === 'PubMed' ? 'PMID ' + esc(x.id) : 'Abrir'}</a>${x.doi ? ` <a class="btn text sm" href="https://doi.org/${esc(x.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</div></div>`).join('') : '';
+      out.innerHTML = (syn ? `<div class="al-syn">${esc(syn).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>')}</div>` : (items.length ? '<div class="notice" style="background:var(--surface-c-low)"><span class="ms">info</span><div>Síntese por IA ainda não está ligada. Abaixo está a evidência ordenada pelo nível (meta-análises primeiro). Leia os resumos e confira as fontes.</div></div>' : '')) +
+        (rot ? `<div class="small muted" style="margin-bottom:8px">Dados de rotina considerados: ${rot.iniciais} · ${esc(cap(rot.frequencia || ''))} · ${rot.formato} · ${rot.meses ?? '?'} meses de acompanhamento · ${rot.realizadas} sessões realizadas, ${rot.faltas} faltas.</div>` : '') +
+        (items.length ? sec('Evidência de maior nível', pm.items) + sec('Literatura em português', pt) : '<div class="card elev"><div class="empty"><span class="ms">search_off</span>Nada encontrado com esses filtros. Tente termos mais gerais ou outro foco.</div></div>') +
+        `<div class="foot">Resultados de bases públicas, sem garantia de aplicabilidade ao caso. A decisão clínica é tua. Busca: ${esc(terms.join(' · '))}</div>`;
+    } catch (err) { out.innerHTML = '<div class="card elev"><div class="notice warn"><span class="ms">wifi_off</span><div>Não consegui falar com as bases agora. Tente de novo em instantes.</div></div></div>'; console.error(err); }
+    finally { btn.disabled = false; }
+  };
+}
 async function viewConquistas() {
   await loadPatients();
   const real = S.patients.filter(p => !p.demo), useDemo = !real.length && S.patients.length;
