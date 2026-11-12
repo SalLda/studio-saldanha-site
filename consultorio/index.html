@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,more_horiz,movie,music_note,north_east,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sync,task_alt,timer,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,more_horiz,movie,music_note,north_east,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sync,task_alt,timer,touch_app,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -89,6 +89,19 @@ h1,h2,h3{margin:0;font-weight:500}
 .cmpx .r{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:13px}.cmpx .r i{width:10px;height:10px;border-radius:5px;flex:none}.cmpx .r .t{flex:1;min-width:0}.cmpx .r .t small{display:block;color:var(--on-surface-variant);font-size:11.5px}.cmpx .r b{font-variant-numeric:tabular-nums;white-space:nowrap}
 .cmp2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}.cmp2 h5{margin:0 0 4px;font-size:13px;display:flex;gap:6px;align-items:center}.cmp2 h5 .ms{font-size:18px}
 @media (max-width:700px){.cmp2{grid-template-columns:1fr}}
+#tourOv{position:fixed;inset:0;z-index:200}
+#tourSp{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(8,16,12,.66);transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1),width .55s cubic-bezier(.4,0,.2,1),height .55s cubic-bezier(.4,0,.2,1);pointer-events:none}
+#tourSp::after{content:'';position:absolute;inset:-3px;border-radius:17px;border:2.5px solid #7FE0B5;animation:tpulse 1.5s ease-out infinite}
+#tourSp.none::after{display:none}
+@keyframes tpulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.07);opacity:0}}
+#tourHand{position:fixed;z-index:2;pointer-events:none;transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1),opacity .3s;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));animation:thand .9s ease-in-out infinite alternate}
+#tourHand .ms{font-size:34px}
+@keyframes thand{from{transform:translate(0,0) scale(1)}to{transform:translate(-7px,-7px) scale(.92)}}
+#tourCard{position:fixed;z-index:3;width:min(360px,calc(100vw - 24px));box-sizing:border-box;background:var(--dlg,var(--surface-c-lowest,#fff));color:var(--on-surface);border-radius:20px;padding:16px 18px 14px;box-shadow:0 12px 40px rgba(0,0,0,.35);transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1),opacity .25s;max-height:calc(100vh - 24px);overflow:auto}
+#tourCard .tprog{height:3px;border-radius:2px;background:var(--outline-variant);margin:0 0 12px;overflow:hidden}#tourCard .tprog i{display:block;height:100%;background:var(--primary);transition:width .5s}
+#tourCard .thead{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.touric.sm{width:36px;height:36px;border-radius:18px;margin:0;flex:none}.touric.sm .ms{font-size:20px}
+#tourCard .tfoot{display:flex;gap:8px;align-items:center;margin-top:14px}#tourCard .tfoot .sp{flex:1;display:block}
 .tourdots{display:flex;gap:6px;justify-content:center;margin-bottom:16px}.tourdots i{width:7px;height:7px;border-radius:4px;background:var(--outline-variant)}.tourdots i.on{width:20px;background:var(--primary)}
 .touric{width:60px;height:60px;border-radius:30px;background:var(--primary-container);color:var(--primary);display:grid;place-items:center;margin:0 auto 12px}.touric .ms{font-size:30px}
 .tourbody p{margin:0 0 10px}.tourbody{font-size:14px;line-height:1.55;color:var(--on-surface-variant)}.tourbody ul{margin:8px 0 0;padding-left:18px}.tourbody li{margin:4px 0}.tourbody b{color:var(--on-surface)}
@@ -852,37 +865,88 @@ function openRailMenu() {
   $('#pmOut').onclick = async () => { await sb.auth.signOut(); location.reload(); };
 }
 $('#railMenu').onclick = openRailMenu;
-/* ---------- tutorial ---------- */
+/* ---------- tutorial guiado (vai até cada lugar e destaca) ---------- */
+const NAVQ = v => ['.nav[data-view=' + v + ']', '#navMore'];
 const TOUR = [
-  ['psychology', 'Bem-vinda(o) ao Gestaopsi', '<p>Aqui você cuida do lado <b>administrativo</b> do consultório: agenda, cobranças, recibos e documentos.</p><ul><li><b>Nada clínico</b> fica aqui. Nada de prontuário, queixa detalhada ou evolução.</li><li>Colocamos <b>2 pacientes de exemplo</b> (um presencial e um online) para você explorar sem medo. Remova quando quiser em <b>Pacientes</b>.</li></ul>'],
-  ['space_dashboard', 'Início: o mês num relance', '<p>No topo ficam os dois números que mais importam: <b>valor recebido no mês</b> e <b>pacientes ativos</b>.</p><ul><li>Os cartões mostram sessões realizadas, faltas e recibos a emitir.</li><li>Em <b>Alertas</b> aparecem pagamento em atraso, duas faltas seguidas e paciente sumido.</li><li>Toque em qualquer número ou coluna para ver os lançamentos por trás.</li></ul>'],
-  ['payments', 'Financeiro do mês', '<p>O gráfico do Início mostra seis colunas, e logo abaixo dele está o detalhe de cada uma:</p><ul><li><b>Gerado:</b> o que as sessões do mês valem (realizadas e faltas cobradas).</li><li><b>Recebido:</b> o que de fato caiu no mês, por Pix, cartão ou dinheiro.</li><li><b>A receber</b> e <b>Em atraso:</b> o que ainda falta entrar.</li><li><b>Despesas</b> e <b>Lucro:</b> aluguel de sala, supervisão, CRP... Lucro = recebido − despesas.</li></ul>'],
-  ['calendar_month', 'Agenda', '<p>Veja o mês, a semana ou uma lista.</p><ul><li><b>Gerar sessões do mês</b> cria a agenda a partir dos horários fixos de cada paciente.</li><li>Arraste uma sessão para outro dia para reagendar. Mudar para online ou presencial vale só para <b>aquela</b> sessão.</li><li>O botão <b>Filtros</b> abre formato, status e recibo pendente.</li><li>Dá para conectar o <b>Google Agenda</b> ou baixar um arquivo .ics.</li></ul>'],
-  ['group', 'Pacientes', '<p>Cadastro só com dados administrativos: horário, valor, forma de cobrança (por sessão, mensal, quinzenal) e, se quiser, o link da pasta no seu <b>Drive</b>.</p><ul><li>Cada paciente tem o histórico de sessões e pagamentos.</li><li>Contratos e laudos ficam no seu Drive; aqui fica só o atalho.</li></ul>'],
-  ['receipt_long', 'Financeiro e Recibos', '<p>Marque a sessão como <b>paga</b> e ela vai para <b>Recibos</b>.</p><ul><li>O recibo do Receita Saúde deve ser emitido na data do pagamento. O sistema te avisa dos atrasados.</li><li>Em <b>Financeiro</b> você lança as despesas do mês, inclusive aluguel de sala por hora.</li></ul>'],
-  ['face_3', 'AlicIA e Documentos', '<p><b>AlicIA</b> busca a melhor evidência disponível (PubMed e Europe PMC) a partir de abordagem, objetivo e perfil do caso, usando só iniciais e rotina, nunca o nome do paciente.</p><p><b>Documentos</b> tem 14 modelos prontos: declarações, atestado, relatório, laudo, parecer, encaminhamentos, contrato, TCLE online e mais. Preenche com os dados do paciente e você copia, imprime ou baixa em Word.</p>'],
-  ['photo', 'Obrigado por estar aqui!', '<p><b>Olá, eu sou o Matheus</b>, idealizador do Gestaopsi.</p><p>Fico muito feliz que você tenha chegado até aqui. Espero poupar algumas horas do teu mês e facilitar a gestão da tua clínica.</p><p>Explore com os exemplos e, quando estiver tudo claro, cadastre teu primeiro paciente em <b>Pacientes</b>. Qualquer sugestão, dúvida ou bug, me manda uma mensagem, eu leio tudo.</p><p style="margin-top:14px"><a class="btn" id="tkHello" target="_blank" rel="noopener" style="background:#1F7A4D;color:#fff"><span class="ms">campaign</span>Mandar mensagem no WhatsApp</a></p><p class="small muted">Para rever este tutorial: ícone <b>?</b> no topo do Início, o menu <b>⋯</b> na barra lateral ou <b>Mais → Tutorial</b> no celular.</p>']
+  { ic: 'psychology', t: 'Bem-vinda(o) ao Gestaopsi', b: 'Vou te levar pelas telas e mostrar onde fica cada coisa. Aqui é só o lado <b>administrativo</b> do consultório, nada clínico. Já deixei <b>2 pacientes de exemplo</b> para você explorar.' },
+  { ic: 'space_dashboard', t: 'O mês num relance', view: 'inicio', sel: ['.hero2'], b: 'Os dois números que mais importam: <b>valor recebido no mês</b> e <b>pacientes ativos</b>. Toque neles para ver os detalhes.' },
+  { ic: 'payments', t: 'Financeiro do mês', view: 'inicio', sel: ['.chart svg'], b: 'Seis colunas: <b>Gerado</b>, <b>Recebido</b>, <b>A receber</b>, <b>Em atraso</b>, <b>Despesas</b> e <b>Lucro</b>. Toque numa coluna para abrir os lançamentos.' },
+  { ic: 'receipt_long', t: 'O que compõe cada coluna', view: 'inicio', sel: ['.cmpx'], b: 'Aqui embaixo do gráfico fica a conta aberta: quantas sessões formam cada valor, as <b>entradas</b> por forma de pagamento e as <b>saídas</b> por despesa. Lucro = recebido − despesas.' },
+  { ic: 'calendar_month', t: 'Agenda', view: 'agenda', sel: ['.mgrid', '.wgrid', '.card'], b: 'Veja o <b>mês</b>, a <b>semana</b> ou uma <b>lista</b>. Arraste uma sessão para outro dia para reagendar. A câmera marca sessão online, e o ícone laranja avisa que falta emitir o recibo.' },
+  { ic: 'tune', t: 'Filtros', view: 'agenda', sel: ['#fTog'], b: 'Os filtros ficam guardados aqui: formato (presencial ou online), status e recibo pendente.' },
+  { ic: 'event_repeat', t: 'Gerar sessões do mês', view: 'agenda', sel: ['#gen'], b: 'Cria a agenda do mês inteiro a partir dos <b>horários fixos</b> de cada paciente. Você só ajusta o que fugir da regra.' },
+  { ic: 'sync', t: 'Google Agenda e .ics', view: 'agenda', sel: ['#gConnect', '#gSync', '#ics'], b: 'Conecte o <b>Google Agenda</b> para as sessões aparecerem no celular, ou baixe um arquivo <b>.ics</b> para qualquer outra agenda.' },
+  { ic: 'group', t: 'Cadastrar paciente', view: 'pacientes', sel: ['#fab', '#plist'], b: 'Toque em <b>Paciente</b> para cadastrar: horário, valor, forma de cobrança e o link da pasta no seu Drive. A lista ao lado mostra os exemplos, que você remove quando quiser.' },
+  { ic: 'account_balance_wallet', t: 'Financeiro', view: 'financeiro', sel: NAVQ('financeiro'), b: 'Cobranças, pagamentos e <b>despesas</b> do mês, inclusive aluguel de sala por hora. Marque a sessão como paga e ela segue para os recibos.' },
+  { ic: 'receipt_long', t: 'Recibos', view: 'recibos', sel: NAVQ('recibos'), b: 'Lista o que já foi pago e ainda <b>falta emitir no Receita Saúde</b>. O recibo é na data do pagamento, e o sistema avisa dos atrasados.' },
+  { ic: 'description', t: 'Documentos', view: 'documentos', sel: NAVQ('documentos'), b: '14 modelos prontos: declarações, atestado, relatório, laudo, parecer, encaminhamentos, contrato e TCLE online. Preenche com os dados do paciente e você copia, imprime ou baixa em Word.' },
+  { ic: 'face_3', t: 'AlicIA', view: 'alicia', sel: NAVQ('alicia'), b: 'Busca a <b>melhor evidência disponível</b> (PubMed e Europe PMC) a partir de abordagem, objetivo e perfil do caso. Usa só iniciais e rotina, nunca o nome do paciente.' },
+  { ic: 'help', t: 'Rever este tutorial', view: 'inicio', sel: ['#railMenu', '#topTour'], b: 'Quando quiser rever, é por aqui: o menu <b>⋯</b> na barra lateral (ou o <b>?</b> no topo do Início). No celular, <b>Mais → Tutorial</b>.' },
+  { ic: 'photo', t: 'Obrigado por estar aqui!', b: '<p><b>Olá, eu sou o Matheus</b>, idealizador do Gestaopsi.</p><p>Fico muito feliz que você tenha chegado até aqui. Espero poupar algumas horas do teu mês e facilitar a gestão da tua clínica.</p><p>Qualquer sugestão, dúvida ou bug, me manda uma mensagem, eu leio tudo.</p><p style="margin-top:12px"><a class="btn" id="tkHello" target="_blank" rel="noopener" style="background:#1F7A4D;color:#fff"><span class="ms">campaign</span>Mandar mensagem no WhatsApp</a></p>' }
 ];
+let TS = null;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const tvis = e => e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
+function tourFind(st) { for (const q of (st.sel || [])) { const c = $(q); if (tvis(c)) return c; } return null; }
 function openTour(i = 0) {
-  let d = $('#dlgTour'); if (!d) { d = document.createElement('dialog'); d.id = 'dlgTour'; d.style.width = 'min(520px,calc(100vw - 24px))'; document.body.appendChild(d); d.addEventListener('cancel', () => endTour()); }
-  const last = TOUR.length - 1, [ic, t, b] = TOUR[i];
-  d.innerHTML = `<div style="padding:26px 24px 20px"><div class="tourdots">${TOUR.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
-    ${ic === 'photo' ? '<div class="hello" style="margin-bottom:6px"><img src="/consultorio/matheus.jpg" alt="Foto do Matheus" width="120" height="120" style="width:120px;height:120px"></div>' : `<div class="touric"><span class="ms fill">${ic}</span></div>`}<div class="title-l" style="text-align:center;margin:${ic === 'photo' ? '14px' : '0'} 0 10px">${t}</div><div class="tourbody">${b}</div>
-    <div class="dact" style="justify-content:space-between;margin-top:22px"><button class="btn text" id="tkSkip" type="button">${i === last ? '' : 'Pular'}</button><div style="display:flex;gap:8px">${i ? '<button class="btn outlined" id="tkBack" type="button">Voltar</button>' : ''}<button class="btn" id="tkNext" type="button">${i === last ? 'Começar' : 'Próximo'}</button></div></div></div>`;
-  $('#tkSkip', d).onclick = endTour; $('#tkNext', d).onclick = () => i === last ? endTour() : openTour(i + 1); const bk = $('#tkBack', d); if (bk) bk.onclick = () => openTour(i - 1); const th = $('#tkHello', d); if (th) th.href = 'https://wa.me/5553991662471?text=' + encodeURIComponent('Oi, Matheus! Tenho um feedback sobre o Gestaopsi: ');
-  if (!d.open) d.showModal();
+  if (TS) return;
+  const ov = document.createElement('div'); ov.id = 'tourOv';
+  ov.innerHTML = '<div id="tourSp"></div><div id="tourHand"><span class="ms fill">touch_app</span></div><div id="tourCard" role="dialog" aria-live="polite"></div>';
+  document.body.appendChild(ov);
+  TS = { i, tok: 0, key: e => { if (e.key === 'Escape') endTour(); else if (e.key === 'ArrowRight') tourGo(TS.i + 1); else if (e.key === 'ArrowLeft') tourGo(TS.i - 1); }, pos: () => requestAnimationFrame(tourPlace) };
+  document.addEventListener('keydown', TS.key); addEventListener('resize', TS.pos); addEventListener('scroll', TS.pos, true);
+  tourShow(i);
+}
+function tourGo(i) { if (!TS || i < 0) return; if (i >= TOUR.length) return endTour(); tourShow(i); }
+async function tourShow(i) {
+  const st = TOUR[i], tok = ++TS.tok, card = $('#tourCard'); TS.i = i; TS.st = st;
+  card.style.opacity = '0';
+  if (st.view && S.view !== st.view) { await go(st.view); await sleep(350); }
+  if (!TS || tok !== TS.tok) return;
+  const el = tourFind(st);
+  if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); await sleep(450); }
+  if (!TS || tok !== TS.tok) return;
+  const last = i === TOUR.length - 1, n = TOUR.length;
+  card.innerHTML = `<div class="tprog"><i style="width:${Math.round((i + 1) / n * 100)}%"></i></div>
+    ${st.ic === 'photo' ? '<div class="hello" style="margin:6px 0 10px"><img src="/consultorio/matheus.jpg" alt="Foto do Matheus" width="104" height="104" style="width:104px;height:104px"></div>' : `<div class="thead"><span class="touric sm"><span class="ms fill">${st.ic}</span></span><div class="title-m">${st.t}</div></div>`}
+    ${st.ic === 'photo' ? `<div class="title-l" style="text-align:center;margin-bottom:8px">${st.t}</div>` : ''}
+    <div class="tourbody">${st.b}</div>
+    <div class="tfoot"><span class="small muted">${i + 1} / ${n}</span><span class="sp"></span>${last ? '' : '<button class="btn text sm" id="tkSkip" type="button">Pular</button>'}${i ? '<button class="btn outlined sm" id="tkBack" type="button">Voltar</button>' : ''}<button class="btn sm" id="tkNext" type="button">${last ? 'Começar' : 'Próximo'}</button></div>`;
+  $('#tkNext').onclick = () => tourGo(i + 1); const sk = $('#tkSkip'); if (sk) sk.onclick = endTour; const bk = $('#tkBack'); if (bk) bk.onclick = () => tourGo(i - 1);
+  const th = $('#tkHello'); if (th) th.href = 'https://wa.me/5553991662471?text=' + encodeURIComponent('Oi, Matheus! Tenho um feedback sobre o Gestaopsi: ');
+  tourPlace(); card.style.opacity = '1';
+}
+function tourPlace() {
+  if (!TS || !TS.st) return;
+  const sp = $('#tourSp'), card = $('#tourCard'), hand = $('#tourHand'); if (!sp) return;
+  const el = tourFind(TS.st), vw = innerWidth, vh = innerHeight, cw = card.offsetWidth, ch = card.offsetHeight, g = 14;
+  if (!el) { Object.assign(sp.style, { left: vw / 2 + 'px', top: vh / 2 + 'px', width: '0px', height: '0px' }); sp.classList.add('none'); hand.style.opacity = '0'; card.style.left = Math.max(12, (vw - cw) / 2) + 'px'; card.style.top = Math.max(12, (vh - ch) / 2) + 'px'; return; }
+  sp.classList.remove('none');
+  const r = el.getBoundingClientRect(), pad = 8, x = Math.max(4, r.left - pad), y = Math.max(4, r.top - pad), w = Math.min(vw - 8 - x, r.width + pad * 2), h = Math.min(vh - 8 - y, r.height + pad * 2);
+  Object.assign(sp.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  let cx, cy;
+  if (y + h + g + ch <= vh) { cx = x; cy = y + h + g; }
+  else if (y - g - ch >= 0) { cx = x; cy = y - g - ch; }
+  else if (x + w + g + cw <= vw) { cx = x + w + g; cy = y; }
+  else if (x - g - cw >= 0) { cx = x - g - cw; cy = y; }
+  else { cx = (vw - cw) / 2; cy = vh - ch - 12; }
+  card.style.left = Math.min(Math.max(12, cx), vw - cw - 12) + 'px'; card.style.top = Math.min(Math.max(12, cy), vh - ch - 12) + 'px';
+  hand.style.opacity = '1'; hand.style.left = Math.min(x + w - 18, vw - 40) + 'px'; hand.style.top = Math.min(y + h - 14, vh - 40) + 'px';
 }
 async function endTour() {
-  const d = $('#dlgTour'); if (d && d.open) d.close();
+  if (TS) { document.removeEventListener('keydown', TS.key); removeEventListener('resize', TS.pos); removeEventListener('scroll', TS.pos, true); TS = null; }
+  const ov = $('#tourOv'); if (ov) ov.remove();
   try { localStorage.setItem('cons.tour.' + S.user.id, '1'); } catch (_) {}
+  go('inicio');
   if (S.profile && S.profile.tour_seen === true) return;
   if (S.profile) S.profile.tour_seen = true;
   try { await sb.from('profiles').update({ tour_seen: true }).eq('id', S.user.id); } catch (_) {}
 }
 function maybeTour() {
   let ls = false; try { ls = !!localStorage.getItem('cons.tour.' + S.user.id); } catch (_) {}
-  if ((!S.profile || S.profile.tour_seen !== true) && !(ls && !S.profile)) setTimeout(() => openTour(), 700);
+  if ((!S.profile || S.profile.tour_seen !== true) && !(ls && !S.profile)) setTimeout(() => openTour(), 900);
 }
+
 window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== S.view && S.started) go(v, true); });
 
 /* ---------- navegação ---------- */
