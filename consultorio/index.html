@@ -920,7 +920,7 @@ function gEvent(x) {
   const [h, m] = (x.time || '09:00').split(':').map(Number), a = parse(x.date); a.setHours(h, m); const b = new Date(a.getTime() + dur * 60000);
   const f = d => d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()) + ':00';
   const nm = gcfg().names === 'completo' ? p.name : gIni(p.name);
-  return { summary: (x.status === 'falta' ? '[Falta] ' : '') + 'Sessão · ' + nm, description: (p.modality === 'online' ? 'Online' : 'Presencial') + ' · Gestaopsi', start: { dateTime: f(a), timeZone: 'America/Sao_Paulo' }, end: { dateTime: f(b), timeZone: 'America/Sao_Paulo' }, extendedProperties: { private: { gp_id: x.id } }, reminders: { useDefault: true }, colorId: x.status === 'realizada' ? '2' : x.status === 'falta' ? '11' : undefined };
+  return { summary: (x.status === 'falta' ? '[Falta] ' : '') + 'Sessão · ' + nm, description: (modOf(x, p) === 'online' ? 'Online' : 'Presencial') + ' · Gestaopsi', start: { dateTime: f(a), timeZone: 'America/Sao_Paulo' }, end: { dateTime: f(b), timeZone: 'America/Sao_Paulo' }, extendedProperties: { private: { gp_id: x.id } }, reminders: { useDefault: true }, colorId: x.status === 'realizada' ? '2' : x.status === 'falta' ? '11' : undefined };
 }
 async function gPushOne(cal, x) {
   const off = /cancelada|remarcada/.test(x.status);
@@ -994,7 +994,7 @@ async function viewAgenda() {
   const busy = await gBusy(from, to);
   const F = S.agF, q = F.q.trim().toLowerCase();
   const L = data.filter(x => { const p = pById(x.patient_id); if (!p) return false;
-    if (F.mod !== 'todos' && p.modality !== F.mod) return false;
+    if (F.mod !== 'todos' && modOf(x, p) !== F.mod) return false;
     if (F.st !== 'todos' && (F.st === 'cancelada' ? !/cancelada/.test(x.status) : x.status !== F.st)) return false;
     if (F.rec && !(x.paid && !x.receipt_issued)) return false;
     if (q && !p.name.toLowerCase().includes(q)) return false; return true; });
@@ -1062,14 +1062,14 @@ async function viewAgenda() {
 function evChip(x, big) {
   if (x.busy) return `<div class="ev busy ${big ? 'big' : ''}" title="Compromisso no teu Google Agenda"><b>${x.time.slice(0, 5)}</b><span class="n">Ocupado${big ? ' até ' + x.until : ''}</span></div>`;
   const p = pById(x.patient_id) || {};
-  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" draggable="true" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${p.modality === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<span class="rc" title="Pago: falta emitir o recibo no Receita Saúde"><span class="ms fill rcm">receipt_long</span></span>' : x.receipt_issued ? '<span class="ms ok" title="Recibo emitido" style="font-size:15px">task_alt</span>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
+  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" draggable="true" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${modOf(x, p) === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<span class="rc" title="Pago: falta emitir o recibo no Receita Saúde"><span class="ms fill rcm">receipt_long</span></span>' : x.receipt_issued ? '<span class="ms ok" title="Recibo emitido" style="font-size:15px">task_alt</span>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
 }
 const gIni = n => (n || '').split(/\s+/).filter(Boolean).map(w => w[0].toUpperCase() + '.').join('');
 function gcalUrl(x, p) {
   const t = (x.time || '09:00').slice(0, 5).replace(':', ''), st = x.date.replace(/-/g, '') + 'T' + t + '00';
   const end = new Date(parse(x.date).getTime()); const [h, m] = (x.time || '09:00').split(':').map(Number); end.setHours(h, m + (S.profile?.session_minutes || 50));
   const en = iso(end).replace(/-/g, '') + 'T' + String(end.getHours()).padStart(2, '0') + String(end.getMinutes()).padStart(2, '0') + '00';
-  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=America/Sao_Paulo&text=' + encodeURIComponent('Sessão · ' + gIni(p.name)) + '&dates=' + st + '/' + en + '&details=' + encodeURIComponent(p.modality === 'online' ? 'Online' : 'Presencial');
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=America/Sao_Paulo&text=' + encodeURIComponent('Sessão · ' + gIni(p.name)) + '&dates=' + st + '/' + en + '&details=' + encodeURIComponent(modOf(x, p) === 'online' ? 'Online' : 'Presencial');
 }
 function exportIcs(L) {
   if (!L.length) return snack('Nada para exportar nesse período.');
@@ -1078,7 +1078,7 @@ function exportIcs(L) {
   const stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
   const ev = L.filter(x => !/cancelada|remarcada/.test(x.status)).map(x => { const p = pById(x.patient_id) || {}; const [h, m] = (x.time || '09:00').split(':').map(Number); const a = parse(x.date); a.setHours(h, m); const b = new Date(a.getTime() + dur * 60000);
     const f = d => d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + 'T' + z(d.getHours()) + z(d.getMinutes()) + '00';
-    return ['BEGIN:VEVENT', 'UID:' + x.id + '@gestaopsi', 'DTSTAMP:' + stamp, 'DTSTART;TZID=America/Sao_Paulo:' + f(a), 'DTEND;TZID=America/Sao_Paulo:' + f(b), 'SUMMARY:Sessão · ' + (full ? p.name : gIni(p.name)).replace(/[,;]/g, ' '), 'DESCRIPTION:' + (p.modality === 'online' ? 'Online' : 'Presencial'), 'END:VEVENT'].join('\r\n'); });
+    return ['BEGIN:VEVENT', 'UID:' + x.id + '@gestaopsi', 'DTSTAMP:' + stamp, 'DTSTART;TZID=America/Sao_Paulo:' + f(a), 'DTEND;TZID=America/Sao_Paulo:' + f(b), 'SUMMARY:Sessão · ' + (full ? p.name : gIni(p.name)).replace(/[,;]/g, ' '), 'DESCRIPTION:' + (modOf(x, p) === 'online' ? 'Online' : 'Presencial'), 'END:VEVENT'].join('\r\n'); });
   const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Gestaopsi//PT-BR', 'CALSCALE:GREGORIAN', ...ev, 'END:VCALENDAR'].join('\r\n');
   const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gestaopsi-agenda.ics'; a.click();
   snack('Arquivo baixado. No Google Agenda: Configurações > Importar e exportar > Importar.');
@@ -1096,6 +1096,7 @@ async function moveSession(x, date, time) {
   if (date < iso(S.month) || date > iso(eom(S.month))) { S.month = fom(parse(date)); S.weekStart = monday(parse(date)); }
   go('agenda');
 }
+const modOf = (x, p) => (x && x.modality) || (p && p.modality) || 'presencial';
 let evOpen = null;
 function openEv(x, editing) {
   if (!x) return; evOpen = x; const p = pById(x.patient_id) || {}, sit = situation(x);
@@ -1106,8 +1107,8 @@ function openEv(x, editing) {
   const K = {
     data: ['DATA E HORA', `${parse(x.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })}${x.time ? ' · ' + x.time.slice(0, 5) : ''}`,
       `<input type="date" id="e1" value="${x.date}"><input type="time" id="e2" value="${(x.time || '').slice(0, 5)}">${btns}`],
-    formato: ['FORMATO', p.modality === 'online' ? '<span class="ms" style="font-size:16px">videocam</span> Online' : 'Presencial',
-      `<select id="e1">${opt('presencial', p.modality, 'Presencial')}${opt('online', p.modality, 'Online')}</select>${btns}<label>Muda o cadastro de ${esc((p.name || '').split(' ')[0])} (todas as sessões)</label>`],
+    formato: ['FORMATO', modOf(x, p) === 'online' ? '<span class="ms" style="font-size:16px">videocam</span> Online' : 'Presencial',
+      `<select id="e1">${opt('presencial', modOf(x, p), 'Presencial')}${opt('online', modOf(x, p), 'Online')}</select>${btns}<label>Só esta sessão. <input type="checkbox" id="e2"> Usar como padrão de ${esc((p.name || '').split(' ')[0])}</label>`],
     freq: ['FREQUÊNCIA', `${esc(cap(p.frequency || ''))}${p.weekday ? ' · ' + WD[p.weekday] + (p.session_time ? ' ' + p.session_time.slice(0, 5) : '') : ''}`,
       `<select id="e1">${opt('semanal', p.frequency, 'Semanal')}${opt('quinzenal', p.frequency, 'Quinzenal')}${opt('mensal', p.frequency, 'Mensal')}</select><select id="e2">${opt('', p.weekday || '', 'Sem dia fixo')}${[1, 2, 3, 4, 5, 6].map(d => opt(d, p.weekday, WD[d])).join('')}</select><input type="time" id="e3" value="${(p.session_time || '').slice(0, 5)}">${btns}<label>Vale para as próximas sessões geradas</label>`],
     valor: ['VALOR', brl(x.amount),
@@ -1150,7 +1151,7 @@ function openEv(x, editing) {
     const sv = $('[data-save]', box); if (sv) sv.onclick = async () => {
       const k = editing;
       if (k === 'data') { const d = v('e1'), t = v('e2'); if (!d) return snack('Escolha a data'); if (d === x.date && t === (x.time || '').slice(0, 5)) return openEv(x); return moveSession(x, d, t ? t + ':00' : null); }
-      if (k === 'formato') { if (await updP({ modality: v('e1') })) after('Formato atualizado'); }
+      if (k === 'formato') { if (await updS({ modality: v('e1') })) { if ($('#e2', box).checked) await updP({ modality: v('e1') }); after('Formato desta sessão atualizado'); } }
       if (k === 'freq') { if (await updP({ frequency: v('e1'), weekday: v('e2') ? Number(v('e2')) : null, session_time: v('e3') || null })) after('Frequência atualizada'); }
       if (k === 'valor') { const n = Number(v('e1') || 0); if (await updS({ amount: n })) { if ($('#e2', box).checked) await updP({ session_price: n }); after('Valor atualizado'); } }
       if (k === 'pag') { const paid = v('e1') === 'true'; const row = { paid, paid_at: paid ? (v('e2') || todayISO()) : null, method: paid ? (v('e3') || null) : null };
@@ -1175,7 +1176,7 @@ function openEv(x, editing) {
 function sessionRow(s) {
   const p = pById(s.patient_id), sit = situation(s);
   return `<div class="row click" data-sess="${s.id}"><div class="avatar">${esc(initials(p?.name))}</div>
-    <div class="grow"><div class="t">${esc(p?.name || 'Paciente')}</div><div class="s">${s.time ? s.time.slice(0, 5) + ' · ' : ''}${p?.modality === 'online' ? 'Online' : 'Presencial'}</div></div>
+    <div class="grow"><div class="t">${esc(p?.name || 'Paciente')}</div><div class="s">${s.time ? s.time.slice(0, 5) + ' · ' : ''}${modOf(s, p) === 'online' ? 'Online' : 'Presencial'}</div></div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="badge ${STATUS_BADGE[s.status]}">${STATUS[s.status]}</span>${Number(s.amount) > 0 ? `<span class="small"><span class="num">${brl(s.amount)}</span> · ${SIT[sit][0]}</span>` : ''}</div></div>`;
 }
 function bindSessionRows() { $$('[data-sess]').forEach(el => el.onclick = () => openSession(S.sessions.find(s => s.id === el.dataset.sess) || S.finList?.find(s => s.id === el.dataset.sess))); }
@@ -1371,7 +1372,7 @@ async function viewFinanceiro() {
   $$('[data-pay]').forEach(b => b.onclick = async () => { const { error } = await sb.from('sessions').update({ paid: true, paid_at: todayISO() }).eq('id', b.dataset.pay); if (error) return fail(error); snack('Marcado como pago. Emita o recibo no Receita Saúde hoje.'); go('financeiro'); });
 }
 function kpiStatic(ic, bg, v, l) { return `<div class="kpi" style="cursor:default"><div class="k-ic" style="background:${bg}"><span class="ms">${ic}</span></div><div class="v">${v}</div><div class="l">${l}</div></div>`; }
-function roomHours() { return S.sessions.filter(s => pById(s.patient_id)?.modality === 'presencial' && !/cancelada|remarcada/.test(s.status)).length; }
+function roomHours() { return S.sessions.filter(s => modOf(s, pById(s.patient_id)) === 'presencial' && !/cancelada|remarcada/.test(s.status)).length; }
 let editingExp = null;
 function openExpense(e) {
   editingExp = e || null; const f = $('#fExp'); f.reset();
