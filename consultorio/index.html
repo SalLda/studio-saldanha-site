@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,auto_awesome,badge,bookmark_add,calendar_month,check,check_circle,chevron_left,chevron_right,content_copy,database,delete,done,download,edit_note,event,event_available,event_busy,event_repeat,gpp_maybe,group,help,lightbulb,link,local_fire_department,logout,movie,music_note,open_in_new,payments,person_add,photo_camera,play_arrow,psychology,receipt_long,savings,smart_display,space_dashboard,sync,task_alt,trending_down,verified,warning,wb_sunny&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,auto_awesome,badge,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,folder,gpp_maybe,group,help,lightbulb,link,local_fire_department,logout,movie,music_note,open_in_new,payments,person,person_add,photo_camera,play_arrow,psychology,receipt_long,savings,schedule,search,smart_display,space_dashboard,star,sync,task_alt,timer,trending_down,verified,videocam,warning,wb_sunny&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -219,6 +219,65 @@ h1,h2,h3{margin:0;font-weight:500}
 .brief .box ul{margin:6px 0 0;padding-left:18px}
 .tagcloud{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 @media (max-width:860px){.brief{grid-template-columns:1fr}}
+/* paciente */
+.dhead{display:flex;align-items:center;gap:14px}
+.dhead .avatar{width:52px;height:52px;border-radius:26px;font-size:18px;background:var(--primary-container);color:var(--on-primary-container)}
+.psec{background:var(--surface-c-lowest);border-radius:var(--r-lg);padding:14px 16px 16px;margin-top:14px}
+.psec-h{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--primary);letter-spacing:.01em}
+.psec-h .ms{font-size:20px}
+.psec .hint{font-size:12px;color:var(--on-surface-variant);margin-top:6px}
+/* agenda */
+.seg{display:inline-flex;background:var(--surface-c);border-radius:20px;padding:4px;gap:2px}
+.seg button{border:none;background:transparent;border-radius:16px;height:32px;padding:0 14px;font-weight:600;font-size:13px;cursor:pointer;color:var(--on-surface-variant);display:inline-flex;align-items:center;gap:6px}
+.seg button.on{background:var(--surface-c-lowest);color:var(--on-surface);box-shadow:var(--e1)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filters .q{height:32px;border:1px solid var(--outline-variant);border-radius:16px;padding:0 12px;background:transparent;min-width:180px;outline:none}
+.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--outline-variant);border-left:1px solid var(--outline-variant);border-radius:var(--r-md);overflow:hidden}
+.mgrid .wd{padding:8px;font-size:12px;font-weight:600;color:var(--on-surface-variant);border-right:1px solid var(--outline-variant);border-bottom:1px solid var(--outline-variant);background:var(--surface-c-low);text-align:center}
+.mday{min-height:118px;padding:6px;border-right:1px solid var(--outline-variant);border-bottom:1px solid var(--outline-variant);display:flex;flex-direction:column;gap:3px;min-width:0;background:var(--surface-c-lowest)}
+.mday.out{background:var(--surface-c-low)}.mday.out .dn{opacity:.45}
+.mday .dn{font-size:12px;font-weight:600;width:24px;height:24px;border-radius:12px;display:grid;place-items:center;border:none;background:none;cursor:pointer;color:var(--on-surface)}
+.mday.today .dn{background:var(--primary);color:var(--on-primary)}
+.mday .more{font-size:11px;font-weight:600;color:var(--primary);border:none;background:none;text-align:left;cursor:pointer;padding:2px 4px}
+.ev{display:flex;align-items:center;gap:5px;width:100%;border:none;border-left:3px solid var(--c,var(--outline));background:var(--cs,var(--surface-c));border-radius:6px;padding:3px 6px;font-size:12px;cursor:pointer;text-align:left;color:var(--on-surface);min-width:0}
+.ev b{font-weight:600;font-variant-numeric:tabular-nums;flex:none}
+.ev span.n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.ev .ms{font-size:14px;flex:none;opacity:.75}
+.ev .dot{width:7px;height:7px;border-radius:4px;background:var(--warn);flex:none}
+.ev.st-agendada{--c:var(--outline);--cs:var(--surface-c)}.ev.st-realizada{--c:var(--primary);--cs:var(--primary-container)}
+.ev.st-falta{--c:var(--error);--cs:var(--error-container)}.ev.st-cancelada_paciente,.ev.st-cancelada_profissional{--c:var(--warn);--cs:var(--warn-container)}.ev.st-remarcada{--c:var(--tertiary);--cs:var(--tertiary-container)}
+.ev.big{padding:8px 10px;font-size:13px;flex-wrap:wrap}
+.wgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.wcol{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:8px;display:flex;flex-direction:column;gap:6px;min-height:200px;min-width:0}
+.wcol h4{margin:0 0 4px;font-size:13px;font-weight:600;text-transform:capitalize;display:flex;justify-content:space-between}
+.wcol.today h4{color:var(--primary)}
+@media (max-width:860px){.mday{min-height:74px;padding:3px}.ev:not(.big){font-size:10.5px;padding:2px 4px}.ev:not(.big) b,.ev:not(.big) .ms{display:none}.wgrid{grid-template-columns:1fr}.wcol{min-height:0}.filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-16px;margin-right:-16px;padding:0 16px}.filters::-webkit-scrollbar{display:none}.filters .sp{display:none}.nav{font-size:10px;min-width:0}.nav .pill{width:44px}}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+.kv div{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:10px 12px}
+.kv small{display:block;font-size:11px;font-weight:600;color:var(--on-surface-variant);letter-spacing:.03em}
+.kv b{font-weight:600;font-size:14px}
+.qs{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+/* conquistas */
+.nav.special .pill{background:linear-gradient(135deg,#FFD978,#F2A65A);color:#4A2B00}
+.nav.special.on .pill{box-shadow:0 0 0 2px var(--primary)}
+.hero-save{border-radius:28px;padding:28px;background:linear-gradient(135deg,#1F4D3E,#2E6A55 55%,#5E8F5A);color:#fff;position:relative;overflow:hidden}
+.hero-save .big{font-size:52px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.hero-save .sub{opacity:.85;margin-top:8px;font-size:15px}
+.hero-save .stars{position:absolute;right:24px;top:18px;font-size:64px;opacity:.18}
+.savings{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px}
+.sv{background:var(--surface-c-lowest);border-radius:var(--r-lg);padding:16px;box-shadow:var(--e1)}
+.sv .t{font-size:22px;font-weight:600}
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.ac{background:var(--surface-c-lowest);border-radius:var(--r-lg);padding:16px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--e1)}
+.ac .medal{width:48px;height:48px;border-radius:24px;display:grid;place-items:center;flex:none;background:var(--surface-c-high);color:var(--on-surface-variant)}
+.ac.got .medal{background:linear-gradient(135deg,#FFD978,#F2A65A);color:#4A2B00}
+.ac .st{color:#E8A317;letter-spacing:2px;font-size:16px}
+.ac .st i{color:var(--outline-variant);font-style:normal}
+.prog{height:6px;border-radius:3px;background:var(--surface-c-high);overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--primary)}
+/* recado */
+.hello{text-align:center}
+.hello img{width:132px;height:132px;border-radius:66px;object-fit:cover;box-shadow:0 0 0 4px var(--surface-c-high),0 0 0 6px var(--primary)}
 
 /* dialog */
 dialog{border:none;border-radius:var(--r-xl);background:var(--surface-c-high);color:var(--on-surface);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px)}
@@ -273,7 +332,9 @@ dialog form{padding:24px}
     <button class="nav" data-view="financeiro"><span class="pill"><span class="ms">payments</span></span>Financeiro</button>
     <button class="nav" data-view="recibos"><span class="pill"><span class="ms">receipt_long</span></span>Recibos</button>
     <button class="nav" data-view="conteudo"><span class="pill"><span class="ms">auto_awesome</span></span>Conteúdo</button>
+    <button class="nav special" data-view="conquistas"><span class="pill"><span class="ms fill">emoji_events</span></span>Conquistas</button>
     <div class="sp"></div>
+    <button class="icon-btn logout" id="railHello" title="Recado do Matheus (feedback)" style="background:var(--warn-container);color:var(--on-surface)"><span class="ms fill">campaign</span></button>
     <button class="icon-btn logout" id="railProfile" title="Meu perfil"><span class="ms">account_circle</span></button>
     <button class="icon-btn logout" id="logout" title="Sair"><span class="ms">logout</span></button>
   </nav>
@@ -283,38 +344,44 @@ dialog form{padding:24px}
 <button class="fab hidden" id="fab"><span class="ms">add</span><span id="fabLabel">Novo</span></button>
 
 <!-- dialogs -->
-<dialog id="dlgPatient"><form id="fPatient">
-  <div class="title-l" id="pTitle">Paciente</div>
-  <div class="field"><label>Nome</label><input name="name" required maxlength="120"></div>
-  <div class="grid3">
-    <div class="field"><label>Situação</label><select name="status"><option value="ativo">Ativo</option><option value="pausa">Pausa</option><option value="alta">Alta</option></select></div>
-    <div class="field"><label>Valor da sessão (R$)</label><input name="session_price" type="number" step="0.01" min="0" required></div>
-    <div class="field"><label>Atendimento</label><select name="modality"><option value="presencial">Presencial</option><option value="online">Online</option></select></div>
-  </div>
-  <div class="grid3">
-    <div class="field"><label>Dia fixo</label><select name="weekday"><option value="">Sem dia fixo</option><option value="1">Segunda</option><option value="2">Terça</option><option value="3">Quarta</option><option value="4">Quinta</option><option value="5">Sexta</option><option value="6">Sábado</option></select></div>
-    <div class="field"><label>Horário</label><input name="session_time" type="time"></div>
-    <div class="field"><label>Frequência</label><select name="frequency"><option value="semanal">Semanal</option><option value="quinzenal">Quinzenal</option><option value="mensal">Mensal</option></select></div>
-  </div>
-  <div class="grid3">
-    <div class="field"><label>Modalidade de pagamento</label><select name="billing"><option value="por_sessao">Por sessão</option><option value="quinzenal">Quinzenal</option><option value="quinzenal_retroativo">Quinzenal retroativo</option><option value="mensal">Mensal</option><option value="mensal_retroativo">Mensal retroativo</option></select></div>
-    <div class="field"><label>% cobrado na falta</label><input name="no_show_pct" type="number" min="0" max="100"></div>
-    <div class="field"><label>% no cancelamento</label><input name="cancel_pct" type="number" min="0" max="100"></div>
-  </div>
-  <div class="grid2">
-    <div class="field"><label>Tabela de valor</label><select name="social"><option value="false">Valor padrão</option><option value="true">Valor social</option></select></div>
-    <div class="field"><label>Início</label><input name="start_date" type="date"></div>
-  </div>
-  <div class="grid2">
-    <div class="field"><label>CPF do paciente</label><input name="patient_cpf" inputmode="numeric" maxlength="14"></div>
-    <div class="field"><label>WhatsApp</label><input name="whatsapp" inputmode="tel"></div>
-  </div>
-  <div class="grid2">
-    <div class="field"><label>Quem paga (se não for o paciente)</label><input name="payer_name"></div>
-    <div class="field"><label>CPF de quem paga</label><input name="payer_cpf" inputmode="numeric" maxlength="14"></div>
-  </div>
-  <div class="field"><label>Responsável (se menor)</label><input name="guardian"></div>
-  <div class="field"><label>Observações administrativas (nada clínico)</label><textarea name="admin_notes" rows="2"></textarea></div>
+<dialog id="dlgPatient" style="width:min(680px,calc(100vw - 24px))"><form id="fPatient">
+  <div class="dhead"><div class="avatar" id="pAv"><span class="ms">person</span></div><div class="grow"><div class="title-l" id="pTitle">Paciente</div><div class="small muted">Só dados administrativos. Nada clínico aqui.</div></div></div>
+  <section class="psec"><div class="psec-h"><span class="ms">badge</span>Identificação</div>
+    <div class="field"><label>Nome completo</label><input name="name" required maxlength="120"></div>
+    <div class="grid3">
+      <div class="field"><label>CPF</label><input name="patient_cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"></div>
+      <div class="field"><label>WhatsApp</label><input name="whatsapp" inputmode="tel" placeholder="(53) 99999-9999"></div>
+      <div class="field"><label>Situação</label><select name="status"><option value="ativo">Ativo</option><option value="pausa">Em pausa</option><option value="alta">Alta</option></select></div>
+    </div>
+  </section>
+  <section class="psec"><div class="psec-h"><span class="ms">event</span>Atendimento</div>
+    <div class="grid2">
+      <div class="field"><label>Formato</label><select name="modality"><option value="presencial">Presencial</option><option value="online">Online</option></select></div>
+      <div class="field"><label>Frequência</label><select name="frequency"><option value="semanal">Semanal</option><option value="quinzenal">Quinzenal</option><option value="mensal">Mensal</option></select></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>Dia fixo</label><select name="weekday"><option value="">Sem dia fixo</option><option value="1">Segunda</option><option value="2">Terça</option><option value="3">Quarta</option><option value="4">Quinta</option><option value="5">Sexta</option><option value="6">Sábado</option></select></div>
+      <div class="field"><label>Horário</label><input name="session_time" type="time"></div>
+      <div class="field"><label>Início</label><input name="start_date" type="date"></div>
+    </div>
+  </section>
+  <section class="psec"><div class="psec-h"><span class="ms">payments</span>Pagamento</div>
+    <div class="grid2">
+      <div class="field"><label>Valor da sessão (R$)</label><input name="session_price" type="number" step="0.01" min="0" required></div>
+      <div class="field"><label>Como paga</label><select name="billing"><option value="por_sessao">Por sessão</option><option value="quinzenal">Quinzenal (adiantado)</option><option value="quinzenal_retroativo">Quinzenal (depois)</option><option value="mensal">Mensal (adiantado)</option><option value="mensal_retroativo">Mensal (depois)</option></select></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Quem paga (se não for o paciente)</label><input name="payer_name"></div>
+      <div class="field"><label>CPF de quem paga</label><input name="payer_cpf" inputmode="numeric" maxlength="14"></div>
+    </div>
+    <div class="field"><label>Responsável (se for menor de idade)</label><input name="guardian"></div>
+    <div class="hint">Quem paga e o CPF entram direto no recibo do Receita Saúde.</div>
+  </section>
+  <section class="psec"><div class="psec-h"><span class="ms">folder</span>Documentação do paciente</div>
+    <div class="field"><label>Link da pasta no Google Drive</label><div style="display:flex;gap:8px"><input name="docs_url" type="url" placeholder="https://drive.google.com/drive/folders/..." style="flex:1"><a class="btn tonal hidden" id="pDocs" target="_blank" rel="noopener" style="height:48px;border-radius:12px"><span class="ms">open_in_new</span>Abrir</a></div></div>
+    <div class="hint">Contrato, termos e documentos ficam no teu Drive. Aqui fica só o atalho.</div>
+    <div class="field"><label>Observações administrativas (nada clínico)</label><textarea name="admin_notes" rows="2"></textarea></div>
+  </section>
   <div class="dact"><button type="button" class="btn danger" id="pDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
 </form></dialog>
 
@@ -387,15 +454,24 @@ dialog form{padding:24px}
     <div class="field"><label>CRP</label><input name="crp" maxlength="20" placeholder="00/000000"></div>
   </div>
   <div class="field"><label>Seu CPF (opcional, só para gerar o arquivo de lote do Receita Saúde)</label><input name="cpf" inputmode="numeric" maxlength="14" autocomplete="off"></div>
-  <div class="title-m" style="margin-top:22px">Padrões para novos pacientes</div>
-  <div class="grid3">
-    <div class="field"><label>Duração da sessão (min)</label><input name="session_minutes" type="number" min="10" max="240"></div>
-    <div class="field"><label>% cobrado na falta</label><input name="no_show_pct" type="number" min="0" max="100"></div>
-    <div class="field"><label>% no cancelamento</label><input name="cancel_pct" type="number" min="0" max="100"></div>
-  </div>
+  <div class="field"><label>Duração da sessão (min)</label><input name="session_minutes" type="number" min="10" max="240"></div>
   <div class="title-m" style="margin-top:22px">Trocar senha</div>
   <div class="field"><label>Nova senha (deixe em branco para manter)</label><input name="password" type="password" minlength="8" autocomplete="new-password"></div>
   <div class="dact"><button type="button" class="btn danger" id="profLogout"><span class="ms" style="font-size:18px">logout</span>Sair</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
+</form></dialog>
+
+<dialog id="dlgEv" style="width:min(620px,calc(100vw - 24px))"><form method="dialog" style="padding:22px">
+  <div style="display:flex;justify-content:flex-end;margin:-8px -8px 0 0"><button class="icon-btn" value="x" aria-label="Fechar"><span class="ms">close</span></button></div>
+  <div id="evBody"></div>
+</form></dialog>
+
+<dialog id="dlgHello" style="width:min(460px,calc(100vw - 24px))"><form method="dialog" class="hello" style="padding:28px 24px">
+  <img src="/consultorio/matheus.jpg" alt="Foto do Matheus" width="132" height="132">
+  <div class="title-l" style="margin-top:18px">Olá, eu sou o Matheus</div>
+  <div class="muted" style="margin-top:2px">idealizador do Gestaopsi</div>
+  <p style="margin:16px 0 0;font-size:15px">Qualquer feedback ou sugestão de melhoria do site, por favor, me manda uma mensagem aqui.</p>
+  <p style="margin:10px 0 0;font-size:15px">Espero te ajudar a poupar algumas horas de trabalho e facilitar a gestão da tua clínica.</p>
+  <div class="dact" style="justify-content:center;margin-top:22px"><button class="btn text" value="x">Fechar</button><a class="btn" id="helloWa" target="_blank" rel="noopener" style="background:#1F7A4D"><span class="ms">campaign</span>Mandar mensagem no WhatsApp</a></div>
 </form></dialog>
 
 <dialog id="dlgReceipt" style="width:min(600px,calc(100vw - 24px))"><form id="fReceipt">
@@ -581,8 +657,7 @@ const S = { user: null, profile: null, view: 'inicio', month: fom(new Date()), p
 /* ---------- regras ---------- */
 function chargePct(p, status) {
   if (status === 'realizada' || status === 'agendada') return 1;
-  if (status === 'falta') return (p?.no_show_pct ?? 100) / 100;
-  if (status === 'cancelada_paciente') return (p?.cancel_pct ?? 0) / 100;
+  if (status === 'falta') return 1; // falta é cobrada; cancelamentos não
   return 0;
 }
 function dueDate(p, dateStr) {
@@ -653,7 +728,7 @@ async function start(user) {
 window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== S.view && S.started) go(v, true); });
 
 /* ---------- navegação ---------- */
-const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo };
+const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
 $$('.nav').forEach(b => b.onclick = () => go(b.dataset.view));
 async function go(v, fromHash) {
   if (!VIEWS[v]) v = 'inicio';
@@ -729,7 +804,7 @@ async function viewInicio() {
   const name = (S.profile?.name || S.user.email.split('@')[0]).split(' ')[0];
   const today = S.sessions.filter(s => s.date === todayISO());
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
+  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="icon-btn" id="topHello" title="Recado do Matheus" style="background:var(--warn-container);color:var(--on-surface)"><span class="ms fill">campaign</span></button><button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
   <div class="kpis"></div>`;
   $('.kpis').innerHTML = [
     kpi('event_available', 'var(--primary-container)', M.realizadas, 'Sessões realizadas', 'agenda'),
@@ -764,7 +839,7 @@ async function viewInicio() {
   </section>
   <div class="foot">Não registre informações clínicas aqui. Este sistema é administrativo.</div>`);
   bindMonth();
-  $('#topProfile').onclick = openProfile;
+  $('#topProfile').onclick = openProfile; $('#topHello').onclick = openHello;
   $$('[data-to]').forEach(el => el.onclick = () => jump(el.dataset.to));
   $$('[data-go]').forEach(el => el.onclick = () => go(el.dataset.go));
   $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat)));
@@ -788,16 +863,128 @@ function barChart(bars) {
 }
 
 /* ---------- AGENDA ---------- */
+const monday = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+const addD = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 async function viewAgenda() {
   await loadPatients(); await loadMonth();
-  const byDay = {}; S.sessions.forEach(s => (byDay[s.date] = byDay[s.date] || []).push(s));
-  const days = Object.keys(byDay).sort();
+  if (!S.agMode) S.agMode = innerWidth < 860 ? 'semana' : 'mes';
+  S.agF = S.agF || { mod: 'todos', st: 'todos', rec: false, q: '' };
+  if (!S.weekStart || S.weekStart > eom(S.month) || addD(S.weekStart, 6) < S.month) S.weekStart = monday(new Date() >= S.month && new Date() <= eom(S.month) ? new Date() : S.month);
+  let from, to;
+  if (S.agMode === 'semana') { from = S.weekStart; to = addD(from, 6); }
+  else if (S.agMode === 'mes') { from = monday(S.month); to = addD(monday(eom(S.month)), 6); }
+  else { from = S.month; to = eom(S.month); }
+  const { data, error } = await sb.from('sessions').select('*').gte('date', iso(from)).lte('date', iso(to)).order('date').order('time'); if (error) throw error;
+  S.agSessions = data;
+  const F = S.agF, q = F.q.trim().toLowerCase();
+  const L = data.filter(x => { const p = pById(x.patient_id); if (!p) return false;
+    if (F.mod !== 'todos' && p.modality !== F.mod) return false;
+    if (F.st !== 'todos' && (F.st === 'cancelada' ? !/cancelada/.test(x.status) : x.status !== F.st)) return false;
+    if (F.rec && !(x.paid && !x.receipt_issued)) return false;
+    if (q && !p.name.toLowerCase().includes(q)) return false; return true; });
+  const byDay = {}; L.forEach(x => (byDay[x.date] = byDay[x.date] || []).push(x));
+  const today = todayISO();
+  const nav = S.agMode === 'semana'
+    ? `<div class="monthsel"><button class="icon-btn" id="wPrev" aria-label="Semana anterior"><span class="ms">chevron_left</span></button><strong>${S.weekStart.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })} – ${addD(S.weekStart, 6).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</strong><button class="icon-btn" id="wNext" aria-label="Próxima semana"><span class="ms">chevron_right</span></button></div>`
+    : monthSel();
+  const chip = (k, l, v, cur) => `<button class="chip ${cur === v ? 'on' : ''}" data-${k}="${v}">${l}</button>`;
+  let body = '';
+  if (S.agMode === 'mes') {
+    body = '<div class="mgrid">' + ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => `<div class="wd">${d}</div>`).join('');
+    for (let d = new Date(from); d <= to; d = addD(d, 1)) { const k = iso(d), ev = byDay[k] || [], max = innerWidth < 860 ? 3 : 5;
+      body += `<div class="mday ${d.getMonth() !== S.month.getMonth() ? 'out' : ''} ${k === today ? 'today' : ''}"><button class="dn" data-wk="${k}" title="Ver semana">${d.getDate()}</button>${ev.slice(0, max).map(x => evChip(x)).join('')}${ev.length > max ? `<button class="more" data-wk="${k}">+${ev.length - max} mais</button>` : ''}</div>`; }
+    body += '</div>';
+  } else if (S.agMode === 'semana') {
+    body = '<div class="wgrid">';
+    for (let i = 0; i < 7; i++) { const d = addD(S.weekStart, i), k = iso(d), ev = byDay[k] || [];
+      body += `<div class="wcol ${k === today ? 'today' : ''}"><h4><span>${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' })}</span><span class="muted">${ev.length || ''}</span></h4>${ev.map(x => evChip(x, true)).join('') || '<div class="small muted">Livre</div>'}</div>`; }
+    body += '</div>';
+  } else {
+    const days = Object.keys(byDay).sort();
+    body = `<section class="card elev"><div class="list">${days.length ? days.map(d => `<div class="dayhead">${parse(d).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })}</div>` + byDay[d].map(sessionRow).join('')).join('') : '<div class="empty"><span class="ms">event</span>Nada com esses filtros.</div>'}</div></section>`;
+  }
   $('#view').innerHTML = `
-  <div class="topbar"><div class="display">Agenda</div><div class="sp"></div>${monthSel()}<button class="btn tonal" id="gen"><span class="ms">event_repeat</span>Gerar sessões do mês</button></div>
-  <section class="card elev"><div class="list">${days.length ? days.map(d => `<div class="dayhead">${parse(d).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })}</div>` + byDay[d].map(sessionRow).join('')).join('') : `<div class="empty"><span class="ms">event</span>Nenhuma sessão em ${monthName(S.month).toLowerCase()}. Use “Gerar sessões do mês” para criar a agenda a partir dos horários fixos dos pacientes.</div>`}</div></section>`;
-  bindMonth(); bindSessionRows();
-  $('#gen').onclick = generateMonth;
+  <div class="topbar"><div class="display">Agenda</div><div class="sp"></div>
+    <div class="seg">${[['mes', 'Mês', 'calendar_month'], ['semana', 'Semana', 'event'], ['lista', 'Lista', 'apps']].map(([k, l, ic]) => `<button class="${S.agMode === k ? 'on' : ''}" data-mode="${k}"><span class="ms" style="font-size:18px">${ic}</span>${l}</button>`).join('')}</div>
+    ${nav}</div>
+  <div class="filters">
+    <input class="q" id="agQ" placeholder="Buscar paciente" value="${esc(F.q)}">
+    ${chip('mod', 'Todos', 'todos', F.mod)}${chip('mod', 'Presencial', 'presencial', F.mod)}${chip('mod', 'Online', 'online', F.mod)}
+    <span style="width:1px;height:24px;background:var(--outline-variant)"></span>
+    ${chip('st', 'Qualquer status', 'todos', F.st)}${chip('st', 'Agendadas', 'agendada', F.st)}${chip('st', 'Realizadas', 'realizada', F.st)}${chip('st', 'Faltas', 'falta', F.st)}${chip('st', 'Canceladas', 'cancelada', F.st)}
+    <button class="chip ${F.rec ? 'on' : ''}" id="fRec"><span class="ms" style="font-size:16px">receipt_long</span>Recibo pendente</button>
+    <div class="sp"></div>
+    <button class="btn text sm" id="ics" title="Baixa um arquivo para importar no Google Agenda"><span class="ms" style="font-size:18px">download</span>Google Agenda</button>
+    <button class="btn tonal sm" id="gen"><span class="ms" style="font-size:18px">event_repeat</span>Gerar sessões do mês</button>
+  </div>
+  ${data.length || S.agMode === 'lista' ? body : `<section class="card elev"><div class="empty"><span class="ms">event</span>Nenhuma sessão nesse período. Use “Gerar sessões do mês” para criar a agenda a partir dos horários fixos dos pacientes.</div></section>`}
+  <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span><span class="ms" style="font-size:14px">videocam</span> online</span><span><i style="display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--warn)"></i> pago sem recibo</span><span>Toque no nome para ver o cadastro e emitir o recibo</span></div>`;
+  if (S.agMode === 'semana') { $('#wPrev').onclick = () => { S.weekStart = addD(S.weekStart, -7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; $('#wNext').onclick = () => { S.weekStart = addD(S.weekStart, 7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; }
+  else bindMonth();
+  $$('[data-mode]').forEach(b => b.onclick = () => { S.agMode = b.dataset.mode; go('agenda'); });
+  $$('[data-mod]').forEach(b => b.onclick = () => { F.mod = b.dataset.mod; go('agenda'); });
+  $$('[data-st]').forEach(b => b.onclick = () => { F.st = b.dataset.st; go('agenda'); });
+  $('#fRec').onclick = () => { F.rec = !F.rec; go('agenda'); };
+  let qt; $('#agQ').oninput = e => { clearTimeout(qt); qt = setTimeout(async () => { F.q = e.target.value; const pos = e.target.selectionStart; await go('agenda'); const i = $('#agQ'); i.focus(); i.setSelectionRange(pos, pos); }, 300); };
+  $$('[data-wk]').forEach(b => b.onclick = () => { S.weekStart = monday(parse(b.dataset.wk)); S.agMode = 'semana'; go('agenda'); });
+  $$('[data-ev]').forEach(b => b.onclick = () => openEv(data.find(x => x.id === b.dataset.ev)));
+  bindSessionRows();
+  $('#gen').onclick = generateMonth; $('#ics').onclick = () => exportIcs(L);
   setFab('Sessão', () => openSession());
+}
+function evChip(x, big) {
+  const p = pById(x.patient_id) || {};
+  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${p.modality === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<i class="dot" title="Pago, falta emitir recibo"></i>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
+}
+const gIni = n => (n || '').split(/\s+/).filter(Boolean).map(w => w[0].toUpperCase() + '.').join('');
+function gcalUrl(x, p) {
+  const t = (x.time || '09:00').slice(0, 5).replace(':', ''), st = x.date.replace(/-/g, '') + 'T' + t + '00';
+  const end = new Date(parse(x.date).getTime()); const [h, m] = (x.time || '09:00').split(':').map(Number); end.setHours(h, m + (S.profile?.session_minutes || 50));
+  const en = iso(end).replace(/-/g, '') + 'T' + String(end.getHours()).padStart(2, '0') + String(end.getMinutes()).padStart(2, '0') + '00';
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=America/Sao_Paulo&text=' + encodeURIComponent('Sessão · ' + gIni(p.name)) + '&dates=' + st + '/' + en + '&details=' + encodeURIComponent(p.modality === 'online' ? 'Online' : 'Presencial');
+}
+function exportIcs(L) {
+  if (!L.length) return snack('Nada para exportar nesse período.');
+  const full = confirm('Usar o nome completo dos pacientes no Google Agenda?\n\nOK = nome completo · Cancelar = só as iniciais (mais privado)');
+  const dur = S.profile?.session_minutes || 50, z = n => String(n).padStart(2, '0');
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
+  const ev = L.filter(x => !/cancelada|remarcada/.test(x.status)).map(x => { const p = pById(x.patient_id) || {}; const [h, m] = (x.time || '09:00').split(':').map(Number); const a = parse(x.date); a.setHours(h, m); const b = new Date(a.getTime() + dur * 60000);
+    const f = d => d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + 'T' + z(d.getHours()) + z(d.getMinutes()) + '00';
+    return ['BEGIN:VEVENT', 'UID:' + x.id + '@gestaopsi', 'DTSTAMP:' + stamp, 'DTSTART;TZID=America/Sao_Paulo:' + f(a), 'DTEND;TZID=America/Sao_Paulo:' + f(b), 'SUMMARY:Sessão · ' + (full ? p.name : gIni(p.name)).replace(/[,;]/g, ' '), 'DESCRIPTION:' + (p.modality === 'online' ? 'Online' : 'Presencial'), 'END:VEVENT'].join('\r\n'); });
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Gestaopsi//PT-BR', 'CALSCALE:GREGORIAN', ...ev, 'END:VCALENDAR'].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gestaopsi-agenda.ics'; a.click();
+  snack('Arquivo baixado. No Google Agenda: Configurações > Importar e exportar > Importar.');
+}
+let evOpen = null;
+function openEv(x) {
+  if (!x) return; evOpen = x; const p = pById(x.patient_id) || {}, sit = situation(x);
+  const rec = !(Number(x.amount) > 0) ? 'Sem cobrança' : x.receipt_issued ? 'Emitido' + (x.receipt_at ? ' em ' + fmtDate(x.receipt_at) : '') : x.paid ? 'Falta emitir' : 'Aguardando pagamento';
+  $('#evBody').innerHTML = `
+    <div class="dhead"><div class="avatar">${esc(initials(p.name))}</div><div class="grow"><div class="title-l">${esc(p.name)}</div><div class="small muted">${parse(x.date).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}${x.time ? ' · ' + x.time.slice(0, 5) : ''}</div></div><span class="badge ${STATUS_BADGE[x.status]}">${STATUS[x.status]}</span></div>
+    <div class="kv">
+      <div><small>FORMATO</small><b>${p.modality === 'online' ? '<span class="ms" style="font-size:16px">videocam</span> Online' : 'Presencial'}</b></div>
+      <div><small>FREQUÊNCIA</small><b>${esc(cap(p.frequency || ''))}${p.weekday ? ' · ' + WD[p.weekday] + (p.session_time ? ' ' + p.session_time.slice(0, 5) : '') : ''}</b></div>
+      <div><small>VALOR</small><b>${brl(x.amount)}</b></div>
+      <div><small>PAGAMENTO</small><b>${Number(x.amount) > 0 ? `<span class="badge ${SIT[sit][1]}">${SIT[sit][0]}</span>` : '—'} <span class="small muted">${BILLING[p.billing] || ''}</span></b></div>
+      <div><small>RECIBO (RECEITA SAÚDE)</small><b>${x.paid && !x.receipt_issued ? `<span class="badge b-warn">${rec}</span>` : rec}</b></div>
+      <div><small>QUEM PAGA</small><b>${esc(p.payer_name || 'O próprio paciente')}</b></div>
+    </div>
+    <div class="label" style="margin-top:16px">MARCAR ESTA SESSÃO</div>
+    <div class="qs">${[['realizada', 'Realizada'], ['falta', 'Faltou'], ['cancelada_paciente', 'Paciente cancelou'], ['cancelada_profissional', 'Eu cancelei'], ['agendada', 'Agendada']].map(([k, l]) => `<button type="button" class="chip ${x.status === k ? 'on' : ''}" data-evst="${k}">${l}</button>`).join('')}</div>
+    <div class="qs" style="margin-top:16px">
+      ${x.paid && !x.receipt_issued ? '<button type="button" class="btn" id="evRec"><span class="ms">receipt_long</span>Emitir recibo</button>' : ''}
+      ${Number(x.amount) > 0 && !x.paid ? '<button type="button" class="btn tonal" id="evPay"><span class="ms">done</span>Marcar como paga</button>' : ''}
+      ${p.docs_url ? `<a class="btn text" href="${esc(p.docs_url)}" target="_blank" rel="noopener"><span class="ms">folder</span>Documentos</a>` : ''}
+      <a class="btn text" href="${gcalUrl(x, p)}" target="_blank" rel="noopener"><span class="ms">calendar_month</span>Google Agenda</a>
+      <button type="button" class="btn text" id="evEdit">Editar sessão</button>
+      <button type="button" class="btn text" id="evPat">Cadastro</button>
+    </div>`;
+  $$('[data-evst]').forEach(b => b.onclick = async () => { const st = b.dataset.evst; const row = { status: st }; if (!x.paid) { row.amount = Number(p.session_price) * chargePct(p, st); } const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Sessão: ' + STATUS[st]); openEv(x); go('agenda'); });
+  const pay = $('#evPay'); if (pay) pay.onclick = async () => { const row = { paid: true, paid_at: todayISO() }; const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Paga. Já dá para emitir o recibo.'); openEv(x); go('agenda'); };
+  const rb = $('#evRec'); if (rb) rb.onclick = async () => { const g = receiptGroups(await pendingReceipts()).find(g => g.sessions.some(s => s.id === x.id)); $('#dlgEv').close(); if (g) openReceipt(g); };
+  $('#evEdit').onclick = () => { $('#dlgEv').close(); openSession(x); };
+  $('#evPat').onclick = () => { $('#dlgEv').close(); openPatient(p); };
+  if (!$('#dlgEv').open) $('#dlgEv').showModal();
 }
 function sessionRow(s) {
   const p = pById(s.patient_id), sit = situation(s);
@@ -840,35 +1027,33 @@ async function loadDemo() {
   if (!confirm('Carregar 25 pacientes fictícios com sessões de 2 meses e despesas de exemplo? Dá para remover tudo depois com um toque.')) return;
   const B = ['por_sessao', 'por_sessao', 'por_sessao', 'mensal', 'quinzenal', 'mensal_retroativo'];
   const start = iso(addM(S.month, -2));
-  const pats = DEMO_NAMES.map((n, i) => {
-    const social = i % 2 === 1 && i < 24; // 12 com valor social
-    return { name: n, demo: true, social, session_price: social ? 80 : 130, status: i === 24 ? 'pausa' : 'ativo', weekday: (i % 5) + 1, session_time: String(8 + (i % 11)).padStart(2, '0') + ':00', frequency: i % 7 === 3 ? 'quinzenal' : i === 20 ? 'mensal' : 'semanal', billing: B[i % B.length], modality: i % 5 < 3 ? 'presencial' : 'online', no_show_pct: 100, cancel_pct: i % 4 === 0 ? 50 : 0, start_date: start, guardian: /menor/.test(n) ? 'Responsável fictício' : null, payer_name: /menor/.test(n) ? 'Responsável fictício' : null, admin_notes: 'Paciente fictício (exemplo)', patient_cpf: '000.000.0' + String(i + 10).padStart(2, '0') + '-00', payer_cpf: /menor/.test(n) ? '000.000.099-00' : null };
-  });
+  const pats = DEMO_NAMES.map((n, i) => ({ name: n, demo: true, session_price: i % 2 === 1 && i < 24 ? 80 : 130, status: i === 24 ? 'pausa' : 'ativo', weekday: (i % 5) + 1, session_time: String(8 + (i % 11)).padStart(2, '0') + ':00', frequency: i % 7 === 3 ? 'quinzenal' : i === 20 ? 'mensal' : 'semanal', billing: B[i % B.length], modality: i % 5 < 3 ? 'presencial' : 'online', start_date: start, guardian: /menor/.test(n) ? 'Responsável fictício' : null, payer_name: /menor/.test(n) ? 'Responsável fictício' : null, admin_notes: 'Paciente fictício (exemplo)', patient_cpf: '000.000.0' + String(i + 10).padStart(2, '0') + '-00', payer_cpf: /menor/.test(n) ? '000.000.099-00' : null }));
   const { data: P, error } = await sb.from('patients').insert(pats).select(); if (error) return fail(error);
+  if (await fillDemo(P)) { snack('25 pacientes de exemplo carregados'); go('pacientes'); }
+}
+// sessões e despesas dos exemplos (todas as linhas com as mesmas colunas: o Supabase exige isso em lote)
+async function fillDemo(P) {
   const today = todayISO(), rows = [];
   [addM(S.month, -1), S.month].forEach((m, mi) => buildSessions(P, m).forEach((r, k) => {
-    const past = r.date < today, p = P.find(x => x.id === r.patient_id);
-    if (past) {
+    const p = P.find(x => x.id === r.patient_id);
+    const row = { patient_id: r.patient_id, date: r.date, time: r.time, status: 'agendada', amount: r.amount, due_date: r.due_date, paid: false, paid_at: null, method: null, receipt_issued: false, receipt_at: null, receipt_number: null };
+    if (r.date < today) {
       const roll = (k * 37 + mi * 11) % 20;
-      r.status = roll === 0 ? 'falta' : roll === 1 ? 'cancelada_paciente' : 'realizada';
-      r.amount = Number(p.session_price) * chargePct(p, r.status);
-      const late = roll === 5 || roll === 9; // alguns em atraso
-      if (r.amount > 0 && !late && r.due_date <= today) { r.paid = true; r.paid_at = r.due_date < r.date ? r.date : r.due_date; r.method = ['Pix', 'Pix', 'Cartão', 'Dinheiro'][k % 4]; r.receipt_issued = k % 9 !== 0 && r.paid_at < today; if (r.receipt_issued) { r.receipt_at = r.paid_at; r.receipt_number = '255.000.' + String(k).padStart(5, '0'); } }
+      row.status = roll === 0 ? 'falta' : roll === 1 ? 'cancelada_paciente' : 'realizada';
+      row.amount = Number(p.session_price) * chargePct(p, row.status);
+      const late = roll === 5 || roll === 9;
+      if (row.amount > 0 && !late && row.due_date <= today) { row.paid = true; row.paid_at = row.due_date < row.date ? row.date : row.due_date; row.method = ['Pix', 'Pix', 'Cartão', 'Dinheiro'][k % 4]; row.receipt_issued = k % 9 !== 0 && row.paid_at < today; if (row.receipt_issued) { row.receipt_at = row.paid_at; row.receipt_number = '255.000.' + String(k).padStart(5, '0'); } }
     }
-    rows.push(r);
+    rows.push(row);
   }));
-  for (let i = 0; i < rows.length; i += 200) { const { error: e2 } = await sb.from('sessions').insert(rows.slice(i, i + 200)); if (e2) return fail(e2); }
+  for (let i = 0; i < rows.length; i += 200) { const { error } = await sb.from('sessions').insert(rows.slice(i, i + 200)); if (error) { fail(error); return false; } }
+  const E = (month, category, kind, amount, paid, description = null, hours = null, hourly_rate = null) => ({ month, category, kind, amount, paid, description, hours, hourly_rate, demo: true });
   const exp = [];
-  [addM(S.month, -1), S.month].forEach(m => exp.push(
-    { month: iso(m), category: 'Aluguel de sala (por hora)', kind: 'por_hora', hours: 0, hourly_rate: 35, amount: 0, demo: true },
-    { month: iso(m), category: 'Supervisão clínica', kind: 'fixa', amount: 400, demo: true, paid: m < S.month },
-    { month: iso(m), category: 'Plataforma e software', description: 'Videochamada e agenda', kind: 'fixa', amount: 60, demo: true, paid: true },
-    { month: iso(m), category: 'Anuidade do CRP', description: 'Parcela', kind: 'fixa', amount: 52, demo: true, paid: m < S.month },
-    { month: iso(m), category: 'Terapia pessoal', kind: 'fixa', amount: 320, demo: true, paid: m < S.month }));
-  // horas de sala = sessões presenciais (não canceladas) do mês
-  exp.filter(e => e.kind === 'por_hora').forEach(e => { const m = e.month.slice(0, 7); e.hours = rows.filter(r => r.date.startsWith(m) && P.find(p => p.id === r.patient_id).modality === 'presencial' && !/cancelada|remarcada/.test(r.status)).length; e.amount = e.hours * e.hourly_rate; e.paid = parse(e.month) < S.month; });
-  const { error: e3 } = await sb.from('expenses').insert(exp); if (e3) return fail(e3);
-  snack('25 pacientes de exemplo carregados'); go('pacientes');
+  [addM(S.month, -1), S.month].forEach(m => { const ms = iso(m), past = m < S.month, key = ms.slice(0, 7);
+    const h = rows.filter(r => r.date.startsWith(key) && P.find(p => p.id === r.patient_id).modality === 'presencial' && !/cancelada|remarcada/.test(r.status)).length;
+    exp.push(E(ms, 'Aluguel de sala (por hora)', 'por_hora', h * 35, past, null, h, 35), E(ms, 'Supervisão clínica', 'fixa', 400, past), E(ms, 'Plataforma e software', 'fixa', 60, true, 'Videochamada e agenda'), E(ms, 'Anuidade do CRP', 'fixa', 52, past, 'Parcela'), E(ms, 'Terapia pessoal', 'fixa', 320, past)); });
+  const { error: e3 } = await sb.from('expenses').insert(exp); if (e3) { fail(e3); return false; }
+  return true;
 }
 async function clearDemo() {
   if (!confirm('Remover todos os pacientes de exemplo, as sessões deles e as despesas de exemplo?')) return;
@@ -888,25 +1073,30 @@ async function viewPacientes() {
   <section class="card elev"><div class="list" id="plist"></div></section>`;
   const render = q => { const L = S.patients.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
     $('#plist').innerHTML = L.length ? L.map(p => `<div class="row click" data-pat="${p.id}"><div class="avatar">${esc(initials(p.name))}</div><div class="grow"><div class="t">${esc(p.name)}</div><div class="s">${p.weekday ? WD[p.weekday] + (p.session_time ? ' ' + p.session_time.slice(0, 5) : '') + ' · ' : ''}${esc(cap(p.frequency))} · ${BILLING[p.billing]}</div></div>
-      <div style="text-align:right"><div class="num">${brl(p.session_price)}${p.social ? ' <span class="badge b-info">Social</span>' : ''}</div>${debt[p.id] ? `<span class="badge b-err">${brl(debt[p.id])} em atraso</span>` : `<span class="badge ${p.status === 'ativo' ? 'b-ok' : 'b-neutral'}">${cap(p.status)}</span>`}</div></div>`).join('')
+      <div style="text-align:right"><div class="num">${brl(p.session_price)}</div>${debt[p.id] ? `<span class="badge b-err">${brl(debt[p.id])} em atraso</span>` : p.status !== 'ativo' ? `<span class="badge b-neutral">${p.status === 'pausa' ? 'Em pausa' : 'Alta'}</span>` : ''}</div></div>`).join('')
       : `<div class="empty"><span class="ms">person_add</span>Nenhum paciente ainda. Toque em “Paciente” para cadastrar.</div>`;
     $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat))); };
   render(''); $('#q').oninput = e => render(e.target.value);
   const on = $('#demoOn'), off = $('#demoOff'); if (on) on.onclick = loadDemo; if (off) off.onclick = clearDemo;
+  // exemplos carregados na versão anterior ficaram sem sessões: completa agora
+  const demo = S.patients.filter(p => p.demo);
+  if (demo.length && !S.demoChecked) { S.demoChecked = true; const { count } = await sb.from('sessions').select('id', { count: 'exact', head: true }).in('patient_id', demo.map(p => p.id)); if (!count && await fillDemo(demo)) snack('Sessões e despesas dos exemplos completadas'); }
   setFab('Paciente', () => openPatient());
 }
 let editingPatient = null;
 function openPatient(p) {
   editingPatient = p || null; const f = $('#fPatient'); f.reset();
   $('#pTitle').textContent = p ? 'Editar paciente' : 'Novo paciente';
-  const d = p || { social: false, status: 'ativo', modality: 'presencial', frequency: 'semanal', billing: 'por_sessao', no_show_pct: S.profile?.no_show_pct ?? 100, cancel_pct: S.profile?.cancel_pct ?? 0, start_date: todayISO() };
-  for (const k of ['name', 'status', 'session_price', 'modality', 'weekday', 'session_time', 'frequency', 'billing', 'no_show_pct', 'cancel_pct', 'patient_cpf', 'start_date', 'payer_name', 'payer_cpf', 'guardian', 'whatsapp', 'admin_notes', 'social'])
+  const d = p || { status: 'ativo', modality: 'presencial', frequency: 'semanal', billing: 'por_sessao', start_date: todayISO() };
+  $('#pAv').innerHTML = p ? esc(initials(p.name)) : '<span class="ms">person</span>';
+  const dl = $('#pDocs'); dl.classList.toggle('hidden', !p?.docs_url); if (p?.docs_url) dl.href = p.docs_url;
+  for (const k of ['name', 'status', 'session_price', 'modality', 'weekday', 'session_time', 'frequency', 'billing', 'patient_cpf', 'start_date', 'payer_name', 'payer_cpf', 'guardian', 'whatsapp', 'admin_notes', 'docs_url'])
     if (f[k]) f[k].value = d[k] == null ? '' : (k === 'session_time' && d[k] ? d[k].slice(0, 5) : d[k]);
   $('#pDel').classList.toggle('hidden', !p); $('#dlgPatient').showModal();
 }
 $('#fPatient').onsubmit = async e => {
   e.preventDefault(); const f = e.target, v = k => f[k].value.trim();
-  const row = { name: v('name'), status: v('status'), session_price: Number(v('session_price') || 0), modality: v('modality'), weekday: v('weekday') ? Number(v('weekday')) : null, session_time: v('session_time') || null, frequency: v('frequency'), billing: v('billing'), no_show_pct: Number(v('no_show_pct') || 0), cancel_pct: Number(v('cancel_pct') || 0), patient_cpf: v('patient_cpf') || null, start_date: v('start_date') || null, payer_name: v('payer_name') || null, payer_cpf: v('payer_cpf') || null, guardian: v('guardian') || null, whatsapp: v('whatsapp') || null, admin_notes: v('admin_notes') || null, social: v('social') === 'true' };
+  const row = { name: v('name'), status: v('status'), session_price: Number(v('session_price') || 0), modality: v('modality'), weekday: v('weekday') ? Number(v('weekday')) : null, session_time: v('session_time') || null, frequency: v('frequency'), billing: v('billing'), patient_cpf: v('patient_cpf') || null, start_date: v('start_date') || null, payer_name: v('payer_name') || null, payer_cpf: v('payer_cpf') || null, guardian: v('guardian') || null, whatsapp: v('whatsapp') || null, admin_notes: v('admin_notes') || null, docs_url: v('docs_url') || null };
   const { error } = editingPatient ? await sb.from('patients').update(row).eq('id', editingPatient.id) : await sb.from('patients').insert(row);
   if (error) return fail(error); $('#dlgPatient').close(); snack('Paciente salvo'); go(S.view);
 };
@@ -1165,7 +1355,7 @@ $('#fReceipt').onsubmit = async e => {
   e.preventDefault(); if (!emitting) return;
   const ids = emitting.sessions.map(x => x.id), n = e.target.number.value.trim() || null;
   const { error } = await sb.from('sessions').update({ receipt_issued: true, receipt_at: todayISO(), receipt_number: n }).in('id', ids); if (error) return fail(error);
-  $('#dlgReceipt').close(); snack('Recibo registrado como emitido'); go('recibos');
+  $('#dlgReceipt').close(); snack('Recibo registrado como emitido'); go(S.view);
 };
 
 /* ---------- CONTEÚDO ---------- */
@@ -1394,14 +1584,75 @@ function openProfile() {
   const f = $('#fProfile'), p = S.profile || {}; f.reset();
   $('#profEmail').textContent = S.user.email;
   f.name.value = p.name || ''; f.crp.value = p.crp || ''; f.cpf.value = p.cpf || ''; f.session_minutes.value = p.session_minutes ?? 50;
-  f.no_show_pct.value = p.no_show_pct ?? 100; f.cancel_pct.value = p.cancel_pct ?? 0;
   $('#dlgProfile').showModal();
 }
 $('#railProfile').onclick = openProfile;
+function openHello() { $('#helloWa').href = 'https://wa.me/5553991662471?text=' + encodeURIComponent('Oi, Matheus! Tenho um feedback sobre o Gestaopsi: '); $('#dlgHello').showModal(); }
+$('#railHello').onclick = openHello;
+
+/* ---------- CONQUISTAS (tempo e dinheiro poupados) ---------- */
+// Estimativas em minutos por ação, comparando com fazer à mão (app da Receita, planilha, agenda de papel, extrato)
+const SAVE = {
+  recibo: [4, 'Recibo do Receita Saúde', 'Dados prontos para copiar: sem procurar CPF, valor e data do pagamento (≈6 min à mão, ≈2 min aqui).', 'receipt_long'],
+  sessao: [1, 'Sessão na agenda', 'Criada a partir do horário fixo, sem anotar uma por uma.', 'event_repeat'],
+  pagamento: [2, 'Pagamento controlado', 'Sem conferir extrato e atualizar planilha para saber quem pagou.', 'payments'],
+  atraso: [5, 'Cobrança em atraso encontrada', 'O app aponta quem está devendo, sem caçar no extrato.', 'warning'],
+  despesa: [2, 'Despesa lançada', 'Aluguel por hora calculado sozinho pelas sessões presenciais.', 'trending_down'],
+  mes: [30, 'Mês fechado', 'Gerado, recebido, a receber, despesas e lucro sem somar na mão.', 'savings'],
+  creator: [10, 'Referência analisada', 'Rede, assunto e motivo para acompanhar já organizados.', 'person_add'],
+  post: [5, 'Ideia no swipe file', 'Gancho, motivo e adaptação num lugar só.', 'bookmark_add'],
+  brief: [60, 'Posicionamento definido', 'Tom de voz, pilares e o que evitar a partir do teu briefing.', 'badge']
+};
+const fmtMin = m => m < 60 ? Math.round(m) + ' min' : (Math.round(m / 6) / 10).toLocaleString('pt-BR') + ' h';
+async function viewConquistas() {
+  await loadPatients();
+  const real = S.patients.filter(p => !p.demo), useDemo = !real.length && S.patients.length;
+  const pids = new Set((useDemo ? S.patients : real).map(p => p.id));
+  const [ss, ex, cr, sw] = await Promise.all([
+    sb.from('sessions').select('id,patient_id,date,status,amount,paid,paid_at,receipt_issued,receipt_at,due_date').limit(10000),
+    sb.from('expenses').select('id,month,demo'), sb.from('creators').select('id'), sb.from('swipe_posts').select('id')]);
+  const SS = (ss.data || []).filter(x => pids.has(x.patient_id)), EX = (ex.data || []).filter(e => useDemo || !e.demo);
+  const groups = receiptGroups(SS.filter(x => x.receipt_issued && Number(x.amount) > 0));
+  const n = {
+    recibo: groups.length, sessao: SS.length, pagamento: SS.filter(x => x.paid).length,
+    atraso: new Set(SS.filter(x => !x.paid && Number(x.amount) > 0 && x.due_date && x.due_date < todayISO()).map(x => x.patient_id)).size,
+    despesa: EX.length, mes: new Set(SS.filter(x => x.date < iso(S.month) || x.date <= todayISO()).map(x => x.date.slice(0, 7))).size,
+    creator: (cr.data || []).length, post: (sw.data || []).length, brief: (S.profile?.briefing?.about || S.profile?.briefing?.likes) ? 1 : 0
+  };
+  const mins = Object.entries(SAVE).reduce((a, [k, v]) => a + n[k] * v[0], 0);
+  const avg = (useDemo ? S.patients : real).reduce((a, p) => a + Number(p.session_price || 0), 0) / Math.max(1, (useDemo ? S.patients : real).length) || 130;
+  const money = mins / 60 * avg;
+  const onTime = new Set(groups.filter(g => (g.sessions[0].receipt_at || '') <= g.paid_at).map(g => g.paid_at.slice(0, 7))).size;
+  const h = Math.floor(mins / 60), m = Math.round(mins % 60);
+  const ACH = [
+    ['Primeiro recibo', 'Emitiu o primeiro recibo pelo Gestaopsi', n.recibo, [1, 10, 50], 'receipt_long'],
+    ['Horas de volta', 'Tempo poupado somado', mins / 60, [1, 8, 40], 'timer', 'h'],
+    ['Agenda no automático', 'Meses com a agenda gerada aqui', n.mes, [1, 3, 6], 'calendar_month'],
+    ['Finanças em ordem', 'Despesas lançadas', n.despesa, [1, 10, 30], 'savings'],
+    ['Pagamentos sob controle', 'Pagamentos marcados', n.pagamento, [10, 50, 200], 'payments'],
+    ['Em dia com a Receita', 'Meses com recibos emitidos no dia do pagamento', onTime, [1, 3, 12], 'verified'],
+    ['Voz definida', 'Posicionamento preenchido', n.brief, [1, 1, 1], 'badge'],
+    ['Olho nas referências', 'Creators acompanhados', n.creator, [1, 5, 15], 'person_add']
+  ];
+  $('#view').innerHTML = `
+  <div class="topbar"><div><div class="display">Conquistas</div><div class="muted">Quanto o Gestaopsi já te devolveu de tempo${useDemo ? ' (contando os pacientes de exemplo)' : ''}</div></div></div>
+  <section class="hero-save"><div class="stars">★★★</div>
+    <div style="font-size:14px;opacity:.85;font-weight:600;letter-spacing:.04em">O GESTAOPSI JÁ TE POUPOU</div>
+    <div class="big" style="margin-top:8px">${h ? h + ' h ' : ''}${m} min</div>
+    <div class="sub">Equivale a cerca de <b>${brl(money)}</b> em sessões (pelo teu valor médio de ${brl(avg)} por hora)${onTime ? ` · ${onTime} mês(es) com recibo em dia, sem risco da multa de R$ 100` : ''}.</div>
+  </section>
+  <div class="savings">${Object.entries(SAVE).filter(([k]) => n[k]).map(([k, v]) => `<div class="sv"><div style="display:flex;justify-content:space-between;align-items:center"><span class="ms" style="color:var(--primary)">${v[3]}</span><span class="badge b-ok">${fmtMin(n[k] * v[0])}</span></div><div class="t">${n[k]}×</div><div class="title-m">${v[1]}</div><div class="small muted">${v[2]}</div></div>`).join('') || '<div class="empty" style="grid-column:1/-1">Use a agenda, os recibos e o financeiro e o tempo poupado aparece aqui.</div>'}</div>
+  <div class="title-l" style="margin:26px 0 12px">Medalhas</div>
+  <div class="ach">${ACH.map(([t, d, v, lv, ic, u]) => { const got = lv.filter(x => v >= x).length, next = lv.find(x => v < x);
+    return `<div class="ac ${got ? 'got' : ''}"><div class="medal"><span class="ms fill">${ic}</span></div><div class="grow" style="min-width:0"><div class="title-m">${t}</div><div class="st">${'★'.repeat(got)}<i>${'★'.repeat(3 - got)}</i></div><div class="small muted">${d}: ${u === 'h' ? fmtMin(v * 60) : Math.floor(v)}${next ? ` · próxima estrela em ${next}${u === 'h' ? ' h' : ''}` : ' · completa!'}</div><div class="prog"><i style="width:${Math.min(100, next ? v / next * 100 : 100)}%"></i></div></div></div>`; }).join('')}</div>
+  <section class="card" style="margin-top:20px"><details><summary class="title-m" style="cursor:pointer">Como a gente calcula</summary>
+    <div class="list" style="margin-top:8px">${Object.values(SAVE).map(v => `<div class="row"><span class="ms muted">${v[3]}</span><div class="grow"><div class="t">${v[1]} · ${v[0]} min poupados</div><div class="s">${v[2]}</div></div></div>`).join('')}</div>
+    <div class="small muted" style="margin-top:8px">São estimativas, comparando com fazer a mesma coisa à mão. O valor em reais usa o valor médio da sessão dos teus pacientes como preço da tua hora.</div></details></section>`;
+}
 $('#profLogout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
 $('#fProfile').onsubmit = async e => {
   e.preventDefault(); const f = e.target;
-  const row = { id: S.user.id, name: f.name.value.trim() || null, crp: f.crp.value.trim() || null, cpf: f.cpf.value.trim() || null, session_minutes: Number(f.session_minutes.value || 50), no_show_pct: Number(f.no_show_pct.value || 0), cancel_pct: Number(f.cancel_pct.value || 0) };
+  const row = { id: S.user.id, name: f.name.value.trim() || null, crp: f.crp.value.trim() || null, cpf: f.cpf.value.trim() || null, session_minutes: Number(f.session_minutes.value || 50) };
   const { data, error } = await sb.from('profiles').upsert(row).select().maybeSingle(); if (error) return fail(error);
   S.profile = data || row;
   if (f.password.value) { const r = await sb.auth.updateUser({ password: f.password.value }); if (r.error) return fail(r.error); }
