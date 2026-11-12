@@ -14,7 +14,8 @@ h1{font-size:32px;margin:0 0 4px;font-weight:600}h2{font-size:19px;margin:32px 0
 <h2>Quais dados ficam guardados</h2>
 <ul><li>Da conta: nome, e-mail, CRP e, se preenchido, CPF (usado só para gerar o arquivo de lote do Receita Saúde).</li>
 <li>Dos pacientes, cadastrados pelo profissional: nome, CPF, WhatsApp, responsável, quem paga, valor e horário das sessões, pagamentos, status dos recibos e um link opcional para a pasta de documentos no Google Drive do profissional.</li>
-<li>Despesas do consultório, referências de conteúdo e o briefing de posicionamento.</li></ul>
+<li>Despesas do consultório, referências de conteúdo e o briefing de posicionamento.</li>
+<li>Registro de uso: quando a conta entra, quais telas abre e que tipo de ação faz (por exemplo, "gerou um documento"), mais uma marca por minuto com a aba aberta, para medir tempo de uso. Esse registro nunca contém nomes, CPFs ou dados de pacientes e serve apenas para suporte e melhoria do sistema.</li></ul>
 <p><b>O Gestaopsi não é prontuário.</b> O sistema avisa para não registrar informação clínica, e nenhum campo foi feito para isso.</p>
 <h2>Onde os dados ficam</h2>
 <p>No Supabase (banco de dados em São Paulo, Brasil), com acesso protegido por login e regras que deixam cada profissional ver só os próprios dados. O site é servido pela Vercel. Nada é vendido nem usado para anúncio.</p>
