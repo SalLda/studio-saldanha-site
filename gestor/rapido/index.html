@@ -75,7 +75,8 @@ const CATS = [ // [categoria, tipo, escopo padrão, regex]
   ['Ferramentas', 'out', 'pj', /claude|capcut|canva|google one|assinatura|chatgpt|notion|figma|adobe|dom[ií]nio|hospedagem|vercel|app\b|software|licen[cç]a/],
   ['Equipamento', 'out', 'pj', /c[aâ]mera|lente|tripé|trip[eé]|macbook|notebook|microfone|ilumina[cç][aã]o|cart[aã]o de mem[oó]ria|ssd|hd\b|equipamento|cabo|bateria/],
   ['Anúncios', 'out', 'pj', /an[uú]ncio|tr[aá]fego|meta ads|impulsionar|impulsionamento|boost/],
-  ['Dívidas', 'out', 'pf', /formatura|parcela|empr[eé]stimo|fatura|cart[aã]o\b(?! de mem)/],
+  ['Fatura do cartão', 'out', 'pf', /fatura|paguei (o )?cart[aã]o\b(?! de mem)/],
+  ['Dívidas', 'out', 'pf', /formatura|parcela|empr[eé]stimo/],
   ['Educação', 'out', 'pf', /livro|curso|mensalidade da faculdade|apostila|xerox|c[oó]pia|ucpel/],
   ['Viagem', 'out', 'pf', /viagem|hotel|hospedagem de viagem|passagem a[eé]rea|hostel/],
   ['Investimento', 'out', 'pf', /invest|tesouro|cdb|poupan[cç]a|reserva/],
@@ -115,12 +116,13 @@ window.__parse = parse;
 // ---------- dados ----------
 async function load() {
   const from = iso(new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1));
-  const [a, b, c, d] = await Promise.all([sb.from('fin_entries').select('*').gte('date', from), sb.from('fin_recurring').select('*'), sb.from('fin_settings').select('*'), sb.from('clients').select('id,name,kind')]);
+  const st = await sb.from('fin_settings').select('*'); const S0 = {}; (st.data || []).forEach(s => S0[s.key] = s.value); const ref = S0.opening?.date || from;
+  const [a, b, c, d] = await Promise.all([ref < from ? sb.from('fin_entries').select('*').or(`date.gte.${from},paid_on.gte.${ref}`) : sb.from('fin_entries').select('*').gte('date', from), sb.from('fin_recurring').select('*'), sb.from('fin_settings').select('*'), sb.from('clients').select('id,name,kind')]);
   ENT = a.data || []; REC = b.data || []; SET = {}; (c.data || []).forEach(s => SET[s.key] = s.value); CLI = d.data || [];
   bal();
 }
 function bal() { const o = SET.opening || { amount: 0, date: '1970-01-01' }; let b = +o.amount; ENT.forEach(e => { if (e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (e.kind === 'in') b += +e.amount; else if (e.pay !== 'credito') b -= +e.amount; }); $('#bal').textContent = BRL(b); return b; }
-function monthSums() { const m = iso(new Date()).slice(0, 7); const E = ENT.filter(e => e.date.startsWith(m) && e.status === 'pago'); return { in: E.filter(e => e.kind === 'in').reduce((a, e) => a + +e.amount, 0), out: E.filter(e => e.kind === 'out').reduce((a, e) => a + +e.amount, 0) }; }
+function monthSums() { const m = iso(new Date()).slice(0, 7); const E = ENT.filter(e => e.date.startsWith(m) && e.status === 'pago'); return { in: E.filter(e => e.kind === 'in').reduce((a, e) => a + +e.amount, 0), out: E.filter(e => e.kind === 'out' && e.category !== 'Fatura do cartão').reduce((a, e) => a + +e.amount, 0) }; }
 
 // ---------- chat ----------
 const log = $('#log');
@@ -151,6 +153,7 @@ function step(p) {
   if (!p.kind) { const b = say(`${BRL(p.amount)}: entrou ou saiu?`); return chips(b, [['Gastei', () => { p.kind = 'out'; step(p); }], ['Recebi', () => { p.kind = 'in'; step(p); }, 'am']]); }
   if (!p.category) { const cats = [...new Set([...REC.map(r => r.category), ...ENT.map(e => e.category)].filter(Boolean))].filter(c => !!c); const b = say('Em que categoria entra?'); return chips(b, cats.slice(0, 14).map(c => [c, () => { p.category = c; const hit = CATS.find(x => x[0] === c); if (hit && !p.scope) p.scope = hit[2]; step(p); }])); }
   if (!p.scope) { const b = say('É PJ ou pessoa física?'); return chips(b, [['PJ', () => { p.scope = 'pj'; step(p); }], ['Pessoa física', () => { p.scope = 'pf'; step(p); }]]); }
+  if (p.category === 'Fatura do cartão') { p.pay = 'pix'; p.scope = p.scope || 'pf'; p.name = 'Pagamento da fatura'; }
   if (p.kind === 'out' && !p.pay) { const b = say('Pagou como?'); return chips(b, [['Pix', () => { p.pay = 'pix'; step(p); }], ['Crédito', () => { p.pay = 'credito'; step(p); }], ['Débito', () => { p.pay = 'debito'; step(p); }]]); }
   if (p.kind === 'in' && !p.pay) p.pay = 'pix';
   confirm_(p);
