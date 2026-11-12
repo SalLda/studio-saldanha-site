@@ -211,6 +211,19 @@ dialog h2{font-size:24px}
   .st{flex-basis:86px}
 }
 /* ===== v2 shell ===== */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
+.hero .kpi{border-radius:20px;padding:22px 24px;box-shadow:var(--sh);background:#fff;border:1px solid var(--line)}
+.hero .kpi span{font-size:14px;font-weight:500}
+.hero .kpi b{font-family:var(--serif);font-size:52px;line-height:1.05;display:block;margin:6px 0 4px;letter-spacing:-.03em}
+.hero .kpi em{font-style:normal;font-size:14px;color:var(--dim);display:block}
+.hero .kpi.bal{background:#1F1C17;border-color:#1F1C17}
+.hero .kpi.bal span,.hero .kpi.bal em{color:#CFC6B2}.hero .kpi.bal b{color:var(--amber);font-size:64px}
+.hero .kpi.bal strong{color:#fff}.hero .kpi.bal strong.neg{color:#ff9b8f}
+.hero .kpi.prev b{color:#1F1C17}.hero .kpi em.sm{font-size:12.5px;margin-top:8px;color:var(--faint)}
+.kpis3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.kpis3 .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpis3 .kpi span{font-size:12px;color:var(--dim)}.kpis3 .kpi b{font-size:20px;margin:2px 0}.kpis3 .kpi em{font-size:12px;color:var(--faint)}
+@media(max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}.hero .kpi.bal b{font-size:46px}.hero .kpi b{font-size:38px}.kpis3{grid-template-columns:minmax(0,1fr)}}
 #appView{display:block;overflow-x:clip}
 #rail{position:fixed;left:0;top:0;bottom:0;width:216px;background:#fff;border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:6px;z-index:30}
 #rail .rbrand{font-family:var(--serif);font-size:26px;padding:4px 12px 18px}
@@ -1016,21 +1029,25 @@ async function seedV2() {
   await loadClients();
   const idOf = n => S.clients.find(c => c.name === n)?.id;
   // recorrentes
-  const rows = SEED_REC.map(r => { const { cli: cn, ...x } = r; return { ...x, client_id: cn ? idOf(cn) : null }; });
+  const norm = (arr, keys, def = {}) => arr.map(x => Object.fromEntries(keys.map(k => [k, x[k] !== undefined ? x[k] : (def[k] !== undefined ? def[k] : null)])));
+  const rows = norm(SEED_REC.map(r => { const { cli: cn, ...x } = r; return { ...x, client_id: cn ? idOf(cn) : null }; }), ['kind', 'scope', 'name', 'amount', 'rule', 'day', 'weekday', 'pay', 'category', 'start_date', 'end_date', 'client_id', 'active', 'note'], { active: true, pay: 'ambos', scope: 'pf' });
   F.rec = must(await sb.from('fin_recurring').insert(rows).select());
   must(await sb.from('fin_debts').insert({ name: 'Formatura', total: 4860, paid: 0, due_date: '2029-06-10', scope: 'pf' }).select());
-  F.tpl = must(await sb.from('task_templates').insert(SEED_TPL).select());
-  const off = must(await sb.from('offers').insert([
+  F.tpl = must(await sb.from('task_templates').insert(norm(SEED_TPL, ['title', 'mode', 'week', 'weekday', 'time_start', 'time_end', 'per_client', 'active'], { active: true, per_client: true })).select());
+  const off = must(await sb.from('offers').insert(norm([
     { name: 'Foto na Rua · 1 foto', price: 15, unit: 'por foto', description: 'Foto na hora em parques e eventos de Pelotas.', notes: 'Meta: no mínimo R$ 400 por dia em fim de semana e feriado com sol.', position: 1 },
     { name: 'Foto na Rua · 3 fotos', price: 35, unit: 'pacote de 3', description: 'Pacote de 3 fotos (R$ 11,67 cada).', notes: 'Meta: no mínimo R$ 400 por dia em fim de semana e feriado com sol.', position: 2 },
     { name: 'Pacote BqB', price: 300, unit: 'por negócio', description: '20 fotos + 2 reels entregues na hora, para negócios.', notes: 'Leva 1h30 para fazer tudo e entrega no mesmo momento.', position: 3 }
-  ]).select());
+  ], ['name', 'price', 'unit', 'description', 'notes', 'position'])).select());
   const bqb = off.find(o => /BqB/.test(o.name))?.id;
   const L = [['CaféIn', 'Cafés'], ['Curcuma', 'Cafés'], ['Leve Café', 'Cafés'], ['Versa Café', 'Cafés'], ['Blitz Café', 'Cafés'], ['Orion Café', 'Cafés'], ['Estética Jardim', 'Estéticas'], ['Estética Eleganz', 'Estéticas'], ['Maira Ribeiro Estética', 'Estéticas'], ['Ivana Leite Estética', 'Estéticas']];
   must(await sb.from('leads').insert(L.map(([name, segment]) => ({ name, segment, offer_id: bqb, status: 'novo' }))).select());
   await saveSet('opening', { amount: 2421, date: '2026-11-12' });
   await saveSet('fatura', { amount: 2034, date: '2026-11-12' });
   await saveSet('meta_fixos', { amount: 3500 });
+  await saveSet('cartao', { fecha: 29, vence: 5 });
+  await saveSet('buckets', { ess: 60, est: 30, fut: 10 });
+  must(await sb.from('fin_entries').insert({ kind: 'out', scope: 'pf', name: 'Psi (sessão extra)', amount: 60, date: '2026-11-12', status: 'pago', paid_on: '2026-11-12', pay: 'pix', category: 'Saúde', recurring_id: null, client_id: null }).select());
   await loadV2();
   await ensureEntries(firstOfMonth(new Date()), '2026-11-12');
   await saveSet('seed_v2', { at: new Date().toISOString() });
@@ -1092,6 +1109,9 @@ function sums(m, scope = 'todos') {
 function balance() { const o = F.set.opening || { amount: 0, date: '1970-01-01' }; let b = +o.amount; F.ent.forEach(e => { if (e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (e.kind === 'in') b += +e.amount; else if (e.pay !== 'credito') b -= +e.amount; }); return b; }
 function fatura() { const o = F.set.fatura || { amount: 0, date: '1970-01-01' }; let f = +o.amount; F.ent.forEach(e => { if (e.kind === 'out' && e.status === 'pago' && e.pay === 'credito' && e.paid_on && e.paid_on >= o.date) f += +e.amount; }); return f; }
 function dueSoon(days) { const lim = iso(new Date(Date.now() + days * 864e5)); return F.ent.filter(e => e.kind === 'out' && e.status === 'previsto' && e.date <= lim).sort((a, b) => a.date.localeCompare(b.date)); }
+function cardDates() { const c = F.set.cartao || { fecha: 29, vence: 5 }, n = new Date(); let cl = new Date(n.getFullYear(), n.getMonth(), c.fecha); if (cl < new Date(n.getFullYear(), n.getMonth(), n.getDate())) cl = new Date(n.getFullYear(), n.getMonth() + 1, c.fecha);
+  let dv = new Date(cl.getFullYear(), cl.getMonth() + (c.vence <= c.fecha ? 1 : 0), c.vence); return { cl: iso(cl), dv: iso(dv) }; }
+function cardTxt() { const d = cardDates(); return `fecha ${fmtDm(d.cl)} · vence ${fmtDm(d.dv)}`; }
 function debtInfo(d) {
   const now = new Date(), due = pd(d.due_date); const left = Math.max(1, (due.getFullYear() - now.getFullYear()) * 12 + due.getMonth() - now.getMonth() + 1);
   const rest = Math.max(0, +d.total - +d.paid); return { rest, left, parcela: rest / left };
@@ -1174,11 +1194,11 @@ function pageHead(title, sub, right = '') { return `<div class="phead"><div><h1>
 // ---------- início ----------
 async function viewInicio() {
   const m0 = firstOfMonth(new Date()); const a = sums(m0), pj = sums(m0, 'pj'), pf = sums(m0, 'pf');
-  const soon = dueSoon(7), pix = soon.filter(e => e.pay === 'pix' || e.pay === 'debito').reduce((s, e) => s + +e.amount, 0), cred = soon.filter(e => e.pay === 'credito').reduce((s, e) => s + +e.amount, 0), amb = soon.filter(e => e.pay === 'ambos').reduce((s, e) => s + +e.amount, 0);
-  const bal = balance(), mf = metaFixos();
+  const soon = dueSoon(7), faturaDue = dayDiff(cardDates().dv) <= 7 ? fatura() : 0, pix = soon.filter(e => e.pay === 'pix' || e.pay === 'debito').reduce((s, e) => s + +e.amount, 0), cred = soon.filter(e => e.pay === 'credito').reduce((s, e) => s + +e.amount, 0), amb = soon.filter(e => e.pay === 'ambos').reduce((s, e) => s + +e.amount, 0);
+  const bal = balance(), mf = metaFixos(); const bem = budgetRem(m0), proj = bal + (F.ent.filter(e => inMonth(m0, e.date) && e.status === 'previsto' && e.kind === 'in').reduce((x, e) => x + +e.amount, 0) + bem.in) - (F.ent.filter(e => inMonth(m0, e.date) && e.status === 'previsto' && e.kind === 'out' && e.pay !== 'credito').reduce((x, e) => x + +e.amount, 0) + bem.out);
   const tasks = F.tasks.filter(t => !t.done).sort((x, y) => (x.due || '9').localeCompare(y.due || '9')).slice(0, 7);
-  const alert = pix > bal ? `<div class="note warn">Você precisa de ${BRL(pix - bal)} a mais no Pix para cobrir o que vence em 7 dias. Cartão ainda pode cobrir ${BRL(amb)} dos itens "Pix ou crédito".</div>`
-    : `<div class="note ok">Dá para pagar tudo que é Pix nos próximos 7 dias e ainda sobram ${BRL(bal - pix)} na conta.</div>`;
+  const alert = pix + faturaDue > bal ? `<div class="note warn">Você precisa de ${BRL(pix + faturaDue - bal)} a mais no Pix para cobrir o que vence em 7 dias. Cartão ainda pode cobrir ${BRL(amb)} dos itens "Pix ou crédito".</div>`
+    : `<div class="note ok">Dá para pagar tudo que é Pix nos próximos 7 dias e ainda sobram ${BRL(bal - pix - faturaDue)} na conta.</div>`;
   const nextIns = F.ent.filter(e => e.kind === 'in' && e.status === 'previsto').sort((x, y) => x.date.localeCompare(y.date)).slice(0, 3);
   // status do mês por cliente
   const a0 = iso(m0), b0 = iso(new Date(m0.getFullYear(), m0.getMonth() + 1, 0)); let posts = [];
@@ -1186,15 +1206,18 @@ async function viewInicio() {
   const stat = c => { const p = posts.filter(x => x.client_id === c.id); if (!p.length) return { l: 'Sem pautas no mês', k: 'none' }; const pend = p.filter(x => x.status !== 'publicado'); if (!pend.length) return { l: `${p.length} de ${p.length} publicados`, k: 'publicado' };
     const low = pend.reduce((m, x) => (STG[x.status]?.i ?? 99) < (STG[m.status]?.i ?? 99) ? x : m, pend[0]); return { l: `${STG[low.status]?.label || low.status} · ${p.length - pend.length}/${p.length} publicados`, k: low.status }; };
   $('#main').innerHTML = `<div class="wrap2">${pageHead('Oi, Matheus', new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }), `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button><button class="btn logoutm" id="lo2">Sair</button>`)}
-  <div class="kpis4">
-    <div class="kpi hi"><span>Faturamento de ${monthLabel(m0).split(' ')[0].toLowerCase()}</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
-    <div class="kpi"><span>Gastos do mês (pagos)</span><b>${BRL(a.outPaid)}</b><em>PJ ${BRL(pj.outPaid)} · PF ${BRL(pf.outPaid)}</em><div class="bar dark"><i style="width:${Math.min(100, a.outAll ? a.outPaid / a.outAll * 100 : 0)}%"></i></div></div>
-    <div class="kpi"><span>Saldo na conta</span><b>${BRL(bal)}</b><em>a pagar em 7 dias: ${BRL(pix + cred + amb)}</em></div>
-    <div class="kpi"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${F.set.fatura_due ? 'vence ' + fmtDm(F.set.fatura_due.date) : '<a href="#" id="setFat">definir vencimento</a>'}</em></div>
+  <div class="hero">
+    <div class="kpi bal"><span>Saldo na conta</span><b>${BRL(bal)}</b><em>${proj >= 0 ? 'Previsto para o fim do mês' : 'Previsto para o fim do mês, atenção'}: <strong class="${proj >= 0 ? '' : 'neg'}">${BRL(proj)}</strong></em></div>
+    <div class="kpi prev"><span>Gastos previstos de ${monthLabel(m0).split(' ')[0].toLowerCase()}</span><b>${BRL(a.outAll)}</b><em>já pago ${BRL(a.outPaid)} · falta pagar ${BRL(Math.max(0, a.outAll - a.outPaid))}</em><div class="bar dark"><i style="width:${Math.min(100, a.outAll ? a.outPaid / a.outAll * 100 : 0)}%"></i></div><em class="sm">PJ ${BRL(pj.outAll)} · PF ${BRL(pf.outAll)}</em></div>
+  </div>
+  <div class="kpis3">
+    <div class="kpi"><span>Faturamento do mês</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
+    <div class="kpi"><span>Gastos pagos</span><b>${BRL(a.outPaid)}</b><em>PJ ${BRL(pj.outPaid)} · PF ${BRL(pf.outPaid)}</em></div>
+    <div class="kpi"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em></div>
   </div>
   <div class="cols2">
    <div class="card"><div class="row"><h2 class="h2">Contas dos próximos 7 dias</h2><div class="sp"></div><a href="#" data-go="financeiro">ver tudo</a></div>
-     <div class="paysum"><span class="badge pay-pix">Pix ${BRL(pix)}</span><span class="badge pay-credito">Crédito ${BRL(cred)}</span><span class="badge pay-ambos">Pix ou crédito ${BRL(amb)}</span></div>${alert}
+     <div class="paysum"><span class="badge pay-pix">Pix ${BRL(pix)}</span><span class="badge pay-credito">Crédito ${BRL(cred)}</span>${faturaDue ? `<span class="badge sc-pj">Fatura vence ${fmtDm(cardDates().dv)}: ${BRL(faturaDue)}</span>` : ''}<span class="badge pay-ambos">Pix ou crédito ${BRL(amb)}</span></div>${alert}
      <div class="elist">${soon.length ? soon.map(e => entRow(e)).join('') : '<div class="empty">Nada vencendo nos próximos 7 dias.</div>'}</div></div>
    <div>
      <div class="card" style="margin-top:0"><h2 class="h2">Meta de fixos: ${BRL(mf.meta)} por mês</h2>
@@ -1211,7 +1234,7 @@ async function viewInicio() {
   bindEnt($('#main')); $('#lo2').onclick = () => $('#logout').click(); $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
   $$('[data-go]').forEach(a => a.onclick = ev => { ev.preventDefault(); setView(a.dataset.go); });
   $$('[data-cl]').forEach(b => b.onclick = () => { S.tab = b.dataset.cl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
-  $('#setFat')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Dia do vencimento da fatura (AAAA-MM-DD):', todayS()); if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) { await saveSet('fatura_due', { date: v }); rerenderView(); } });
+  $('#setFat-x')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Dia do vencimento da fatura (AAAA-MM-DD):', todayS()); if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) { await saveSet('fatura_due', { date: v }); rerenderView(); } });
 }
 function taskRow(t) {
   const c = S.clients.find(x => x.id === t.client_id); const late = t.due && !t.done && dayDiff(t.due) < 0;
@@ -1237,16 +1260,24 @@ function finResumo(el) {
   const buds = F.rec.filter(r => r.active && r.rule === 'orcamento' && (F.scope === 'todos' || r.scope === F.scope)).map(r => { const used = F.ent.filter(e => inMonth(m, e.date) && e.kind === r.kind && e.category === r.category && e.scope === r.scope).reduce((a, e) => a + +e.amount, 0); return { r, used, pct: Math.min(100, used / r.amount * 100) }; });
   const byCat = {}; monthEnt(m, F.scope).filter(e => e.kind === 'out').forEach(e => byCat[e.category || 'Sem categoria'] = (byCat[e.category || 'Sem categoria'] || 0) + +e.amount);
   const cats = Object.entries(byCat).sort((a, b) => b[1] - a[1]); const tot = cats.reduce((a, c) => a + c[1], 0) || 1;
-  const goal = 450;
+  const goal = 450; const bp = { ...{ ess: 60, est: 30, fut: 10 }, ...(F.set.buckets || {}) }; const bkt = { ess: { prev: 0, paid: 0 }, est: { prev: 0, paid: 0 }, fut: { prev: 0, paid: 0 } };
+  const add = (e, v) => { const k = bucketOf(e.category); bkt[k].prev += v; if (e.status === 'pago') bkt[k].paid += v; };
+  monthEnt(m, F.scope).filter(e => e.kind === 'out').forEach(e => add(e, +e.amount));
+  F.rec.filter(r => r.active && r.rule === 'orcamento' && r.kind === 'out' && (F.scope === 'todos' || r.scope === F.scope)).forEach(r => { const used = F.ent.filter(e => inMonth(m, e.date) && e.kind === 'out' && e.category === r.category && e.scope === r.scope).reduce((x, e) => x + +e.amount, 0); bkt[bucketOf(r.category)].prev += Math.max(0, +r.amount - used); });
   el.innerHTML = `<div class="kpis4"><div class="kpi hi"><span>Entrou</span><b>${BRL(s.inPaid)}</b><em>previsto ${BRL(s.inAll)}</em></div><div class="kpi"><span>Saiu</span><b>${BRL(s.outPaid)}</b><em>previsto ${BRL(s.outAll)}</em></div><div class="kpi"><span>Sobra prevista</span><b class="${sobra >= 0 ? 'up' : 'down'}">${BRL(sobra)}</b><em>entradas previstas − saídas previstas</em></div><div class="kpi"><span>Saldo na conta</span><b>${BRL(balance())}</b><em><a href="#" id="setBal">ajustar saldo</a></em></div></div>
   <div class="cols2"><div class="card"><h2 class="h2">PJ × pessoa física</h2><table><thead><tr><th></th><th class="num">Entrou</th><th class="num">Saiu</th><th class="num">Previsto sobra</th></tr></thead><tbody>
     <tr><td><b>PJ</b></td><td class="num">${BRL(sj.inPaid)}</td><td class="num">${BRL(sj.outPaid)}</td><td class="num">${BRL(sj.inAll - sj.outAll)}</td></tr>
     <tr><td><b>Pessoa física</b></td><td class="num">${BRL(sf.inPaid)}</td><td class="num">${BRL(sf.outPaid)}</td><td class="num">${BRL(sf.inAll - sf.outAll)}</td></tr></tbody></table>
     <p class="sub" style="margin:10px 0 0">${sobra >= goal ? `Dá para separar R$ 150 de viagem e R$ 300 de investimento este mês (sobra prevista de ${BRL(sobra)}).` : `Para separar R$ 150 de viagem e R$ 300 de investimento seriam necessários ${BRL(goal)} de sobra; hoje a previsão é ${BRL(sobra)}.`}</p></div>
    <div class="card"><h2 class="h2">Orçamentos do mês</h2>${buds.map(b => `<div class="bud"><div class="row"><b>${esc(b.r.name)}</b><span class="sp"></span><span class="sub">${BRL(b.used)} de ${BRL(b.r.amount)}</span></div><div class="bar ${b.r.kind === 'out' ? 'dark' : ''}"><i style="width:${b.pct}%"></i></div></div>`).join('') || '<div class="empty">Sem orçamentos.</div>'}</div></div>
+  <div class="card"><div class="row"><h2 class="h2">Caixinhas ${bp.ess}/${bp.est}/${bp.fut}</h2><div class="sp"></div><a href="#" id="editBk">ajustar</a></div><p class="sub" style="margin:4px 0 0">Meta de cada caixinha como parte da renda prevista do mês (${BRL(s.inAll)}).</p>${BK.map(k => { const lim = s.inAll * bp[k.k] / 100, prev = bkt[k.k].prev, pago = bkt[k.k].paid; const pct = lim ? Math.min(100, prev / lim * 100) : 0; return `<div class="bud"><div class="row"><b>${k.l}</b><span class="sub">${bp[k.k]}% · ${k.d}</span><span class="sp"></span><span class="sub ${prev > lim ? 'late' : ''}">previsto ${BRL(prev)} de ${BRL(lim)} · pago ${BRL(pago)}</span></div><div class="bar ${k.k === 'fut' ? '' : 'dark'}"><i style="width:${pct}%;${prev > lim ? 'background:var(--red)' : ''}"></i></div></div>`; }).join('')}</div>
   <div class="card"><h2 class="h2">Para onde foi o dinheiro</h2>${cats.map(([c, v]) => `<div class="bud"><div class="row"><b>${esc(c)}</b><span class="sp"></span><span class="sub">${BRL(v)} · ${Math.round(v / tot * 100)}%</span></div><div class="bar dark"><i style="width:${v / tot * 100}%"></i></div></div>`).join('') || '<div class="empty">Sem saídas neste mês.</div>'}</div>`;
+  $('#editBk')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Porcentagens das caixinhas (essenciais/estilo/futuro), somando 100:', `${bp.ess}/${bp.est}/${bp.fut}`); const p = (v || '').split('/').map(Number); if (p.length === 3 && p.every(isFinite) && p.reduce((a, b) => a + b) === 100) { await saveSet('buckets', { ess: p[0], est: p[1], fut: p[2] }); rerenderView(); } else if (v) toast('Use três números somando 100, ex.: 60/30/10'); });
   $('#setBal')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Quanto você tem na conta agora (R$)?', String(balance()).replace('.', ',')); const n = money(v); if (isFinite(n)) { await saveSet('opening', { amount: n, date: todayS() }); rerenderView(); } });
 }
+const BK = [{ k: 'ess', l: 'Essenciais', d: 'moradia, mercado, contas, saúde' }, { k: 'est', l: 'Estilo de vida e trabalho', d: 'ferramentas, equipamento, lazer' }, { k: 'fut', l: 'Futuro', d: 'viagem e investimento' }];
+const ESS = ['moradia', 'contas', 'mercado', 'saúde', 'farmácia', 'transporte', 'dívidas', 'educação', 'pensão'], FUT = ['viagem', 'investimento', 'reserva'];
+function bucketOf(c) { const x = String(c || '').toLowerCase(); return ESS.includes(x) ? 'ess' : FUT.includes(x) ? 'fut' : 'est'; }
 function finLanc(el) {
   const E = monthEnt(F.m, F.scope).sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
   const ins = E.filter(e => e.kind === 'in'), outs = E.filter(e => e.kind === 'out');
