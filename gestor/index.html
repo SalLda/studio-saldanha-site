@@ -210,6 +210,97 @@ dialog h2{font-size:24px}
   .pc h3{font-size:15px}
   .st{flex-basis:86px}
 }
+/* ===== v2 shell ===== */
+#appView{display:block;overflow-x:clip}
+#rail{position:fixed;left:0;top:0;bottom:0;width:216px;background:#fff;border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:6px;z-index:30}
+#rail .rbrand{font-family:var(--serif);font-size:26px;padding:4px 12px 18px}
+#rail .rbrand em{color:var(--amber);font-style:normal;background:#1F1C17;border-radius:8px;padding:0 7px;margin-left:2px}
+#rail nav{display:flex;flex-direction:column;gap:2px}
+#rail nav button{display:flex;align-items:center;gap:12px;border:0;background:transparent;border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:500;color:var(--dim);text-align:left}
+#rail nav button svg{width:20px;height:20px}
+#rail nav button:hover{background:var(--bg3);color:var(--text)}
+#rail nav button.on{background:#1F1C17;color:#fff}
+#rail nav button.on svg{color:var(--amber)}
+#rail .rfoot{margin-top:auto;display:flex;flex-direction:column;gap:4px}
+#appView>header,#appView>main{margin-left:216px}
+#appView>header.hidden{display:none!important}
+#bnav{display:none}
+.wrap2{max-width:1180px;margin:0 auto;padding:22px 22px 80px}
+.phead{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.phead h1{font-size:32px}
+.cols2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+.cols2>.card,.cols2>div>.card{margin-top:16px}
+.cols2{margin-top:0}
+.kpis4+.cols2,.cols2+.cols2,.card+.cols2{margin-top:16px}
+.cols2>div>.card:first-child{margin-top:0}
+td,th{white-space:nowrap}
+.seg button{white-space:nowrap}
+.seg.tabs2{display:flex;overflow-x:auto}
+.kpis4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpis4 .kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--sh)}
+.kpis4 .kpi span{font-size:12.5px;color:var(--dim);font-weight:500}
+.kpis4 .kpi b{font-size:30px;margin:4px 0 2px;letter-spacing:-.02em}
+.kpis4 .kpi em{color:var(--faint)}
+.kpis4 .kpi.hi{background:#1F1C17;border-color:#1F1C17}
+.kpis4 .kpi.hi span,.kpis4 .kpi.hi em{color:#CFC6B2}.kpis4 .kpi.hi b{color:var(--amber)}
+.down{color:var(--red)}
+.bar{height:8px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-top:10px;position:relative}
+.bar i{display:block;height:100%;background:var(--amber);border-radius:99px}
+.bar.dark i{background:#1F1C17}.bar.big{height:12px}
+.kpi.hi .bar{background:#3a362d}
+.bar u{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,var(--amber-soft),var(--amber-soft) 4px,#fff 4px,#fff 8px)}
+.bar.big{position:relative;margin-top:12px}
+.card.warnc{border-color:#E8C3BE;background:#FFF9F7}
+.note{border-radius:12px;padding:10px 12px;font-size:13.5px;margin:10px 0}
+.note.ok{background:var(--sage-soft);color:#2f5a38}.note.warn{background:var(--terra-soft);color:var(--terra)}
+.paysum{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pay-pix{background:var(--teal-soft);color:var(--teal)}.pay-credito{background:var(--purple-soft);color:var(--purple)}.pay-debito{background:var(--blue-soft);color:var(--blue)}.pay-ambos{background:var(--amber-soft);color:var(--amber-ink)}
+.sc-pj{background:#1F1C17;color:var(--amber)}.sc-pf{background:var(--bg3);color:var(--dim)}
+.kind-cliente{background:var(--sage-soft);color:var(--sage)}.kind-prospect{background:var(--amber-soft);color:var(--amber-ink)}.kind-pessoal{background:var(--bg3);color:var(--dim)}
+.erow{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.erow:last-child{border-bottom:0}.erow.done{opacity:.55}
+.erow .ed{width:84px;font-size:12.5px;color:var(--dim);flex:none}.erow .ed.late{color:var(--red);font-weight:600}
+.erow .en{flex:1;min-width:0}.erow .en b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.erow .ea{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.ea.in{color:var(--sage)}
+.trow{display:flex;gap:12px;align-items:flex-start;padding:10px 4px;border-bottom:1px solid var(--line);cursor:pointer;margin:0;color:var(--text);font-size:15px}
+.trow:last-child{border-bottom:0}.trow input{width:20px;height:20px;margin-top:2px;accent-color:#1F1C17;flex:none}
+.trow b{display:block;font-weight:600}.trow.done b{text-decoration:line-through;color:var(--faint)}
+.sub.late{color:var(--red);font-weight:600}
+.crow,.rrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);padding:11px 4px;cursor:pointer}
+.crow:last-child,.rrow:last-child{border-bottom:0}
+.crow>div,.rrow>div:first-child{flex:1;min-width:0}.crow b,.rrow b{display:block;font-weight:600}
+.rrow.off{opacity:.5}.rrow .ea{font-weight:600}
+.seg{display:inline-flex;background:var(--bg3);border-radius:99px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:99px;padding:6px 14px;cursor:pointer;font-weight:500;color:var(--dim)}
+.seg button.on{background:#1F1C17;color:#fff}
+.seg.tabs2{margin-bottom:6px;max-width:100%;overflow:auto}
+.bud{margin:12px 0}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);font-size:14px}th{color:var(--dim);font-weight:500;font-size:12.5px}.num{text-align:right!important;font-variant-numeric:tabular-nums}
+.agrid,.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ccard h3{font-size:19px}
+.ocard{text-align:left;cursor:pointer;margin-top:0;display:block}
+.ocard .price{font-family:var(--serif);font-size:30px;display:block;margin:2px 0 4px}.ocard h3{font-size:18px}.ocard p{margin:6px 0 0;color:var(--dim);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chip2{border:1px solid var(--line2);background:#fff;border-radius:99px;padding:5px 12px;cursor:pointer}.chip2.on{background:#1F1C17;color:#fff;border-color:#1F1C17}
+.lgrid{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;overflow-x:auto}
+.lcol{background:var(--bg3);border-radius:14px;padding:10px;min-height:120px}.lh{font-weight:600;font-size:13px;margin-bottom:8px;display:flex;justify-content:space-between}.lh span{color:var(--faint)}
+.lcard{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin-bottom:6px;cursor:pointer}.lcard b{display:block;font-size:14px}
+.empty.sm{padding:6px}
+@media(max-width:900px){
+  #rail{display:none}
+  #appView>header,#appView>main{margin-left:0}
+  #bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:30;padding:6px 4px calc(6px + env(safe-area-inset-bottom));justify-content:space-around}
+  #bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:transparent;font-size:10.5px;color:var(--dim);padding:4px 0;border-radius:10px}
+  #bnav button svg{width:22px;height:22px}#bnav button.on{color:var(--text);font-weight:600}#bnav button.on svg{color:#1F1C17}
+  #bnav button.on span{background:var(--amber);border-radius:6px;padding:0 6px}
+  .wrap2{padding:16px 14px 100px}.phead h1{font-size:26px}
+  .kpis4{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis4 .kpi b{font-size:22px}
+  .cols2{grid-template-columns:minmax(0,1fr)}
+  .fr3,.fr{grid-template-columns:minmax(0,1fr)}
+  .erow .ed{width:62px}
+  }
+.logoutm{display:none}
+@media(max-width:900px){.logoutm{display:inline-flex}}
 </style>
 </head>
 <body>
@@ -449,7 +540,12 @@ async function start(user) {
   } catch (e) { fail(e); }
   let saved = null; try { saved = localStorage.getItem('gestor.tab'); } catch (_) {}
   S.tab = (saved && (saved === 'swipe' || S.clients.some(c => c.id === saved))) ? saved : (S.clients[0]?.id || 'swipe');
-  await loadUnseen(); renderTabs(); route();
+  await loadUnseen(); buildShell();
+  let v = 'inicio'; try { v = localStorage.getItem('gestor.view') || 'inicio'; } catch (_) {}
+  if (!NAVL[v]) v = 'inicio';
+  try { await loadV2(); await seedV2(); await loadV2(); await refreshGenerated(); F.ready = true; } catch (e) { fail(e); v = 'clientes'; }
+  if (F.seeded) toast('Gestor configurado com seus dados');
+  setView(v);
 }
 async function loadClients() { const { data, error } = await sb.from('clients').select('*').order('position'); if (error) throw error; S.clients = data; }
 async function loadUnseen() {
@@ -833,6 +929,530 @@ swForm.addEventListener('submit',async e=>{
   swDlg.close(); toast('Salvo'); renderSwipe();
 });
 $('#swDel').onclick=async()=>{ if(!editingSw||!confirm('Excluir este formato?'))return; const {error}=await sb.from('swipe').delete().eq('id',editingSw.id); if(error)return fail(error); swDlg.close(); renderSwipe(); };
+
+
+// ======================= GESTOR v2: início, financeiro, tarefas, agência, ofertas =======================
+const BRL = n => (Number(n) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const pad = n => String(n).padStart(2, '0');
+const pd = s => { const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
+const todayS = () => iso(new Date());
+const WD = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const money = v => { const s = String(v ?? '').trim().replace(/[^\d.,-]/g, ''); if (!s) return NaN; return s.includes(',') ? parseFloat(s.replace(/\./g, '').replace(',', '.')) : parseFloat(s); };
+function dayDiff(s) { const a = pd(s), b = pd(todayS()); return Math.round((a - b) / 864e5); }
+function relDay(s) { const n = dayDiff(s); const d = pd(s); const dd = pad(d.getDate()) + '/' + pad(d.getMonth() + 1); if (n === 0) return 'hoje'; if (n === 1) return 'amanhã'; if (n === -1) return 'ontem'; if (n < 0) return 'há ' + (-n) + ' dias · ' + dd; return WD[d.getDay()] + ' ' + dd; }
+const PAYL = { pix: 'Pix', credito: 'Crédito', debito: 'Débito', ambos: 'Pix ou crédito' };
+const SCOPEL = { pj: 'PJ', pf: 'Pessoa física' };
+const KINDL = { cliente: 'Cliente', prospect: 'Prospecto', pessoal: 'Pessoal' };
+const DOCK = { conversa_inicial: 'Conversa inicial', proposta: 'Proposta comercial', contrato: 'Contrato', briefing: 'Reunião de briefing', onboarding: 'Onboarding', outro: 'Outro' };
+const ONB = [['conversa', 'Conversa inicial feita'], ['proposta', 'Proposta enviada'], ['contrato', 'Contrato assinado e salvo'], ['briefing', 'Reunião de briefing feita'], ['acessos', 'Acessos recebidos (Instagram, Meta, Drive)'], ['identidade', 'Identidade visual / Fundação'], ['calendario', 'Primeiro calendário aprovado'], ['link', 'Link de aprovação enviado']];
+const LEADST = [['novo', 'Novo'], ['contatado', 'Contatado'], ['respondeu', 'Respondeu'], ['fechado', 'Fechado'], ['perdido', 'Perdido']];
+const NAVI = {
+  inicio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  financeiro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/></svg>',
+  tarefas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12l3 3 5-6"/></svg>',
+  clientes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>',
+  agencia: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+  ofertas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></svg>'
+};
+const NAVL = { inicio: 'Início', financeiro: 'Financeiro', tarefas: 'Tarefas', clientes: 'Clientes', agencia: 'Agência', ofertas: 'Ofertas' };
+
+const F = { rec: [], ent: [], debts: [], set: {}, tasks: [], tpl: [], offers: [], leads: [], docs: [], posts: [], m: firstOfMonth(new Date()), ftab: 'resumo', atab: 'clientes', scope: 'todos', sel: null, ready: false };
+
+// ---------- dados ----------
+async function loadV2() {
+  const from = iso(addMonths(firstOfMonth(new Date()), -2));
+  const q = [
+    sb.from('fin_recurring').select('*').order('name'), sb.from('fin_entries').select('*').gte('date', from).order('date'),
+    sb.from('fin_debts').select('*'), sb.from('fin_settings').select('*'), sb.from('tasks').select('*').order('due'),
+    sb.from('task_templates').select('*').order('created_at'), sb.from('offers').select('*').order('position'),
+    sb.from('leads').select('*').order('created_at'), sb.from('agency_docs').select('*').order('created_at', { ascending: false })
+  ];
+  const r = await Promise.all(q); r.forEach(x => { if (x.error) throw x.error; });
+  [F.rec, F.ent, F.debts, , F.tasks, F.tpl, F.offers, F.leads, F.docs] = r.map(x => x.data || []);
+  F.set = {}; (r[3].data || []).forEach(s => F.set[s.key] = s.value);
+}
+async function saveSet(key, value) { F.set[key] = value; const { error } = await sb.from('fin_settings').upsert({ owner: S.user.id, key, value }, { onConflict: 'owner,key' }); if (error) fail(error); }
+
+const SEED_REC = [
+  { kind: 'in', scope: 'pf', name: 'Bolsa CNPq', amount: 700, rule: 'dia_util', day: 5, pay: 'pix', category: 'Bolsa', note: 'Dia 5; se cair em fim de semana, passa para o próximo dia útil.' },
+  { kind: 'in', scope: 'pf', name: 'Pensão', amount: 634, rule: 'mensal', day: 1, pay: 'pix', category: 'Pensão' },
+  { kind: 'in', scope: 'pj', name: 'Weinerth (fixo mensal)', amount: 600, rule: 'mensal', day: 5, pay: 'pix', category: 'Cliente', cli: 'Weinerth' },
+  { kind: 'in', scope: 'pj', name: 'Foto na Rua', amount: 2000, rule: 'orcamento', category: 'Foto na rua', note: 'Variável: cerca de R$ 800 por fim de semana, previsão de R$ 2.000 por mês. Lance cada recebimento em "+ Entrada" com a categoria Foto na rua.' },
+  { kind: 'in', scope: 'pj', name: 'Psi 1 (meta, fixo mensal)', amount: 700, rule: 'mensal', day: 5, pay: 'pix', category: 'Cliente', active: false, cli: 'Psi 1', note: 'Meta de cliente fixo. Ative quando fechar.' },
+  { kind: 'in', scope: 'pj', name: 'Psi 2 (meta, fixo mensal)', amount: 700, rule: 'mensal', day: 5, pay: 'pix', category: 'Cliente', active: false, cli: 'Psi 2', note: 'Meta de cliente fixo. Ative quando fechar.' },
+  { kind: 'out', scope: 'pf', name: 'Psi (sessão semanal)', amount: 60, rule: 'semanal', weekday: 2, pay: 'pix', category: 'Saúde', note: 'R$ 60 por sessão, toda terça, no Pix (R$ 240 por mês).' },
+  { kind: 'out', scope: 'pf', name: 'Claro celular', amount: 35, rule: 'mensal', day: 5, pay: 'ambos', category: 'Contas' },
+  { kind: 'out', scope: 'pf', name: 'Caixinha do gás', amount: 35, rule: 'mensal', day: 1, pay: 'pix', category: 'Moradia', note: 'Dia do vencimento a confirmar.' },
+  { kind: 'out', scope: 'pj', name: 'MacBook (parcela)', amount: 600, rule: 'mensal', day: 10, pay: 'pix', category: 'Equipamento', end_date: '2027-03-31', note: 'Termina em março de 2027. Dia a confirmar. Marquei como PJ por ser ferramenta de trabalho; mude se preferir.' },
+  { kind: 'out', scope: 'pf', name: 'Aluguel', amount: 1100, rule: 'mensal', day: 10, pay: 'pix', category: 'Moradia' },
+  { kind: 'out', scope: 'pj', name: 'Claude', amount: 120, rule: 'mensal', day: 8, pay: 'ambos', category: 'Ferramentas' },
+  { kind: 'out', scope: 'pj', name: 'CapCut', amount: 66, rule: 'mensal', day: 30, pay: 'ambos', category: 'Ferramentas' },
+  { kind: 'out', scope: 'pj', name: 'Google One', amount: 24, rule: 'mensal', day: 13, pay: 'ambos', category: 'Ferramentas' },
+  { kind: 'out', scope: 'pf', name: 'Minoxidil', amount: 35, rule: 'mensal', day: 5, pay: 'ambos', category: 'Farmácia' },
+  { kind: 'out', scope: 'pf', name: 'Cetoconazol', amount: 20, rule: 'mensal', day: 5, pay: 'ambos', category: 'Farmácia' },
+  { kind: 'out', scope: 'pf', name: 'Internet', amount: 109.9, rule: 'mensal', day: 8, pay: 'ambos', category: 'Moradia' },
+  { kind: 'out', scope: 'pf', name: 'Luz (média)', amount: 150, rule: 'mensal', day: 6, pay: 'ambos', category: 'Moradia' },
+  { kind: 'out', scope: 'pf', name: 'Taxa de água', amount: 20, rule: 'mensal', day: 10, pay: 'ambos', category: 'Moradia' },
+  { kind: 'out', scope: 'pf', name: 'Academia 26Fit', amount: 149, rule: 'mensal', day: 8, pay: 'ambos', category: 'Saúde' },
+  { kind: 'out', scope: 'pj', name: 'Câmera T5 (Manoel)', amount: 400, rule: 'mensal', day: 10, pay: 'ambos', category: 'Equipamento' },
+  { kind: 'out', scope: 'pf', name: 'Uber', amount: 200, rule: 'orcamento', category: 'Transporte', note: 'Orçamento máximo mensal. Lance cada corrida como gasto.' },
+  { kind: 'out', scope: 'pf', name: 'Mercado', amount: 600, rule: 'orcamento', category: 'Mercado', note: 'Compra principal no dia 5; vai gastando ao longo do mês.' }
+];
+const SEED_TPL = [
+  { title: 'Planejar conteúdo do mês', mode: 'week', week: 2, weekday: null, per_client: true },
+  { title: 'Gravar conteúdo', mode: 'week', week: 3, weekday: 4, time_start: '10:00', time_end: '12:00', per_client: true },
+  { title: 'Editar, aprovar e programar', mode: 'last_week', weekday: null, per_client: true },
+  { title: 'Enviar CSVs de métricas do Meta e montar o calendário do mês seguinte', mode: 'penult_weekday', weekday: 3, per_client: false }
+];
+async function seedV2() {
+  if (F.set.seed_v2) return;
+  const must = x => { if (x.error) throw x.error; return x.data; };
+  // clientes
+  const cli = S.clients;
+  const me = cli.find(c => /omatsaldanha/i.test(c.instagram || c.name || ''));
+  if (me && me.kind !== 'pessoal') await sb.from('clients').update({ kind: 'pessoal' }).eq('id', me.id);
+  const w = cli.find(c => /weinerth/i.test(c.name)); if (w && !w.monthly_fee) await sb.from('clients').update({ monthly_fee: 600 }).eq('id', w.id);
+  for (const n of ['Psi 1', 'Psi 2']) if (!cli.some(c => c.name === n)) await sb.from('clients').insert({ name: n, niche: 'Psicólogo', kind: 'prospect', monthly_fee: 700, position: 10 }).throwOnError();
+  await loadClients();
+  const idOf = n => S.clients.find(c => c.name === n)?.id;
+  // recorrentes
+  const rows = SEED_REC.map(r => { const { cli: cn, ...x } = r; return { ...x, client_id: cn ? idOf(cn) : null }; });
+  F.rec = must(await sb.from('fin_recurring').insert(rows).select());
+  must(await sb.from('fin_debts').insert({ name: 'Formatura', total: 4860, paid: 0, due_date: '2029-06-10', scope: 'pf' }).select());
+  F.tpl = must(await sb.from('task_templates').insert(SEED_TPL).select());
+  const off = must(await sb.from('offers').insert([
+    { name: 'Foto na Rua · 1 foto', price: 15, unit: 'por foto', description: 'Foto na hora em parques e eventos de Pelotas.', notes: 'Meta: no mínimo R$ 400 por dia em fim de semana e feriado com sol.', position: 1 },
+    { name: 'Foto na Rua · 3 fotos', price: 35, unit: 'pacote de 3', description: 'Pacote de 3 fotos (R$ 11,67 cada).', notes: 'Meta: no mínimo R$ 400 por dia em fim de semana e feriado com sol.', position: 2 },
+    { name: 'Pacote BqB', price: 300, unit: 'por negócio', description: '20 fotos + 2 reels entregues na hora, para negócios.', notes: 'Leva 1h30 para fazer tudo e entrega no mesmo momento.', position: 3 }
+  ]).select());
+  const bqb = off.find(o => /BqB/.test(o.name))?.id;
+  const L = [['CaféIn', 'Cafés'], ['Curcuma', 'Cafés'], ['Leve Café', 'Cafés'], ['Versa Café', 'Cafés'], ['Blitz Café', 'Cafés'], ['Orion Café', 'Cafés'], ['Estética Jardim', 'Estéticas'], ['Estética Eleganz', 'Estéticas'], ['Maira Ribeiro Estética', 'Estéticas'], ['Ivana Leite Estética', 'Estéticas']];
+  must(await sb.from('leads').insert(L.map(([name, segment]) => ({ name, segment, offer_id: bqb, status: 'novo' }))).select());
+  await saveSet('opening', { amount: 2421, date: '2026-11-12' });
+  await saveSet('fatura', { amount: 2034, date: '2026-11-12' });
+  await saveSet('meta_fixos', { amount: 3500 });
+  await loadV2();
+  await ensureEntries(firstOfMonth(new Date()), '2026-11-12');
+  await saveSet('seed_v2', { at: new Date().toISOString() });
+  F.seeded = true;
+}
+
+// ---------- geração de lançamentos e tarefas ----------
+function recDates(r, m) {
+  const y = m.getFullYear(), mo = m.getMonth(), last = new Date(y, mo + 1, 0).getDate(); const out = [];
+  if (r.rule === 'mensal') out.push(new Date(y, mo, Math.min(r.day || 1, last)));
+  else if (r.rule === 'dia_util') { let d = new Date(y, mo, Math.min(r.day || 1, last)); while ([0, 6].includes(d.getDay())) d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1); out.push(d); }
+  else if (r.rule === 'semanal') for (let i = 1; i <= last; i++) { const d = new Date(y, mo, i); if (d.getDay() === r.weekday) out.push(d); }
+  return out.map(iso).filter(s => (!r.start_date || s >= r.start_date) && (!r.end_date || s <= r.end_date));
+}
+async function ensureEntries(m, pastPaidBefore) {
+  const have = new Set(F.ent.filter(e => e.recurring_id).map(e => e.recurring_id + '|' + e.date)); const rows = [];
+  for (const r of F.rec) { if (!r.active || r.rule === 'orcamento') continue;
+    for (const d of recDates(r, m)) if (!have.has(r.id + '|' + d)) {
+      const past = pastPaidBefore && d < pastPaidBefore;
+      rows.push({ kind: r.kind, scope: r.scope, name: r.name, amount: r.amount, date: d, status: past ? 'pago' : 'previsto', paid_on: past ? d : null, pay: r.pay === 'ambos' && past ? 'pix' : r.pay, category: r.category, recurring_id: r.id, client_id: r.client_id }); } }
+  if (rows.length) { const { data, error } = await sb.from('fin_entries').insert(rows).select(); if (error) throw error; F.ent.push(...data); F.ent.sort((a, b) => a.date.localeCompare(b.date)); }
+}
+function tplDate(t, m) {
+  const y = m.getFullYear(), mo = m.getMonth(), last = new Date(y, mo + 1, 0).getDate(); const D = d => new Date(y, mo, d);
+  if (t.mode === 'week') { const from = (t.week - 1) * 7 + 1, to = Math.min(t.week * 7, last); if (from > last) return null;
+    const wd = t.weekday == null ? 5 : t.weekday; for (let d = to; d >= from; d--) if (D(d).getDay() === wd) return D(d); return D(to); }
+  if (t.mode === 'last_week') { const wd = t.weekday == null ? 5 : t.weekday; for (let d = last; d >= last - 6; d--) if (D(d).getDay() === wd) return D(d); return D(last); }
+  if (t.mode === 'penult_weekday') { let c = 0; for (let d = last; d >= 1; d--) if (D(d).getDay() === t.weekday && ++c === 2) return D(d); }
+  return null;
+}
+async function ensureTasks(m) {
+  const ref = iso(m); const have = new Set(F.tasks.filter(t => t.template_id && t.ref_month === ref).map(t => t.template_id + '|' + (t.client_id || '')));
+  const rows = [];
+  for (const t of F.tpl) { if (!t.active) continue; const d = tplDate(t, m); if (!d) continue;
+    const targets = t.per_client ? S.clients.filter(c => (c.kind || 'cliente') === 'cliente') : [null];
+    for (const c of targets) { if (have.has(t.id + '|' + (c ? c.id : ''))) continue;
+      rows.push({ title: c ? `${t.title} · ${c.name}` : t.title, client_id: c ? c.id : null, due: iso(d), time_start: t.time_start || null, time_end: t.time_end || null, template_id: t.id, ref_month: ref }); } }
+  if (rows.length) { const { data, error } = await sb.from('tasks').insert(rows).select(); if (error) throw error; F.tasks.push(...data); }
+}
+async function refreshGenerated() {
+  const m0 = firstOfMonth(new Date()), m1 = addMonths(m0, 1);
+  for (const m of [m0, m1]) { await ensureEntries(m); await ensureTasks(m); }
+}
+
+// ---------- cálculos ----------
+const inMonth = (m, d) => d >= iso(m) && d <= iso(new Date(m.getFullYear(), m.getMonth() + 1, 0));
+function monthEnt(m, scope = 'todos') { return F.ent.filter(e => inMonth(m, e.date) && (scope === 'todos' || e.scope === scope)); }
+function budgetRem(m, scope = 'todos') { // orçamentos variáveis: o que ainda falta gastar/receber no mês
+  const out = { in: 0, out: 0 };
+  F.rec.filter(r => r.active && r.rule === 'orcamento' && (scope === 'todos' || r.scope === scope)).forEach(r => {
+    const used = F.ent.filter(e => inMonth(m, e.date) && e.kind === r.kind && e.category === r.category && e.scope === r.scope).reduce((a, e) => a + +e.amount, 0);
+    out[r.kind] += Math.max(0, +r.amount - used); });
+  return out;
+}
+function sums(m, scope = 'todos') {
+  const E = monthEnt(m, scope), b = budgetRem(m, scope); const s = (k, st) => E.filter(e => e.kind === k && (!st || e.status === st)).reduce((a, e) => a + +e.amount, 0);
+  return { inPaid: s('in', 'pago'), inAll: s('in') + b.in, outPaid: s('out', 'pago'), outAll: s('out') + b.out };
+}
+function balance() { const o = F.set.opening || { amount: 0, date: '1970-01-01' }; let b = +o.amount; F.ent.forEach(e => { if (e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (e.kind === 'in') b += +e.amount; else if (e.pay !== 'credito') b -= +e.amount; }); return b; }
+function fatura() { const o = F.set.fatura || { amount: 0, date: '1970-01-01' }; let f = +o.amount; F.ent.forEach(e => { if (e.kind === 'out' && e.status === 'pago' && e.pay === 'credito' && e.paid_on && e.paid_on >= o.date) f += +e.amount; }); return f; }
+function dueSoon(days) { const lim = iso(new Date(Date.now() + days * 864e5)); return F.ent.filter(e => e.kind === 'out' && e.status === 'previsto' && e.date <= lim).sort((a, b) => a.date.localeCompare(b.date)); }
+function debtInfo(d) {
+  const now = new Date(), due = pd(d.due_date); const left = Math.max(1, (due.getFullYear() - now.getFullYear()) * 12 + due.getMonth() - now.getMonth() + 1);
+  const rest = Math.max(0, +d.total - +d.paid); return { rest, left, parcela: rest / left };
+}
+function metaFixos() {
+  const meta = F.set.meta_fixos?.amount || 3500, rec = F.rec.filter(r => r.kind === 'in' && r.rule !== 'orcamento');
+  const ativos = rec.filter(r => r.active).reduce((a, r) => a + +r.amount, 0), pot = rec.filter(r => !r.active).reduce((a, r) => a + +r.amount, 0);
+  return { meta, ativos, pot, falta: Math.max(0, meta - ativos - pot) };
+}
+
+// ---------- utilidades de UI ----------
+function modal(html, wide) { const d = document.createElement('dialog'); if (wide) d.className = 'wide'; d.innerHTML = '<form method="dialog" autocomplete="off">' + html + '</form>'; document.body.appendChild(d); d.addEventListener('close', () => d.remove()); d.showModal(); return d; }
+const opts = (list, cur) => list.map(([v, l]) => `<option value="${esc(v)}" ${v === cur ? 'selected' : ''}>${esc(l)}</option>`).join('');
+const badgePay = p => `<span class="badge pay-${p}">${PAYL[p] || p}</span>`;
+const badgeScope = s => `<span class="badge sc-${s}">${s === 'pj' ? 'PJ' : 'PF'}</span>`;
+async function toggleTask(id, done) { const t = F.tasks.find(x => x.id === id); if (!t) return; t.done = done; const { error } = await sb.from('tasks').update({ done }).eq('id', id); if (error) { t.done = !done; fail(error); } rerenderView(); }
+
+// ---------- lançamentos ----------
+function openEntry(e0) {
+  const e = e0 || { kind: 'out', scope: 'pf', date: todayS(), status: 'pago', pay: 'pix', category: '' };
+  const cats = [...new Set([...F.rec.map(r => r.category), ...F.ent.map(x => x.category)].filter(Boolean))];
+  const d = modal(`<div class="row"><h2>${e.id ? 'Editar lançamento' : 'Novo lançamento'}</h2></div>
+    <div class="seg" id="eKind"><button type="button" data-k="in" class="${e.kind === 'in' ? 'on' : ''}">Entrada</button><button type="button" data-k="out" class="${e.kind === 'out' ? 'on' : ''}">Gasto</button></div>
+    <label>Descrição</label><input name="name" value="${esc(e.name || '')}" required list="catl" placeholder="Ex.: Foto na rua, Mercado, Uber">
+    <div class="fr"><div><label>Valor (R$)</label><input name="amount" inputmode="decimal" value="${e.amount != null ? String(e.amount).replace('.', ',') : ''}" required></div><div><label>Data</label><input type="date" name="date" value="${e.date}" required></div></div>
+    <div class="fr3"><div><label>Conta</label><select name="scope">${opts([['pf', 'Pessoa física'], ['pj', 'PJ']], e.scope)}</select></div>
+    <div><label>Forma</label><select name="pay">${opts([['pix', 'Pix'], ['credito', 'Crédito'], ['debito', 'Débito'], ['ambos', 'Pix ou crédito']], e.pay)}</select></div>
+    <div><label>Categoria</label><input name="category" value="${esc(e.category || '')}" list="catl"></div></div>
+    <datalist id="catl">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="paid" style="width:auto" ${e.status === 'pago' ? 'checked' : ''}> <span id="paidL"></span></label>
+    <div class="mact">${e.id ? '<button type="button" class="btn danger" id="eDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="eCancel">Cancelar</button><button type="button" class="btn primary" id="eSave">Salvar</button></div>`);
+  let kind = e.kind; const f = d.querySelector('form');
+  const lab = () => { d.querySelector('#paidL').textContent = kind === 'in' ? 'Já recebi' : 'Já paguei'; }; lab();
+  d.querySelectorAll('#eKind button').forEach(b => b.onclick = () => { kind = b.dataset.k; d.querySelectorAll('#eKind button').forEach(x => x.classList.toggle('on', x === b)); lab(); });
+  d.querySelector('#eCancel').onclick = () => d.close();
+  if (e.id) d.querySelector('#eDel').onclick = async () => { if (!confirm('Excluir este lançamento?')) return; const { error } = await sb.from('fin_entries').delete().eq('id', e.id); if (error) return fail(error); F.ent = F.ent.filter(x => x.id !== e.id); d.close(); rerenderView(); };
+  d.querySelector('#eSave').onclick = async () => {
+    const amount = money(f.amount.value); if (!f.name.value.trim() || !isFinite(amount) || !f.date.value) return toast('Preencha descrição, valor e data');
+    const paid = f.paid.checked;
+    const row = { kind, scope: f.scope.value, name: f.name.value.trim(), amount, date: f.date.value, pay: f.pay.value, category: f.category.value.trim() || null, status: paid ? 'pago' : 'previsto', paid_on: paid ? (e.paid_on || f.date.value) : null };
+    if (kind === 'in' && row.pay === 'credito') row.pay = 'pix';
+    const q = e.id ? sb.from('fin_entries').update(row).eq('id', e.id).select() : sb.from('fin_entries').insert(row).select();
+    const { data, error } = await q; if (error) return fail(error);
+    if (e.id) Object.assign(F.ent.find(x => x.id === e.id), data[0]); else F.ent.push(data[0]);
+    d.close(); toast('Salvo'); rerenderView(); };
+}
+async function markPaid(id) {
+  const e = F.ent.find(x => x.id === id); if (!e) return;
+  const go = async pay => { const row = { status: 'pago', paid_on: todayS(), pay }; const { error } = await sb.from('fin_entries').update(row).eq('id', id); if (error) return fail(error); Object.assign(e, row); toast(e.kind === 'in' ? 'Recebido' : 'Pago'); rerenderView(); };
+  if (e.pay === 'ambos' && e.kind === 'out') { const d = modal(`<h2>Como você pagou?</h2><p class="sub">${esc(e.name)} · ${BRL(e.amount)}</p><div class="mact" style="position:static"><button type="button" class="btn" data-p="pix">Pix</button><button type="button" class="btn" data-p="credito">Crédito</button><button type="button" class="btn" data-p="debito">Débito</button></div>`);
+    d.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { d.close(); go(b.dataset.p); }); return; }
+  go(e.pay === 'ambos' ? 'pix' : e.pay);
+}
+async function undoPaid(id) { const e = F.ent.find(x => x.id === id); const row = { status: 'previsto', paid_on: null }; const { error } = await sb.from('fin_entries').update(row).eq('id', id); if (error) return fail(error); Object.assign(e, row); rerenderView(); }
+function entRow(e, withPay = true) {
+  const od = e.status === 'previsto' && dayDiff(e.date) < 0;
+  return `<div class="erow ${e.status === 'pago' ? 'done' : ''}" data-ent="${e.id}"><div class="ed ${od ? 'late' : ''}">${e.status === 'pago' ? fmtDm(e.date) : relDay(e.date)}</div><div class="en"><b>${esc(e.name)}</b><span class="sub">${badgeScope(e.scope)} ${e.category ? esc(e.category) : ''}</span></div>${withPay ? badgePay(e.pay) : ''}<div class="ea ${e.kind}">${e.kind === 'in' ? '+' : '−'} ${BRL(e.amount)}</div>${e.status === 'previsto' ? `<button class="btn small" data-paid="${e.id}">${e.kind === 'in' ? 'Recebi' : 'Paguei'}</button>` : `<button class="btn small ghost" data-undo="${e.id}" title="Desfazer">✓</button>`}</div>`;
+}
+const fmtDm = s => { const d = pd(s); return pad(d.getDate()) + '/' + pad(d.getMonth() + 1); };
+function bindEnt(root) {
+  $$('[data-paid]', root).forEach(b => b.onclick = ev => { ev.stopPropagation(); markPaid(b.dataset.paid); });
+  $$('[data-undo]', root).forEach(b => b.onclick = ev => { ev.stopPropagation(); undoPaid(b.dataset.undo); });
+  $$('[data-ent]', root).forEach(r => r.onclick = () => openEntry(F.ent.find(x => x.id === r.dataset.ent)));
+  $$('[data-task]', root).forEach(c => c.onchange = () => toggleTask(c.dataset.task, c.checked));
+}
+
+// ---------- navegação ----------
+function setView(v) {
+  S.view = v; try { localStorage.setItem('gestor.view', v); } catch (_) {}
+  $$('#rail [data-v], #bnav [data-v]').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  $('header').classList.toggle('hidden', v !== 'clientes'); window.scrollTo(0, 0);
+  if (v === 'clientes') { renderTabs(); route(); } else rerenderView();
+}
+function rerenderView() {
+  const y = scrollY; ({ inicio: viewInicio, financeiro: viewFin, tarefas: viewTasks, agencia: viewAgency, ofertas: viewOffers })[S.view]?.();
+  if (S.view !== 'clientes') scrollTo(0, y);
+}
+function pageHead(title, sub, right = '') { return `<div class="phead"><div><h1>${title}</h1>${sub ? `<div class="sub">${sub}</div>` : ''}</div><div class="sp"></div>${right}</div>`; }
+
+// ---------- início ----------
+async function viewInicio() {
+  const m0 = firstOfMonth(new Date()); const a = sums(m0), pj = sums(m0, 'pj'), pf = sums(m0, 'pf');
+  const soon = dueSoon(7), pix = soon.filter(e => e.pay === 'pix' || e.pay === 'debito').reduce((s, e) => s + +e.amount, 0), cred = soon.filter(e => e.pay === 'credito').reduce((s, e) => s + +e.amount, 0), amb = soon.filter(e => e.pay === 'ambos').reduce((s, e) => s + +e.amount, 0);
+  const bal = balance(), mf = metaFixos();
+  const tasks = F.tasks.filter(t => !t.done).sort((x, y) => (x.due || '9').localeCompare(y.due || '9')).slice(0, 7);
+  const alert = pix > bal ? `<div class="note warn">Você precisa de ${BRL(pix - bal)} a mais no Pix para cobrir o que vence em 7 dias. Cartão ainda pode cobrir ${BRL(amb)} dos itens "Pix ou crédito".</div>`
+    : `<div class="note ok">Dá para pagar tudo que é Pix nos próximos 7 dias e ainda sobram ${BRL(bal - pix)} na conta.</div>`;
+  const nextIns = F.ent.filter(e => e.kind === 'in' && e.status === 'previsto').sort((x, y) => x.date.localeCompare(y.date)).slice(0, 3);
+  // status do mês por cliente
+  const a0 = iso(m0), b0 = iso(new Date(m0.getFullYear(), m0.getMonth() + 1, 0)); let posts = [];
+  try { const r = await sb.from('posts').select('client_id,status,publish_date').gte('publish_date', a0).lte('publish_date', b0); posts = r.data || []; } catch (_) {}
+  const stat = c => { const p = posts.filter(x => x.client_id === c.id); if (!p.length) return { l: 'Sem pautas no mês', k: 'none' }; const pend = p.filter(x => x.status !== 'publicado'); if (!pend.length) return { l: `${p.length} de ${p.length} publicados`, k: 'publicado' };
+    const low = pend.reduce((m, x) => (STG[x.status]?.i ?? 99) < (STG[m.status]?.i ?? 99) ? x : m, pend[0]); return { l: `${STG[low.status]?.label || low.status} · ${p.length - pend.length}/${p.length} publicados`, k: low.status }; };
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Oi, Matheus', new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }), `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button><button class="btn logoutm" id="lo2">Sair</button>`)}
+  <div class="kpis4">
+    <div class="kpi hi"><span>Faturamento de ${monthLabel(m0).split(' ')[0].toLowerCase()}</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
+    <div class="kpi"><span>Gastos do mês (pagos)</span><b>${BRL(a.outPaid)}</b><em>PJ ${BRL(pj.outPaid)} · PF ${BRL(pf.outPaid)}</em><div class="bar dark"><i style="width:${Math.min(100, a.outAll ? a.outPaid / a.outAll * 100 : 0)}%"></i></div></div>
+    <div class="kpi"><span>Saldo na conta</span><b>${BRL(bal)}</b><em>a pagar em 7 dias: ${BRL(pix + cred + amb)}</em></div>
+    <div class="kpi"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${F.set.fatura_due ? 'vence ' + fmtDm(F.set.fatura_due.date) : '<a href="#" id="setFat">definir vencimento</a>'}</em></div>
+  </div>
+  <div class="cols2">
+   <div class="card"><div class="row"><h2 class="h2">Contas dos próximos 7 dias</h2><div class="sp"></div><a href="#" data-go="financeiro">ver tudo</a></div>
+     <div class="paysum"><span class="badge pay-pix">Pix ${BRL(pix)}</span><span class="badge pay-credito">Crédito ${BRL(cred)}</span><span class="badge pay-ambos">Pix ou crédito ${BRL(amb)}</span></div>${alert}
+     <div class="elist">${soon.length ? soon.map(e => entRow(e)).join('') : '<div class="empty">Nada vencendo nos próximos 7 dias.</div>'}</div></div>
+   <div>
+     <div class="card" style="margin-top:0"><h2 class="h2">Meta de fixos: ${BRL(mf.meta)} por mês</h2>
+       <div class="bar big"><i style="width:${Math.min(100, mf.ativos / mf.meta * 100)}%"></i><u style="left:${Math.min(100, mf.ativos / mf.meta * 100)}%;width:${Math.min(100 - Math.min(100, mf.ativos / mf.meta * 100), mf.pot / mf.meta * 100)}%"></u></div>
+       <p class="sub" style="margin:8px 0 0">Fixos ativos ${BRL(mf.ativos)}. Com Psi 1 e Psi 2 fechados chega a ${BRL(mf.ativos + mf.pot)}${mf.falta ? `, ainda faltam ${BRL(mf.falta)} para a meta.` : ', meta batida.'}</p></div>
+     <div class="card"><h2 class="h2">Próximas entradas</h2><div class="elist">${nextIns.length ? nextIns.map(e => entRow(e, false)).join('') : '<div class="empty">Sem entradas previstas.</div>'}</div></div>
+   </div></div>
+  <div class="cols2">
+   <div class="card"><div class="row"><h2 class="h2">Próximas tarefas</h2><div class="sp"></div><a href="#" data-go="tarefas">ver todas</a></div>
+     ${tasks.length ? tasks.map(taskRow).join('') : '<div class="empty">Nenhuma tarefa pendente.</div>'}</div>
+   <div class="card"><h2 class="h2">Status do mês por cliente</h2>
+     ${S.clients.filter(c => (c.kind || 'cliente') !== 'prospect').map(c => { const st = stat(c); return `<button class="crow" data-cl="${c.id}">${avatar(c)}<div><b>${esc(c.name)}</b><span class="sub">${esc(st.l)}</span></div><span class="badge stg k-${st.k === 'none' ? 'pauta' : st.k}">›</span></button>`; }).join('') || '<div class="empty">Sem clientes.</div>'}</div>
+  </div></div>`;
+  bindEnt($('#main')); $('#lo2').onclick = () => $('#logout').click(); $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
+  $$('[data-go]').forEach(a => a.onclick = ev => { ev.preventDefault(); setView(a.dataset.go); });
+  $$('[data-cl]').forEach(b => b.onclick = () => { S.tab = b.dataset.cl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
+  $('#setFat')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Dia do vencimento da fatura (AAAA-MM-DD):', todayS()); if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) { await saveSet('fatura_due', { date: v }); rerenderView(); } });
+}
+function taskRow(t) {
+  const c = S.clients.find(x => x.id === t.client_id); const late = t.due && !t.done && dayDiff(t.due) < 0;
+  return `<label class="trow ${t.done ? 'done' : ''}"><input type="checkbox" data-task="${t.id}" ${t.done ? 'checked' : ''}><div><b>${esc(t.title)}</b><span class="sub ${late ? 'late' : ''}">${t.due ? relDay(t.due) : 'sem data'}${t.time_start ? ' · ' + t.time_start + (t.time_end ? '–' + t.time_end : '') : ''}</span></div></label>`;
+}
+
+// ---------- financeiro ----------
+function viewFin() {
+  const m = F.m, tabs = [['resumo', 'Resumo'], ['lanc', 'Lançamentos'], ['fixas', 'Contas fixas'], ['dividas', 'Dívidas e metas']];
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Financeiro', 'Tudo que entra e sai, separado em PJ e pessoa física.', `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button>`)}
+  <div class="row" style="margin:6px 0 14px"><div class="monthnav"><button class="btn small" id="fPrev">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="fNext">›</button></div><div class="sp"></div>
+   <div class="seg" id="fScope">${[['todos', 'Tudo'], ['pj', 'PJ'], ['pf', 'Pessoa física']].map(([k, l]) => `<button type="button" data-s="${k}" class="${F.scope === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
+  <div class="seg tabs2" id="fTabs">${tabs.map(([k, l]) => `<button type="button" data-t="${k}" class="${F.ftab === k ? 'on' : ''}">${l}</button>`).join('')}</div><div id="fBody"></div></div>`;
+  $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
+  $('#fPrev').onclick = async () => { F.m = addMonths(F.m, -1); await finMonth(); viewFin(); }; $('#fNext').onclick = async () => { F.m = addMonths(F.m, 1); await finMonth(); viewFin(); };
+  $$('#fScope [data-s]').forEach(b => b.onclick = () => { F.scope = b.dataset.s; viewFin(); }); $$('#fTabs [data-t]').forEach(b => b.onclick = () => { F.ftab = b.dataset.t; viewFin(); });
+  ({ resumo: finResumo, lanc: finLanc, fixas: finFixas, dividas: finDividas })[F.ftab]($('#fBody'));
+}
+async function finMonth() { try { const from = iso(F.m); if (!F.ent.some(e => e.date >= from.slice(0, 7) + '-01' && e.date <= from.slice(0, 7) + '-31')) { const to = iso(new Date(F.m.getFullYear(), F.m.getMonth() + 1, 0)); const r = await sb.from('fin_entries').select('*').gte('date', from).lte('date', to); if (r.data?.length) F.ent.push(...r.data.filter(x => !F.ent.some(y => y.id === x.id))); }
+  if (F.m >= firstOfMonth(new Date())) await ensureEntries(F.m); } catch (e) { fail(e); } }
+function finResumo(el) {
+  const m = F.m, s = sums(m, F.scope), sj = sums(m, 'pj'), sf = sums(m, 'pf'); const sobra = s.inAll - s.outAll;
+  const buds = F.rec.filter(r => r.active && r.rule === 'orcamento' && (F.scope === 'todos' || r.scope === F.scope)).map(r => { const used = F.ent.filter(e => inMonth(m, e.date) && e.kind === r.kind && e.category === r.category && e.scope === r.scope).reduce((a, e) => a + +e.amount, 0); return { r, used, pct: Math.min(100, used / r.amount * 100) }; });
+  const byCat = {}; monthEnt(m, F.scope).filter(e => e.kind === 'out').forEach(e => byCat[e.category || 'Sem categoria'] = (byCat[e.category || 'Sem categoria'] || 0) + +e.amount);
+  const cats = Object.entries(byCat).sort((a, b) => b[1] - a[1]); const tot = cats.reduce((a, c) => a + c[1], 0) || 1;
+  const goal = 450;
+  el.innerHTML = `<div class="kpis4"><div class="kpi hi"><span>Entrou</span><b>${BRL(s.inPaid)}</b><em>previsto ${BRL(s.inAll)}</em></div><div class="kpi"><span>Saiu</span><b>${BRL(s.outPaid)}</b><em>previsto ${BRL(s.outAll)}</em></div><div class="kpi"><span>Sobra prevista</span><b class="${sobra >= 0 ? 'up' : 'down'}">${BRL(sobra)}</b><em>entradas previstas − saídas previstas</em></div><div class="kpi"><span>Saldo na conta</span><b>${BRL(balance())}</b><em><a href="#" id="setBal">ajustar saldo</a></em></div></div>
+  <div class="cols2"><div class="card"><h2 class="h2">PJ × pessoa física</h2><table><thead><tr><th></th><th class="num">Entrou</th><th class="num">Saiu</th><th class="num">Previsto sobra</th></tr></thead><tbody>
+    <tr><td><b>PJ</b></td><td class="num">${BRL(sj.inPaid)}</td><td class="num">${BRL(sj.outPaid)}</td><td class="num">${BRL(sj.inAll - sj.outAll)}</td></tr>
+    <tr><td><b>Pessoa física</b></td><td class="num">${BRL(sf.inPaid)}</td><td class="num">${BRL(sf.outPaid)}</td><td class="num">${BRL(sf.inAll - sf.outAll)}</td></tr></tbody></table>
+    <p class="sub" style="margin:10px 0 0">${sobra >= goal ? `Dá para separar R$ 150 de viagem e R$ 300 de investimento este mês (sobra prevista de ${BRL(sobra)}).` : `Para separar R$ 150 de viagem e R$ 300 de investimento seriam necessários ${BRL(goal)} de sobra; hoje a previsão é ${BRL(sobra)}.`}</p></div>
+   <div class="card"><h2 class="h2">Orçamentos do mês</h2>${buds.map(b => `<div class="bud"><div class="row"><b>${esc(b.r.name)}</b><span class="sp"></span><span class="sub">${BRL(b.used)} de ${BRL(b.r.amount)}</span></div><div class="bar ${b.r.kind === 'out' ? 'dark' : ''}"><i style="width:${b.pct}%"></i></div></div>`).join('') || '<div class="empty">Sem orçamentos.</div>'}</div></div>
+  <div class="card"><h2 class="h2">Para onde foi o dinheiro</h2>${cats.map(([c, v]) => `<div class="bud"><div class="row"><b>${esc(c)}</b><span class="sp"></span><span class="sub">${BRL(v)} · ${Math.round(v / tot * 100)}%</span></div><div class="bar dark"><i style="width:${v / tot * 100}%"></i></div></div>`).join('') || '<div class="empty">Sem saídas neste mês.</div>'}</div>`;
+  $('#setBal')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Quanto você tem na conta agora (R$)?', String(balance()).replace('.', ',')); const n = money(v); if (isFinite(n)) { await saveSet('opening', { amount: n, date: todayS() }); rerenderView(); } });
+}
+function finLanc(el) {
+  const E = monthEnt(F.m, F.scope).sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
+  const ins = E.filter(e => e.kind === 'in'), outs = E.filter(e => e.kind === 'out');
+  el.innerHTML = `<div class="cols2"><div class="card"><h2 class="h2">Entradas</h2><div class="elist">${ins.map(e => entRow(e, false)).join('') || '<div class="empty">Sem entradas.</div>'}</div></div><div class="card"><h2 class="h2">Gastos e contas</h2><div class="elist">${outs.map(e => entRow(e)).join('') || '<div class="empty">Sem gastos.</div>'}</div></div></div>`;
+  bindEnt(el);
+}
+function openRec(r0) {
+  const r = r0 || { kind: 'out', scope: 'pf', rule: 'mensal', pay: 'ambos', active: true, day: 5 };
+  const d = modal(`<h2>${r.id ? 'Editar conta fixa' : 'Nova conta fixa'}</h2>
+    <label>Nome</label><input name="name" value="${esc(r.name || '')}" required>
+    <div class="fr3"><div><label>Tipo</label><select name="kind">${opts([['out', 'Gasto'], ['in', 'Entrada']], r.kind)}</select></div><div><label>Conta</label><select name="scope">${opts([['pf', 'Pessoa física'], ['pj', 'PJ']], r.scope)}</select></div><div><label>Valor (R$)</label><input name="amount" value="${r.amount != null ? String(r.amount).replace('.', ',') : ''}" required></div></div>
+    <div class="fr3"><div><label>Repetição</label><select name="rule">${opts([['mensal', 'Todo mês, no dia'], ['dia_util', 'Todo mês, dia útil (fim de semana passa para segunda)'], ['semanal', 'Toda semana'], ['orcamento', 'Orçamento do mês (sem data)']], r.rule)}</select></div><div><label>Dia do mês</label><input name="day" type="number" min="1" max="31" value="${r.day ?? ''}"></div><div><label>Dia da semana</label><select name="weekday">${opts(WD.map((w, i) => [String(i), w]), String(r.weekday ?? 2))}</select></div></div>
+    <div class="fr3"><div><label>Forma</label><select name="pay">${opts([['pix', 'Só Pix'], ['credito', 'Só crédito'], ['ambos', 'Pix ou crédito']], r.pay)}</select></div><div><label>Categoria</label><input name="category" value="${esc(r.category || '')}"></div><div><label>Termina em</label><input type="date" name="end_date" value="${r.end_date || ''}"></div></div>
+    <label>Observação</label><input name="note" value="${esc(r.note || '')}">
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="active" style="width:auto" ${r.active ? 'checked' : ''}> Ativa (gera lançamentos todo mês)</label>
+    <div class="mact">${r.id ? '<button type="button" class="btn danger" id="rDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="rCancel">Cancelar</button><button type="button" class="btn primary" id="rSave">Salvar</button></div>`, true);
+  const f = d.querySelector('form'); d.querySelector('#rCancel').onclick = () => d.close();
+  if (r.id) d.querySelector('#rDel').onclick = async () => { if (!confirm('Excluir esta conta fixa? Os lançamentos já gerados ficam.')) return; const { error } = await sb.from('fin_recurring').delete().eq('id', r.id); if (error) return fail(error); F.rec = F.rec.filter(x => x.id !== r.id); d.close(); rerenderView(); };
+  d.querySelector('#rSave').onclick = async () => {
+    const amount = money(f.amount.value); if (!f.name.value.trim() || !isFinite(amount)) return toast('Preencha nome e valor');
+    const row = { name: f.name.value.trim(), kind: f.kind.value, scope: f.scope.value, amount, rule: f.rule.value, day: f.day.value ? +f.day.value : null, weekday: f.rule.value === 'semanal' ? +f.weekday.value : null, pay: f.pay.value, category: f.category.value.trim() || null, end_date: f.end_date.value || null, note: f.note.value.trim() || null, active: f.active.checked };
+    const q = r.id ? sb.from('fin_recurring').update(row).eq('id', r.id).select() : sb.from('fin_recurring').insert(row).select();
+    const { data, error } = await q; if (error) return fail(error);
+    if (r.id) Object.assign(F.rec.find(x => x.id === r.id), data[0]); else F.rec.push(data[0]);
+    // atualiza lançamentos futuros ainda não pagos com o novo valor
+    if (r.id) { const fut = F.ent.filter(e => e.recurring_id === r.id && e.status === 'previsto' && e.date >= todayS()); if (fut.length) { const upd = { amount, name: row.name, scope: row.scope, pay: row.pay, category: row.category }; await sb.from('fin_entries').update(upd).in('id', fut.map(e => e.id)); fut.forEach(e => Object.assign(e, upd)); } }
+    try { await refreshGenerated(); } catch (e) { fail(e); } d.close(); toast('Conta salva'); rerenderView(); };
+}
+function finFixas(el) {
+  const grp = (k, t) => { const L = F.rec.filter(r => r.kind === k && (F.scope === 'todos' || r.scope === F.scope)); const tot = L.filter(r => r.active).reduce((a, r) => a + +r.amount * (r.rule === 'semanal' ? 4 : 1), 0);
+    return `<div class="card"><div class="row"><h2 class="h2">${t}</h2><div class="sp"></div><span class="sub">${BRL(tot)} por mês</span></div>${L.map(r => `<button class="rrow ${r.active ? '' : 'off'}" data-rec="${r.id}"><div><b>${esc(r.name)}</b><span class="sub">${badgeScope(r.scope)} ${r.rule === 'semanal' ? 'toda ' + WD[r.weekday] : r.rule === 'orcamento' ? 'orçamento mensal' : r.rule === 'dia_util' ? `dia ${r.day} útil` : `dia ${r.day}`}${r.end_date ? ' · até ' + fmtDm(r.end_date) + '/' + r.end_date.slice(2, 4) : ''}${r.active ? '' : ' · inativa'}</span></div>${badgePay(r.pay)}<span class="ea">${BRL(r.amount)}</span></button>`).join('') || '<div class="empty">Nada aqui.</div>'}</div>`; };
+  el.innerHTML = `<div class="row" style="margin-bottom:8px"><p class="sub" style="margin:0">Mudou um valor aqui, mudam os lançamentos futuros ainda não pagos.</p><div class="sp"></div><button class="btn primary small" id="addRec">+ Conta fixa</button></div><div class="cols2">${grp('out', 'Gastos fixos')}${grp('in', 'Entradas fixas e previstas')}</div>`;
+  $('#addRec').onclick = () => openRec(); $$('[data-rec]', el).forEach(b => b.onclick = () => openRec(F.rec.find(x => x.id === b.dataset.rec)));
+}
+function finDividas(el) {
+  el.innerHTML = `<div class="row" style="margin-bottom:8px"><p class="sub" style="margin:0">A parcela é recalculada todo mês: o que falta pagar dividido pelos meses que sobram até o prazo.</p><div class="sp"></div><button class="btn primary small" id="addDebt">+ Dívida</button></div>
+  ${F.debts.map(d => { const i = debtInfo(d); const p = Math.min(100, d.paid / d.total * 100); return `<div class="card"><div class="row"><h2 class="h2">${esc(d.name)}</h2>${badgeScope(d.scope)}<div class="sp"></div><button class="btn small" data-dpay="${d.id}">Registrar pagamento</button><button class="btn small ghost" data-dedit="${d.id}">Editar</button></div>
+   <div class="kpis4" style="margin-top:12px"><div class="kpi"><span>Falta pagar</span><b>${BRL(i.rest)}</b><em>de ${BRL(d.total)} até ${pd(d.due_date).toLocaleDateString('pt-BR')}</em></div><div class="kpi hi"><span>Parcela sugerida deste mês</span><b>${BRL(i.parcela)}</b><em>${i.left} ${i.left === 1 ? 'mês' : 'meses'} restantes</em></div><div class="kpi"><span>Já pago</span><b>${BRL(d.paid)}</b><em>${Math.round(p)}%</em></div></div><div class="bar big"><i style="width:${p}%"></i></div>
+   <p class="sub" style="margin:8px 0 0">Se você não pagar neste mês, a parcela do próximo sobe sozinha porque o restante fica o mesmo e sobra um mês a menos.</p></div>`; }).join('') || '<div class="empty">Nenhuma dívida cadastrada.</div>'}
+  <div class="card"><h2 class="h2">Metas</h2><p class="sub">Quando a sobra do mês permitir: <b>R$ 150</b> para viagem e <b>R$ 300</b> para investimento. O resumo do mês avisa quando dá para separar.</p></div>`;
+  $('#addDebt').onclick = () => openDebt(); $$('[data-dedit]', el).forEach(b => b.onclick = () => openDebt(F.debts.find(x => x.id === b.dataset.dedit)));
+  $$('[data-dpay]', el).forEach(b => b.onclick = () => { const d = F.debts.find(x => x.id === b.dataset.dpay), i = debtInfo(d); const v = prompt(`Quanto você pagou de ${d.name}? (parcela sugerida: ${BRL(i.parcela)})`, String(i.parcela.toFixed(2)).replace('.', ',')); const n = money(v); if (!isFinite(n) || n <= 0) return; payDebt(d, n); });
+}
+async function payDebt(d, n) {
+  const e = { kind: 'out', scope: d.scope, name: `${d.name} (parcela)`, amount: n, date: todayS(), status: 'pago', paid_on: todayS(), pay: 'pix', category: 'Dívidas' };
+  const r1 = await sb.from('fin_entries').insert(e).select(); if (r1.error) return fail(r1.error); F.ent.push(r1.data[0]);
+  const r2 = await sb.from('fin_debts').update({ paid: +d.paid + n }).eq('id', d.id).select(); if (r2.error) return fail(r2.error); Object.assign(d, r2.data[0]); toast('Pagamento registrado'); rerenderView();
+}
+function openDebt(d0) {
+  const d = d0 || { scope: 'pf', paid: 0 }; const dl = modal(`<h2>${d.id ? 'Editar dívida' : 'Nova dívida'}</h2><label>Nome</label><input name="name" value="${esc(d.name || '')}" required>
+   <div class="fr"><div><label>Total (R$)</label><input name="total" value="${d.total ?? ''}" required></div><div><label>Já pago (R$)</label><input name="paid" value="${d.paid ?? 0}"></div></div><div class="fr"><div><label>Prazo final</label><input type="date" name="due_date" value="${d.due_date || ''}" required></div><div><label>Conta</label><select name="scope">${opts([['pf', 'Pessoa física'], ['pj', 'PJ']], d.scope)}</select></div></div>
+   <div class="mact">${d.id ? '<button type="button" class="btn danger" id="dDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="dCancel">Cancelar</button><button type="button" class="btn primary" id="dSave">Salvar</button></div>`); const f = dl.querySelector('form');
+  dl.querySelector('#dCancel').onclick = () => dl.close();
+  if (d.id) dl.querySelector('#dDel').onclick = async () => { if (!confirm('Excluir esta dívida?')) return; await sb.from('fin_debts').delete().eq('id', d.id); F.debts = F.debts.filter(x => x.id !== d.id); dl.close(); rerenderView(); };
+  dl.querySelector('#dSave').onclick = async () => { const total = money(f.total.value), paid = money(f.paid.value) || 0; if (!f.name.value.trim() || !isFinite(total) || !f.due_date.value) return toast('Preencha nome, total e prazo');
+    const row = { name: f.name.value.trim(), total, paid, due_date: f.due_date.value, scope: f.scope.value }; const q = d.id ? sb.from('fin_debts').update(row).eq('id', d.id).select() : sb.from('fin_debts').insert(row).select(); const { data, error } = await q; if (error) return fail(error);
+    if (d.id) Object.assign(F.debts.find(x => x.id === d.id), data[0]); else F.debts.push(data[0]); dl.close(); rerenderView(); };
+}
+
+// ---------- tarefas ----------
+function viewTasks() {
+  const open = F.tasks.filter(t => !t.done), t0 = todayS(); const wk = iso(new Date(Date.now() + 7 * 864e5));
+  const late = open.filter(t => t.due && t.due < t0), week = open.filter(t => !t.due || (t.due >= t0 && t.due <= wk)), later = open.filter(t => t.due && t.due > wk);
+  const done = F.tasks.filter(t => t.done).sort((a, b) => (b.due || '').localeCompare(a.due || '')).slice(0, 8);
+  const sec = (t, L, cls = '') => L.length ? `<div class="card ${cls}"><h2 class="h2">${t}</h2>${L.sort((a, b) => (a.due || '9').localeCompare(b.due || '9')).map(x => taskRow(x)).join('')}</div>` : '';
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Tarefas', 'Rotinas por cliente geram as tarefas de cada mês sozinhas.', `<button class="btn amber" id="addTask">+ Tarefa</button><button class="btn" id="tplBtn">Rotinas</button>`)}
+  ${sec('Atrasadas', late, 'warnc')}${sec('Próximos 7 dias', week)}${sec('Mais para frente', later)}${sec('Concluídas recentes', done)}${!open.length ? '<div class="card"><div class="empty">Nenhuma tarefa pendente. Respire.</div></div>' : ''}</div>`;
+  bindEnt($('#main')); $('#addTask').onclick = () => openTask(); $('#tplBtn').onclick = openTpl;
+  $$('.trow b', $('#main')).forEach(b => b.onclick = ev => { ev.preventDefault(); const id = b.closest('.trow').querySelector('[data-task]').dataset.task; openTask(F.tasks.find(x => x.id === id)); });
+}
+function openTask(t0) {
+  const t = t0 || { due: todayS() }; const d = modal(`<h2>${t.id ? 'Editar tarefa' : 'Nova tarefa'}</h2><label>Tarefa</label><input name="title" value="${esc(t.title || '')}" required>
+   <div class="fr3"><div><label>Data</label><input type="date" name="due" value="${t.due || ''}"></div><div><label>Início</label><input type="time" name="ts" value="${t.time_start || ''}"></div><div><label>Fim</label><input type="time" name="te" value="${t.time_end || ''}"></div></div>
+   <label>Cliente</label><select name="client_id"><option value="">Sem cliente</option>${S.clients.map(c => `<option value="${c.id}" ${c.id === t.client_id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select>
+   <div class="mact">${t.id ? '<button type="button" class="btn danger" id="tDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="tCancel">Cancelar</button><button type="button" class="btn primary" id="tSave">Salvar</button></div>`); const f = d.querySelector('form');
+  d.querySelector('#tCancel').onclick = () => d.close();
+  if (t.id) d.querySelector('#tDel').onclick = async () => { await sb.from('tasks').delete().eq('id', t.id); F.tasks = F.tasks.filter(x => x.id !== t.id); d.close(); rerenderView(); };
+  d.querySelector('#tSave').onclick = async () => { if (!f.title.value.trim()) return; const row = { title: f.title.value.trim(), due: f.due.value || null, time_start: f.ts.value || null, time_end: f.te.value || null, client_id: f.client_id.value || null };
+    const q = t.id ? sb.from('tasks').update(row).eq('id', t.id).select() : sb.from('tasks').insert(row).select(); const { data, error } = await q; if (error) return fail(error);
+    if (t.id) Object.assign(F.tasks.find(x => x.id === t.id), data[0]); else F.tasks.push(data[0]); d.close(); rerenderView(); };
+}
+const MODEL = { week: 'Semana N do mês', last_week: 'Última semana do mês', penult_weekday: 'Penúltimo dia da semana do mês' };
+function openTpl() {
+  const d = modal(`<div class="row"><h2>Rotinas mensais</h2><div class="sp"></div><button type="button" class="btn small primary" id="tplAdd">+ Rotina</button></div><p class="sub">Cada rotina cria uma tarefa por cliente (ou uma só) todo mês. Semana 1 = dias 1 a 7, semana 2 = dias 8 a 14, e assim por diante.</p>
+   <div id="tplList">${F.tpl.map(t => `<button type="button" class="rrow ${t.active ? '' : 'off'}" data-tpl="${t.id}"><div><b>${esc(t.title)}</b><span class="sub">${MODEL[t.mode]}${t.mode === 'week' ? ' ' + t.week : ''}${t.weekday != null ? ' · ' + WD[t.weekday] : ''}${t.time_start ? ' · ' + t.time_start + '–' + (t.time_end || '') : ''} · ${t.per_client ? 'por cliente' : 'uma só'}</span></div></button>`).join('')}</div><div class="mact"><div class="sp"></div><button type="button" class="btn" id="tplClose">Fechar</button></div>`, true);
+  d.querySelector('#tplClose').onclick = () => d.close(); d.querySelector('#tplAdd').onclick = () => { d.close(); editTpl(); }; d.querySelectorAll('[data-tpl]').forEach(b => b.onclick = () => { d.close(); editTpl(F.tpl.find(x => x.id === b.dataset.tpl)); });
+}
+function editTpl(t0) {
+  const t = t0 || { mode: 'week', week: 2, per_client: true, active: true }; const d = modal(`<h2>${t.id ? 'Editar rotina' : 'Nova rotina'}</h2><label>Título</label><input name="title" value="${esc(t.title || '')}" required>
+   <div class="fr3"><div><label>Quando</label><select name="mode">${opts(Object.entries(MODEL), t.mode)}</select></div><div><label>Semana (1 a 4)</label><input type="number" min="1" max="4" name="week" value="${t.week ?? 2}"></div><div><label>Dia da semana</label><select name="weekday"><option value="">Sexta (prazo)</option>${WD.map((w, i) => `<option value="${i}" ${t.weekday === i ? 'selected' : ''}>${w}</option>`).join('')}</select></div></div>
+   <div class="fr3"><div><label>Início</label><input type="time" name="ts" value="${t.time_start || ''}"></div><div><label>Fim</label><input type="time" name="te" value="${t.time_end || ''}"></div><div><label>Gerar</label><select name="pc">${opts([['1', 'Uma por cliente'], ['0', 'Uma só']], t.per_client ? '1' : '0')}</select></div></div>
+   <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="active" style="width:auto" ${t.active ? 'checked' : ''}> Ativa</label>
+   <div class="mact">${t.id ? '<button type="button" class="btn danger" id="xDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="xCancel">Cancelar</button><button type="button" class="btn primary" id="xSave">Salvar</button></div>`); const f = d.querySelector('form');
+  d.querySelector('#xCancel').onclick = () => { d.close(); openTpl(); };
+  if (t.id) d.querySelector('#xDel').onclick = async () => { if (!confirm('Excluir esta rotina? As tarefas já criadas ficam.')) return; await sb.from('task_templates').delete().eq('id', t.id); F.tpl = F.tpl.filter(x => x.id !== t.id); d.close(); rerenderView(); };
+  d.querySelector('#xSave').onclick = async () => { if (!f.title.value.trim()) return; const row = { title: f.title.value.trim(), mode: f.mode.value, week: +f.week.value || null, weekday: f.weekday.value === '' ? null : +f.weekday.value, time_start: f.ts.value || null, time_end: f.te.value || null, per_client: f.pc.value === '1', active: f.active.checked };
+    const q = t.id ? sb.from('task_templates').update(row).eq('id', t.id).select() : sb.from('task_templates').insert(row).select(); const { data, error } = await q; if (error) return fail(error);
+    if (t.id) Object.assign(F.tpl.find(x => x.id === t.id), data[0]); else F.tpl.push(data[0]);
+    try { await ensureTasks(firstOfMonth(new Date())); await ensureTasks(addMonths(firstOfMonth(new Date()), 1)); } catch (e) { fail(e); } d.close(); rerenderView(); };
+}
+
+// ---------- agência ----------
+function viewAgency() {
+  const tabs = [['clientes', 'Clientes e onboarding'], ['docs', 'Documentos'], ['aprov', 'Aprovações do mês']];
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Agência', 'Cada cliente com onboarding, contrato, propostas, briefing e o link de aprovação.', `<button class="btn" id="addCl">+ Cliente</button><button class="btn amber" id="addDoc">+ Documento</button>`)}
+  <div class="seg tabs2" id="aTabs">${tabs.map(([k, l]) => `<button type="button" data-t="${k}" class="${F.atab === k ? 'on' : ''}">${l}</button>`).join('')}</div><div id="aBody"></div></div>`;
+  $$('#aTabs [data-t]').forEach(b => b.onclick = () => { F.atab = b.dataset.t; viewAgency(); }); $('#addCl').onclick = () => $('#addClient').click(); $('#addDoc').onclick = () => openDoc();
+  ({ clientes: agClientes, docs: agDocs, aprov: agAprov })[F.atab]($('#aBody'));
+}
+function agClientes(el) {
+  el.innerHTML = `<div class="agrid">${S.clients.map(c => { const o = c.onboarding || {}; const done = ONB.filter(([k]) => o[k]).length; const n = F.docs.filter(d => d.client_id === c.id).length;
+    return `<div class="card ccard" style="margin-top:0"><div class="row">${avatar(c)}<div><h3>${esc(c.name)}</h3><span class="sub">${esc(c.niche || '')}</span></div><div class="sp"></div><span class="badge kind-${c.kind || 'cliente'}">${KINDL[c.kind || 'cliente']}</span></div>
+     <div class="row" style="margin:12px 0 6px"><span class="sub">Onboarding ${done}/${ONB.length}</span><div class="sp"></div><span class="sub">${c.monthly_fee ? BRL(c.monthly_fee) + ' por mês' : 'sem valor definido'}</span></div><div class="bar"><i style="width:${done / ONB.length * 100}%"></i></div>
+     <div class="row" style="margin-top:12px"><button class="btn small primary" data-open="${c.id}">Abrir ficha</button><span class="sub">${n} ${n === 1 ? 'documento' : 'documentos'}</span></div></div>`; }).join('')}</div>`;
+  $$('[data-open]', el).forEach(b => b.onclick = () => openClientSheet(S.clients.find(c => c.id === b.dataset.open)));
+}
+function openClientSheet(c) {
+  const o = { ...(c.onboarding || {}) }; const docs = F.docs.filter(d => d.client_id === c.id);
+  const d = modal(`<div class="row">${avatar(c)}<div><h2>${esc(c.name)}</h2><span class="sub">${esc(c.niche || '')}</span></div></div>
+   <div class="fr3"><div><label>Tipo</label><select name="kind">${opts(Object.entries(KINDL), c.kind || 'cliente')}</select></div><div><label>Valor mensal (R$)</label><input name="fee" value="${c.monthly_fee != null ? String(c.monthly_fee).replace('.', ',') : ''}"></div><div><label>Aprovação</label><button type="button" class="btn small" id="cLink" style="width:100%;margin-top:0">Copiar link</button></div></div>
+   <div class="sect">Onboarding</div>${ONB.map(([k, l]) => `<label class="trow" style="margin:0"><input type="checkbox" data-o="${k}" ${o[k] ? 'checked' : ''}><div><b>${l}</b></div></label>`).join('')}
+   <div class="sect">Documentos</div>${docs.map(x => `<button type="button" class="rrow" data-doc="${x.id}"><div><b>${esc(x.title)}</b><span class="sub">${DOCK[x.kind]}${x.doc_date ? ' · ' + pd(x.doc_date).toLocaleDateString('pt-BR') : ''}</span></div></button>`).join('') || '<div class="empty">Nenhum documento ainda.</div>'}
+   <div class="mact"><button type="button" class="btn" id="cDoc">+ Documento</button><div class="sp"></div><button type="button" class="btn" id="cClose">Fechar</button><button type="button" class="btn primary" id="cSave">Salvar</button></div>`, true); const f = d.querySelector('form');
+  d.querySelector('#cClose').onclick = () => d.close(); d.querySelector('#cDoc').onclick = () => { d.close(); openDoc({ client_id: c.id }); };
+  d.querySelector('#cLink').onclick = () => { const u = location.origin + '/gestor/aprovar.html?c=' + c.share_token; navigator.clipboard?.writeText(u).then(() => toast('Link de aprovação copiado'), () => prompt('Copie o link:', u)); };
+  d.querySelectorAll('[data-doc]').forEach(b => b.onclick = () => { d.close(); openDoc(F.docs.find(x => x.id === b.dataset.doc)); });
+  d.querySelectorAll('[data-o]').forEach(i => i.onchange = () => { o[i.dataset.o] = i.checked; });
+  d.querySelector('#cSave').onclick = async () => { const fee = money(f.fee.value); const row = { kind: f.kind.value, monthly_fee: isFinite(fee) ? fee : null, onboarding: o };
+    const { data, error } = await sb.from('clients').update(row).eq('id', c.id).select(); if (error) return fail(error); Object.assign(c, data[0]);
+    if (row.kind === 'cliente') { try { await ensureTasks(firstOfMonth(new Date())); await ensureTasks(addMonths(firstOfMonth(new Date()), 1)); } catch (e) { fail(e); } }
+    d.close(); toast('Cliente salvo'); rerenderView(); };
+}
+function agDocs(el) {
+  const kinds = Object.entries(DOCK); const cur = F.dk || 'todos';
+  const L = F.docs.filter(d => cur === 'todos' || d.kind === cur);
+  el.innerHTML = `<div class="chips"><button class="chip2 ${cur === 'todos' ? 'on' : ''}" data-k="todos">Todos</button>${kinds.map(([k, l]) => `<button class="chip2 ${cur === k ? 'on' : ''}" data-k="${k}">${l}</button>`).join('')}</div>
+   <div class="card">${L.map(x => { const c = S.clients.find(y => y.id === x.client_id); return `<button class="rrow" data-doc="${x.id}"><div><b>${esc(x.title)}</b><span class="sub">${esc(c?.name || 'Sem cliente')} · ${DOCK[x.kind]}${x.doc_date ? ' · ' + pd(x.doc_date).toLocaleDateString('pt-BR') : ''}</span></div>${x.file_path ? '<span class="badge">Arquivo</span>' : ''}${x.url ? '<span class="badge">Link</span>' : ''}</button>`; }).join('') || '<div class="empty">Nenhum documento. Use "+ Documento" para guardar contrato, proposta, briefing ou anotações da conversa inicial.</div>'}</div>`;
+  $$('.chip2', el).forEach(b => b.onclick = () => { F.dk = b.dataset.k; viewAgency(); }); $$('[data-doc]', el).forEach(b => b.onclick = () => openDoc(F.docs.find(x => x.id === b.dataset.doc)));
+}
+function openDoc(d0) {
+  const x = d0 || { kind: 'contrato', doc_date: todayS() }; let file = null;
+  const d = modal(`<h2>${x.id ? 'Editar documento' : 'Novo documento'}</h2>
+   <div class="fr"><div><label>Cliente</label><select name="client_id"><option value="">Sem cliente</option>${S.clients.map(c => `<option value="${c.id}" ${c.id === x.client_id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></div><div><label>Tipo</label><select name="kind">${opts(Object.entries(DOCK), x.kind)}</select></div></div>
+   <div class="fr"><div><label>Título</label><input name="title" value="${esc(x.title || '')}" required placeholder="Ex.: Contrato Weinerth 2026"></div><div><label>Data</label><input type="date" name="doc_date" value="${x.doc_date || ''}"></div></div>
+   <label>Link (Drive, Notion, site)</label><input name="url" value="${esc(x.url || '')}" placeholder="https://">
+   <label>Arquivo (PDF, imagem, documento)</label><div class="row"><input type="file" id="dFile" style="flex:1">${x.file_path ? '<button type="button" class="btn small" id="dOpen">Abrir arquivo salvo</button>' : ''}</div>
+   <label>Anotações (ata da conversa, pontos do briefing, combinados)</label><textarea name="notes" rows="6">${esc(x.notes || '')}</textarea>
+   <div class="mact">${x.id ? '<button type="button" class="btn danger" id="dDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="dCancel">Cancelar</button><button type="button" class="btn primary" id="dSave">Salvar</button></div>`, true); const f = d.querySelector('form');
+  d.querySelector('#dFile').onchange = e => { file = e.target.files[0] || null; };
+  d.querySelector('#dCancel').onclick = () => d.close();
+  if (x.file_path) d.querySelector('#dOpen').onclick = async () => { const { data, error } = await sb.storage.from('agency-docs').createSignedUrl(x.file_path, 3600); if (error) return fail(error); window.open(data.signedUrl, '_blank', 'noopener'); };
+  if (x.id) d.querySelector('#dDel').onclick = async () => { if (!confirm('Excluir este documento?')) return; if (x.file_path) await sb.storage.from('agency-docs').remove([x.file_path]); await sb.from('agency_docs').delete().eq('id', x.id); F.docs = F.docs.filter(y => y.id !== x.id); d.close(); rerenderView(); };
+  d.querySelector('#dSave').onclick = async () => { if (!f.title.value.trim()) return toast('Dê um título'); let fp = x.file_path || null;
+    if (file) { const p = `${S.user.id}/${Date.now()}-${file.name.replace(/[^\w.\-]+/g, '_')}`; const up = await sb.storage.from('agency-docs').upload(p, file); if (up.error) return fail(up.error); fp = p; }
+    const row = { client_id: f.client_id.value || null, kind: f.kind.value, title: f.title.value.trim(), doc_date: f.doc_date.value || null, url: f.url.value.trim() || null, file_path: fp, notes: f.notes.value.trim() || null };
+    const q = x.id ? sb.from('agency_docs').update(row).eq('id', x.id).select() : sb.from('agency_docs').insert(row).select(); const { data, error } = await q; if (error) return fail(error);
+    if (x.id) Object.assign(F.docs.find(y => y.id === x.id), data[0]); else F.docs.unshift(data[0]); d.close(); toast('Documento salvo'); rerenderView(); };
+}
+function agAprov(el) {
+  el.innerHTML = `<div class="card"><p class="sub" style="margin-top:0">Um link por cliente. Nele o cliente acompanha pautas, copies e criativos do mês em tempo real e aprova ou pede ajuste.</p>${S.clients.filter(c => (c.kind || 'cliente') !== 'prospect').map(c => { const u = location.origin + '/gestor/aprovar.html?c=' + c.share_token; return `<div class="rrow" style="cursor:default"><div class="row">${avatar(c)}<div><b>${esc(c.name)}</b><span class="sub">${S.unseen[c.id] ? S.unseen[c.id] + ' resposta(s) nova(s) do cliente' : 'sem novidades'}</span></div></div><button class="btn small" data-copy="${esc(u)}">Copiar link</button><a class="btn small" href="${esc(u)}" target="_blank" rel="noopener">Abrir</a><button class="btn small primary" data-cl2="${c.id}">Conteúdo</button></div>`; }).join('')}</div>`;
+  $$('[data-copy]', el).forEach(b => b.onclick = () => navigator.clipboard?.writeText(b.dataset.copy).then(() => toast('Link copiado'), () => prompt('Copie o link:', b.dataset.copy)));
+  $$('[data-cl2]', el).forEach(b => b.onclick = () => { S.tab = b.dataset.cl2; setView('clientes'); });
+}
+
+// ---------- ofertas ----------
+function viewOffers() {
+  const seg = F.seg || 'Todos'; const segs = ['Todos', ...new Set(F.leads.map(l => l.segment).filter(Boolean))];
+  const L = F.leads.filter(l => seg === 'Todos' || l.segment === seg);
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Ofertas e leads', 'O que você vende, por quanto, e quem você está prospectando.', `<button class="btn" id="addLead">+ Lead</button><button class="btn amber" id="addOffer">+ Oferta</button>`)}
+  <div class="ogrid">${F.offers.map(o => `<button class="card ocard" data-off="${o.id}"><span class="sub">${esc(o.unit || '')}</span><b class="price">${BRL(o.price)}</b><h3>${esc(o.name)}</h3><p>${esc(o.description || '')}</p>${o.notes ? `<p class="sub">${esc(o.notes)}</p>` : ''}</button>`).join('')}</div>
+  <div class="row" style="margin:22px 0 10px"><h2 class="h2">Pipeline de leads</h2><div class="sp"></div><div class="seg" id="segS">${segs.map(s => `<button type="button" data-s="${esc(s)}" class="${seg === s ? 'on' : ''}">${esc(s)}</button>`).join('')}</div></div>
+  <div class="lgrid">${LEADST.map(([k, l]) => `<div class="lcol"><div class="lh">${l} <span>${L.filter(x => x.status === k).length}</span></div>${L.filter(x => x.status === k).map(x => `<button class="lcard" data-lead="${x.id}"><b>${esc(x.name)}</b><span class="sub">${esc(x.segment || '')}${x.last_contact ? ' · ' + fmtDm(x.last_contact) : ''}</span></button>`).join('') || '<div class="empty sm">–</div>'}</div>`).join('')}</div></div>`;
+  $('#addOffer').onclick = () => openOffer(); $('#addLead').onclick = () => openLead(); $$('[data-off]').forEach(b => b.onclick = () => openOffer(F.offers.find(o => o.id === b.dataset.off))); $$('[data-lead]').forEach(b => b.onclick = () => openLead(F.leads.find(l => l.id === b.dataset.lead)));
+  $$('#segS [data-s]').forEach(b => b.onclick = () => { F.seg = b.dataset.s; viewOffers(); });
+}
+function openOffer(o0) {
+  const o = o0 || {}; const d = modal(`<h2>${o.id ? 'Editar oferta' : 'Nova oferta'}</h2><label>Nome</label><input name="name" value="${esc(o.name || '')}" required><div class="fr"><div><label>Preço (R$)</label><input name="price" value="${o.price != null ? String(o.price).replace('.', ',') : ''}"></div><div><label>Unidade</label><input name="unit" value="${esc(o.unit || '')}" placeholder="por foto, por mês"></div></div>
+   <label>Descrição</label><textarea name="description" rows="3">${esc(o.description || '')}</textarea><label>Notas e metas</label><textarea name="notes" rows="3">${esc(o.notes || '')}</textarea>
+   <div class="mact">${o.id ? '<button type="button" class="btn danger" id="oDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="oCancel">Cancelar</button><button type="button" class="btn primary" id="oSave">Salvar</button></div>`); const f = d.querySelector('form');
+  d.querySelector('#oCancel').onclick = () => d.close();
+  if (o.id) d.querySelector('#oDel').onclick = async () => { if (!confirm('Excluir esta oferta?')) return; await sb.from('offers').delete().eq('id', o.id); F.offers = F.offers.filter(x => x.id !== o.id); d.close(); rerenderView(); };
+  d.querySelector('#oSave').onclick = async () => { if (!f.name.value.trim()) return; const p = money(f.price.value); const row = { name: f.name.value.trim(), price: isFinite(p) ? p : null, unit: f.unit.value.trim() || null, description: f.description.value.trim() || null, notes: f.notes.value.trim() || null };
+    const q = o.id ? sb.from('offers').update(row).eq('id', o.id).select() : sb.from('offers').insert({ ...row, position: F.offers.length + 1 }).select(); const { data, error } = await q; if (error) return fail(error);
+    if (o.id) Object.assign(F.offers.find(x => x.id === o.id), data[0]); else F.offers.push(data[0]); d.close(); rerenderView(); };
+}
+function openLead(l0) {
+  const l = l0 || { status: 'novo', segment: F.seg && F.seg !== 'Todos' ? F.seg : '' }; const d = modal(`<h2>${l.id ? 'Editar lead' : 'Novo lead'}</h2><label>Nome</label><input name="name" value="${esc(l.name || '')}" required>
+   <div class="fr3"><div><label>Segmento</label><input name="segment" value="${esc(l.segment || '')}" list="segl"><datalist id="segl">${[...new Set(F.leads.map(x => x.segment).filter(Boolean))].map(s => `<option value="${esc(s)}">`).join('')}</datalist></div><div><label>Etapa</label><select name="status">${opts(LEADST, l.status)}</select></div><div><label>Último contato</label><input type="date" name="last_contact" value="${l.last_contact || ''}"></div></div>
+   <label>Oferta</label><select name="offer_id"><option value="">Nenhuma</option>${F.offers.map(o => `<option value="${o.id}" ${o.id === l.offer_id ? 'selected' : ''}>${esc(o.name)}</option>`).join('')}</select><label>Notas</label><textarea name="notes" rows="3">${esc(l.notes || '')}</textarea>
+   <div class="mact">${l.id ? '<button type="button" class="btn danger" id="lDel">Excluir</button>' : ''}<div class="sp"></div><button type="button" class="btn" id="lCancel">Cancelar</button><button type="button" class="btn primary" id="lSave">Salvar</button></div>`); const f = d.querySelector('form');
+  d.querySelector('#lCancel').onclick = () => d.close();
+  if (l.id) d.querySelector('#lDel').onclick = async () => { if (!confirm('Excluir este lead?')) return; await sb.from('leads').delete().eq('id', l.id); F.leads = F.leads.filter(x => x.id !== l.id); d.close(); rerenderView(); };
+  d.querySelector('#lSave').onclick = async () => { if (!f.name.value.trim()) return; const row = { name: f.name.value.trim(), segment: f.segment.value.trim() || null, status: f.status.value, last_contact: f.last_contact.value || null, offer_id: f.offer_id.value || null, notes: f.notes.value.trim() || null };
+    const q = l.id ? sb.from('leads').update(row).eq('id', l.id).select() : sb.from('leads').insert(row).select(); const { data, error } = await q; if (error) return fail(error);
+    if (l.id) Object.assign(F.leads.find(x => x.id === l.id), data[0]); else F.leads.push(data[0]); d.close(); rerenderView(); };
+}
+
+// ---------- shell ----------
+function buildShell() {
+  const items = Object.keys(NAVL);
+  const rail = `<aside id="rail"><div class="rbrand">Gestao<em>S</em></div><nav>${items.map(k => `<button data-v="${k}">${NAVI[k]}<span>${NAVL[k]}</span></button>`).join('')}</nav><div class="rfoot"></div></aside>`;
+  const bnav = `<nav id="bnav">${items.map(k => `<button data-v="${k}">${NAVI[k]}<span>${NAVL[k]}</span></button>`).join('')}</nav>`;
+  $('#appView').insertAdjacentHTML('afterbegin', rail); $('#appView').insertAdjacentHTML('beforeend', bnav);
+  $$('#rail [data-v], #bnav [data-v]').forEach(b => b.onclick = () => setView(b.dataset.v));
+  $('#rail .rfoot').append($('#addClient'), $('#logout'));
+}
 
 
 boot();
