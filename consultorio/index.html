@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,movie,music_note,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,space_dashboard,star,sync,task_alt,timer,trending_down,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,movie,music_note,north_east,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sync,task_alt,timer,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -80,6 +80,16 @@ h1,h2,h3{margin:0;font-weight:500}
 .fab{position:fixed;right:24px;bottom:24px;height:56px;padding:0 20px;border-radius:16px;border:none;background:var(--primary-container);color:var(--on-primary-container);box-shadow:var(--e3);display:inline-flex;align-items:center;gap:10px;font-weight:600;cursor:pointer;z-index:30}
 .chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--outline-variant);background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--on-surface-variant);white-space:nowrap}
 .chip.on{background:var(--secondary-container);color:var(--on-secondary-container);border-color:transparent}
+
+.fpanel{display:flex;gap:18px;flex-wrap:wrap;align-items:center;background:var(--panel,var(--surface-c-low));border-radius:var(--r-md);padding:10px 14px;margin:-4px 0 14px}
+.fpanel .fg{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.fpanel .fg>b{font-size:12px;color:var(--on-surface-variant);font-weight:600;margin-right:2px}
+.cmpx{margin-top:14px;border-top:1px solid var(--outline-variant);padding-top:12px}
+.cmpx .r{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:13px}.cmpx .r i{width:10px;height:10px;border-radius:5px;flex:none}.cmpx .r .t{flex:1;min-width:0}.cmpx .r .t small{display:block;color:var(--on-surface-variant);font-size:11.5px}.cmpx .r b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}.cmp2 h5{margin:0 0 4px;font-size:13px;display:flex;gap:6px;align-items:center}.cmp2 h5 .ms{font-size:18px}
+@media (max-width:700px){.cmp2{grid-template-columns:1fr}}
+.tourdots{display:flex;gap:6px;justify-content:center;margin-bottom:16px}.tourdots i{width:7px;height:7px;border-radius:4px;background:var(--outline-variant)}.tourdots i.on{width:20px;background:var(--primary)}
+.touric{width:60px;height:60px;border-radius:30px;background:var(--primary-container);color:var(--primary);display:grid;place-items:center;margin:0 auto 12px}.touric .ms{font-size:30px}
+.tourbody{font-size:14px;line-height:1.55;color:var(--on-surface-variant)}.tourbody ul{margin:8px 0 0;padding-left:18px}.tourbody li{margin:4px 0}.tourbody b{color:var(--on-surface)}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
 .chips::-webkit-scrollbar{display:none}
 .badge{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
@@ -413,6 +423,7 @@ dialog form{padding:24px}
     <button class="nav" data-view="conquistas"><span class="pill"><span class="ms fill">emoji_events</span></span>Conquistas</button>
     <button class="nav" id="navMore" type="button"><span class="pill"><span class="ms">menu</span></span>Mais</button>
     <div class="sp"></div>
+    <button class="icon-btn logout hidden" id="railMode" title="Alternar entre modo administrador e modo usuário"><span class="ms">admin_panel_settings</span></button>
     <button class="icon-btn logout" id="railHello" title="Recado do Matheus (feedback)" style="background:var(--primary-container);color:var(--primary)"><span class="ms fill">campaign</span></button>
     <button class="icon-btn logout" id="railProfile" title="Meu perfil"><span class="ms">account_circle</span></button>
     <button class="icon-btn logout" id="logout" title="Sair"><span class="ms">logout</span></button>
@@ -791,9 +802,9 @@ $('#navMore').onclick = () => {
   let d = $('#dlgMore'); if (!d) { d = document.createElement('dialog'); d.id = 'dlgMore'; document.body.appendChild(d); d.addEventListener('click', e => { if (e.target === d) d.close(); }); }
   const items = $$('#rail .nav').filter(b => !b.hasAttribute('data-core') && b.id !== 'navMore' && !b.classList.contains('hidden'));
   d.innerHTML = '<div class="title-m">Menu</div><div class="moregrid">' + items.map(b => `<button class="moreit ${b.dataset.view === S.view ? 'on' : ''}" data-mv="${b.dataset.view}"><span class="ms">${b.querySelector('.ms').textContent}</span>${esc(b.textContent.replace(b.querySelector('.ms').textContent, '').trim())}</button>`).join('') +
-    '<button class="moreit" id="mvProf"><span class="ms">account_circle</span>Meu perfil</button><button class="moreit" id="mvHello"><span class="ms">campaign</span>Recado</button><button class="moreit danger" id="mvOut"><span class="ms">logout</span>Sair</button></div>';
+    (S.admin ? `<button class="moreit" id="mvMode"><span class="ms">${S.userMode ? 'person' : 'admin_panel_settings'}</span>${S.userMode ? 'Modo usuário' : 'Modo admin'}</button>` : '') + '<button class="moreit" id="mvTour"><span class="ms">help</span>Tutorial</button><button class="moreit" id="mvProf"><span class="ms">account_circle</span>Meu perfil</button><button class="moreit" id="mvHello"><span class="ms">campaign</span>Recado</button><button class="moreit danger" id="mvOut"><span class="ms">logout</span>Sair</button></div>';
   $$('[data-mv]', d).forEach(b => b.onclick = () => { d.close(); go(b.dataset.mv); });
-  $('#mvProf', d).onclick = () => { d.close(); openProfile(); }; $('#mvHello', d).onclick = () => { d.close(); openHello(); };
+  $('#mvProf', d).onclick = () => { d.close(); openProfile(); }; $('#mvTour', d).onclick = () => { d.close(); openTour(); }; const mm = $('#mvMode', d); if (mm) mm.onclick = () => { d.close(); toggleMode(); }; $('#mvHello', d).onclick = () => { d.close(); openHello(); };
   $('#mvOut', d).onclick = async () => { await sb.auth.signOut(); location.reload(); };
   d.showModal();
 };
@@ -815,8 +826,55 @@ async function start(user) {
   let v = null; try { v = localStorage.getItem('cons.view'); } catch (_) {}
   track('entrou');
   setInterval(() => { if (document.visibilityState === 'visible') track('ping'); }, 60000);
-  sb.rpc('is_admin').then(({ data }) => { if (data === true) { S.admin = true; $('#navAdmin').classList.remove('hidden'); } }, () => {});
+  try { const { data: a } = await sb.rpc('is_admin'); if (a === true) { S.admin = true; try { S.userMode = localStorage.getItem('cons.mode') === 'user'; } catch (_) {} } } catch (_) {}
+  syncMode();
+  await ensureDemo();
   go(location.hash.slice(1) || v || 'inicio');
+  maybeTour();
+}
+function syncMode() {
+  $('#navAdmin').classList.toggle('hidden', !S.admin || !!S.userMode);
+  const rm = $('#railMode'); rm.classList.toggle('hidden', !S.admin);
+  rm.querySelector('.ms').textContent = S.userMode ? 'person' : 'admin_panel_settings';
+  rm.title = S.userMode ? 'Modo usuário (toque para voltar ao admin)' : 'Modo administrador (toque para ver como usuário)';
+  rm.style.background = S.userMode ? 'var(--tertiary-container)' : 'var(--primary-container)';
+}
+function toggleMode() {
+  S.userMode = !S.userMode; try { localStorage.setItem('cons.mode', S.userMode ? 'user' : 'admin'); } catch (_) {}
+  syncMode(); snack(S.userMode ? 'Modo usuário: você vê o sistema como um usuário novo (2 exemplos)' : 'Modo administrador');
+  S.rendered = false; go(S.userMode && S.view === 'admin' ? 'inicio' : S.view);
+}
+$('#railMode').onclick = toggleMode;
+/* ---------- tutorial ---------- */
+const TOUR = [
+  ['psychology', 'Bem-vinda(o) ao Gestaopsi', '<p>Aqui você cuida do lado <b>administrativo</b> do consultório: agenda, cobranças, recibos e documentos.</p><ul><li><b>Nada clínico</b> fica aqui. Nada de prontuário, queixa detalhada ou evolução.</li><li>Colocamos <b>2 pacientes de exemplo</b> (um presencial e um online) para você explorar sem medo. Remova quando quiser em <b>Pacientes</b>.</li></ul>'],
+  ['space_dashboard', 'Início: o mês num relance', '<p>No topo ficam os dois números que mais importam: <b>valor recebido no mês</b> e <b>pacientes ativos</b>.</p><ul><li>Os cartões mostram sessões realizadas, faltas e recibos a emitir.</li><li>Em <b>Alertas</b> aparecem pagamento em atraso, duas faltas seguidas e paciente sumido.</li><li>Toque em qualquer número ou coluna para ver os lançamentos por trás.</li></ul>'],
+  ['payments', 'Financeiro do mês', '<p>O gráfico do Início mostra seis colunas, e logo abaixo dele está o detalhe de cada uma:</p><ul><li><b>Gerado:</b> o que as sessões do mês valem (realizadas e faltas cobradas).</li><li><b>Recebido:</b> o que de fato caiu no mês, por Pix, cartão ou dinheiro.</li><li><b>A receber</b> e <b>Em atraso:</b> o que ainda falta entrar.</li><li><b>Despesas</b> e <b>Lucro:</b> aluguel de sala, supervisão, CRP... Lucro = recebido − despesas.</li></ul>'],
+  ['calendar_month', 'Agenda', '<p>Veja o mês, a semana ou uma lista.</p><ul><li><b>Gerar sessões do mês</b> cria a agenda a partir dos horários fixos de cada paciente.</li><li>Arraste uma sessão para outro dia para reagendar. Mudar para online ou presencial vale só para <b>aquela</b> sessão.</li><li>O botão <b>Filtros</b> abre formato, status e recibo pendente.</li><li>Dá para conectar o <b>Google Agenda</b> ou baixar um arquivo .ics.</li></ul>'],
+  ['group', 'Pacientes', '<p>Cadastro só com dados administrativos: horário, valor, forma de cobrança (por sessão, mensal, quinzenal) e, se quiser, o link da pasta no seu <b>Drive</b>.</p><ul><li>Cada paciente tem o histórico de sessões e pagamentos.</li><li>Contratos e laudos ficam no seu Drive; aqui fica só o atalho.</li></ul>'],
+  ['receipt_long', 'Financeiro e Recibos', '<p>Marque a sessão como <b>paga</b> e ela vai para <b>Recibos</b>.</p><ul><li>O recibo do Receita Saúde deve ser emitido na data do pagamento. O sistema te avisa dos atrasados.</li><li>Em <b>Financeiro</b> você lança as despesas do mês, inclusive aluguel de sala por hora.</li></ul>'],
+  ['face_3', 'AlicIA e Documentos', '<p><b>AlicIA</b> busca a melhor evidência disponível (PubMed e Europe PMC) a partir de abordagem, objetivo e perfil do caso, usando só iniciais e rotina, nunca o nome do paciente.</p><p><b>Documentos</b> tem 14 modelos prontos: declarações, atestado, relatório, laudo, parecer, encaminhamentos, contrato, TCLE online e mais. Preenche com os dados do paciente e você copia, imprime ou baixa em Word.</p>'],
+  ['check_circle', 'Pronto para começar', '<p>Explore à vontade com os exemplos. Quando estiver tudo claro, cadastre seu primeiro paciente em <b>Pacientes</b>.</p><p class="small muted">Para rever este tutorial: ícone <b>?</b> no topo do Início, ou <b>Mais → Tutorial</b> no celular.</p>']
+];
+function openTour(i = 0) {
+  let d = $('#dlgTour'); if (!d) { d = document.createElement('dialog'); d.id = 'dlgTour'; d.style.width = 'min(520px,calc(100vw - 24px))'; document.body.appendChild(d); d.addEventListener('cancel', () => endTour()); }
+  const last = TOUR.length - 1, [ic, t, b] = TOUR[i];
+  d.innerHTML = `<div style="padding:26px 24px 20px"><div class="tourdots">${TOUR.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
+    <div class="touric"><span class="ms fill">${ic}</span></div><div class="title-l" style="text-align:center;margin-bottom:10px">${t}</div><div class="tourbody">${b}</div>
+    <div class="dact" style="justify-content:space-between;margin-top:22px"><button class="btn text" id="tkSkip" type="button">${i === last ? '' : 'Pular'}</button><div style="display:flex;gap:8px">${i ? '<button class="btn outlined" id="tkBack" type="button">Voltar</button>' : ''}<button class="btn" id="tkNext" type="button">${i === last ? 'Começar' : 'Próximo'}</button></div></div></div>`;
+  $('#tkSkip', d).onclick = endTour; $('#tkNext', d).onclick = () => i === last ? endTour() : openTour(i + 1); const bk = $('#tkBack', d); if (bk) bk.onclick = () => openTour(i - 1);
+  if (!d.open) d.showModal();
+}
+async function endTour() {
+  const d = $('#dlgTour'); if (d && d.open) d.close();
+  try { localStorage.setItem('cons.tour.' + S.user.id, '1'); } catch (_) {}
+  if (S.profile && S.profile.tour_seen === true) return;
+  if (S.profile) S.profile.tour_seen = true;
+  try { await sb.from('profiles').update({ tour_seen: true }).eq('id', S.user.id); } catch (_) {}
+}
+function maybeTour() {
+  let ls = false; try { ls = !!localStorage.getItem('cons.tour.' + S.user.id); } catch (_) {}
+  if ((!S.profile || S.profile.tour_seen !== true) && !(ls && !S.profile)) setTimeout(() => openTour(), 700);
 }
 window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== S.view && S.started) go(v, true); });
 
@@ -824,7 +882,7 @@ window.addEventListener('hashchange', () => { const v = location.hash.slice(1); 
 const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, alicia: viewAlicia, documentos: viewDocumentos, admin: viewAdmin, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
 $$('.nav[data-view]').forEach(b => b.onclick = () => go(b.dataset.view));
 async function go(v, fromHash) {
-  if (!VIEWS[v]) v = 'inicio';
+  if (!VIEWS[v] || (v === 'admin' && S.userMode)) v = 'inicio';
   const same = S.view === v && S.rendered, y = window.scrollY;
   if (!same) track('abriu:' + v);
   S.view = v; try { localStorage.setItem('cons.view', v); } catch (_) {}
@@ -832,7 +890,7 @@ async function go(v, fromHash) {
   $$('.nav').forEach(b => b.classList.toggle('on', b.dataset.view === v));
   $('#navMore').classList.toggle('on', !$('#rail .nav[data-core].on'));
   const fab = $('#fab'); fab.classList.add('hidden');
-  try { await VIEWS[v](); } catch (e) { fail(e); }
+  try { if (S.userMode) await loadPatients(); await VIEWS[v](); } catch (e) { fail(e); }
   S.rendered = true;
   // só volta ao topo quando troca de aba; filtros, chips e salvar mantêm a posição
   window.scrollTo(0, same ? y : 0);
@@ -842,7 +900,8 @@ function monthSel() { return `<div class="monthsel"><button class="icon-btn" id=
 function bindMonth() { $('#mPrev').onclick = () => { S.month = addM(S.month, -1); go(S.view); }; $('#mNext').onclick = () => { S.month = addM(S.month, 1); go(S.view); }; }
 
 /* ---------- dados ---------- */
-async function loadPatients() { const { data, error } = await sb.from('patients').select('*').order('name'); if (error) throw error; S.patients = data; }
+async function loadPatients() { const { data, error } = await sb.from('patients').select('*').order('name'); if (error) throw error; let d = data; if (S.userMode) { let k = 0; d = d.filter(p => !p.demo || k++ < 2); } S.patients = d; S.vis = new Set(d.map(p => p.id)); }
+const V = r => S.userMode && S.vis && r ? r.filter(x => S.vis.has(x.patient_id)) : r;
 async function loadMonth() {
   const a = iso(S.month), b = iso(eom(S.month));
   const [m, open] = await Promise.all([
@@ -850,15 +909,15 @@ async function loadMonth() {
     sb.from('sessions').select('*').eq('paid', false).gt('amount', 0).lt('due_date', todayISO())
   ]);
   if (m.error) throw m.error; if (open.error) throw open.error;
-  S.sessions = m.data; S.allOpen = open.data;
+  S.sessions = V(m.data); S.allOpen = V(open.data);
 }
 async function loadExpenses() {
   const { data, error } = await sb.from('expenses').select('*').eq('month', iso(S.month)).order('created_at');
-  if (error) throw error; S.expenses = data; return data;
+  if (error) throw error; S.expenses = S.userMode ? data.filter(e => !e.demo || /Plataforma|Anuidade/.test(e.category)) : data; return S.expenses;
 }
 async function loadPaidInMonth() {
   const { data, error } = await sb.from('sessions').select('*').eq('paid', true).gte('paid_at', iso(S.month)).lte('paid_at', iso(eom(S.month)));
-  if (error) throw error; return data;
+  if (error) throw error; return V(data);
 }
 function metrics(paidInMonth) {
   const done = S.sessions.filter(s => s.status !== 'agendada');
@@ -894,12 +953,12 @@ async function viewInicio() {
   const paid = await loadPaidInMonth();
   const since = iso(new Date(Date.now() - 60 * 864e5));
   const { data: recent } = await sb.from('sessions').select('patient_id,date,status').gte('date', since).lte('date', todayISO());
-  S.allSessions = recent || [];
+  S.allSessions = V(recent || []);
   const M = metrics(paid), al = alerts(), pend = await pendingReceipts(), lateRec = pend.filter(s => s.paid_at < todayISO());
   const name = (S.profile?.name || S.user.email.split('@')[0]).split(' ')[0];
   const today = S.sessions.filter(s => s.date === todayISO());
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="icon-btn" id="topHello" title="Recado do Matheus" style="background:var(--primary-container);color:var(--primary)"><span class="ms fill">campaign</span></button><button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
+  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="icon-btn" id="topTour" title="Tutorial" style="background:var(--surface-c-highest)"><span class="ms">help</span></button>${S.admin ? `<button class="icon-btn" id="topMode" title="${S.userMode ? 'Modo usuário (toque para voltar ao admin)' : 'Modo administrador (toque para ver como usuário)'}" style="background:${S.userMode ? 'var(--tertiary-container)' : 'var(--primary-container)'};color:var(--on-surface)"><span class="ms fill">${S.userMode ? 'person' : 'admin_panel_settings'}</span></button>` : ''}<button class="icon-btn" id="topHello" title="Recado do Matheus" style="background:var(--primary-container);color:var(--primary)"><span class="ms fill">campaign</span></button><button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
   <div class="kpis"></div>`;
   const act = S.patients.filter(p => p.status === 'ativo'), pausa = S.patients.filter(p => p.status === 'pausa').length;
   $('.kpis').insertAdjacentHTML('beforebegin', `<div class="hero2">
@@ -925,6 +984,7 @@ async function viewInicio() {
       <div class="cardhead"><div><div class="title-m">Financeiro do mês</div><div class="small muted">Toque numa coluna para ver os lançamentos</div></div><span class="badge b-neutral">Previsto: ${brl(M.previsto)}</span></div>
       ${barChart(bars)}
       <div class="legend">${bars.map(b => `<span><i style="background:${b.c}"></i>${b.l}</span>`).join('')}</div>
+      ${compose(M, paid, bars)}
     </section>
     <section class="card elev">
       <div class="cardhead"><div class="title-m">Alertas</div><span class="badge ${al.length ? 'b-warn' : 'b-ok'}">${al.length}</span></div>
@@ -937,12 +997,33 @@ async function viewInicio() {
   </section>
   <div class="foot">Não registre informações clínicas aqui. Este sistema é administrativo.</div>`);
   bindMonth();
-  $('#topProfile').onclick = openProfile; $('#topHello').onclick = openHello;
+  $('#topProfile').onclick = openProfile; $('#topHello').onclick = openHello; $('#topTour').onclick = () => openTour(); const tm = $('#topMode'); if (tm) tm.onclick = toggleMode;
   $$('[data-to]').forEach(el => el.onclick = () => jump(el.dataset.to));
   $$('[data-go]').forEach(el => el.onclick = () => go(el.dataset.go));
   $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat)));
   bindSessionRows();
   setFab('Sessão', () => openSession());
+}
+function compose(M, paid, bars) {
+  const mes = monthName(S.month).toLowerCase(), EX = S.expenses || [];
+  const cobradas = S.sessions.filter(s => s.status === 'falta' && Number(s.amount) > 0).length;
+  const nArec = S.sessions.filter(s => situation(s) === 'areceber').length;
+  const how = {
+    gerado: `${M.realizadas} realizada(s)${cobradas ? ' + ' + cobradas + ' falta(s) cobrada(s)' : ''}`,
+    recebido: `${paid.length} sessão(ões) paga(s) em ${mes}`,
+    areceber: `${nArec} sessão(ões) com vencimento ainda neste mês`,
+    atraso: `${S.allOpen.length} sessão(ões) vencida(s) e não paga(s)`,
+    despesas: `${EX.length} lançamento(s) do mês`,
+    lucro: 'Recebido − Despesas'
+  };
+  const byM = {}; paid.forEach(s => { const k = s.method || 'Sem forma registrada'; (byM[k] = byM[k] || { n: 0, v: 0 }); byM[k].n++; byM[k].v += Number(s.amount); });
+  const byC = {}; EX.forEach(e => { byC[e.category] = (byC[e.category] || 0) + Number(e.amount); });
+  const rows = o => Object.entries(o).sort((a, b) => (b[1].v ?? b[1]) - (a[1].v ?? a[1]));
+  const ent = rows(byM).map(([k, x]) => `<div class="r"><i style="background:var(--chart-2)"></i><div class="t">${esc(k)}<small>${x.n} sessão(ões)</small></div><b>${brl(x.v)}</b></div>`).join('') || '<div class="small muted" style="padding:6px 0">Nenhum pagamento recebido neste mês ainda.</div>';
+  const sai = rows(byC).map(([k, v]) => `<div class="r"><i style="background:var(--chart-5)"></i><div class="t">${esc(k)}</div><b>${brl(v)}</b></div>`).join('') || '<div class="small muted" style="padding:6px 0">Nenhuma despesa lançada. Adicione em Financeiro.</div>';
+  return `<div class="cmpx"><div class="small muted" style="margin-bottom:2px">O que compõe cada coluna</div>
+    ${bars.map(b => `<div class="r"><i style="background:${b.c}"></i><div class="t">${b.l}<small>${how[b.k]}</small></div><b ${b.v < 0 ? 'style="color:var(--error)"' : ''}>${brl(b.v)}</b></div>`).join('')}
+    <div class="cmp2"><div><h5><span class="ms" style="color:var(--chart-2)">south_west</span>Entradas · ${brl(M.recebido)}</h5>${ent}</div><div><h5><span class="ms" style="color:var(--chart-5)">north_east</span>Saídas · ${brl(M.despesas)}</h5>${sai}</div></div></div>`;
 }
 function kpi(ic, bg, v, l, to) { return `<button class="kpi" data-to="${to}"><div class="k-ic" style="background:${bg}"><span class="ms">${ic}</span></div><div class="v">${v}</div><div class="l">${l}</div></button>`; }
 function jump(to) { const [v, f] = to.split(':'); if (f) S.finFilter = f; go(v); }
@@ -1069,7 +1150,7 @@ async function viewAgenda() {
   else if (S.agMode === 'mes') { from = monday(S.month); to = addD(monday(eom(S.month)), 6); }
   else { from = S.month; to = eom(S.month); }
   const { data, error } = await sb.from('sessions').select('*').gte('date', iso(from)).lte('date', iso(to)).order('date').order('time'); if (error) throw error;
-  S.agSessions = data;
+  S.agSessions = V(data);
   const busy = await gBusy(from, to);
   const F = S.agF, q = F.q.trim().toLowerCase();
   const L = data.filter(x => { const p = pById(x.patient_id); if (!p) return false;
@@ -1086,6 +1167,7 @@ async function viewAgenda() {
   const nav = S.agMode === 'semana'
     ? `<div class="monthsel"><button class="icon-btn" id="wPrev" aria-label="Semana anterior"><span class="ms">chevron_left</span></button><strong>${S.weekStart.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })} – ${addD(S.weekStart, 6).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</strong><button class="icon-btn" id="wNext" aria-label="Próxima semana"><span class="ms">chevron_right</span></button></div>`
     : monthSel();
+  const nF = (F.mod && F.mod !== 'todos' ? 1 : 0) + (F.st && F.st !== 'todos' ? 1 : 0) + (F.rec ? 1 : 0);
   const chip = (k, l, v, cur) => `<button class="chip ${cur === v ? 'on' : ''}" data-${k}="${v}">${l}</button>`;
   let body = '';
   if (S.agMode === 'mes') {
@@ -1108,23 +1190,28 @@ async function viewAgenda() {
     ${nav}</div>
   <div class="filters">
     <input class="q" id="agQ" placeholder="Buscar paciente" value="${esc(F.q)}">
-    ${chip('mod', 'Todos', 'todos', F.mod)}${chip('mod', 'Presencial', 'presencial', F.mod)}${chip('mod', 'Online', 'online', F.mod)}
-    <span style="width:1px;height:24px;background:var(--outline-variant)"></span>
-    ${chip('st', 'Qualquer status', 'todos', F.st)}${chip('st', 'Agendadas', 'agendada', F.st)}${chip('st', 'Realizadas', 'realizada', F.st)}${chip('st', 'Faltas', 'falta', F.st)}${chip('st', 'Canceladas', 'cancelada', F.st)}
-    <button class="chip ${F.rec ? 'on' : ''}" id="fRec"><span class="ms" style="font-size:16px">receipt_long</span>Recibo pendente</button>
+    <button class="chip ${nF ? 'on' : ''}" id="fTog" title="Filtrar por formato, status e recibo"><span class="ms" style="font-size:16px">tune</span>Filtros${nF ? ' · ' + nF : ''}<span class="ms" style="font-size:16px">expand_more</span></button>
     <div class="sp"></div>
     ${gPanel()}
     <button class="btn text sm" id="ics" title="Baixa um arquivo .ics para importar em qualquer agenda"><span class="ms" style="font-size:18px">download</span>.ics</button>
     <button class="btn tonal sm" id="gen"><span class="ms" style="font-size:18px">event_repeat</span>Gerar sessões do mês</button>
+  </div>
+  <div class="fpanel ${S.fOpen ? '' : 'hidden'}" id="fPanel">
+    <div class="fg"><b>Formato</b>${chip('mod', 'Todos', 'todos', F.mod)}${chip('mod', 'Presencial', 'presencial', F.mod)}${chip('mod', 'Online', 'online', F.mod)}</div>
+    <div class="fg"><b>Status</b>${chip('st', 'Qualquer', 'todos', F.st)}${chip('st', 'Agendadas', 'agendada', F.st)}${chip('st', 'Realizadas', 'realizada', F.st)}${chip('st', 'Faltas', 'falta', F.st)}${chip('st', 'Canceladas', 'cancelada', F.st)}</div>
+    <div class="fg"><b>Recibo</b><button class="chip ${F.rec ? 'on' : ''}" id="fRec"><span class="ms" style="font-size:16px">receipt_long</span>Pendente</button></div>
+    ${nF ? '<button class="btn text sm" id="fClear">Limpar filtros</button>' : ''}
   </div>
   ${data.length || busy.length || S.agMode === 'lista' ? body : `<section class="card elev"><div class="empty"><span class="ms">event</span>Nenhuma sessão nesse período. Use “Gerar sessões do mês” para criar a agenda a partir dos horários fixos dos pacientes.</div></section>`}
   <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span><span class="ms" style="font-size:14px">videocam</span> online</span><span><span style="display:inline-grid;place-items:center;height:18px;padding:0 4px;border-radius:9px;background:#F29900;color:#fff;vertical-align:middle"><span class="ms fill" style="font-size:13px">receipt_long</span></span> pago, emitir recibo</span><span><span class="ms" style="font-size:15px;color:var(--primary)">task_alt</span> recibo emitido</span>${gcfg().connected ? '<span><i style="display:inline-block;width:12px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,#ddd 0 3px,#bbb 3px 6px)"></i> ocupado no Google</span>' : ''}<span>Toque no nome para ver o cadastro e emitir o recibo</span></div>`;
   if (S.agMode === 'semana') { $('#wPrev').onclick = () => { S.weekStart = addD(S.weekStart, -7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; $('#wNext').onclick = () => { S.weekStart = addD(S.weekStart, 7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; }
   else bindMonth();
   $$('[data-mode]').forEach(b => b.onclick = () => { S.agMode = b.dataset.mode; go('agenda'); });
-  $$('[data-mod]').forEach(b => b.onclick = () => { F.mod = b.dataset.mod; go('agenda'); });
-  $$('[data-st]').forEach(b => b.onclick = () => { F.st = b.dataset.st; go('agenda'); });
-  $('#fRec').onclick = () => { F.rec = !F.rec; go('agenda'); };
+  $$('[data-mod]').forEach(b => b.onclick = () => { F.mod = b.dataset.mod; S.fOpen = true; go('agenda'); });
+  $$('[data-st]').forEach(b => b.onclick = () => { F.st = b.dataset.st; S.fOpen = true; go('agenda'); });
+  $('#fRec').onclick = () => { F.rec = !F.rec; S.fOpen = true; go('agenda'); };
+  $('#fTog').onclick = () => { S.fOpen = !S.fOpen; $('#fPanel').classList.toggle('hidden', !S.fOpen); };
+  const fc = $('#fClear'); if (fc) fc.onclick = () => { F.mod = 'todos'; F.st = 'todos'; F.rec = false; go('agenda'); };
   let qt; $('#agQ').oninput = e => { clearTimeout(qt); qt = setTimeout(async () => { F.q = e.target.value; const pos = e.target.selectionStart; await go('agenda'); const i = $('#agQ'); i.focus(); i.setSelectionRange(pos, pos); }, 300); };
   $$('[data-wk]').forEach(b => b.onclick = () => { S.weekStart = monday(parse(b.dataset.wk)); S.agMode = 'semana'; go('agenda'); });
   $$('[data-ev]').forEach(b => { b.onclick = () => openEv(data.find(x => x.id === b.dataset.ev)); b.ondragstart = e => { e.dataTransfer.setData('text/plain', b.dataset.ev); e.dataTransfer.effectAllowed = 'move'; }; });
@@ -1289,13 +1376,15 @@ async function generateMonth() {
 
 /* ---------- dados de exemplo ---------- */
 const DEMO_NAMES = ['Ana Beatriz Moura', 'Bruno Carvalho', 'Camila Duarte', 'Daniel Fogaça', 'Eduarda Lins', 'Felipe Antunes', 'Gabriela Rocha', 'Heitor Bastos', 'Isabela Prates', 'João Pedro Lemos', 'Karina Sales', 'Lucas Teixeira', 'Mariana Quadros', 'Natália Ribas', 'Otávio Pires', 'Paula Vergara', 'Rafael Nunes', 'Sabrina Tavares', 'Thiago Brum', 'Vitória Lacerda', 'Wagner Dornelles', 'Yasmin Corrêa', 'Laura Fontoura (menor)', 'Igor Schneider', 'Helena Mattos'];
-async function loadDemo() {
-  if (!confirm('Carregar 25 pacientes fictícios com sessões de 2 meses e despesas de exemplo? Dá para remover tudo depois com um toque.')) return;
+const demoN = () => S.admin ? 25 : 2;
+async function loadDemo(silent) {
+  const N = demoN();
+  if (!silent && !confirm(N > 2 ? 'Carregar 25 pacientes fictícios com sessões de 2 meses e despesas de exemplo? Dá para remover tudo depois com um toque.' : 'Carregar 2 pacientes fictícios de exemplo (uma presencial e um online) para você ver como o sistema funciona? Dá para remover tudo depois com um toque.')) return;
   const B = ['por_sessao', 'por_sessao', 'por_sessao', 'mensal', 'quinzenal', 'mensal_retroativo'];
   const start = iso(addM(S.month, -2));
-  const pats = DEMO_NAMES.map((n, i) => ({ name: n, demo: true, session_price: i % 2 === 1 && i < 24 ? 80 : 130, status: i === 24 ? 'pausa' : 'ativo', weekday: (i % 5) + 1, session_time: String(8 + (i % 11)).padStart(2, '0') + ':00', frequency: i % 7 === 3 ? 'quinzenal' : i === 20 ? 'mensal' : 'semanal', billing: B[i % B.length], modality: i % 5 < 3 ? 'presencial' : 'online', start_date: start, guardian: /menor/.test(n) ? 'Responsável fictício' : null, payer_name: /menor/.test(n) ? 'Responsável fictício' : null, admin_notes: 'Paciente fictício (exemplo)', patient_cpf: '000.000.0' + String(i + 10).padStart(2, '0') + '-00', payer_cpf: /menor/.test(n) ? '000.000.099-00' : null }));
+  const pats = DEMO_NAMES.slice(0, N).map((n, i) => ({ name: n, demo: true, session_price: i % 2 === 1 && i < 24 ? 80 : 130, status: i === 24 ? 'pausa' : 'ativo', weekday: (i % 5) + 1, session_time: String(8 + (i % 11)).padStart(2, '0') + ':00', frequency: i % 7 === 3 ? 'quinzenal' : i === 20 ? 'mensal' : 'semanal', billing: N <= 2 ? (i ? 'mensal' : 'por_sessao') : B[i % B.length], modality: N <= 2 ? (i ? 'online' : 'presencial') : i % 5 < 3 ? 'presencial' : 'online', start_date: start, guardian: /menor/.test(n) ? 'Responsável fictício' : null, payer_name: /menor/.test(n) ? 'Responsável fictício' : null, admin_notes: 'Paciente fictício (exemplo)', patient_cpf: '000.000.0' + String(i + 10).padStart(2, '0') + '-00', payer_cpf: /menor/.test(n) ? '000.000.099-00' : null }));
   const { data: P, error } = await sb.from('patients').insert(pats).select(); if (error) return fail(error);
-  if (await fillDemo(P)) { snack('25 pacientes de exemplo carregados'); go('pacientes'); }
+  if (await fillDemo(P)) { if (!silent) { snack(N + ' pacientes de exemplo carregados'); go('pacientes'); } return true; }
 }
 // sessões e despesas dos exemplos (todas as linhas com as mesmas colunas: o Supabase exige isso em lote)
 async function fillDemo(P) {
@@ -1317,9 +1406,22 @@ async function fillDemo(P) {
   const exp = [];
   [addM(S.month, -1), S.month].forEach(m => { const ms = iso(m), past = m < S.month, key = ms.slice(0, 7);
     const h = rows.filter(r => r.date.startsWith(key) && P.find(p => p.id === r.patient_id).modality === 'presencial' && !/cancelada|remarcada/.test(r.status)).length;
-    exp.push(E(ms, 'Aluguel de sala (por hora)', 'por_hora', h * 35, past, null, h, 35), E(ms, 'Supervisão clínica', 'fixa', 400, past), E(ms, 'Plataforma e software', 'fixa', 60, true, 'Videochamada e agenda'), E(ms, 'Anuidade do CRP', 'fixa', 52, past, 'Parcela'), E(ms, 'Terapia pessoal', 'fixa', 320, past)); });
+    exp.push(E(ms, 'Aluguel de sala (por hora)', 'por_hora', h * 35, past, null, h, 35), ...(P.length <= 2 ? [] : [E(ms, 'Supervisão clínica', 'fixa', 400, past)]), E(ms, 'Plataforma e software', 'fixa', 60, true, 'Videochamada e agenda'), E(ms, 'Anuidade do CRP', 'fixa', 52, past, 'Parcela'), ...(P.length <= 2 ? [] : [E(ms, 'Terapia pessoal', 'fixa', 320, past)])); });
   const { error: e3 } = await sb.from('expenses').insert(exp); if (e3) { fail(e3); return false; }
   return true;
+}
+// novos usuários ganham só 2 exemplos; os 25 ficam só no admin
+async function ensureDemo() {
+  if (S.admin) return;
+  const key = 'cons.seeded.' + S.user.id; let ls = false; try { ls = !!localStorage.getItem(key); } catch (_) {}
+  try {
+    const { data: ps } = await sb.from('patients').select('id,demo'); const L = ps || [];
+    const demo = L.filter(p => p.demo), real = L.filter(p => !p.demo);
+    if (demo.length > 2) { await sb.from('patients').delete().eq('demo', true); await sb.from('expenses').delete().eq('demo', true); if (!real.length) await loadDemo(true); }
+    else if (!L.length && !S.profile?.demo_seeded && !ls) await loadDemo(true);
+    if (!S.profile?.demo_seeded) { await sb.from('profiles').update({ demo_seeded: true }).eq('id', S.user.id); if (S.profile) S.profile.demo_seeded = true; }
+    try { localStorage.setItem(key, '1'); } catch (_) {}
+  } catch (_) {}
 }
 async function clearDemo() {
   if (!confirm('Remover todos os pacientes de exemplo, as sessões deles e as despesas de exemplo?')) return;
@@ -1332,9 +1434,9 @@ async function clearDemo() {
 async function viewPacientes() {
   await loadPatients();
   const { data: open } = await sb.from('sessions').select('patient_id,amount').eq('paid', false).gt('amount', 0).lt('due_date', todayISO());
-  const debt = {}; (open || []).forEach(s => debt[s.patient_id] = (debt[s.patient_id] || 0) + Number(s.amount));
+  const debt = {}; V(open || []).forEach(s => debt[s.patient_id] = (debt[s.patient_id] || 0) + Number(s.amount));
   $('#view').innerHTML = `
-  <div class="topbar"><div class="display">Pacientes</div><div class="sp"></div><span class="badge b-neutral">${S.patients.filter(p => p.status === 'ativo').length} ativos</span>${S.patients.some(p => p.demo) ? '<button class="btn danger sm" id="demoOff"><span class="ms" style="font-size:18px">delete</span>Remover exemplos</button>' : '<button class="btn outlined sm" id="demoOn"><span class="ms" style="font-size:18px">database</span>Carregar 25 pacientes de exemplo</button>'}</div>
+  <div class="topbar"><div class="display">Pacientes</div><div class="sp"></div><span class="badge b-neutral">${S.patients.filter(p => p.status === 'ativo').length} ativos</span>${S.patients.some(p => p.demo) ? '<button class="btn danger sm" id="demoOff"><span class="ms" style="font-size:18px">delete</span>Remover exemplos</button>' : '<button class="btn outlined sm" id="demoOn"><span class="ms" style="font-size:18px">database</span>Carregar ' + demoN() + ' pacientes de exemplo</button>'}</div>
   <div class="field" style="margin:0 0 14px"><input id="q" placeholder="Buscar paciente" style="border-radius:28px;background:var(--surface-c-high);border-color:transparent"></div>
   <section class="card elev"><div class="list" id="plist"></div></section>`;
   const render = q => { const L = S.patients.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
@@ -1343,7 +1445,7 @@ async function viewPacientes() {
       : `<div class="empty"><span class="ms">person_add</span>Nenhum paciente ainda. Toque em “Paciente” para cadastrar.</div>`;
     $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat))); };
   render(''); $('#q').oninput = e => render(e.target.value);
-  const on = $('#demoOn'), off = $('#demoOff'); if (on) on.onclick = loadDemo; if (off) off.onclick = clearDemo;
+  const on = $('#demoOn'), off = $('#demoOff'); if (on) on.onclick = () => loadDemo(); if (off) off.onclick = clearDemo;
   // exemplos carregados na versão anterior ficaram sem sessões: completa agora
   const demo = S.patients.filter(p => p.demo);
   if (demo.length && !S.demoChecked) { S.demoChecked = true; const { count } = await sb.from('sessions').select('id', { count: 'exact', head: true }).in('patient_id', demo.map(p => p.id)); if (!count && await fillDemo(demo)) snack('Sessões e despesas dos exemplos completadas'); }
@@ -1487,7 +1589,7 @@ async function copyFixed() {
 }
 
 /* ---------- RECIBOS (Receita Saúde, IN RFB nº 2.240/2024; Manual de Orientação v2.1, out/2025) ---------- */
-async function pendingReceipts() { const { data, error } = await sb.from('sessions').select('*').eq('paid', true).eq('receipt_issued', false).gt('amount', 0).order('paid_at'); if (error) throw error; return data; }
+async function pendingReceipts() { const { data, error } = await sb.from('sessions').select('*').eq('paid', true).eq('receipt_issued', false).gt('amount', 0).order('paid_at'); if (error) throw error; return V(data); }
 const onlyDigits = v => String(v || '').replace(/\D/g, '');
 const fmtCpf = v => { const d = onlyDigits(v); return d.length === 11 ? d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : (v || ''); };
 const money = n => Number(n).toFixed(2).replace('.', ',');
@@ -1530,7 +1632,7 @@ async function viewRecibos() {
   await loadPatients(); const L = await pendingReceipts(); const G = receiptGroups(L); S.rGroups = G;
   const since = iso(new Date(Date.now() - 30 * 864e5));
   const { data: issued } = await sb.from('sessions').select('*').eq('receipt_issued', true).gte('receipt_at', since).order('receipt_at', { ascending: false }).limit(60);
-  const IG = receiptGroups(issued || []).reverse().slice(0, 10);
+  const IG = receiptGroups(V(issued || [])).reverse().slice(0, 10);
   const late = G.filter(g => g.late), expired = G.filter(g => g.deadline < todayISO());
   const y = new Date().getFullYear(), febSoon = new Date().getMonth() <= 1;
   const prof = S.profile || {};
