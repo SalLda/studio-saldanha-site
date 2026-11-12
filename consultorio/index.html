@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,more_horiz,movie,music_note,north_east,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sync,task_alt,timer,touch_app,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,arrow_back,arrow_forward,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,more_horiz,movie,music_note,north_east,open_in_new,palette,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sticky_note_2,sync,task_alt,timer,touch_app,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -404,6 +404,22 @@ dialog form{padding:24px}
   .display{font-size:24px}
   .monthsel strong{min-width:120px}
 }
+
+/* mural de conteúdo (post-its + kanban) */
+.mural{display:grid;grid-template-columns:repeat(4,minmax(230px,1fr));gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 8px}
+.mcol{background:var(--surface-c-low);border-radius:16px;padding:10px;min-height:220px;scroll-snap-align:start;display:flex;flex-direction:column;gap:10px;transition:outline-color .15s;outline:2px dashed transparent}
+.mcol.over{outline-color:var(--primary);background:var(--surface-c)}
+.mhead{display:flex;align-items:center;gap:6px;font-weight:600;font-size:13px;color:var(--on-surface-variant)}.mhead .ms{font-size:18px}.mhead b{margin-left:auto;background:var(--surface-c-highest);border-radius:10px;padding:1px 8px;font-size:12px}
+.madd input{width:100%;height:40px;border:1px dashed var(--outline);border-radius:10px;background:transparent;padding:0 12px;outline:none}.madd input:focus{border-style:solid;border-color:var(--primary)}
+.mlist{display:flex;flex-direction:column;gap:12px;flex:1}
+.pit{position:relative;padding:12px 12px 8px;border-radius:4px 4px 14px 4px;box-shadow:0 2px 6px rgba(0,0,0,.18);transform:rotate(var(--rot,0deg));transition:transform .15s,box-shadow .15s;cursor:grab;color:#2B2600}
+.pit:hover{transform:rotate(0) translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.22)}
+.pit.dragging{opacity:.4}
+.pit.amarelo{background:#FFF0A0}.pit.rosa{background:#FFCFE0}.pit.verde{background:#CBF0BF}.pit.azul{background:#C6E4FF}.pit.laranja{background:#FFD8AE}
+.ptxt{font-size:14px;line-height:1.4;min-height:38px;outline:none;white-space:pre-wrap;word-break:break-word;font-family:'Roboto Flex',system-ui,sans-serif}
+.pact{display:flex;gap:2px;align-items:center;margin-top:6px;opacity:.75}.pact button{border:0;background:transparent;width:30px;height:30px;border-radius:15px;display:grid;place-items:center;cursor:pointer;color:inherit}.pact button:hover{background:rgba(0,0,0,.1)}.pact .ms{font-size:18px}.pact .sp{flex:1}
+.pit .eth{position:absolute;top:6px;right:8px;color:#B3261E}
+@media (max-width:700px){.mural{grid-template-columns:repeat(4,82%)}}
 </style>
 </head>
 <body>
@@ -522,7 +538,7 @@ dialog form{padding:24px}
 </form></dialog>
 
 <dialog id="dlgPost"><form id="fPost">
-  <div class="title-l">Post no swipe file</div>
+  <div class="title-l">Referência salva</div>
   <div class="field"><label>Link do post</label><input name="url" type="url" placeholder="https://www.instagram.com/reel/..."></div>
   <div class="grid2">
     <div class="field"><label>Creator</label><select name="creator_id"><option value="">—</option></select></div>
@@ -735,20 +751,39 @@ const WHY = {
 };
 function guessTopic(...txt) { const s = txt.filter(Boolean).join(' '); const t = TOPICS.find(([, re]) => re.test(s)); return t ? t[0] : ''; }
 
-/* ---------- ética (Código de Ética Profissional do Psicólogo, Art. 20 e Art. 2º) ---------- */
+/* ---------- ética (Código de Ética Profissional do Psicólogo, Res. CFP 010/2005: Art. 20 e Art. 2º) ---------- */
+const _nz = x => String(x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/(.)\1{2,}/g, '$1$1');
+const _R = (...a) => new RegExp(a.map(r => r.source).join('|'));
 const ETHICS = [
-  [/\b(cura|curar|curado|cure)\b/i, 'Promessa de cura ou previsão de resultado (Art. 20, e)'],
-  [/garant|100\s?%|resultado(s)? (r[aá]pido|imediato|garantido)|em \d+ (dias|sess[oõ]es|semanas)/i, 'Previsão taxativa de resultado (Art. 20, e)'],
-  [/r\$\s?\d|\bpre[cç]o\b|\bvalor da sess|desconto|promo[cç][aã]o|\bgr[aá]tis\b|gratuit|black friday|\bcupom/i, 'Preço usado como propaganda (Art. 20, d)'],
-  [/chocante|bomba|urgente|ningu[eé]m te conta|segredo que|vai te destruir|perigos?o demais|\bpsicopata\b|\bloucos?\b|\bdoid[oa]s?\b/i, 'Tom sensacionalista ou estigmatizante (Art. 20, h)'],
-  [/\bnarcisista\b|voc[eê] (tem|é) (tdah|autista|bipolar|borderline|depressiv)/i, 'Rótulo ou "diagnóstico" à distância. Fale de comportamentos, não diagnostique o público'],
-  [/depoimento|meu paciente|minha paciente|um paciente (me )?(disse|contou)|caso real|antes e depois/i, 'Depoimento ou caso de paciente expõe sigilo e vira autopromoção (Art. 9º e Art. 20, f)'],
-  [/melhor psic[oó]log|[uú]nic[oa] (que|psic)|diferente dos outros psic|outros psic[oó]logos n[aã]o/i, 'Autopromoção em detrimento de outros profissionais (Art. 20, f)'],
-  [/agende (agora|j[aá])|[uú]ltimas vagas|vagas limitadas|s[oó] hoje/i, 'Pressão para contratar o serviço (Art. 2º, i: induzir a recorrer aos seus serviços)'],
-  [/constela[cç][aã]o|florais|reiki|tar[oô]|thetahealing|barras de access|qu[aâ]ntic/i, 'Prática não reconhecida pela Psicologia vinculada ao título (Art. 20, c)'],
-  [/\b(medica[cç][aã]o|rem[eé]dio|antidepressivo|ritalina|dose)\b/i, 'Orientação sobre medicação é atribuição de outra categoria (Art. 20, g)']
+  [_R(/r\$\s?\d/, /\b\d+([.,]\d+)?\s?(reais|real|conto|contos|pila|pilas)\b/, /\b(sessao|consulta|terapia|atendimento|psicoterapia)\b.{0,30}\b(custa|custo|vale|sai|por|a|de|apenas|so|somente)\b\s?r?\$?\s?\d/,
+    /\b(valor|valores|preco|precos|investimento|mensalidade|tabela|cobro|cobramos)\b.{0,25}\b(sessao|consulta|terapia|atendimento)\b/, /\b(sessao|consulta|terapia|atendimento)\b.{0,25}\b(valor|preco|custa|custo|barat\w*|acessivel|em conta|popular|social|solidari\w*)\b/,
+    /desconto|promoc|\bgratis|gratuit|cupom|black friday|sem compromisso|parcel(o|a|amos|ado|ada)\b|\b(ate|em) \d+x\b|a partir de \d|\bpague\b|\boferta\b|pacote de (sessoes|atendimentos)/),
+    'Preço ou valor de sessão como atrativo. O psicólogo não pode usar o preço do serviço como forma de propaganda (Art. 20, d). Valor só em conversa privada, quando a pessoa perguntar'],
+  [_R(/\b(cura|curar|curado|cure|curei)\b/, /garant/, /100\s?%/, /resultado(s)? (rapido|imediato|garantido|certo)/, /\bem \d+ (dias|sessoes|semanas|meses)\b/, /elimin(a|e|ar) (sua|a|o|seu)/, /acabe com|acabar com (sua|a|o)/, /livre d[eao] (ansiedade|depressao|medo|trauma|vicio)/,
+    /voce (vai|ira) (superar|melhorar|curar|resolver|vencer|ficar bem|se curar)/, /resolv(e|o|er) (de vez|sua|seu)/, /transform(a|e|ar) (sua|a) vida/, /funciona (sempre|para todos|pra todos)/, /\bsem falha\b/),
+    'Promessa ou previsão taxativa de resultado. Terapia não tem prazo nem resultado garantido (Art. 20, e)'],
+  [_R(/depoimento/, /\bmeus? pacientes?\b/, /\bminhas? pacientes?\b/, /(um|uma) (paciente|cliente) (me|minha|meu)/, /paciente (me )?(disse|contou|falou|chegou|relatou)/, /\batendi (um|uma|o|a)\b/, /caso (real|clinico)/, /antes e depois/, /na sessao de hoje/, /print de (conversa|paciente)/, /com autorizacao do paciente/),
+    'Caso, fala ou imagem de paciente, mesmo sem nome, expõe o sigilo e vira autopromoção (Art. 9º; Art. 2º, q; Art. 20, f)'],
+  [_R(/\bnarcisista\b/, /voce (tem|e|esta|sofre de) (tdah|autista|bipolar|borderline|depressiv\w+|ansios\w+|toc|narcisista)\b/, /sinais de que (voce|vc) (tem|e|esta)/, /teste (para|pra) (saber|descobrir) se voce/, /(e|sera que e) (tdah|autismo|depressao|ansiedade|toc)\?/, /autodiagnostic/),
+    'Rótulo ou "diagnóstico" à distância para o público. Fale de comportamentos e de quando buscar ajuda, sem diagnosticar (Art. 2º, q; Art. 20, h)'],
+  [_R(/agende|marque (sua|a|uma)\b/, /vagas (abertas|limitadas|disponiveis|restantes)/, /ultimas vagas|so hoje|so ate\b|\bcorra\b|aproveite|nao perca/, /faca (terapia|sessao|atendimento|psicoterapia) comigo/, /(venha|vem) (fazer )?(terapia|sessao) comigo/, /clique.{0,25}(comigo|agende|marque|faca)/, /fale comigo agora|chame (agora|ja)/),
+    'Chamada direta ou com pressão para contratar o serviço. Evite induzir a pessoa a recorrer aos seus serviços (Art. 2º, i) e a propaganda comercial (Art. 20, d)'],
+  [_R(/chocante|\bbomba\b|urgente|ninguem (te )?(conta|fala)|o que ninguem|\bsegredo\b|\brevelo\b|vai te destruir|perigos\w+ demais|psicopata|\bloucos?\b|\blouca\b|\bdoid[oa]s?\b|desespero|pare de sofrer|chega de sofrer|sofrendo calad/),
+    'Tom sensacionalista ou estigmatizante (Art. 20, h)'],
+  [_R(/melhor psic/, /unic[oa] (que|psic)/, /diferente dos outros/, /outros psicologos/, /psicologos (que|tradicionais)/, /terapia tradicional/, /(mais|melhor) (indicad|recomendad|procurad)/, /numero 1|\btop 1\b/),
+    'Autopromoção em detrimento de outros profissionais (Art. 20, f)'],
+  [_R(/especialista/, /mestre em|doutor(a)? em|pos-graduad/, /\bterapeuta\b/, /\bcoach\b|coaching|mentoria de saude mental/),
+    'Use só títulos que você possui e identifique-se como psicólogo(a), com nome completo e CRP. "Terapeuta", "coach" e "mentor" não são títulos da Psicologia (Art. 20, a e b)'],
+  [_R(/constelac|\bflorais?\b|reiki|\btaro\b|tarot|astrolog|mapa astral|numerolog|vidas passadas|regressao|thetahealing|access bars|barras de access|quantic|cristais|ho'?oponopono|mediunid|cura espiritual/),
+    'Prática não reconhecida ou regulamentada pela Psicologia ligada ao título de psicólogo (Art. 20, c)'],
+  [_R(/\b(medicacao|medicamento|remedio|antidepressivo|ansiolitico|ritalina|rivotril|dose|prescrev\w+|dieta|emagrec\w+|suplement\w+|vitamina|cirurgia)\b/),
+    'Orientação sobre medicação, dieta ou cirurgia é atribuição de outras categorias (Art. 20, g)']
 ];
-function ethicsCheck(...txt) { const s = txt.filter(Boolean).join(' \n '); return ETHICS.filter(([re]) => re.test(s)).map(([, m]) => m); }
+function ethicsCheck(...txt) {
+  const raw = txt.filter(Boolean).join(' \n '), s = _nz(raw), out = ETHICS.filter(([re]) => re.test(s)).map(([, m]) => m);
+  if ((raw.match(/\b[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{4,}\b/g) || []).length >= 3 || /!{3,}/.test(raw)) out.push('Caixa alta e exclamações em excesso passam sensacionalismo (Art. 20, h)');
+  return out;
+}
 function ethicsHtml(list, okMsg) {
   if (!list.length) return okMsg ? `<span class="ms" style="font-size:18px;vertical-align:-4px">verified</span> ${okMsg}` : '';
   return `<b><span class="ms" style="font-size:18px;vertical-align:-4px">gpp_maybe</span> Revise antes de publicar</b><ul>${list.map(m => `<li>${esc(m)}</li>`).join('')}</ul><div class="small" style="margin-top:6px">Lembre: nome completo e CRP no perfil ou na legenda (Art. 20, a). Alerta automático, a decisão é sua.</div>`;
@@ -1797,6 +1832,39 @@ $('#fReceipt').onsubmit = async e => {
   $('#dlgReceipt').close(); snack('Recibo registrado como emitido'); go(S.view);
 };
 
+
+/* ---------- MURAL DE CONTEÚDO ---------- */
+const MU_COLS = [['ideia', 'Ideias soltas', 'lightbulb'], ['roteiro', 'Escrevendo', 'edit_note'], ['gravar', 'Pra gravar', 'videocam'], ['publicado', 'Publicado', 'check_circle']];
+const MU_COR = ['amarelo', 'rosa', 'verde', 'azul', 'laranja'];
+function muralHtml() {
+  const cards = S.cards || [];
+  return `<section class="card elev" id="mural"><div class="cardhead"><div class="title-m"><span class="ms">sticky_note_2</span> Mural de conteúdo</div><span class="small muted">Anote solto e vá empurrando pro lado conforme a ideia avança</span></div>
+  <div class="mural">${MU_COLS.map(([k, l, ic], ci) => { const L = cards.filter(c => c.col === k).sort((a, b) => b.pos - a.pos);
+    return `<div class="mcol" data-col="${k}"><div class="mhead"><span class="ms">${ic}</span>${l}<b>${L.length}</b></div>${k === 'ideia' ? '<form class="madd"><input placeholder="Anote uma ideia de post e aperte Enter" maxlength="280" aria-label="Nova ideia"></form>' : ''}
+    <div class="mlist">${L.map((c, i) => { const eth = ethicsCheck(c.text); return `<div class="pit ${esc(c.color)}" draggable="true" data-id="${c.id}" style="--rot:${[-1.4, 1, -.6, 1.5][i % 4]}deg">${eth.length ? `<span class="ms eth" title="${esc(eth.join(' · '))}" data-eth="${c.id}">gpp_maybe</span>` : ''}<div class="ptxt" contenteditable="true" spellcheck="true" data-id="${c.id}">${esc(c.text)}</div>
+      <div class="pact">${ci > 0 ? '<button data-mv="-1" title="Voltar uma etapa" aria-label="Voltar uma etapa"><span class="ms">arrow_back</span></button>' : ''}<button data-cor title="Trocar a cor" aria-label="Trocar a cor"><span class="ms">palette</span></button><span class="sp"></span><button data-del title="Apagar" aria-label="Apagar"><span class="ms">delete</span></button>${ci < 3 ? '<button data-mv="1" title="Avançar uma etapa" aria-label="Avançar uma etapa"><span class="ms">arrow_forward</span></button>' : ''}</div></div>`; }).join('')}</div></div>`; }).join('')}</div></section>`;
+}
+async function refreshMural() {
+  const { data, error } = await sb.from('content_cards').select('*').order('created_at', { ascending: false }).limit(300); if (error) return fail(error);
+  S.cards = data; const old = $('#mural'); if (old) { old.outerHTML = muralHtml(); bindMural(); }
+}
+function bindMural() {
+  const root = $('#mural'); if (!root) return;
+  const upd = async (id, patch) => { const { error } = await sb.from('content_cards').update(patch).eq('id', id); if (error) return fail(error); await refreshMural(); };
+  const add = $('.madd', root); if (add) add.onsubmit = async e => { e.preventDefault(); const i = add.querySelector('input'), t = i.value.trim(); if (!t) return; i.disabled = true;
+    const { error } = await sb.from('content_cards').insert({ owner: S.user.id, text: t, col: 'ideia', color: MU_COR[Math.floor(Math.random() * MU_COR.length)], pos: Date.now() });
+    if (error) { i.disabled = false; return fail(error); } await refreshMural(); const n = ethicsCheck(t); if (n.length) snack('Atenção: ' + n[0].split('.')[0]); const ni = $('.madd input'); if (ni) ni.focus(); };
+  $$('.ptxt', root).forEach(el => { el.onblur = async () => { const c = S.cards.find(x => x.id === el.dataset.id), t = el.innerText.trim(); if (!c || t === c.text) return; if (!t) return upd(c.id, { text: c.text }); await upd(c.id, { text: t }); const n = ethicsCheck(t); if (n.length) snack('Atenção: ' + n[0].split('.')[0]); };
+    el.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } }; });
+  $$('[data-mv]', root).forEach(b => b.onclick = () => { const id = b.closest('.pit').dataset.id, c = S.cards.find(x => x.id === id), i = MU_COLS.findIndex(x => x[0] === c.col) + Number(b.dataset.mv); if (i < 0 || i > 3) return; upd(id, { col: MU_COLS[i][0], pos: Date.now() }); });
+  $$('[data-cor]', root).forEach(b => b.onclick = () => { const id = b.closest('.pit').dataset.id, c = S.cards.find(x => x.id === id); upd(id, { color: MU_COR[(MU_COR.indexOf(c.color) + 1) % MU_COR.length] }); });
+  $$('[data-del]', root).forEach(b => b.onclick = async () => { const id = b.closest('.pit').dataset.id; const { error } = await sb.from('content_cards').delete().eq('id', id); if (error) return fail(error); snack('Ideia apagada'); await refreshMural(); });
+  $$('[data-eth]', root).forEach(b => b.onclick = () => { const c = S.cards.find(x => x.id === b.dataset.eth); alert('Revise antes de publicar:\n\n• ' + ethicsCheck(c.text).join('\n• ')); });
+  $$('.pit', root).forEach(p => { p.ondragstart = e => { e.dataTransfer.setData('text/plain', p.dataset.id); e.dataTransfer.effectAllowed = 'move'; p.classList.add('dragging'); }; p.ondragend = () => p.classList.remove('dragging'); });
+  $$('.mcol', root).forEach(col => { col.ondragover = e => { e.preventDefault(); col.classList.add('over'); }; col.ondragleave = () => col.classList.remove('over');
+    col.ondrop = e => { e.preventDefault(); col.classList.remove('over'); const id = e.dataTransfer.getData('text/plain'), c = S.cards.find(x => x.id === id); if (c && c.col !== col.dataset.col) upd(id, { col: col.dataset.col, pos: Date.now() }); }; });
+}
+
 /* ---------- CONTEÚDO ---------- */
 async function viewConteudo() {
   const [c, p, t] = await Promise.all([
@@ -1806,6 +1874,7 @@ async function viewConteudo() {
   ]);
   for (const r of [c, p, t]) if (r.error) throw r.error;
   S.creators = c.data; S.posts = p.data; S.trends = t.data;
+  { const mc = await sb.from('content_cards').select('*').order('created_at', { ascending: false }).limit(300); S.cards = mc.error ? [] : mc.data; }
   await healCreators();
   const wk = new Date(); wk.setHours(0, 0, 0, 0); wk.setDate(wk.getDate() - ((wk.getDay() + 6) % 7));
   const { data: rl } = await sb.from('refresh_log').select('at').eq('kind', 'swipe').gte('at', wk.toISOString());
@@ -1817,7 +1886,7 @@ async function viewConteudo() {
   const crScroll = $('.creators')?.scrollLeft || 0;
   const B = S.profile?.briefing || {};
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Conteúdo</div><div class="muted">Posicionamento, referências, swipe file e assuntos em alta no mesmo lugar</div></div><div class="sp"></div>
+  <div class="topbar"><div><div class="display">Conteúdo</div><div class="muted">Posicionamento, mural de ideias, referências e assuntos em alta no mesmo lugar</div></div><div class="sp"></div>
     <span class="badge b-neutral"><span class="ms" style="font-size:16px">sync</span>${lastRefresh ? 'Atualizado em ' + new Date(lastRefresh).toLocaleDateString('pt-BR') : 'Ainda sem atualização'}</span>
     <button class="btn tonal sm" id="refresh" ${S.refreshUsed >= 2 ? 'disabled style="opacity:.5"' : ''} title="Busca posts novos dos creators cadastrados. Até 2 vezes por semana."><span class="ms" style="font-size:18px">sync</span>${S.refreshUsed >= 2 ? 'Atualizado 2x esta semana' : 'Atualizar · resta' + (2 - S.refreshUsed > 1 ? 'm ' : ' ') + (2 - S.refreshUsed) + ' esta semana'}</button></div>
 
@@ -1829,14 +1898,16 @@ async function viewConteudo() {
       <div style="display:flex;gap:6px;margin-top:auto">${x.source_url ? `<a class="btn text sm" href="${esc(x.source_url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>${esc(x.source_name || 'Fonte')}</a>` : ''}<button class="btn tonal sm" data-usetrend="${x.id}"><span class="ms" style="font-size:18px">edit_note</span>Virar roteiro</button></div></article>`).join('') : `<div class="empty" style="grid-column:1/-1">Os assuntos em alta da semana aparecem aqui. Você também pode adicionar os seus.</div>`}</div>
   </section>
 
+  ${muralHtml()}
+
   <section class="card elev">
     <div class="cardhead"><div class="title-m">Creators que você acompanha</div><button class="btn text sm" id="addCreator"><span class="ms">person_add</span>Adicionar</button></div>
     <div class="creators"><button class="creator ${!S.creatorFilter ? 'on' : ''}" data-cr=""><div class="av"><span class="ms">apps</span></div><div class="h">Todos</div></button>
       ${S.creators.map(x => `<button class="creator ${S.creatorFilter === x.id ? 'on' : ''}" data-cr="${x.id}" title="${esc((x.topic || '') + (x.why ? ' · ' + x.why : ''))}"><div class="av">${avHtml(x)}<span class="ms" style="font-size:14px;position:absolute;right:-4px;bottom:-4px;background:var(--surface-c-lowest);color:var(--on-surface);border-radius:10px;padding:3px">${NET_IC[x.network]}</span></div><div class="h">${esc(x.name || x.handle)}</div><div class="h muted" style="font-size:11px">${esc(x.topic || x.handle)}</div></button>`).join('')}</div>
-    ${S.creatorFilter ? (() => { const x = S.creators.find(c => c.id === S.creatorFilter); return x ? `<div class="notice info" style="margin:8px 0 0"><span class="ms">lightbulb</span><div class="grow"><b>${esc(x.name || x.handle)}</b> · ${esc(x.handle)} · ${NET_NAME[x.network]}${x.topic ? ' · ' + esc(x.topic) : ''}<div class="small">${esc(x.why || '')}</div><div style="margin-top:6px;display:flex;gap:6px"><a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Abrir perfil</a><button class="btn text sm" id="editCr">Editar</button></div></div></div>` : ''; })() : '<div class="small muted">Toque num creator para filtrar o swipe file. Segure (ou clique com o botão direito) para editar.</div>'}
+    ${S.creatorFilter ? (() => { const x = S.creators.find(c => c.id === S.creatorFilter); return x ? `<div class="notice info" style="margin:8px 0 0"><span class="ms">lightbulb</span><div class="grow"><b>${esc(x.name || x.handle)}</b> · ${esc(x.handle)} · ${NET_NAME[x.network]}${x.topic ? ' · ' + esc(x.topic) : ''}<div class="small">${esc(x.why || '')}</div><div style="margin-top:6px;display:flex;gap:6px"><a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Abrir perfil</a><button class="btn text sm" id="editCr">Editar</button></div></div></div>` : ''; })() : '<div class="small muted">Toque num creator para filtrar as referências. Segure (ou clique com o botão direito) para editar.</div>'}
   </section>
 
-  <div class="topbar" style="margin:20px 0 10px"><div class="title-l">Swipe file${S.creatorFilter ? ' · ' + esc(crName(S.creatorFilter)) : ''}</div><div class="sp"></div>
+  <div class="topbar" style="margin:20px 0 10px"><div class="title-l">Referências salvas${S.creatorFilter ? ' · ' + esc(crName(S.creatorFilter)) : ''}</div><div class="sp"></div>
     <div class="chips">${['todos', 'ideia', 'roteiro', 'gravado', 'publicado'].map(k => `<button class="chip ${S.postStatus === k ? 'on' : ''}" data-ps="${k}">${cap(k)}</button>`).join('')}</div></div>
   <div class="feed">${L.length ? L.map(x => { const net = x.network || netOf(x.url), th = x.thumbnail || (net === 'youtube' ? ytThumb(x.url) : null), eth = ethicsCheck(x.hook, x.caption, x.adaptation);
     return `<article class="post"><button class="thumb ${{ instagram: 'ig', tiktok: 'tt', youtube: 'yt' }[net]}" data-prev="${x.id}" ${th ? `style="background-image:url('${esc(th)}')"` : ''} aria-label="Ver preview"><span class="net">${NET_NAME[net]}</span>${x.url && embedUrl(x.url) ? '<span class="play"><span class="ms fill">play_arrow</span></span>' : `<span class="ms">${NET_IC[net] || 'movie'}</span>`}</button><div class="body">
@@ -1848,6 +1919,7 @@ async function viewConteudo() {
       <div class="act">${x.url ? `<a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms" style="font-size:18px">open_in_new</span>Abrir</a>` : ''}<button class="btn tonal sm" data-post="${x.id}">Editar</button></div></div></article>`; }).join('')
     : `<div class="empty" style="grid-column:1/-1"><span class="ms">bookmark_add</span>Salve aqui posts que funcionaram. Cole o link do post e o preview aparece aqui.</div>`}</div>`;
   $('.creators').scrollLeft = crScroll;
+  bindMural();
   $('#addCreator').onclick = () => openCreator();
   $('#addTrend').onclick = () => { $('#fTrend').reset(); $('#dlgTrend').showModal(); };
   $('#editBrief').onclick = openBrief;
@@ -1938,7 +2010,7 @@ async function refreshSwipe() {
   if (error) return snack(/Limite/.test(error.message) ? 'Você já usou as 2 atualizações desta semana. Volta na segunda.' : 'Erro: ' + error.message);
   snack('Buscando posts novos…');
   const r = await ai('refresh');
-  snack(r ? `${r.added || 0} posts novos no swipe file` : 'Pedido registrado. A busca automática roda assim que a integração com as redes estiver ativa.');
+  snack(r ? `${r.added || 0} posts novos nas referências` : 'Pedido registrado. A busca automática roda assim que a integração com as redes estiver ativa.');
   go('conteudo');
 }
 
@@ -2014,8 +2086,8 @@ $('#fPost').url.addEventListener('change', () => { const f = $('#fPost'), pr = p
 $('#fPost').onsubmit = async e => { e.preventDefault(); const f = e.target; const cr = S.creators.find(c => c.id === f.creator_id.value);
   const row = { url: f.url.value.trim() || null, creator_id: f.creator_id.value || null, network: cr?.network || (/tiktok/.test(f.url.value) ? 'tiktok' : /youtu/.test(f.url.value) ? 'youtube' : 'instagram'), format: f.format.value, hook: f.hook.value || null, why: f.why.value || null, adaptation: f.adaptation.value || null, status: f.status.value };
   const { error } = editingPost ? await sb.from('swipe_posts').update(row).eq('id', editingPost.id) : await sb.from('swipe_posts').insert(row);
-  if (error) return fail(/duplicate|unique/i.test(error.message) ? new Error('Esse post já está no swipe file') : error); $('#dlgPost').close(); snack('Salvo no swipe file'); go('conteudo'); };
-$('#poDel').onclick = async () => { if (!editingPost || !confirm('Excluir este post do swipe file?')) return; const { error } = await sb.from('swipe_posts').delete().eq('id', editingPost.id); if (error) return fail(error); $('#dlgPost').close(); go('conteudo'); };
+  if (error) return fail(/duplicate|unique/i.test(error.message) ? new Error('Esse post já está nas referências') : error); $('#dlgPost').close(); snack('Referência salva'); go('conteudo'); };
+$('#poDel').onclick = async () => { if (!editingPost || !confirm('Excluir esta referência?')) return; const { error } = await sb.from('swipe_posts').delete().eq('id', editingPost.id); if (error) return fail(error); $('#dlgPost').close(); go('conteudo'); };
 $('#fTrend').onsubmit = async e => { e.preventDefault(); const f = e.target; const { error } = await sb.from('trends').insert({ topic: f.topic.value, angle: f.angle.value || null, hook: f.hook.value || null, source_name: f.source_name.value || null, source_url: f.source_url.value || null, owner: S.user.id }); if (error) return fail(error); $('#dlgTrend').close(); go('conteudo'); };
 
 /* ---------- PERFIL ---------- */
@@ -2037,7 +2109,7 @@ const SAVE = {
   despesa: [2, 'Despesa lançada', 'Aluguel por hora calculado sozinho pelas sessões presenciais.', 'trending_down'],
   mes: [30, 'Mês fechado', 'Gerado, recebido, a receber, despesas e lucro sem somar na mão.', 'savings'],
   creator: [10, 'Referência analisada', 'Rede, assunto e motivo para acompanhar já organizados.', 'person_add'],
-  post: [5, 'Ideia no swipe file', 'Gancho, motivo e adaptação num lugar só.', 'bookmark_add'],
+  post: [5, 'Referência de post', 'Gancho, motivo e adaptação num lugar só.', 'bookmark_add'],
   brief: [60, 'Posicionamento definido', 'Tom de voz, pilares e o que evitar a partir do teu briefing.', 'badge']
 };
 const fmtMin = m => m < 60 ? Math.round(m) + ' min' : (Math.round(m / 6) / 10).toLocaleString('pt-BR') + ' h';
@@ -2050,12 +2122,19 @@ const AL_TERMS = [['ansiedade generalizada', 'generalized anxiety disorder'], ['
   ['bipolar', 'bipolar disorder'], ['psicose', 'psychosis'], ['esquizofrenia', 'schizophrenia'], ['identidade de gênero', 'gender identity'], ['luto', 'bereavement'], ['solidão', 'loneliness'], ['bullying', 'bullying'], ['escola', 'school'], ['adolescente', 'adolescents'], ['criança', 'children'], ['idoso', 'older adults']];
 const AL_APP = { tcc: 'cognitive behavioral therapy', act: 'acceptance and commitment therapy', psicanalise: 'psychodynamic therapy', humanista: 'person-centered therapy', sistemica: 'systemic family therapy', dbt: 'dialectical behavior therapy', mindfulness: 'mindfulness-based' };
 const AL_GOAL = { intervencoes: '(psychotherapy OR "treatment outcome" OR efficacy OR effectiveness)', funcionamento: '(etiology OR "maintenance" OR "risk factors" OR "cognitive model" OR mechanisms)', necessidades: '(needs OR comorbidity OR assessment OR "clinical features")', avaliacao: '(assessment OR "psychometric" OR "screening" OR validation)' };
+const AL_MESH = { 'generalized anxiety disorder': 'Anxiety Disorders', 'social anxiety disorder': 'Phobia, Social', anxiety: 'Anxiety', depression: 'Depressive Disorder', 'panic disorder': 'Panic Disorder', 'posttraumatic stress disorder': 'Stress Disorders, Post-Traumatic', 'obsessive-compulsive disorder': 'Obsessive-Compulsive Disorder', ADHD: 'Attention Deficit Disorder with Hyperactivity', 'autism spectrum disorder': 'Autism Spectrum Disorder', grief: 'Grief', bereavement: 'Bereavement', 'borderline personality disorder': 'Borderline Personality Disorder', 'self-harm': 'Self-Injurious Behavior', 'suicidal ideation': 'Suicidal Ideation', insomnia: 'Sleep Initiation and Maintenance Disorders', burnout: 'Burnout, Professional', stress: 'Stress, Psychological', 'binge eating disorder': 'Binge-Eating Disorder', 'bulimia nervosa': 'Bulimia Nervosa', 'anorexia nervosa': 'Anorexia Nervosa', 'alcohol use disorder': 'Alcohol-Related Disorders', 'substance use disorder': 'Substance-Related Disorders', 'specific phobia': 'Phobic Disorders', 'bipolar disorder': 'Bipolar Disorder', schizophrenia: 'Schizophrenia', psychosis: 'Psychotic Disorders', loneliness: 'Loneliness', bullying: 'Bullying', 'self-esteem': 'Self Concept' };
+const AL_SYN = { anxiety: ['anxious', 'anxiet*'], depression: ['depressive symptoms', 'major depress*'], 'posttraumatic stress disorder': ['PTSD'], 'obsessive-compulsive disorder': ['OCD'], ADHD: ['attention deficit*'], 'autism spectrum disorder': ['autis*'], insomnia: ['sleep disturbance*'], burnout: ['occupational stress'], grief: ['prolonged grief', 'complicated grief'], 'binge eating disorder': ['binge eating'], 'self-harm': ['self-injur*', 'nonsuicidal self-injury'] };
+const AL_APP_MESH = { 'cognitive behavioral therapy': 'Cognitive Behavioral Therapy', 'acceptance and commitment therapy': 'Acceptance and Commitment Therapy', 'psychodynamic therapy': 'Psychotherapy, Psychodynamic', 'systemic family therapy': 'Family Therapy', 'dialectical behavior therapy': 'Dialectical Behavior Therapy', 'mindfulness-based': 'Mindfulness' };
 const AL_AGE = { crianca: 'child', adolescente: 'adolescent', adulto: 'adult', idoso: 'aged' };
-function alEnglish(txt) { const t = (txt || '').toLowerCase(); const out = []; for (const [pt, en] of AL_TERMS) if (t.includes(pt) && !out.includes(en)) out.push(en); const lat = t.match(/[a-z]{4,}(?:\s+[a-z]{3,}){0,2}/g); if (!out.length && /^[\x00-\x7f]*$/.test(t) && t.trim()) out.push(t.trim()); return out.slice(0, 4); }
+function alEnglish(txt) { const t = (txt || '').toLowerCase(); const out = []; for (const [pt, en] of AL_TERMS) if (t.includes(pt) && !out.includes(en)) out.push(en); const lat = t.match(/[a-z]{4,}(?:\s+[a-z]{3,}){0,2}/g); if (!out.length && /^[\x00-\x7f]*$/.test(t) && t.trim()) out.push(t.trim()); return out.filter((x, i) => !out.some((y, j) => j !== i && y.length > x.length && y.toLowerCase().includes(x.toLowerCase()))).slice(0, 4); }
+const AL_POP = ['adolescents', 'children', 'older adults'];
 const alLevel = pt => /meta-analysis/i.test(pt) ? [1, 'Meta-análise'] : /systematic review/i.test(pt) ? [2, 'Revisão sistemática'] : /randomized controlled/i.test(pt) ? [3, 'Ensaio randomizado'] : /guideline/i.test(pt) ? [2, 'Diretriz'] : /review/i.test(pt) ? [4, 'Revisão'] : [5, 'Estudo'];
 async function alPubmed(terms, ctx) {
-  const core = '(' + terms.map(t => '"' + t + '"[Title/Abstract]').join(' OR ') + ')';
-  const q = [core, ctx.app ? '"' + ctx.app + '"[Title/Abstract]' : '(psychotherapy[MeSH Terms] OR psychotherapy[Title/Abstract] OR "mental health"[Title/Abstract])', AL_GOAL[ctx.goal] || '', ctx.age ? AL_AGE[ctx.age] + '[MeSH Terms]' : '', '(meta-analysis[pt] OR systematic[sb] OR randomized controlled trial[pt] OR practice guideline[pt])', 'hasabstract', '(2010:3000[dp])'].filter(Boolean).join(' AND ');
+  const grp = t => { const parts = []; if (AL_MESH[t]) parts.push('"' + AL_MESH[t] + '"[MeSH Terms]'); parts.push('"' + t + '"[tiab]'); (AL_SYN[t] || []).forEach(x => parts.push(x.includes('*') ? x + '[tiab]' : '"' + x + '"[tiab]')); return '(' + parts.join(' OR ') + ')'; };
+  const cond = terms.filter(t => !AL_POP.includes(t)); if (!cond.length) cond.push(...terms);
+  const core = cond.length > 1 ? '(' + cond.map(grp).join(' OR ') + ')' : grp(cond[0]);
+  const appQ = ctx.app ? '(' + (AL_APP_MESH[ctx.app] ? '"' + AL_APP_MESH[ctx.app] + '"[MeSH Terms] OR ' : '') + '"' + ctx.app + '"[tiab])' : '(psychotherapy[MeSH Terms] OR psychotherapy[tiab] OR "mental health"[tiab])';
+  const q = [core, appQ, AL_GOAL[ctx.goal] || '', ctx.age ? AL_AGE[ctx.age] + '[MeSH Terms]' : '', '(meta-analysis[pt] OR systematic[sb] OR randomized controlled trial[pt] OR practice guideline[pt])', 'hasabstract', '(2010:3000[dp])', 'NOT (animals[mh] NOT humans[mh])'].filter(Boolean).join(' AND ').replace(' AND NOT ', ' NOT ');
   const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
   const sr = await (await fetch(base + 'esearch.fcgi?db=pubmed&retmode=json&retmax=14&sort=relevance&term=' + encodeURIComponent(q))).json();
   const ids = sr.esearchresult?.idlist || []; if (!ids.length) return { q, items: [] };
@@ -2116,7 +2195,7 @@ async function viewAlicia() {
       out.innerHTML = (syn ? `<div class="al-syn">${esc(syn).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>')}</div>` : (items.length ? '<div class="notice" style="background:var(--surface-c-low)"><span class="ms">info</span><div>Síntese por IA ainda não está ligada. Abaixo está a evidência ordenada pelo nível (meta-análises primeiro). Leia os resumos e confira as fontes.</div></div>' : '')) +
         (rot ? `<div class="small muted" style="margin-bottom:8px">Dados de rotina considerados: ${rot.iniciais} · ${esc(cap(rot.frequencia || ''))} · ${rot.formato} · ${rot.meses ?? '?'} meses de acompanhamento · ${rot.realizadas} sessões realizadas, ${rot.faltas} faltas.</div>` : '') +
         (items.length ? sec('Evidência de maior nível', pm.items) + sec('Literatura em português', pt) : '<div class="card elev"><div class="empty"><span class="ms">search_off</span>Nada encontrado com esses filtros. Tente termos mais gerais ou outro foco.</div></div>') +
-        `<div class="foot">Resultados de bases públicas, sem garantia de aplicabilidade ao caso. A decisão clínica é tua. Busca: ${esc(terms.join(' · '))}</div>`;
+        `<div class="foot">Resultados de bases públicas, sem garantia de aplicabilidade ao caso. A decisão clínica é tua. Termos: ${esc(terms.join(' · '))}.<details style="margin-top:6px"><summary>Estratégia de busca usada (booleana)</summary><div class="small" style="margin:6px 0">Operadores: <b>AND</b> exige tudo, <b>OR</b> aceita qualquer sinônimo, <b>NOT</b> exclui, aspas buscam a expressão exata, <b>*</b> completa a palavra, <b>[MeSH Terms]</b> usa o descritor oficial e <b>[tiab]</b> procura no título e resumo, <b>[pt]</b> filtra o tipo de estudo.</div><code style="display:block;white-space:pre-wrap;word-break:break-word;font-size:12px;background:var(--surface-c);padding:8px;border-radius:8px">${esc(pm.q || '')}</code></details></div>`;
     } catch (err) { out.innerHTML = '<div class="card elev"><div class="notice warn"><span class="ms">wifi_off</span><div>Não consegui falar com as bases agora. Tente de novo em instantes.</div></div></div>'; console.error(err); }
     finally { btn.disabled = false; }
   };
