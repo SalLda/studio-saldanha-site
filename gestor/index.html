@@ -212,18 +212,18 @@ dialog h2{font-size:24px}
 }
 /* ===== v2 shell ===== */
 .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
-.hero .kpi{border-radius:20px;padding:22px 24px;box-shadow:var(--sh);background:#fff;border:1px solid var(--line)}
+.hero .kpi{border-radius:18px;padding:18px 22px;box-shadow:var(--sh);background:#fff;border:1px solid var(--line)}
 .hero .kpi span{font-size:14px;font-weight:500}
-.hero .kpi b{font-family:var(--serif);font-size:52px;line-height:1.05;display:block;margin:6px 0 4px;letter-spacing:-.03em}
+.hero .kpi b{font-family:var(--serif);font-size:34px;line-height:1.05;display:block;margin:6px 0 4px;letter-spacing:-.03em}
 .hero .kpi em{font-style:normal;font-size:14px;color:var(--dim);display:block}
 .hero .kpi.bal{background:#1F1C17;border-color:#1F1C17}
-.hero .kpi.bal span,.hero .kpi.bal em{color:#CFC6B2}.hero .kpi.bal b{color:var(--amber);font-size:64px}
+.hero .kpi.bal span,.hero .kpi.bal em{color:#CFC6B2}.hero .kpi.bal b{color:var(--amber);font-size:42px}
 .hero .kpi.bal strong{color:#fff}.hero .kpi.bal strong.neg{color:#ff9b8f}
 .hero .kpi.prev b{color:#1F1C17}.hero .kpi em.sm{font-size:12.5px;margin-top:8px;color:var(--faint)}
-.kpis3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.kpis3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
 .kpis3 .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
 .kpis3 .kpi span{font-size:12px;color:var(--dim)}.kpis3 .kpi b{font-size:20px;margin:2px 0}.kpis3 .kpi em{font-size:12px;color:var(--faint)}
-@media(max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}.hero .kpi.bal b{font-size:46px}.hero .kpi b{font-size:38px}.kpis3{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}.hero .kpi.bal b{font-size:36px}.hero .kpi b{font-size:30px}.kpis3{grid-template-columns:minmax(0,1fr)}}
 #appView{display:block;overflow-x:clip}
 #rail{position:fixed;left:0;top:0;bottom:0;width:216px;background:#fff;border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:6px;z-index:30}
 #rail .rbrand{font-family:var(--serif);font-size:26px;padding:4px 12px 18px}
@@ -1212,7 +1212,6 @@ async function viewInicio() {
   </div>
   <div class="kpis3">
     <div class="kpi"><span>Faturamento do mês</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
-    <div class="kpi"><span>Gastos pagos</span><b>${BRL(a.outPaid)}</b><em>PJ ${BRL(pj.outPaid)} · PF ${BRL(pf.outPaid)}</em></div>
     <div class="kpi"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em></div>
   </div>
   <div class="cols2">
