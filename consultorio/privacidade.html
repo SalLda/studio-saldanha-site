@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade | Gestaopsi</title><meta name="robots" content="index, follow"><link rel="icon" href="/consultorio/favicon.svg" type="image/svg+xml">
+<style>body{margin:0;background:#F6FBF6;color:#171D1A;font:16px/1.65 'Roboto Flex',Roboto,system-ui,-apple-system,'Segoe UI',sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}header{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.logo{width:40px;height:40px;border-radius:12px;background:#2E6A55;display:grid;place-items:center}
+h1{font-size:32px;margin:0 0 4px;font-weight:600}h2{font-size:19px;margin:32px 0 6px;font-weight:600;color:#2E6A55}
+.up{color:#404944;font-size:14px}a{color:#2E6A55}li{margin:4px 0}.box{background:#fff;border-radius:16px;padding:16px 18px;margin-top:18px;box-shadow:0 1px 3px rgba(0,0,0,.08)}</style></head>
+<body><div class="wrap"><header><a class="logo" href="/consultorio/"><img src="/consultorio/favicon.svg" width="40" height="40" alt=""></a><b>Gestaopsi</b></header>
+<h1>Política de Privacidade</h1><p class="up">Atualizada em 11 de novembro de 2026.</p>
+<p>O Gestaopsi (omatsaldanha.com/consultorio) é um sistema administrativo para psicólogas e psicólogos: agenda, cobranças, despesas, recibos do Receita Saúde e organização de conteúdo. Ele é mantido por Matheus Saldanha, de Pelotas/RS. Contato: <a href="mailto:contato@omatsaldanha.com">contato@omatsaldanha.com</a>.</p>
+<h2>Papéis na LGPD</h2>
+<p>A psicóloga ou o psicólogo que usa o Gestaopsi é o <b>controlador</b> dos dados dos próprios pacientes. O Gestaopsi atua como <b>operador</b>: guarda e processa esses dados só para fazer o sistema funcionar para quem cadastrou.</p>
+<h2>Quais dados ficam guardados</h2>
+<ul><li>Da conta: nome, e-mail, CRP e, se preenchido, CPF (usado só para gerar o arquivo de lote do Receita Saúde).</li>
+<li>Dos pacientes, cadastrados pelo profissional: nome, CPF, WhatsApp, responsável, quem paga, valor e horário das sessões, pagamentos, status dos recibos e um link opcional para a pasta de documentos no Google Drive do profissional.</li>
+<li>Despesas do consultório, referências de conteúdo e o briefing de posicionamento.</li></ul>
+<p><b>O Gestaopsi não é prontuário.</b> O sistema avisa para não registrar informação clínica, e nenhum campo foi feito para isso.</p>
+<h2>Onde os dados ficam</h2>
+<p>No Supabase (banco de dados em São Paulo, Brasil), com acesso protegido por login e regras que deixam cada profissional ver só os próprios dados. O site é servido pela Vercel. Nada é vendido nem usado para anúncio.</p>
+<h2>Integração com o Google Agenda</h2>
+<div class="box"><p>Se o profissional escolher conectar o Google Agenda, o Gestaopsi pede duas permissões:</p>
+<ul><li><b>Criar agendas secundárias e gerenciar os eventos delas</b> (<code>calendar.app.created</code>): o Gestaopsi cria uma agenda chamada “Gestaopsi” na conta do profissional e coloca nela as sessões. Ele não lê nem altera nenhuma outra agenda.</li>
+<li><b>Ver a disponibilidade</b> (<code>calendar.freebusy</code>): o Gestaopsi vê só os horários ocupados da agenda principal, sem título, descrição ou participantes, para mostrar esses blocos como “ocupado” na agenda do sistema.</li></ul>
+<p>Por padrão, o evento leva só as iniciais do paciente; o nome completo só vai se o profissional escolher. O acesso fica no navegador do profissional por até 1 hora e não é guardado no servidor. Dá para desconectar a qualquer momento no Gestaopsi ou em <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>.</p>
+<p>O uso e a transferência, para qualquer outro app, de informações recebidas das APIs do Google seguem a <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Política de dados do usuário dos serviços de API do Google</a>, incluindo os requisitos de Uso Limitado.</p></div>
+<h2>Serviços externos</h2>
+<p>Para mostrar foto de perfil de creators e o preview de posts, o navegador carrega imagens e incorporações do Instagram, TikTok, YouTube e unavatar.io. Esses serviços recebem o endereço IP de quem está vendo a página, como em qualquer site.</p>
+<h2>Por quanto tempo</h2>
+<p>Enquanto a conta existir. Ao pedir a exclusão da conta pelo e-mail acima, todos os dados dela são apagados em até 30 dias, exceto o que a lei obrigar a guardar.</p>
+<h2>Teus direitos</h2>
+<p>Confirmar o tratamento, acessar, corrigir, exportar e excluir os dados, e revogar consentimentos (LGPD, art. 18). É só escrever para <a href="mailto:contato@omatsaldanha.com">contato@omatsaldanha.com</a>.</p>
+<p style="margin-top:40px"><a href="/consultorio/">Voltar ao Gestaopsi</a> · <a href="/consultorio/privacidade.html">Privacidade</a> · <a href="/consultorio/termos.html">Termos de uso</a></p></div></body></html>

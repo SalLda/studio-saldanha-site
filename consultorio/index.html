@@ -247,6 +247,14 @@ h1,h2,h3{margin:0;font-weight:500}
 .ev.st-agendada{--c:var(--outline);--cs:var(--surface-c)}.ev.st-realizada{--c:var(--primary);--cs:var(--primary-container)}
 .ev.st-falta{--c:var(--error);--cs:var(--error-container)}.ev.st-cancelada_paciente,.ev.st-cancelada_profissional{--c:var(--warn);--cs:var(--warn-container)}.ev.st-remarcada{--c:var(--tertiary);--cs:var(--tertiary-container)}
 .ev.big{padding:8px 10px;font-size:13px;flex-wrap:wrap}
+.mday.drop,.wcol.drop{outline:2px dashed var(--primary);outline-offset:-3px;background:var(--primary-container)}
+.ev[draggable=true]{cursor:grab}
+.resch{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:12px;padding:12px;border-radius:var(--r-md);background:var(--surface-c-lowest)}
+.resch .field{margin:0;flex:1;min-width:130px}
+.ev.busy{--c:#9AA0A6;--cs:repeating-linear-gradient(135deg,var(--surface-c) 0 6px,var(--surface-c-high) 6px 12px);cursor:default;color:var(--on-surface-variant)}
+.gbtn{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:16px;border:1px solid var(--outline-variant);background:var(--surface-c-lowest);font-weight:600;font-size:13px;cursor:pointer;color:var(--on-surface)}
+.gbtn svg{width:16px;height:16px}
+.gbtn.on{border-color:transparent;background:var(--primary-container);color:var(--on-primary-container)}
 .wgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 .wcol{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:8px;display:flex;flex-direction:column;gap:6px;min-height:200px;min-width:0}
 .wcol h4{margin:0 0 4px;font-size:13px;font-weight:600;text-transform:capitalize;display:flex;justify-content:space-between}
@@ -862,6 +870,102 @@ function barChart(bars) {
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico financeiro do mês">${g}</svg>`;
 }
 
+/* ---------- GOOGLE AGENDA (cada psicólogo conecta a própria conta; token fica só no navegador) ---------- */
+const GCLIENT = '986855590402-2r9do7p85c7bdr5o24ltod7ddosdrmkh.apps.googleusercontent.com';
+const GSCOPES = 'https://www.googleapis.com/auth/calendar.app.created https://www.googleapis.com/auth/calendar.freebusy';
+const GLOGO = '<svg viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8a10 10 0 0 1-4.4 6.6v5.5h7.1c4.2-3.8 6.5-9.5 6.5-16.1z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.6-3.9-12.3-9.1H4.3v5.7A22 22 0 0 0 24 46z"/><path fill="#FBBC05" d="M11.7 28.1a13.2 13.2 0 0 1 0-8.2v-5.7H4.3a22 22 0 0 0 0 19.6z"/><path fill="#EA4335" d="M24 10.8c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3A22 22 0 0 0 4.3 14.2l7.4 5.7c1.7-5.2 6.6-9.1 12.3-9.1z"/></svg>';
+const G = { tok: null, exp: 0, client: null, pending: null };
+try { const t = JSON.parse(sessionStorage.getItem('gp.gtok') || 'null'); if (t && t.exp > Date.now() + 60000) { G.tok = t.tok; G.exp = t.exp; } } catch (_) {}
+const gcfg = () => S.profile?.gcal || {};
+const gOk = () => G.tok && G.exp > Date.now() + 60000;
+function gisLoad() { return window.google?.accounts?.oauth2 ? Promise.resolve() : new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'https://accounts.google.com/gsi/client'; sc.async = true; sc.onload = res; sc.onerror = () => rej(new Error('Não consegui carregar o login do Google')); document.head.appendChild(sc); }); }
+// precisa ser chamada a partir de um clique (o Google abre um pop-up)
+async function gToken(consent) {
+  if (gOk()) return G.tok;
+  await gisLoad();
+  if (!G.client) G.client = google.accounts.oauth2.initTokenClient({ client_id: GCLIENT, scope: GSCOPES, callback: () => {} });
+  return new Promise((res, rej) => {
+    G.client.callback = r => { if (r.error || !google.accounts.oauth2.hasGrantedAllScopes(r, ...GSCOPES.split(' '))) return rej(new Error(r.error === 'access_denied' || !r.error ? 'Permissão não concedida no Google' : r.error)); G.tok = r.access_token; G.exp = Date.now() + (Number(r.expires_in) || 3600) * 1000; try { sessionStorage.setItem('gp.gtok', JSON.stringify({ tok: G.tok, exp: G.exp })); } catch (_) {} res(G.tok); };
+    G.client.error_callback = e => rej(new Error(e?.type === 'popup_closed' ? 'Janela do Google fechada' : 'O navegador bloqueou a janela do Google'));
+    G.client.requestAccessToken({ prompt: consent ? 'consent' : '' });
+  });
+}
+async function gApi(path, opt = {}) {
+  const r = await fetch('https://www.googleapis.com/calendar/v3' + path, { ...opt, headers: { Authorization: 'Bearer ' + G.tok, 'Content-Type': 'application/json', ...(opt.headers || {}) } });
+  if (r.status === 401) { G.tok = null; try { sessionStorage.removeItem('gp.gtok'); } catch (_) {} throw new Error('Sessão do Google expirou. Toque em Sincronizar.'); }
+  if (r.status === 204) return null;
+  const j = await r.json().catch(() => null); if (!r.ok) { const e = new Error(j?.error?.message || 'Erro no Google Agenda'); e.status = r.status; throw e; } return j;
+}
+async function gSaveCfg(patch) { const g = { ...gcfg(), ...patch }; const { error } = await sb.from('profiles').upsert({ id: S.user.id, gcal: g }); if (!error) S.profile = { ...(S.profile || {}), gcal: g }; }
+async function gEnsureCal() {
+  const id = gcfg().calendar_id;
+  if (id) { try { await gApi('/calendars/' + encodeURIComponent(id)); return id; } catch (e) { if (e.status !== 404 && e.status !== 403) throw e; } }
+  const c = await gApi('/calendars', { method: 'POST', body: JSON.stringify({ summary: 'Gestaopsi', description: 'Sessões do consultório, sincronizadas pelo Gestaopsi (omatsaldanha.com/consultorio).', timeZone: 'America/Sao_Paulo' }) });
+  await gSaveCfg({ calendar_id: c.id });
+  return c.id;
+}
+function gEvent(x) {
+  const p = pById(x.patient_id) || {}, dur = S.profile?.session_minutes || 50, z = n => String(n).padStart(2, '0');
+  const [h, m] = (x.time || '09:00').split(':').map(Number), a = parse(x.date); a.setHours(h, m); const b = new Date(a.getTime() + dur * 60000);
+  const f = d => d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()) + ':00';
+  const nm = gcfg().names === 'completo' ? p.name : gIni(p.name);
+  return { summary: (x.status === 'falta' ? '[Falta] ' : '') + 'Sessão · ' + nm, description: (p.modality === 'online' ? 'Online' : 'Presencial') + ' · Gestaopsi', start: { dateTime: f(a), timeZone: 'America/Sao_Paulo' }, end: { dateTime: f(b), timeZone: 'America/Sao_Paulo' }, extendedProperties: { private: { gp_id: x.id } }, reminders: { useDefault: true }, colorId: x.status === 'realizada' ? '2' : x.status === 'falta' ? '11' : undefined };
+}
+async function gPushOne(cal, x) {
+  const off = /cancelada|remarcada/.test(x.status);
+  if (off) { if (x.gcal_event_id) { try { await gApi(`/calendars/${encodeURIComponent(cal)}/events/${x.gcal_event_id}`, { method: 'DELETE' }); } catch (e) { if (e.status !== 404 && e.status !== 410) throw e; } await sb.from('sessions').update({ gcal_event_id: null }).eq('id', x.id); x.gcal_event_id = null; } return; }
+  if (x.gcal_event_id) { try { await gApi(`/calendars/${encodeURIComponent(cal)}/events/${x.gcal_event_id}`, { method: 'PUT', body: JSON.stringify(gEvent(x)) }); return; } catch (e) { if (e.status !== 404 && e.status !== 410) throw e; } }
+  const ev = await gApi(`/calendars/${encodeURIComponent(cal)}/events`, { method: 'POST', body: JSON.stringify(gEvent(x)) });
+  await sb.from('sessions').update({ gcal_event_id: ev.id }).eq('id', x.id); x.gcal_event_id = ev.id;
+}
+// envia as sessões de 7 dias atrás até 60 dias à frente e apaga da agenda o que sumiu do Gestaopsi
+async function gSync(btn) {
+  const lbl = btn?.innerHTML; if (btn) { btn.disabled = true; btn.innerHTML = GLOGO + 'Sincronizando…'; }
+  try {
+    await gToken(!gcfg().connected);
+    if (!gcfg().connected) await gSaveCfg({ connected: true, names: gcfg().names || 'iniciais' });
+    const cal = await gEnsureCal();
+    const a = iso(addD(new Date(), -7)), b = iso(addD(new Date(), 60));
+    const { data: L, error } = await sb.from('sessions').select('*').gte('date', a).lte('date', b); if (error) throw error;
+    if (!S.patients.length) await loadPatients();
+    const ids = new Set(L.map(x => x.id)); let n = 0;
+    const q = L.slice(), work = async () => { while (q.length) { const x = q.shift(); await gPushOne(cal, x); n++; if (btn) btn.innerHTML = GLOGO + `Sincronizando ${n}/${L.length}`; } };
+    await Promise.all([work(), work(), work()]);
+    let page = null; do {
+      const r = await gApi(`/calendars/${encodeURIComponent(cal)}/events?singleEvents=true&maxResults=250&timeMin=${a}T00:00:00-03:00&timeMax=${b}T23:59:59-03:00${page ? '&pageToken=' + page : ''}`);
+      for (const ev of r.items || []) { const gid = ev.extendedProperties?.private?.gp_id; if (gid && !ids.has(gid)) await gApi(`/calendars/${encodeURIComponent(cal)}/events/${ev.id}`, { method: 'DELETE' }).catch(() => {}); }
+      page = r.nextPageToken; } while (page);
+    await gSaveCfg({ last_sync: new Date().toISOString() });
+    snack(`Google Agenda em dia: ${L.filter(x => !/cancelada|remarcada/.test(x.status)).length} sessões na agenda “Gestaopsi”`);
+    if (S.view === 'agenda') go('agenda');
+  } catch (e) { fail(e); }
+  finally { if (btn) { btn.disabled = false; btn.innerHTML = lbl; } }
+}
+// sincroniza uma sessão logo depois de editar, se o Google já estiver liberado nesta janela
+async function gAfterEdit(id) { if (!gcfg().connected || !gOk() || !gcfg().calendar_id) return; try { const { data } = await sb.from('sessions').select('*').eq('id', id).maybeSingle(); if (data) await gPushOne(gcfg().calendar_id, data); } catch (_) {} }
+async function gBusy(from, to) {
+  if (!gcfg().connected || !gOk()) return [];
+  try { const r = await gApi('/freeBusy', { method: 'POST', body: JSON.stringify({ timeMin: iso(from) + 'T00:00:00-03:00', timeMax: iso(to) + 'T23:59:59-03:00', timeZone: 'America/Sao_Paulo', items: [{ id: 'primary' }] }) }); return r.calendars?.primary?.busy || []; } catch (_) { return []; }
+}
+async function gDisconnect() {
+  if (!confirm('Desconectar o Google Agenda? A agenda “Gestaopsi” continua na tua conta Google; dá para apagá-la por lá.')) return;
+  try { if (G.tok && window.google?.accounts?.oauth2) google.accounts.oauth2.revoke(G.tok, () => {}); } catch (_) {}
+  G.tok = null; try { sessionStorage.removeItem('gp.gtok'); } catch (_) {}
+  await gSaveCfg({ connected: false }); snack('Google Agenda desconectado'); go('agenda');
+}
+function gPanel() {
+  const c = gcfg();
+  if (!c.connected) return `<button class="gbtn" id="gConnect" title="Coloca as sessões numa agenda “Gestaopsi” no teu Google Agenda e mostra aqui teus outros compromissos como ocupado">${GLOGO}Conectar Google Agenda</button>`;
+  const when = c.last_sync ? new Date(c.last_sync).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'nunca';
+  return `<button class="gbtn on" id="gSync" title="Última sincronização: ${when}">${GLOGO}Sincronizar</button><button class="icon-btn" id="gMore" title="Opções do Google Agenda" style="width:32px;height:32px"><span class="ms" style="font-size:18px">apps</span></button>`;
+}
+function gOptions() {
+  const c = gcfg(), full = c.names === 'completo';
+  const opt = prompt(`Google Agenda conectado (última sincronização: ${c.last_sync ? new Date(c.last_sync).toLocaleString('pt-BR') : 'nunca'}).\n\nNo evento vai: ${full ? 'NOME COMPLETO' : 'SÓ AS INICIAIS'} do paciente.\n\nDigite 1 para trocar para ${full ? 'só as iniciais' : 'nome completo'}\nDigite 2 para desconectar`);
+  if (opt === '1') gSaveCfg({ names: full ? 'iniciais' : 'completo' }).then(() => snack('Feito. Toque em Sincronizar para atualizar os eventos.'));
+  if (opt === '2') gDisconnect();
+}
+
 /* ---------- AGENDA ---------- */
 const monday = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
 const addD = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
@@ -876,6 +980,7 @@ async function viewAgenda() {
   else { from = S.month; to = eom(S.month); }
   const { data, error } = await sb.from('sessions').select('*').gte('date', iso(from)).lte('date', iso(to)).order('date').order('time'); if (error) throw error;
   S.agSessions = data;
+  const busy = await gBusy(from, to);
   const F = S.agF, q = F.q.trim().toLowerCase();
   const L = data.filter(x => { const p = pById(x.patient_id); if (!p) return false;
     if (F.mod !== 'todos' && p.modality !== F.mod) return false;
@@ -883,6 +988,10 @@ async function viewAgenda() {
     if (F.rec && !(x.paid && !x.receipt_issued)) return false;
     if (q && !p.name.toLowerCase().includes(q)) return false; return true; });
   const byDay = {}; L.forEach(x => (byDay[x.date] = byDay[x.date] || []).push(x));
+  // compromissos da agenda principal do Google (só ocupado, sem detalhes)
+  busy.forEach(bz => { const a = new Date(bz.start), b = new Date(bz.end), k = iso(a), t = String(a.getHours()).padStart(2, '0') + ':' + String(a.getMinutes()).padStart(2, '0');
+    (byDay[k] = byDay[k] || []).push({ busy: true, date: k, time: t + ':00', until: String(b.getHours()).padStart(2, '0') + ':' + String(b.getMinutes()).padStart(2, '0') }); });
+  Object.values(byDay).forEach(v => v.sort((x, y) => (x.time || '').localeCompare(y.time || '')));
   const today = todayISO();
   const nav = S.agMode === 'semana'
     ? `<div class="monthsel"><button class="icon-btn" id="wPrev" aria-label="Semana anterior"><span class="ms">chevron_left</span></button><strong>${S.weekStart.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })} – ${addD(S.weekStart, 6).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</strong><button class="icon-btn" id="wNext" aria-label="Próxima semana"><span class="ms">chevron_right</span></button></div>`
@@ -892,16 +1001,16 @@ async function viewAgenda() {
   if (S.agMode === 'mes') {
     body = '<div class="mgrid">' + ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => `<div class="wd">${d}</div>`).join('');
     for (let d = new Date(from); d <= to; d = addD(d, 1)) { const k = iso(d), ev = byDay[k] || [], max = innerWidth < 860 ? 3 : 5;
-      body += `<div class="mday ${d.getMonth() !== S.month.getMonth() ? 'out' : ''} ${k === today ? 'today' : ''}"><button class="dn" data-wk="${k}" title="Ver semana">${d.getDate()}</button>${ev.slice(0, max).map(x => evChip(x)).join('')}${ev.length > max ? `<button class="more" data-wk="${k}">+${ev.length - max} mais</button>` : ''}</div>`; }
+      body += `<div class="mday ${d.getMonth() !== S.month.getMonth() ? 'out' : ''} ${k === today ? 'today' : ''}" data-drop="${k}"><button class="dn" data-wk="${k}" title="Ver semana">${d.getDate()}</button>${ev.slice(0, max).map(x => evChip(x)).join('')}${ev.length > max ? `<button class="more" data-wk="${k}">+${ev.length - max} mais</button>` : ''}</div>`; }
     body += '</div>';
   } else if (S.agMode === 'semana') {
     body = '<div class="wgrid">';
     for (let i = 0; i < 7; i++) { const d = addD(S.weekStart, i), k = iso(d), ev = byDay[k] || [];
-      body += `<div class="wcol ${k === today ? 'today' : ''}"><h4><span>${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' })}</span><span class="muted">${ev.length || ''}</span></h4>${ev.map(x => evChip(x, true)).join('') || '<div class="small muted">Livre</div>'}</div>`; }
+      body += `<div class="wcol ${k === today ? 'today' : ''}" data-drop="${k}"><h4><span>${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' })}</span><span class="muted">${ev.length || ''}</span></h4>${ev.map(x => evChip(x, true)).join('') || '<div class="small muted">Livre</div>'}</div>`; }
     body += '</div>';
   } else {
     const days = Object.keys(byDay).sort();
-    body = `<section class="card elev"><div class="list">${days.length ? days.map(d => `<div class="dayhead">${parse(d).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })}</div>` + byDay[d].map(sessionRow).join('')).join('') : '<div class="empty"><span class="ms">event</span>Nada com esses filtros.</div>'}</div></section>`;
+    body = `<section class="card elev"><div class="list">${days.length ? days.map(d => `<div class="dayhead">${parse(d).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' })}</div>` + byDay[d].filter(x => !x.busy).map(sessionRow).join('')).join('') : '<div class="empty"><span class="ms">event</span>Nada com esses filtros.</div>'}</div></section>`;
   }
   $('#view').innerHTML = `
   <div class="topbar"><div class="display">Agenda</div><div class="sp"></div>
@@ -914,11 +1023,12 @@ async function viewAgenda() {
     ${chip('st', 'Qualquer status', 'todos', F.st)}${chip('st', 'Agendadas', 'agendada', F.st)}${chip('st', 'Realizadas', 'realizada', F.st)}${chip('st', 'Faltas', 'falta', F.st)}${chip('st', 'Canceladas', 'cancelada', F.st)}
     <button class="chip ${F.rec ? 'on' : ''}" id="fRec"><span class="ms" style="font-size:16px">receipt_long</span>Recibo pendente</button>
     <div class="sp"></div>
-    <button class="btn text sm" id="ics" title="Baixa um arquivo para importar no Google Agenda"><span class="ms" style="font-size:18px">download</span>Google Agenda</button>
+    ${gPanel()}
+    <button class="btn text sm" id="ics" title="Baixa um arquivo .ics para importar em qualquer agenda"><span class="ms" style="font-size:18px">download</span>.ics</button>
     <button class="btn tonal sm" id="gen"><span class="ms" style="font-size:18px">event_repeat</span>Gerar sessões do mês</button>
   </div>
-  ${data.length || S.agMode === 'lista' ? body : `<section class="card elev"><div class="empty"><span class="ms">event</span>Nenhuma sessão nesse período. Use “Gerar sessões do mês” para criar a agenda a partir dos horários fixos dos pacientes.</div></section>`}
-  <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span><span class="ms" style="font-size:14px">videocam</span> online</span><span><i style="display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--warn)"></i> pago sem recibo</span><span>Toque no nome para ver o cadastro e emitir o recibo</span></div>`;
+  ${data.length || busy.length || S.agMode === 'lista' ? body : `<section class="card elev"><div class="empty"><span class="ms">event</span>Nenhuma sessão nesse período. Use “Gerar sessões do mês” para criar a agenda a partir dos horários fixos dos pacientes.</div></section>`}
+  <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span><span class="ms" style="font-size:14px">videocam</span> online</span><span><i style="display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--warn)"></i> pago sem recibo</span>${gcfg().connected ? '<span><i style="display:inline-block;width:12px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,#ddd 0 3px,#bbb 3px 6px)"></i> ocupado no Google</span>' : ''}<span>Toque no nome para ver o cadastro e emitir o recibo</span></div>`;
   if (S.agMode === 'semana') { $('#wPrev').onclick = () => { S.weekStart = addD(S.weekStart, -7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; $('#wNext').onclick = () => { S.weekStart = addD(S.weekStart, 7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; }
   else bindMonth();
   $$('[data-mode]').forEach(b => b.onclick = () => { S.agMode = b.dataset.mode; go('agenda'); });
@@ -927,14 +1037,21 @@ async function viewAgenda() {
   $('#fRec').onclick = () => { F.rec = !F.rec; go('agenda'); };
   let qt; $('#agQ').oninput = e => { clearTimeout(qt); qt = setTimeout(async () => { F.q = e.target.value; const pos = e.target.selectionStart; await go('agenda'); const i = $('#agQ'); i.focus(); i.setSelectionRange(pos, pos); }, 300); };
   $$('[data-wk]').forEach(b => b.onclick = () => { S.weekStart = monday(parse(b.dataset.wk)); S.agMode = 'semana'; go('agenda'); });
-  $$('[data-ev]').forEach(b => b.onclick = () => openEv(data.find(x => x.id === b.dataset.ev)));
+  $$('[data-ev]').forEach(b => { b.onclick = () => openEv(data.find(x => x.id === b.dataset.ev)); b.ondragstart = e => { e.dataTransfer.setData('text/plain', b.dataset.ev); e.dataTransfer.effectAllowed = 'move'; }; });
+  // arrastar a sessão para outro dia = reagendar (mantém o horário)
+  $$('[data-drop]').forEach(z => { z.ondragover = e => { e.preventDefault(); z.classList.add('drop'); }; z.ondragleave = () => z.classList.remove('drop');
+    z.ondrop = e => { e.preventDefault(); z.classList.remove('drop'); const x = data.find(s => s.id === e.dataTransfer.getData('text/plain')); if (x && x.date !== z.dataset.drop) moveSession(x, z.dataset.drop, x.time); }; });
   bindSessionRows();
   $('#gen').onclick = generateMonth; $('#ics').onclick = () => exportIcs(L);
+  const gc = $('#gConnect'); if (gc) gc.onclick = () => gSync(gc);
+  const gs = $('#gSync'); if (gs) gs.onclick = () => gSync(gs);
+  const gm = $('#gMore'); if (gm) gm.onclick = gOptions;
   setFab('Sessão', () => openSession());
 }
 function evChip(x, big) {
+  if (x.busy) return `<div class="ev busy ${big ? 'big' : ''}" title="Compromisso no teu Google Agenda"><b>${x.time.slice(0, 5)}</b><span class="n">Ocupado${big ? ' até ' + x.until : ''}</span></div>`;
   const p = pById(x.patient_id) || {};
-  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${p.modality === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<i class="dot" title="Pago, falta emitir recibo"></i>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
+  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" draggable="true" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${p.modality === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<i class="dot" title="Pago, falta emitir recibo"></i>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
 }
 const gIni = n => (n || '').split(/\s+/).filter(Boolean).map(w => w[0].toUpperCase() + '.').join('');
 function gcalUrl(x, p) {
@@ -955,6 +1072,19 @@ function exportIcs(L) {
   const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' }), a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gestaopsi-agenda.ics'; a.click();
   snack('Arquivo baixado. No Google Agenda: Configurações > Importar e exportar > Importar.');
 }
+async function moveSession(x, date, time) {
+  const p = pById(x.patient_id) || {};
+  const row = { date, time: time || null };
+  if (!x.paid) row.due_date = dueDate(p, date);
+  if (x.status !== 'agendada' && date >= todayISO() && !x.paid) { row.status = 'agendada'; row.amount = Number(p.session_price); }
+  const { error } = await sb.from('sessions').update(row).eq('id', x.id);
+  if (error) return fail(/duplicate|unique/i.test(error.message) ? new Error(p.name + ' já tem sessão nesse dia') : error);
+  Object.assign(x, row); gAfterEdit(x.id);
+  snack(`${(p.name || '').split(' ')[0]} reagendado para ${parse(date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })}${time ? ' às ' + time.slice(0, 5) : ''}`);
+  if ($('#dlgEv').open) $('#dlgEv').close();
+  if (date < iso(S.month) || date > iso(eom(S.month))) { S.month = fom(parse(date)); S.weekStart = monday(parse(date)); }
+  go('agenda');
+}
 let evOpen = null;
 function openEv(x) {
   if (!x) return; evOpen = x; const p = pById(x.patient_id) || {}, sit = situation(x);
@@ -971,7 +1101,9 @@ function openEv(x) {
     </div>
     <div class="label" style="margin-top:16px">MARCAR ESTA SESSÃO</div>
     <div class="qs">${[['realizada', 'Realizada'], ['falta', 'Faltou'], ['cancelada_paciente', 'Paciente cancelou'], ['cancelada_profissional', 'Eu cancelei'], ['agendada', 'Agendada']].map(([k, l]) => `<button type="button" class="chip ${x.status === k ? 'on' : ''}" data-evst="${k}">${l}</button>`).join('')}</div>
+    <div class="resch hidden" id="evResch"><div class="field"><label>Nova data</label><input type="date" id="rsD" value="${x.date}"></div><div class="field"><label>Horário</label><input type="time" id="rsT" value="${(x.time || '').slice(0, 5)}"></div><button type="button" class="btn" id="rsOk"><span class="ms">event_repeat</span>Confirmar</button></div>
     <div class="qs" style="margin-top:16px">
+      <button type="button" class="btn tonal" id="evMove"><span class="ms">event_repeat</span>Reagendar</button>
       ${x.paid && !x.receipt_issued ? '<button type="button" class="btn" id="evRec"><span class="ms">receipt_long</span>Emitir recibo</button>' : ''}
       ${Number(x.amount) > 0 && !x.paid ? '<button type="button" class="btn tonal" id="evPay"><span class="ms">done</span>Marcar como paga</button>' : ''}
       ${p.docs_url ? `<a class="btn text" href="${esc(p.docs_url)}" target="_blank" rel="noopener"><span class="ms">folder</span>Documentos</a>` : ''}
@@ -979,10 +1111,12 @@ function openEv(x) {
       <button type="button" class="btn text" id="evEdit">Editar sessão</button>
       <button type="button" class="btn text" id="evPat">Cadastro</button>
     </div>`;
-  $$('[data-evst]').forEach(b => b.onclick = async () => { const st = b.dataset.evst; const row = { status: st }; if (!x.paid) { row.amount = Number(p.session_price) * chargePct(p, st); } const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Sessão: ' + STATUS[st]); openEv(x); go('agenda'); });
+  $$('[data-evst]').forEach(b => b.onclick = async () => { const st = b.dataset.evst; const row = { status: st }; if (!x.paid) { row.amount = Number(p.session_price) * chargePct(p, st); } const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Sessão: ' + STATUS[st]); gAfterEdit(x.id); openEv(x); go('agenda'); });
   const pay = $('#evPay'); if (pay) pay.onclick = async () => { const row = { paid: true, paid_at: todayISO() }; const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Paga. Já dá para emitir o recibo.'); openEv(x); go('agenda'); };
   const rb = $('#evRec'); if (rb) rb.onclick = async () => { const g = receiptGroups(await pendingReceipts()).find(g => g.sessions.some(s => s.id === x.id)); $('#dlgEv').close(); if (g) openReceipt(g); };
   $('#evEdit').onclick = () => { $('#dlgEv').close(); openSession(x); };
+  $('#evMove').onclick = () => { $('#evResch').classList.toggle('hidden'); $('#rsD').focus(); };
+  $('#rsOk').onclick = () => { const d = $('#rsD').value, t = $('#rsT').value; if (!d) return snack('Escolha a nova data'); if (d === x.date && t === (x.time || '').slice(0, 5)) return snack('Nada mudou'); moveSession(x, d, t ? t + ':00' : null); };
   $('#evPat').onclick = () => { $('#dlgEv').close(); openPatient(p); };
   if (!$('#dlgEv').open) $('#dlgEv').showModal();
 }
@@ -1018,7 +1152,7 @@ async function generateMonth() {
   const rows = buildSessions(S.patients, S.month, new Set(S.sessions.map(s => s.patient_id + s.date)));
   if (!rows.length) return snack('A agenda do mês já está completa.');
   const { error } = await sb.from('sessions').insert(rows); if (error) return fail(error);
-  snack(rows.length + ' sessões criadas'); go('agenda');
+  snack(rows.length + ' sessões criadas'); if (gcfg().connected && gOk()) gSync(); go('agenda');
 }
 
 /* ---------- dados de exemplo ---------- */
@@ -1130,7 +1264,7 @@ $('#fSession').onsubmit = async e => {
   if (row.receipt_issued && !editingSession?.receipt_issued) row.receipt_at = todayISO();
   const { error } = editingSession ? await sb.from('sessions').update(row).eq('id', editingSession.id) : await sb.from('sessions').insert(row);
   if (error) return fail(/duplicate|unique/i.test(error.message) ? new Error('Já existe sessão desse paciente nessa data') : error);
-  $('#dlgSession').close(); snack('Sessão salva'); go(S.view);
+  $('#dlgSession').close(); snack('Sessão salva'); if (editingSession) gAfterEdit(editingSession.id); go(S.view);
 };
 $('#sDel').onclick = async () => { if (!editingSession || !confirm('Excluir esta sessão?')) return; const { error } = await sb.from('sessions').delete().eq('id', editingSession.id); if (error) return fail(error); $('#dlgSession').close(); go(S.view); };
 
