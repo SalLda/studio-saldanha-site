@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,auto_awesome,badge,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,folder,gpp_maybe,group,help,lightbulb,link,local_fire_department,logout,movie,music_note,open_in_new,payments,person,person_add,photo_camera,play_arrow,psychology,receipt_long,savings,schedule,search,smart_display,space_dashboard,star,sync,task_alt,timer,trending_down,verified,videocam,warning,wb_sunny&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,apps,assignment_turned_in,auto_awesome,badge,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,hourglass_top,info,lightbulb,link,local_fire_department,logout,movie,music_note,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,space_dashboard,star,sync,task_alt,timer,trending_down,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -301,6 +301,22 @@ h1,h2,h3{margin:0;font-weight:500}
 .al-res p{font-size:13.5px;line-height:1.55;margin:8px 0 0;white-space:pre-wrap}
 .al-syn{background:var(--primary-container);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:14px;line-height:1.6;font-size:14px}
 .al-syn h4{margin:12px 0 4px}.al-syn h4:first-child{margin-top:0}
+/* documentos */
+.doc-cat{margin:20px 0 8px;display:flex;align-items:center;gap:8px;font-weight:600;color:var(--primary)}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.doc-card{background:var(--surface-c-lowest);border:1px solid var(--outline-variant);border-radius:var(--r-lg);padding:14px 16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:transform .12s,box-shadow .12s}
+.doc-card:hover{transform:translateY(-1px);box-shadow:var(--e1)}
+.doc-card b{font-size:14.5px}.doc-card span{font-size:12.5px;color:var(--on-surface-variant);line-height:1.4}
+.doc-tools{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px}
+@media(max-width:700px){.doc-tools{grid-template-columns:1fr 1fr}}
+#docPaper{background:#fff;color:#111;border:1px solid var(--outline-variant);border-radius:8px;padding:34px 38px;font:14.5px/1.65 Georgia,'Times New Roman',serif;min-height:360px;outline:none;max-height:56vh;overflow:auto}
+#docPaper h1{font-size:18px;text-align:center;margin:0 0 20px;letter-spacing:.04em}
+#docPaper h3{font-size:14.5px;margin:18px 0 4px}
+#docPaper p{margin:0 0 12px;text-align:justify}
+#docPaper mark{background:#fff1b8;border-radius:3px;padding:0 2px}
+#docPaper .sig{margin-top:34px;text-align:center}
+#docPaper .sig i{display:block;width:260px;border-top:1px solid #111;margin:0 auto 4px}
+#docRaw{width:100%;min-height:360px;max-height:56vh;font:13px/1.5 ui-monospace,Menlo,monospace;border:1px solid var(--outline-variant);border-radius:8px;padding:12px;box-sizing:border-box}
 /* conquistas */
 .nav.special .pill{background:linear-gradient(135deg,#FFD978,#F2A65A);color:#4A2B00}
 .nav.special.on .pill{box-shadow:0 0 0 2px var(--primary)}
@@ -377,7 +393,8 @@ dialog form{padding:24px}
     <button class="nav" data-view="financeiro"><span class="pill"><span class="ms">payments</span></span>Financeiro</button>
     <button class="nav" data-view="recibos"><span class="pill"><span class="ms">receipt_long</span></span>Recibos</button>
     <button class="nav" data-view="conteudo"><span class="pill"><span class="ms">auto_awesome</span></span>Conteúdo</button>
-    <button class="nav special" data-view="alicia"><span class="pill"><span class="ms fill">psychiatry</span></span>AlicIA</button>
+    <button class="nav" data-view="documentos"><span class="pill"><span class="ms">description</span></span>Documentos</button>
+    <button class="nav special" data-view="alicia"><span class="pill"><span class="ms fill">face_3</span></span>AlicIA</button>
     <button class="nav special" data-view="conquistas"><span class="pill"><span class="ms fill">emoji_events</span></span>Conquistas</button>
     <div class="sp"></div>
     <button class="icon-btn logout" id="railHello" title="Recado do Matheus (feedback)" style="background:var(--warn-container);color:var(--on-surface)"><span class="ms fill">campaign</span></button>
@@ -425,10 +442,7 @@ dialog form{padding:24px}
   </section>
   <section class="psec"><div class="psec-h"><span class="ms">folder</span>Documentação do paciente</div>
     <div class="field"><label>Link da pasta no Google Drive</label><div style="display:flex;gap:8px"><input name="docs_url" type="url" placeholder="https://drive.google.com/drive/folders/..." style="flex:1"><a class="btn tonal hidden" id="pDocs" target="_blank" rel="noopener" style="height:48px;border-radius:12px"><span class="ms">open_in_new</span>Abrir</a></div></div>
-    <div class="hint">Atalho para a pasta no Drive, se tu preferir manter lá.</div>
-    <div class="field" id="pFilesBox" style="margin-top:12px"><label>Arquivos do paciente</label><div id="pFiles"></div>
-      <label class="btn tonal sm" id="pFileBtn" style="margin-top:8px;cursor:pointer"><span class="ms">upload_file</span>Adicionar arquivo<input type="file" id="pFileIn" multiple hidden></label>
-      <div class="hint" id="pFileHint">Contrato, termos, laudos enviados. Privado: só tu acessa. Até 20 MB por arquivo. Evite guardar conteúdo clínico detalhado.</div></div>
+    <div class="hint">Contrato, laudos e documentos ficam no teu Drive. Aqui fica só o atalho.</div>
     <div class="field"><label>Observações administrativas (nada clínico)</label><textarea name="admin_notes" rows="2"></textarea></div>
   </section>
   <div class="dact"><button type="button" class="btn danger" id="pDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
@@ -777,7 +791,7 @@ async function start(user) {
 window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== S.view && S.started) go(v, true); });
 
 /* ---------- navegação ---------- */
-const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, alicia: viewAlicia, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
+const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, alicia: viewAlicia, documentos: viewDocumentos, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
 $$('.nav').forEach(b => b.onclick = () => go(b.dataset.view));
 async function go(v, fromHash) {
   if (!VIEWS[v]) v = 'inicio';
@@ -1304,34 +1318,6 @@ async function viewPacientes() {
   setFab('Paciente', () => openPatient());
 }
 let editingPatient = null;
-const fmtSize = n => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
-async function loadPFiles(p) {
-  const box = $('#pFiles'), btn = $('#pFileBtn'); if (!box) return;
-  if (!p) { box.innerHTML = '<div class="small muted">Salve o paciente primeiro para anexar arquivos.</div>'; btn.classList.add('hidden'); return; }
-  btn.classList.remove('hidden');
-  const { data, error } = await sb.from('patient_files').select('*').eq('patient_id', p.id).order('created_at', { ascending: false });
-  if (error) { box.innerHTML = '<div class="small muted">Não consegui carregar os arquivos.</div>'; return; }
-  box.innerHTML = (data || []).length ? data.map(f => `<div class="pfile"><span class="ms" style="color:var(--primary)">description</span><div class="grow"><div class="t">${esc(f.name)}</div><div class="s">${fmtSize(f.size || 0)} · ${fmtDate(f.created_at.slice(0, 10))}</div></div><button type="button" class="icon-btn" data-fdl="${f.id}" title="Abrir"><span class="ms">open_in_new</span></button><button type="button" class="icon-btn" data-fdel="${f.id}" title="Excluir" style="color:var(--error)"><span class="ms">delete</span></button></div>`).join('') : '<div class="small muted">Nenhum arquivo ainda.</div>';
-  const byId = id => data.find(f => f.id === id);
-  $$('[data-fdl]', box).forEach(b => b.onclick = async () => { const f = byId(b.dataset.fdl); const { data: u, error: e } = await sb.storage.from('patient-docs').createSignedUrl(f.path, 120); if (e) return fail(e); window.open(u.signedUrl, '_blank', 'noopener'); });
-  $$('[data-fdel]', box).forEach(b => b.onclick = async () => { const f = byId(b.dataset.fdel); if (!confirm('Excluir "' + f.name + '"? Não dá para desfazer.')) return;
-    await sb.storage.from('patient-docs').remove([f.path]); const { error: e } = await sb.from('patient_files').delete().eq('id', f.id); if (e) return fail(e); snack('Arquivo excluído'); loadPFiles(p); });
-}
-document.addEventListener('change', async e => {
-  if (e.target.id !== 'pFileIn' || !editingPatient) return;
-  const p = editingPatient, files = [...e.target.files]; e.target.value = '';
-  for (const file of files) {
-    if (file.size > 20 * 1048576) { snack('"' + file.name + '" passa de 20 MB'); continue; }
-    const safe = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w.\-]+/g, '_').slice(-80);
-    const path = S.user.id + '/' + p.id + '/' + crypto.randomUUID() + '-' + safe;
-    snack('Enviando ' + file.name + '…');
-    const up = await sb.storage.from('patient-docs').upload(path, file, { contentType: file.type || 'application/octet-stream' });
-    if (up.error) { fail(up.error); continue; }
-    const { error } = await sb.from('patient_files').insert({ patient_id: p.id, name: file.name, path, size: file.size, mime: file.type || null });
-    if (error) { await sb.storage.from('patient-docs').remove([path]); fail(error); continue; }
-  }
-  snack('Arquivo(s) anexado(s)'); loadPFiles(p);
-});
 function openPatient(p) {
   editingPatient = p || null; const f = $('#fPatient'); f.reset();
   $('#pTitle').textContent = p ? 'Editar paciente' : 'Novo paciente';
@@ -1340,7 +1326,7 @@ function openPatient(p) {
   const dl = $('#pDocs'); dl.classList.toggle('hidden', !p?.docs_url); if (p?.docs_url) dl.href = p.docs_url;
   for (const k of ['name', 'status', 'session_price', 'modality', 'weekday', 'session_time', 'frequency', 'billing', 'patient_cpf', 'start_date', 'payer_name', 'payer_cpf', 'guardian', 'whatsapp', 'admin_notes', 'docs_url'])
     if (f[k]) f[k].value = d[k] == null ? '' : (k === 'session_time' && d[k] ? d[k].slice(0, 5) : d[k]);
-  $('#pDel').classList.toggle('hidden', !p); $('#dlgPatient').showModal(); loadPFiles(p);
+  $('#pDel').classList.toggle('hidden', !p); $('#dlgPatient').showModal();
 }
 $('#fPatient').onsubmit = async e => {
   e.preventDefault(); const f = e.target, v = k => f[k].value.trim();
@@ -1905,7 +1891,7 @@ async function viewAlicia() {
       <button class="btn" id="alGo" style="width:100%;margin-top:8px"><span class="ms">search</span>Buscar evidência</button>
       <div class="hint" style="margin-top:10px">Busca em PubMed (meta-análises, revisões sistemáticas, ensaios e diretrizes) e em português no Europe PMC. Livros e bases pagas (PsycInfo, Web of Science) não estão incluídos.</div>
     </form></section>
-    <section id="alOut"><div class="card elev"><div class="empty"><span class="ms">psychiatry</span>Descreva a queixa e eu busco o que a literatura diz.</div></div></section>
+    <section id="alOut"><div class="card elev"><div class="empty"><span class="ms">face_3</span>Descreva a queixa e eu busco o que a literatura diz.</div></div></section>
   </div>`;
   let goal = 'intervencoes';
   $$('#alGoal .chip').forEach(c => c.onclick = () => { goal = c.dataset.g; $$('#alGoal .chip').forEach(x => x.classList.toggle('on', x === c)); });
@@ -1931,6 +1917,335 @@ async function viewAlicia() {
     } catch (err) { out.innerHTML = '<div class="card elev"><div class="notice warn"><span class="ms">wifi_off</span><div>Não consegui falar com as bases agora. Tente de novo em instantes.</div></div></div>'; console.error(err); }
     finally { btn.disabled = false; }
   };
+}
+const DOC_CATS = [['declaracoes', 'Declarações', 'verified'], ['atestados', 'Atestados', 'assignment_turned_in'], ['relatorios', 'Relatórios, laudos e pareceres', 'description'], ['encaminhamentos', 'Encaminhamentos', 'forward_to_inbox'], ['contratos', 'Contratos e termos', 'gavel'], ['financeiro', 'Financeiro', 'payments']];
+const DOC_TPL = [
+{ id: 'decl-comparecimento', cat: 'declaracoes', title: 'Declaração de comparecimento', desc: 'Atesta que a pessoa esteve em atendimento, sem conteúdo clínico.', body:
+`# DECLARAÇÃO
+
+Declaro, para os devidos fins, que {{paciente}}{{cpfTxt}} compareceu a atendimento psicológico em [[data do atendimento]], no horário de [[hora inicial]] às [[hora final]].
+
+Esta declaração tem a finalidade de [[comprovar comparecimento junto à escola / empresa / instituição]] e não contém informações sobre o conteúdo do atendimento, em respeito ao sigilo profissional (Código de Ética Profissional do Psicólogo, Art. 9º).
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` },
+{ id: 'decl-acompanhamento', cat: 'declaracoes', title: 'Declaração de acompanhamento psicológico', desc: 'Confirma que a pessoa está em acompanhamento, com frequência e início.', body:
+`# DECLARAÇÃO
+
+Declaro, para os devidos fins, que {{paciente}}{{cpfTxt}} encontra-se em acompanhamento psicológico {{formatoTxt}} comigo desde {{inicio}}, com frequência {{frequencia}}.
+
+Esta declaração tem a finalidade de [[finalidade]] e não descreve sintomas, diagnóstico ou o conteúdo dos atendimentos, preservando o sigilo profissional.
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` },
+{ id: 'decl-ir', cat: 'financeiro', title: 'Declaração de serviços prestados (Imposto de Renda)', desc: 'Total pago no ano-base, calculado das sessões marcadas como pagas.', body:
+`# DECLARAÇÃO DE SERVIÇOS PRESTADOS
+
+Declaro, para fins de comprovação junto à Receita Federal (dedução de despesas médicas no Imposto de Renda), que {{pagador}}{{cpfPagTxt}} pagou a mim, {{profissional}}, {{crpTxt}}, o valor total de {{totalAno}} ({{nSessoesAno}} sessões) referente a serviços de psicologia prestados a {{paciente}}, no ano-calendário de {{ano}}.
+
+Os recibos correspondentes foram emitidos pelo sistema Receita Saúde.
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` },
+{ id: 'atestado', cat: 'atestados', title: 'Atestado psicológico', desc: 'Justifica faltas, afastamento ou aptidão, com descrição condensada.', body:
+`# ATESTADO PSICOLÓGICO
+
+Atesto, para os devidos fins, que {{paciente}}{{cpfTxt}} foi atendido(a) por mim em processo psicológico, e que, no momento, [[conclusão do atestado: ex.: necessita de afastamento das atividades de ___ pelo período de ___ dias / apresenta condições de ___]].
+
+Finalidade: [[finalidade]].
+
+Descrição condensada, quando necessária e autorizada pela pessoa atendida: [[descrever somente o estritamente necessário para a finalidade, sem expor o conteúdo dos atendimentos]].
+
+A indicação de código CID neste atestado é facultativa e só deve constar se houver solicitação expressa da pessoa atendida ou responsável: [[incluir / não incluir CID]].
+
+Este atestado é válido por [[prazo de validade]].
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` },
+{ id: 'relatorio', cat: 'relatorios', title: 'Relatório psicológico', desc: 'Estrutura da Res. CFP 06/2019: demanda, procedimento, análise e conclusão.', body:
+`# RELATÓRIO PSICOLÓGICO
+
+## 1. Identificação
+Autor/a: {{profissional}}, {{crpTxt}}.
+Solicitante: [[quem solicitou o relatório]].
+Beneficiário/a: {{paciente}}{{cpfTxt}}.
+Finalidade: [[finalidade do relatório]].
+
+## 2. Descrição da demanda
+[[Informar quem forneceu a demanda, o motivo e a finalidade do relatório e as informações pertinentes ao contexto.]]
+
+## 3. Procedimento
+[[Descrever os recursos técnico-científicos utilizados: nº de encontros, período, entrevistas, observações, instrumentos e demais fontes de informação.]]
+
+## 4. Análise
+[[Exposição descritiva e fundamentada dos dados coletados, com a teoria que embasa a análise. Incluir apenas as informações necessárias à finalidade, preservando o sigilo.]]
+
+## 5. Conclusão
+[[Conclusões, indicações e encaminhamentos, quando houver.]]
+
+Este documento não poderá ser utilizado para fins diferentes do apontado na finalidade e possui caráter sigiloso.
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}
+
+Referências: [[se houver]]` },
+{ id: 'laudo', cat: 'relatorios', title: 'Laudo psicológico', desc: 'Resultado de avaliação psicológica, com instrumentos e conclusão.', body:
+`# LAUDO PSICOLÓGICO
+
+## 1. Identificação
+Autor/a: {{profissional}}, {{crpTxt}}.
+Solicitante: [[quem solicitou]].
+Avaliado/a: {{paciente}}{{cpfTxt}}.
+Finalidade: [[finalidade da avaliação]].
+
+## 2. Descrição da demanda
+[[Motivo da avaliação psicológica, quem encaminhou e o que se deseja esclarecer.]]
+
+## 3. Procedimento
+[[Período e nº de encontros; entrevistas; observações; instrumentos psicológicos utilizados (testes com parecer favorável no SATEPSI) com nome, versão e fundamentação; outras fontes de informação.]]
+
+## 4. Análise
+[[Integração dos dados obtidos, com fundamentação teórica e técnica, respondendo à demanda. Descrever apenas o necessário à finalidade.]]
+
+## 5. Conclusão
+[[Resultado da avaliação, indicações e encaminhamentos. O laudo é um resultado avaliativo e não equivale a diagnóstico médico.]]
+
+Este documento é de caráter sigiloso e não poderá ser utilizado para fins diferentes do apontado na finalidade.
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}
+
+Referências: [[obras e manuais dos instrumentos utilizados]]` },
+{ id: 'parecer', cat: 'relatorios', title: 'Parecer psicológico', desc: 'Resposta técnica a uma questão ou análise de documento.', body:
+`# PARECER PSICOLÓGICO
+
+## 1. Identificação
+Parecerista: {{profissional}}, {{crpTxt}}.
+Solicitante: [[nome / instituição]].
+Assunto: [[assunto do parecer]].
+
+## 2. Descrição da demanda
+[[Questão formulada ou o que se pede analisar, com o contexto necessário.]]
+
+## 3. Análise
+[[Análise fundamentada da questão, com base na literatura científica, na ética profissional e nos documentos examinados.]]
+
+## 4. Conclusão
+[[Resposta objetiva à questão apresentada.]]
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}
+
+Referências: [[obras consultadas]]` },
+{ id: 'enc-psiquiatra', cat: 'encaminhamentos', title: 'Encaminhamento para psiquiatria / médico', desc: 'Pede avaliação médica, compartilhando só o necessário.', body:
+`# ENCAMINHAMENTO
+
+Ao(À) Dr(a). [[nome do(a) profissional]] — [[especialidade]]
+
+Encaminho {{paciente}}{{cpfTxt}} para avaliação [[médica / psiquiátrica]], em razão de [[motivo do encaminhamento, em linguagem objetiva e sem detalhar o conteúdo dos atendimentos]].
+
+Permaneço à disposição para troca de informações, com ciência e autorização da pessoa atendida, limitadas ao estritamente necessário ao cuidado.
+
+Atenciosamente,
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` },
+{ id: 'enc-outro', cat: 'encaminhamentos', title: 'Encaminhamento para outro profissional ou serviço', desc: 'Para psicólogo, neuropsicólogo, fonoaudiólogo, CAPS, escola etc.', body:
+`# ENCAMINHAMENTO
+
+A/C: [[profissional ou serviço de destino]]
+
+Encaminho {{paciente}}{{cpfTxt}} para [[tipo de avaliação ou acompanhamento]], em razão de [[motivo, de forma breve]].
+
+{{encerraTxt}} As informações aqui prestadas foram autorizadas pela pessoa atendida (ou responsável) e restringem-se ao necessário.
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` },
+{ id: 'contrato', cat: 'contratos', title: 'Contrato de prestação de serviços psicológicos', desc: 'Combinados de sessão, valor, faltas, sigilo e rescisão.', body:
+`# CONTRATO DE PRESTAÇÃO DE SERVIÇOS PSICOLÓGICOS
+
+CONTRATADO(A): {{profissional}}, psicólogo(a), {{crpTxt}}.
+CONTRATANTE: {{pagador}}{{cpfPagTxt}}, responsável pelo pagamento dos atendimentos de {{paciente}}{{cpfTxt}}.
+
+Cláusula 1 – Objeto. Atendimento psicológico {{formatoTxt}}, com sessões de {{duracao}} minutos, frequência {{frequencia}}, {{diaHora}}.
+
+Cláusula 2 – Valor e pagamento. Cada sessão custa {{valor}}, pagas {{cobranca}}, por [[Pix / transferência / dinheiro]]. O recibo é emitido após o pagamento.
+
+Cláusula 3 – Faltas e cancelamentos. Sessões desmarcadas com menos de [[24]] horas de antecedência e faltas sem aviso são cobradas integralmente, por reservarem o horário. Cancelamentos avisados com a antecedência combinada não são cobrados e podem ser remarcados conforme a agenda.
+
+Cláusula 4 – Sigilo. O conteúdo dos atendimentos é sigiloso. O sigilo só pode ser quebrado nos casos previstos no Código de Ética Profissional do Psicólogo (Art. 10), por exemplo risco grave à vida, e sempre na medida do estritamente necessário.
+
+Cláusula 5 – Natureza do serviço. A psicoterapia é um processo e não garante resultado específico. A pessoa atendida pode interromper o atendimento a qualquer momento, e o(a) psicólogo(a) pode encerrá-lo ou encaminhar, com aviso prévio, quando necessário.
+
+Cláusula 6 – Comunicação. Contato fora das sessões limita-se a questões de agenda e pagamento, por [[WhatsApp / e-mail]]. Urgências devem ser atendidas pelo serviço de emergência (SAMU 192, CVV 188, UPA mais próxima).
+
+Cláusula 7 – Vigência. Por prazo indeterminado, com rescisão por qualquer das partes mediante aviso de [[prazo]].
+
+{{cidade}}, {{data}}.
+
+______________________________
+Contratante
+
+{{assinatura}}` },
+{ id: 'tcle-online', cat: 'contratos', title: 'Termo de consentimento para atendimento online', desc: 'Telepsicologia (Res. CFP 11/2018): limites, sigilo e contingência.', body:
+`# TERMO DE CONSENTIMENTO PARA ATENDIMENTO PSICOLÓGICO ONLINE
+
+Eu, {{paciente}}{{cpfTxt}}, declaro que fui informado(a) e aceito realizar atendimento psicológico por meio de tecnologias da informação e comunicação, com {{profissional}}, {{crpTxt}}.
+
+1. O atendimento online tem os mesmos princípios éticos do presencial, inclusive o sigilo profissional.
+2. Utilizaremos a plataforma [[nome da plataforma de vídeo]]. Comprometo-me a ficar em local reservado e com conexão estável durante a sessão, e a não gravar o atendimento sem autorização.
+3. Se a conexão cair, o(a) psicólogo(a) tentará retomar por [[telefone / WhatsApp]]. Se não for possível, a sessão será remarcada.
+4. Em situação de emergência, entrarei em contato com [[contato de emergência]] e com os serviços de urgência (SAMU 192, CVV 188).
+5. O atendimento online poderá ser substituído pelo presencial, ou encaminhado, caso o(a) psicólogo(a) avalie que não é adequado ao meu caso.
+6. Estou ciente de que nenhuma tecnologia garante sigilo absoluto e de que devo cuidar do meu dispositivo e da minha rede.
+
+{{cidade}}, {{data}}.
+
+______________________________
+{{paciente}}
+
+{{assinatura}}` },
+{ id: 'resp-menor', cat: 'contratos', title: 'Autorização do responsável (paciente menor de idade)', desc: 'Consentimento do responsável, com limites de sigilo.', body:
+`# AUTORIZAÇÃO DO RESPONSÁVEL PARA ATENDIMENTO PSICOLÓGICO
+
+Eu, {{responsavel}}, responsável legal por {{paciente}}, autorizo o atendimento psicológico do(a) menor com {{profissional}}, {{crpTxt}}.
+
+Estou ciente de que:
+1. O conteúdo das sessões é sigiloso. A criança ou o adolescente tem direito à privacidade, e o(a) psicólogo(a) compartilhará comigo apenas o necessário para o cuidado, a menos que haja risco à integridade da pessoa ou de terceiros.
+2. Devo comparecer às entrevistas com responsáveis quando convocado(a) e comunicar mudanças relevantes na rotina e na saúde.
+3. Informações a escola ou a outros profissionais só serão compartilhadas com minha autorização e, sempre que possível, com ciência do(a) menor.
+
+{{cidade}}, {{data}}.
+
+______________________________
+{{responsavel}}
+
+{{assinatura}}` },
+{ id: 'autoriza-info', cat: 'contratos', title: 'Autorização para compartilhar informações com terceiros', desc: 'Quando precisa falar com escola, médico, família ou empresa.', body:
+`# AUTORIZAÇÃO PARA COMPARTILHAMENTO DE INFORMAÇÕES
+
+Eu, {{paciente}}{{cpfTxt}}, autorizo {{profissional}}, {{crpTxt}}, a compartilhar com [[nome e função do(a) destinatário(a)]] as seguintes informações: [[descrever exatamente quais informações]], com a finalidade de [[finalidade]].
+
+Estou ciente de que posso revogar esta autorização a qualquer momento, e de que nada além do descrito será compartilhado. Esta autorização vale até [[data ou evento]].
+
+{{cidade}}, {{data}}.
+
+______________________________
+{{paciente}}
+
+{{assinatura}}` },
+{ id: 'encerramento', cat: 'contratos', title: 'Comunicação de encerramento do atendimento', desc: 'Registra o término combinado e orientações de retorno.', body:
+`# COMUNICAÇÃO DE ENCERRAMENTO DO ATENDIMENTO
+
+Comunico que o acompanhamento psicológico de {{paciente}} comigo foi encerrado em [[data]], por [[alta / interrupção pela pessoa atendida / encaminhamento / outro motivo]].
+
+Orientações: [[retorno, encaminhamento ou serviços de apoio, de forma breve]].
+
+Os registros do atendimento ficam guardados em sigilo pelo prazo legal de, no mínimo, cinco anos.
+
+{{cidade}}, {{data}}.
+
+{{assinatura}}` }
+];
+
+const DOC_WD = ['', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+const docStore = () => { const d = S.profile?.doc_templates; return { over: d?.over || {}, custom: d?.custom || [] }; };
+const docAll = () => { const st = docStore(); return [...DOC_TPL.map(t => ({ ...t, body: st.over[t.id] || t.body, edited: !!st.over[t.id] })), ...st.custom.map(t => ({ ...t, cat: 'meus', custom: true }))]; };
+async function docSave(st) { const { error } = await sb.from('profiles').upsert({ id: S.user.id, doc_templates: st }); if (error) { fail(error); return false; } S.profile = { ...(S.profile || {}), doc_templates: st }; return true; }
+async function docYearTotals(p, ano) {
+  const { data } = await sb.from('sessions').select('amount,paid,paid_at,patient_id').eq('patient_id', p.id).eq('paid', true);
+  const rows = (data || []).filter(x => (x.paid_at || '').startsWith(String(ano)) && Number(x.amount) > 0);
+  return { total: rows.reduce((a, x) => a + Number(x.amount), 0), n: rows.length };
+}
+function docRender(body, ctx) {
+  const { p, prof, cidade, dataTxt, ano, tot } = ctx; const B = x => x || '';
+  const SIGTOKEN = '\u0001SIG\u0001';
+  const crp = prof.crp ? 'CRP ' + prof.crp : '[[CRP]]';
+  const pagador = p ? (p.payer_name || p.name) : '[[nome de quem paga]]';
+  const V = {
+    paciente: p ? p.name : '[[nome do(a) paciente]]', cpfTxt: p?.patient_cpf ? ', CPF ' + p.patient_cpf : '', crpTxt: crp, profissional: prof.name || '[[seu nome]]',
+    cidade: cidade || '[[cidade]]', data: dataTxt, inicio: p?.start_date ? fmtDate(p.start_date) : '[[data de início]]', frequencia: p?.frequency || '[[frequência]]',
+    formatoTxt: p ? (p.modality === 'online' ? 'online' : 'presencial') : '[[presencial / online]]', duracao: prof.session_minutes || 50,
+    diaHora: p?.weekday ? 'toda ' + DOC_WD[p.weekday] + (p.session_time ? ', às ' + p.session_time.slice(0, 5) : '') : '[[dia e horário]]',
+    valor: p ? brl(p.session_price) : '[[valor da sessão]]', cobranca: p ? (BILLING[p.billing] || 'por sessão').toLowerCase() : '[[por sessão / mensalmente]]',
+    pagador, cpfPagTxt: p ? (p.payer_cpf ? ', CPF ' + p.payer_cpf : (!p.payer_name && p.patient_cpf ? ', CPF ' + p.patient_cpf : '')) : '',
+    responsavel: p?.guardian || '[[nome do(a) responsável]]', ano: ano || '[[ano]]', totalAno: tot ? brl(tot.total) : '[[valor total pago]]', nSessoesAno: tot ? tot.n : '[[nº]]', encerraTxt: '', assinatura: SIGTOKEN
+  };
+  let t = body.replace(/\{\{(\w+)\}\}/g, (m, k) => (k in V ? String(V[k]) : m));
+  t = esc(t).replace(/\[\[([^\]]*)\]\]/g, '<mark>[$1]</mark>');
+  const sig = `<div class="sig"><i></i>${esc(prof.name || '[seu nome]')}<br>Psicólogo(a) · ${esc(prof.crp ? 'CRP ' + prof.crp : '[CRP]')}</div>`;
+  return t.split(/\n{2,}/).map(par => par.trim()).filter(Boolean).map(par => {
+    if (par.includes(SIGTOKEN)) return par.replace(SIGTOKEN, '').trim() ? '<p>' + par.replace(SIGTOKEN, '').trim().replace(/\n/g, '<br>') + '</p>' + sig : sig;
+    return par.split('\n').map(l => l.startsWith('## ') ? '</p><h3>' + l.slice(3) + '</h3><p>' : l.startsWith('# ') ? '</p><h1>' + l.slice(2) + '</h1><p>' : l).join('<br>').replace(/^<br>|<br>$/g, '').replace(/<br>(<\/p><h)/g, '$1').replace(/(<\/h[13]>)<p><br>/g, '$1<p>').replace(/^(<\/p>)+/, '').replace(/<p>$/, '') ;
+  }).map(h => /^<(h1|h3|p|div)/.test(h) || h.startsWith('<h') ? h : '<p>' + h + '</p>').join('').replace(/<p><\/p>/g, '').replace(/<\/p>(<h[13])/g, '</p>$1');
+}
+async function viewDocumentos() {
+  await loadPatients();
+  const all = docAll(), q = (S.docQ || '').toLowerCase();
+  const cats = [...DOC_CATS, ['meus', 'Meus modelos', 'star']];
+  $('#view').innerHTML = `
+  <div class="topbar"><div><div class="display">Documentos</div><div class="muted">Modelos prontos para o dia a dia da psicologia. Escolha, confira e imprima ou baixe.</div></div><div class="sp"></div><button class="btn tonal" id="docNew"><span class="ms">add</span>Modelo próprio</button></div>
+  <div class="notice" style="background:var(--warn-container)"><span class="ms">shield</span><div><b>Nada fica salvo aqui.</b> O texto com os dados do paciente é gerado no teu navegador. Baixe ou imprima e guarde onde preferir (ex.: Drive). Modelos baseados na Resolução CFP 06/2019 e no Código de Ética; revise sempre antes de usar.</div></div>
+  <div class="field"><input id="docQ" type="search" placeholder="Buscar modelo (declaração, laudo, contrato...)" value="${esc(S.docQ || '')}"></div>
+  ${cats.map(([k, l, ic]) => { const L = all.filter(t => t.cat === k && (!q || (t.title + ' ' + t.desc).toLowerCase().includes(q))); return L.length ? `<div class="doc-cat"><span class="ms">${ic}</span>${l}</div><div class="doc-grid">${L.map(t => `<button class="doc-card" data-doc="${t.id}"><b>${esc(t.title)}${t.edited ? ' <span class="badge b-neutral">editado</span>' : ''}</b><span>${esc(t.desc || 'Modelo próprio')}</span></button>`).join('')}</div>` : ''; }).join('') || '<div class="empty"><span class="ms">search_off</span>Nenhum modelo encontrado.</div>'}`;
+  $('#docQ').oninput = e => { S.docQ = e.target.value; clearTimeout(viewDocumentos._t); viewDocumentos._t = setTimeout(() => { const pos = e.target.selectionStart; viewDocumentos().then(() => { const i = $('#docQ'); i.focus(); i.setSelectionRange(pos, pos); }); }, 250); };
+  $$('[data-doc]').forEach(b => b.onclick = () => openDoc(b.dataset.doc));
+  $('#docNew').onclick = async () => { const name = prompt('Nome do novo modelo:'); if (!name || !name.trim()) return; const st = docStore(); const id = 'c' + Date.now(); st.custom.push({ id, title: name.trim(), desc: '', body: '# ' + name.trim().toUpperCase() + '\n\n[[Escreva aqui. Use {{paciente}}, {{cpfTxt}}, {{profissional}}, {{crpTxt}}, {{cidade}}, {{data}} e {{assinatura}} para preencher sozinho.]]\n\n{{cidade}}, {{data}}.\n\n{{assinatura}}' }); if (await docSave(st)) { viewDocumentos(); openDoc(id); } };
+}
+function openDoc(id) {
+  const t = docAll().find(x => x.id === id); if (!t) return;
+  let dlg = $('#dlgDoc'); if (!dlg) { dlg = document.createElement('dialog'); dlg.id = 'dlgDoc'; dlg.style.width = 'min(860px,calc(100vw - 24px))'; dlg.style.padding = '20px 24px'; document.body.appendChild(dlg); dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); }); }
+  const prof = S.profile || {}, ps = S.patients.filter(p => p.status !== 'encerrado');
+  const needsYear = t.body.includes('{{totalAno}}'); const y0 = new Date().getFullYear();
+  let cidade = ''; try { cidade = localStorage.getItem('doc.cidade') || ''; } catch (_) {}
+  const st = { p: null, tot: null, ano: y0 - (new Date().getMonth() < 2 ? 1 : 0), mode: 'doc' };
+  dlg.innerHTML = `<div class="dhead"><div class="grow"><div class="title-l">${esc(t.title)}</div><div class="small muted">${esc(t.desc || '')}</div></div><button class="icon-btn" type="button" data-close><span class="ms">close</span></button></div>
+    <div class="doc-tools" style="margin-top:12px">
+      <div class="field" style="margin:0"><label>Paciente</label><select id="dPat"><option value="">Em branco</option>${ps.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></div>
+      <div class="field" style="margin:0"><label>Cidade</label><input id="dCid" value="${esc(cidade)}" placeholder="Ex.: Pelotas"></div>
+      <div class="field" style="margin:0"><label>Data</label><input id="dDat" type="date" value="${todayISO()}"></div>
+      ${needsYear ? `<div class="field" style="margin:0"><label>Ano-base</label><select id="dAno">${[y0, y0 - 1, y0 - 2].map(y => `<option ${y === st.ano ? 'selected' : ''}>${y}</option>`).join('')}</select></div>` : '<div></div>'}
+    </div>
+    <div id="dBody"></div>
+    <div class="small muted" id="dHint" style="margin:8px 0">Os trechos em amarelo são para tu completar. Clique no texto para editar antes de baixar. Mudar paciente, cidade ou data refaz o texto.</div>
+    <div class="dact" id="dAct"></div>`;
+  const ctx = () => ({ p: st.p, prof, cidade: $('#dCid').value.trim(), dataTxt: parse($('#dDat').value || todayISO()).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }), ano: needsYear ? $('#dAno').value : null, tot: st.tot });
+  const html = () => `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${esc(t.title)}</title><style>@page{size:A4;margin:25mm}body{font:12pt/1.6 'Times New Roman',serif;color:#000;margin:0}h1{font-size:15pt;text-align:center;margin:0 0 18pt}h3{font-size:12pt;margin:14pt 0 3pt}p{margin:0 0 10pt;text-align:justify}.sig{margin-top:40pt;text-align:center}.sig i{display:block;width:240pt;border-top:1px solid #000;margin:0 auto 4pt}mark{background:#fff1b8}</style></head><body>${$('#docPaper').innerHTML}</body></html>`;
+  const paint = async () => {
+    if (st.mode === 'raw') {
+      $('#dBody').innerHTML = `<textarea id="docRaw" spellcheck="false">${esc(t.body)}</textarea>`; $('#dHint').textContent = 'Edição do modelo. Use {{paciente}}, {{cpfTxt}}, {{profissional}}, {{crpTxt}}, {{cidade}}, {{data}}, {{assinatura}} e [[campo para completar]]. Não coloque dados de pacientes aqui.';
+      $('#dAct').innerHTML = `<button type="button" class="btn text" id="bBack">Voltar</button><div class="sp"></div>${t.edited ? '<button type="button" class="btn danger" id="bRest">Restaurar padrão</button>' : ''}${t.custom ? '<button type="button" class="btn danger" id="bDelM">Excluir modelo</button>' : ''}<button type="button" class="btn" id="bSaveM">Salvar modelo</button>`;
+      $('#bBack').onclick = () => { st.mode = 'doc'; paint(); };
+      $('#bSaveM').onclick = async () => { const s0 = docStore(); const v = $('#docRaw').value; if (t.custom) s0.custom = s0.custom.map(x => x.id === t.id ? { ...x, body: v } : x); else s0.over[t.id] = v; if (await docSave(s0)) { snack('Modelo salvo'); dlg.close(); viewDocumentos(); } };
+      const rs = $('#bRest'); if (rs) rs.onclick = async () => { const s0 = docStore(); delete s0.over[t.id]; if (await docSave(s0)) { snack('Modelo padrão restaurado'); dlg.close(); viewDocumentos(); } };
+      const dm = $('#bDelM'); if (dm) dm.onclick = async () => { if (!confirm('Excluir este modelo?')) return; const s0 = docStore(); s0.custom = s0.custom.filter(x => x.id !== t.id); if (await docSave(s0)) { snack('Modelo excluído'); dlg.close(); viewDocumentos(); } };
+      return;
+    }
+    if (needsYear && st.p) st.tot = await docYearTotals(st.p, $('#dAno').value);
+    $('#dBody').innerHTML = `<div id="docPaper" contenteditable="true" spellcheck="true">${docRender(t.body, ctx())}</div>`;
+    $('#dHint').textContent = 'Os trechos em amarelo são para tu completar. Clique no texto para editar antes de baixar. Mudar paciente, cidade ou data refaz o texto.';
+    $('#dAct').innerHTML = `<button type="button" class="btn text" id="bEdit"><span class="ms">edit_note</span>Editar modelo</button><div class="sp"></div><button type="button" class="btn tonal" id="bCopy"><span class="ms">content_copy</span>Copiar</button><button type="button" class="btn tonal" id="bDoc"><span class="ms">download</span>Baixar .doc</button><button type="button" class="btn" id="bPrint"><span class="ms">print</span>Imprimir / PDF</button>`;
+    $('#bEdit').onclick = () => { st.mode = 'raw'; paint(); };
+    const warn = () => { const n = $$('#docPaper mark').length; if (n) snack(n + ' campo(s) em amarelo ainda por completar'); };
+    $('#bCopy').onclick = async () => { try { await navigator.clipboard.writeText($('#docPaper').innerText); snack('Texto copiado'); } catch (_) { snack('Não consegui copiar'); } };
+    $('#bDoc').onclick = () => { warn(); const blob = new Blob(['﻿' + html().replace('<html lang="pt-BR">', '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" lang="pt-BR">')], { type: 'application/msword' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = t.title.replace(/[^\wÀ-ú ]+/g, '').trim().replace(/\s+/g, '_') + '.doc'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); };
+    $('#bPrint').onclick = () => { warn(); const w = window.open('', '_blank'); if (!w) return snack('Libere pop-ups para imprimir'); w.document.write(html()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); };
+  };
+  $('#dPat', dlg).onchange = async e => { st.p = e.target.value ? pById(e.target.value) : null; st.tot = null; await paint(); };
+  $('#dCid', dlg).oninput = e => { try { localStorage.setItem('doc.cidade', e.target.value.trim()); } catch (_) {} clearTimeout(openDoc._t); openDoc._t = setTimeout(paint, 350); };
+  $('#dDat', dlg).onchange = () => paint();
+  const da = $('#dAno', dlg); if (da) da.onchange = () => paint();
+  $$('[data-close]', dlg).forEach(b => b.onclick = () => dlg.close());
+  dlg.showModal(); paint();
 }
 async function viewConquistas() {
   await loadPatients();
