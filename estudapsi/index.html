@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFFFFF">
+<title>Estudapsi</title>
+<meta name="description" content="Disciplinas, cronograma, entregas, livros e pesquisa científica para quem está cursando Psicologia.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234355B9'/%3E%3Cpath d='M32 14 8 26l24 12 18-9v14h4V29z' fill='white'/%3E%3Cpath d='M18 38v8c0 4 6 8 14 8s14-4 14-8v-8l-14 7z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=add,arrow_back,arrow_forward,assignment,auto_stories,calendar_month,check,check_circle,chevron_left,chevron_right,close,content_copy,delete,edit,event,face_3,home,info,logout,menu_book,open_in_new,person,place,psychology,quiz,schedule,school,search,task_alt,today,upload_file,warning&display=block" rel="stylesheet">
+<style>
+:root{
+  --primary:#4355B9;--on-primary:#FFFFFF;--primary-container:#DDE1FF;--on-primary-container:#00105C;
+  --secondary-container:#E1E2EC;--on-secondary-container:#191B24;
+  --tertiary:#7B4B8E;--tertiary-container:#F6D9FF;
+  --error:#BA1A1A;--error-container:#FFDAD6;--on-error-container:#410002;
+  --warn:#8A5100;--warn-container:#FFDDB8;
+  --ok:#1F6B3A;--ok-container:#C9F0D3;
+  --surface:#FEFBFF;--surface-c-lowest:#FFFFFF;--surface-c-low:#F6F2FA;--surface-c:#F0ECF4;--surface-c-high:#EAE6EE;--surface-c-highest:#E4E1E9;--dlg:#FFFFFF;
+  --on-surface:#1B1B1F;--on-surface-variant:#46464F;--outline:#777680;--outline-variant:#C7C5D0;
+  --font:'Roboto Flex',Roboto,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:28px;
+  --e1:0 1px 2px rgba(0,0,0,.18),0 1px 3px 1px rgba(0,0,0,.08);--e3:0 4px 8px 3px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.18);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --primary:#BAC3FF;--on-primary:#0D2087;--primary-container:#293CA0;--on-primary-container:#DDE1FF;
+  --secondary-container:#444559;--on-secondary-container:#E1E2EC;
+  --tertiary:#E6B4FA;--tertiary-container:#603572;
+  --error:#FFB4AB;--error-container:#93000A;--on-error-container:#FFDAD6;
+  --warn:#FFB95F;--warn-container:#693C00;--ok:#8FD9A3;--ok-container:#0A4A24;
+  --surface:#131316;--surface-c-lowest:#0E0E11;--surface-c-low:#1B1B1F;--surface-c:#1F1F23;--surface-c-high:#2A2A2D;--surface-c-highest:#353538;--dlg:#2A2A2D;
+  --on-surface:#E4E1E6;--on-surface-variant:#C7C5D0;--outline:#918F9A;--outline-variant:#46464F;
+}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--surface);color:var(--on-surface);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--primary)}.hidden{display:none!important}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:22px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;font-feature-settings:'liga';vertical-align:middle;font-variation-settings:'FILL' 0}.ms.fill{font-variation-settings:'FILL' 1}
+h1,h2,h3,h4{margin:0;font-weight:500}.display{font-size:30px;font-weight:500;letter-spacing:-.01em}.title-l{font-size:22px;font-weight:500}.title-m{font-size:16px;font-weight:600}
+.label{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--on-surface-variant)}.muted{color:var(--on-surface-variant)}.small{font-size:13px}
+.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border-radius:20px;border:none;cursor:pointer;font-weight:600;font-size:14px;background:var(--primary);color:var(--on-primary);white-space:nowrap}
+.btn:hover{box-shadow:var(--e1);filter:brightness(1.06)}.btn:disabled{opacity:.5;cursor:default}
+.btn.tonal{background:var(--secondary-container);color:var(--on-secondary-container)}.btn.outlined{background:transparent;color:var(--primary);border:1px solid var(--outline)}.btn.text{background:transparent;color:var(--primary);padding:0 12px}.btn.danger{background:transparent;color:var(--error);border:1px solid var(--outline-variant)}.btn.sm{height:32px;padding:0 14px;font-size:13px}
+.icon-btn{width:40px;height:40px;border-radius:20px;border:none;background:transparent;display:inline-grid;place-items:center;cursor:pointer;color:var(--on-surface-variant)}.icon-btn:hover{background:var(--surface-c-high)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--outline-variant);background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--on-surface-variant);white-space:nowrap}.chip.on{background:var(--secondary-container);color:var(--on-secondary-container);border-color:transparent}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}.b-ok{background:var(--ok-container);color:var(--ok)}.b-info{background:var(--primary-container);color:var(--on-primary-container)}.b-warn{background:var(--warn-container);color:var(--on-surface)}.b-err{background:var(--error-container);color:var(--on-error-container)}.b-neutral{background:var(--surface-c-highest);color:var(--on-surface-variant)}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:14px}.field label{font-size:12px;font-weight:600;color:var(--on-surface-variant)}
+.field input,.field select{height:48px;border:1px solid var(--outline);border-radius:var(--r-sm);background:transparent;padding:0 14px;outline:none}.field textarea{border:1px solid var(--outline);border-radius:var(--r-sm);background:transparent;padding:12px 14px;outline:none;resize:vertical;min-height:90px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}.field select option{background:var(--dlg);color:var(--on-surface)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--surface-c-low);border-radius:var(--r-lg);padding:16px}.card.elev{background:var(--surface-c-lowest);box-shadow:var(--e1)}
+.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}.cardhead .title-m{flex:1}
+.notice{display:flex;gap:10px;align-items:flex-start;border-radius:var(--r-md);padding:12px 14px;background:var(--primary-container);color:var(--on-primary-container);font-size:14px;margin:12px 0}
+.notice.warn{background:var(--warn-container);color:var(--on-surface)}
+.empty{text-align:center;color:var(--on-surface-variant);padding:28px 12px}.empty .ms{font-size:36px;display:block;margin-bottom:6px;color:var(--outline)}
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}.topbar .sp{flex:1}
+
+/* shell */
+.app{display:grid;grid-template-columns:96px 1fr;min-height:100vh}
+.rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0;background:var(--surface-c-low)}
+.rail .logo{width:48px;height:48px;border-radius:16px;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;margin-bottom:10px}
+.nav{width:76px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;cursor:pointer;font-size:11.5px;font-weight:500;color:var(--on-surface-variant);border-radius:16px}
+.nav .pill{width:56px;height:32px;border-radius:16px;display:grid;place-items:center}.nav.on{color:var(--on-surface);font-weight:600}.nav.on .pill{background:var(--primary-container);color:var(--on-primary-container)}
+.rail .grow{flex:1}
+main{padding:28px 32px 90px;max-width:1100px;width:100%}
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px}.auth .card{width:min(420px,100%);padding:28px}
+.brandmark{display:flex;gap:14px;align-items:center;margin-bottom:10px}.brandmark .logo{width:52px;height:52px;border-radius:16px;background:var(--primary);color:var(--on-primary);display:grid;place-items:center}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;flex-direction:row;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:40;border-top:1px solid var(--outline-variant)}
+  .rail .logo,.rail .grow{display:none}.nav{width:auto;flex:1;font-size:10.5px}.nav .pill{width:48px}
+  main{padding:18px 16px 96px}.display{font-size:26px}.grid2{grid-template-columns:1fr}
+}
+
+/* calendário */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{font-size:12px;font-weight:600;color:var(--on-surface-variant);text-align:center;padding:4px 0}
+.day{min-height:92px;border:1px solid var(--outline-variant);border-radius:10px;padding:5px;background:var(--surface-c-lowest);cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.day.out{opacity:.45}.day.today{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}.day.sel{background:var(--primary-container)}
+.day .n{font-size:12px;font-weight:600}
+.ev{font-size:11px;line-height:1.2;padding:2px 5px;border-radius:5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--c,var(--primary))}
+.ev.aula{background:color-mix(in srgb,var(--c) 22%,var(--surface-c-lowest));color:var(--on-surface);border-left:3px solid var(--c)}
+.ev.done{text-decoration:line-through;opacity:.6}
+.more{font-size:10.5px;color:var(--on-surface-variant)}
+@media (max-width:760px){.day{min-height:56px;padding:3px}.ev{font-size:0;height:6px;padding:0;border-radius:3px}.ev.aula{border-left-width:0}.more{font-size:9px}}
+.monthsel{display:flex;align-items:center;gap:6px}.monthsel strong{min-width:150px;text-align:center;text-transform:capitalize}
+.row{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--outline-variant)}.row:last-child{border-bottom:0}
+.row .dot{width:10px;height:36px;border-radius:5px;background:var(--c,var(--primary));flex:none}.row .t{flex:1;min-width:0}.row .t b{display:block;font-weight:600}.row .t span{font-size:13px;color:var(--on-surface-variant)}
+.check{width:26px;height:26px;border-radius:8px;border:2px solid var(--outline);background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--on-primary);flex:none;padding:0}.check.on{background:var(--ok);border-color:var(--ok)}.check .ms{font-size:18px}
+.done-t{text-decoration:line-through;opacity:.6}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.course{border-top:6px solid var(--c);}.course h3{font-size:18px}
+.stat{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0}.stat div{font-size:12px;color:var(--on-surface-variant)}.stat b{display:block;font-size:20px;color:var(--on-surface)}
+.hero{background:linear-gradient(135deg,var(--primary),color-mix(in srgb,var(--primary) 60%,var(--tertiary)));color:var(--on-primary);border-radius:var(--r-xl);padding:22px 24px;margin-bottom:16px}
+.hero h2{font-size:26px;font-weight:600}.hero p{margin:6px 0 0;opacity:.92}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}.kpi{background:var(--surface-c-low);border-radius:var(--r-lg);padding:14px}.kpi b{display:block;font-size:28px;font-weight:600}.kpi span{font-size:13px;color:var(--on-surface-variant)}
+.bar{height:8px;border-radius:4px;background:var(--surface-c-highest);overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--primary)}
+.weekdays{display:flex;gap:6px;flex-wrap:wrap}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}.sw{width:30px;height:30px;border-radius:15px;border:3px solid transparent;cursor:pointer;background:var(--c)}.sw.on{border-color:var(--on-surface)}
+dialog{border:0;border-radius:28px;padding:0;background:var(--dlg);color:var(--on-surface);width:min(560px,calc(100vw - 24px));max-height:92vh;box-shadow:var(--e3)}dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog form,dialog .dbody{padding:22px 22px 16px}.dact{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+dialog.wide{width:min(760px,calc(100vw - 24px))}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--outline-variant);margin:12px 0}.tab{border:0;background:transparent;padding:10px 14px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--on-surface-variant);border-bottom:3px solid transparent}.tab.on{color:var(--primary);border-color:var(--primary)}
+.prev{max-height:280px;overflow:auto;border:1px solid var(--outline-variant);border-radius:12px;margin-top:10px}.prev .pr{display:grid;grid-template-columns:28px 128px 112px 1fr;gap:8px;align-items:center;padding:6px 8px;border-bottom:1px solid var(--outline-variant);font-size:13px}.prev .pr:last-child{border-bottom:0}.prev input[type=date],.prev select,.prev input[type=text]{height:34px;border:1px solid var(--outline-variant);border-radius:8px;background:transparent;padding:0 8px;width:100%;min-width:0}
+@media (max-width:640px){.prev .pr{grid-template-columns:24px 1fr 1fr}.prev .pr .tt{grid-column:1/-1}}
+.snack{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:var(--on-surface);color:var(--surface);padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:90vw;font-size:14px}.snack.show{opacity:1;transform:translateX(-50%)}
+.al-grid{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:16px;align-items:start}@media (max-width:900px){.al-grid{grid-template-columns:1fr}}
+.al-res{background:var(--surface-c-lowest);border-radius:var(--r-md);box-shadow:var(--e1);padding:14px;margin-bottom:10px}.al-res h4{font-size:15px;margin:6px 0 4px;font-weight:600}.al-res .m{font-size:12.5px;color:var(--on-surface-variant)}.al-res details{margin-top:6px;font-size:13px}
+code.q{display:block;white-space:pre-wrap;word-break:break-word;font-size:12px;background:var(--surface-c);padding:10px;border-radius:8px;margin:6px 0}
+.ops{width:100%;border-collapse:collapse;font-size:13px}.ops td{padding:5px 6px;border-bottom:1px solid var(--outline-variant);vertical-align:top}.ops td:first-child{font-family:ui-monospace,Menlo,monospace;white-space:nowrap;color:var(--primary);font-weight:600}
+.stbar{display:flex;gap:8px;align-items:center}
+</style>
+</head>
+<body>
+
+<div id="authView" class="auth hidden">
+  <form class="card elev" id="authForm" style="border-radius:28px">
+    <div class="brandmark"><div class="logo"><span class="ms fill">school</span></div><div><div class="title-l">Estudapsi</div><div class="muted small">Disciplinas, cronograma, entregas e pesquisa</div></div></div>
+    <div id="nameField" class="field hidden"><label for="aName">Seu nome</label><input id="aName" autocomplete="name"></div>
+    <div class="field"><label for="aEmail">E-mail</label><input id="aEmail" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="aPass">Senha</label><input id="aPass" type="password" autocomplete="current-password" required minlength="8"></div>
+    <button class="btn" id="authBtn" type="submit" style="width:100%;margin-top:22px">Entrar</button>
+    <div id="authMsg" class="small" style="min-height:20px;margin-top:12px;color:var(--error)"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px"><button type="button" class="btn text sm" id="toggleAuth">Criar conta</button><button type="button" class="btn text sm" id="forgot">Esqueci a senha</button></div>
+    <div class="small muted" style="margin-top:10px">O mesmo e-mail e senha do Gestaopsi funcionam aqui.</div>
+  </form>
+</div>
+
+<div id="appView" class="app hidden">
+  <nav class="rail" id="rail" aria-label="Navegação">
+    <div class="logo"><span class="ms fill">school</span></div>
+    <button class="nav" data-view="inicio"><span class="pill"><span class="ms">home</span></span>Início</button>
+    <button class="nav" data-view="calendario"><span class="pill"><span class="ms">calendar_month</span></span>Calendário</button>
+    <button class="nav" data-view="disciplinas"><span class="pill"><span class="ms">auto_stories</span></span>Disciplinas</button>
+    <button class="nav" data-view="entregas"><span class="pill"><span class="ms">assignment</span></span>Entregas</button>
+    <button class="nav" data-view="livros"><span class="pill"><span class="ms">menu_book</span></span>Livros</button>
+    <button class="nav" data-view="alicia"><span class="pill"><span class="ms">face_3</span></span>AlicIA</button>
+    <div class="grow"></div>
+    <button class="nav" id="logout"><span class="pill"><span class="ms">logout</span></span>Sair</button>
+  </nav>
+  <main id="view"></main>
+</div>
+<div class="snack" id="snack"></div>
+
+<script src="/gestor/vendor/supabase.js"></script>
+<script>
+(() => {
+'use strict';
+const CFG = window.ESTUDAPSI_CFG || { url: 'https://xalgykbgpyorqxlmsyvg.supabase.co', key: 'sb_publishable_J6KozLvwxa0-iiK_EqXNFw_-TxJmwbV' };
+const sb = supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: true, autoRefreshToken: true } });
+const HOME = location.origin + '/estudapsi/';
+const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = n => String(n).padStart(2, '0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const todayISO = () => iso(new Date());
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return iso(d); };
+const DOW = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'], DOWL = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+const fmtD = s => { const d = parse(s); return DOW[d.getDay()] + ', ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1); };
+const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
+let snT; const snack = m => { const e = $('#snack'); e.textContent = m; e.classList.add('show'); clearTimeout(snT); snT = setTimeout(() => e.classList.remove('show'), 3200); };
+const fail = e => { console.error(e); snack('Algo deu errado: ' + (e.message || e)); };
+const COLORS = ['#4355B9', '#C2185B', '#00796B', '#E65100', '#6A1B9A', '#2E7D32', '#0277BD', '#AD7A00'];
+const KIND = { aula: ['Aula', 'event'], entrega: ['Entrega', 'assignment'], prova: ['Prova', 'quiz'], leitura: ['Leitura', 'menu_book'] };
+
+const S = { user: null, view: 'inicio', month: new Date(new Date().getFullYear(), new Date().getMonth(), 1), sel: todayISO(), courses: [], events: [], books: [] };
+const cById = id => S.courses.find(c => c.id === id);
+
+/* ---------- auth ---------- */
+let signup = false;
+$('#toggleAuth').onclick = () => { signup = !signup; $('#nameField').classList.toggle('hidden', !signup); $('#authBtn').textContent = signup ? 'Criar conta' : 'Entrar'; $('#toggleAuth').textContent = signup ? 'Já tenho conta' : 'Criar conta'; $('#aPass').autocomplete = signup ? 'new-password' : 'current-password'; $('#authMsg').textContent = ''; };
+$('#forgot').onclick = async () => { const email = $('#aEmail').value.trim(); if (!email) { $('#authMsg').textContent = 'Digite seu e-mail primeiro.'; return; } await sb.auth.resetPasswordForEmail(email, { redirectTo: HOME }); $('#authMsg').style.color = 'var(--primary)'; $('#authMsg').textContent = 'Se houver conta, enviamos um link para trocar a senha.'; };
+$('#authForm').onsubmit = async e => {
+  e.preventDefault(); const msg = $('#authMsg'); msg.style.color = 'var(--error)'; msg.textContent = '';
+  const email = $('#aEmail').value.trim(), password = $('#aPass').value;
+  if (signup) { const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: HOME, data: { name: $('#aName').value.trim() } } }); if (error) { msg.textContent = error.message; return; } if (data.session) return start(data.user); msg.style.color = 'var(--primary)'; msg.textContent = 'Conta criada. Confirme pelo link que enviamos ao seu e-mail.'; return; }
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { msg.textContent = /confirm/i.test(error.message) ? 'Confirme seu e-mail antes de entrar.' : 'E-mail ou senha incorretos.'; return; }
+  start(data.user);
+};
+$('#logout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+/* ---------- dados ---------- */
+async function loadAll() {
+  const [c, e, b] = await Promise.all([sb.from('est_courses').select('*').order('created_at'), sb.from('est_events').select('*').order('date').limit(3000), sb.from('est_books').select('*').order('created_at', { ascending: false })]);
+  for (const r of [c, e, b]) if (r.error) throw r.error;
+  S.courses = c.data; S.events = e.data; S.books = b.data;
+}
+async function go(v) {
+  S.view = v || S.view; $$('#rail .nav[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === S.view));
+  try { await loadAll(); await VIEWS[S.view](); } catch (e) { $('#view').innerHTML = `<div class="notice warn"><span class="ms">warning</span><div>Não consegui carregar seus dados. ${/relation|does not exist|schema cache/i.test(e.message || '') ? 'As tabelas do Estudapsi ainda não foram criadas no banco.' : esc(e.message || '')}</div></div>`; console.error(e); }
+  window.scrollTo(0, 0);
+}
+$$('#rail .nav[data-view]').forEach(b => b.onclick = () => go(b.dataset.view));
+async function start(user) {
+  S.user = user; $('#authView').classList.add('hidden'); $('#appView').classList.remove('hidden'); await go('inicio');
+}
+
+/* ---------- diálogos ---------- */
+function modal(html, wide) {
+  let d = $('#dlg'); if (d) d.remove(); d = document.createElement('dialog'); d.id = 'dlg'; if (wide) d.className = 'wide'; d.innerHTML = html; document.body.appendChild(d);
+  d.addEventListener('click', e => { if (e.target === d) d.close(); }); $$('[data-close]', d).forEach(b => b.onclick = () => d.close()); d.showModal(); return d;
+}
+
+/* ---------- INÍCIO ---------- */
+const evHtml = (e, opts = {}) => { const c = cById(e.course_id), k = KIND[e.kind] || KIND.aula, done = e.status === 'feito';
+  return `<div class="row" style="--c:${c ? c.color : COLORS[0]}"><div class="dot"></div><div class="t"><b class="${done ? 'done-t' : ''}">${esc(e.title || k[0])}</b><span>${k[0]} · ${esc(c ? c.name : 'Sem disciplina')}${opts.date ? ' · ' + fmtD(e.date) : ''}${c && e.kind === 'aula' && c.start_time ? ' · ' + c.start_time.slice(0, 5) : ''}</span></div>
+  ${e.kind !== 'aula' ? `<button class="check ${done ? 'on' : ''}" data-done="${e.id}" aria-label="Marcar como feito"><span class="ms">check</span></button>` : ''}</div>`; };
+async function toggleDone(id) { const e = S.events.find(x => x.id === id); const { error } = await sb.from('est_events').update({ status: e.status === 'feito' ? 'pendente' : 'feito' }).eq('id', id); if (error) return fail(error); await go(S.view); }
+function bindDone() { $$('[data-done]').forEach(b => b.onclick = () => toggleDone(b.dataset.done)); }
+async function viewInicio() {
+  const t = todayISO(), name = S.user.user_metadata?.name?.split(' ')[0];
+  const hoje = S.events.filter(e => e.date === t), prox = S.events.filter(e => e.kind !== 'aula' && e.status !== 'feito' && e.date >= t && e.date <= addDays(t, 21)).slice(0, 8);
+  const atras = S.events.filter(e => e.kind !== 'aula' && e.status !== 'feito' && e.date < t);
+  const semana = S.events.filter(e => e.date > t && e.date <= addDays(t, 7) && e.kind === 'aula');
+  $('#view').innerHTML = `<div class="hero"><h2>${name ? 'Oi, ' + esc(name) : 'Bem-vindo(a)'}!</h2><p>${hoje.length ? `Hoje você tem ${hoje.length} ${hoje.length > 1 ? 'compromissos' : 'compromisso'}.` : 'Hoje está livre de aulas e entregas.'}</p></div>
+  ${S.courses.length ? '' : `<div class="notice"><span class="ms">info</span><div><b>Comece pelas disciplinas.</b> Adicione cada uma, cole o cronograma que o professor passou e o calendário se preenche sozinho com aulas, entregas e provas.<div style="margin-top:8px"><button class="btn sm" id="goDisc">Adicionar disciplina</button></div></div></div>`}
+  <div class="kpis"><div class="kpi"><b>${S.courses.length}</b><span>disciplinas</span></div><div class="kpi"><b>${prox.length}</b><span>entregas e provas em 3 semanas</span></div><div class="kpi"><b style="color:${atras.length ? 'var(--error)' : 'inherit'}">${atras.length}</b><span>atrasadas</span></div><div class="kpi"><b>${semana.length}</b><span>aulas nos próximos 7 dias</span></div></div>
+  <div class="grid2"><section class="card elev"><div class="cardhead"><div class="title-m">Hoje</div></div>${hoje.length ? hoje.map(e => evHtml(e)).join('') : '<div class="empty small">Nada marcado para hoje.</div>'}</section>
+  <section class="card elev"><div class="cardhead"><div class="title-m">Próximas entregas e provas</div></div>${atras.length ? `<div class="badge b-err" style="margin-bottom:6px">${atras.length} atrasada${atras.length > 1 ? 's' : ''}</div>` + atras.slice(0, 3).map(e => evHtml(e, { date: 1 })).join('') : ''}${prox.length ? prox.map(e => evHtml(e, { date: 1 })).join('') : '<div class="empty small">Nenhuma entrega nas próximas semanas.</div>'}</section></div>`;
+  const g = $('#goDisc'); if (g) g.onclick = () => go('disciplinas'); bindDone();
+}
+
+/* ---------- CALENDÁRIO ---------- */
+async function viewCalendario() {
+  const m = S.month, first = new Date(m.getFullYear(), m.getMonth(), 1), start = new Date(first); start.setDate(1 - first.getDay());
+  const cells = []; for (let i = 0; i < 42; i++) { const d = new Date(start); d.setDate(start.getDate() + i); cells.push(d); }
+  const by = {}; S.events.forEach(e => (by[e.date] = by[e.date] || []).push(e));
+  const t = todayISO(), mn = m.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const selEv = (by[S.sel] || []).sort((a, b) => (a.kind === 'aula') - (b.kind === 'aula'));
+  $('#view').innerHTML = `<div class="topbar"><div class="display">Calendário</div><div class="sp"></div><div class="monthsel"><button class="icon-btn" id="pm" aria-label="Mês anterior"><span class="ms">chevron_left</span></button><strong>${mn}</strong><button class="icon-btn" id="nm" aria-label="Próximo mês"><span class="ms">chevron_right</span></button></div><button class="btn tonal sm" id="goToday">Hoje</button><button class="btn sm" id="addEv"><span class="ms">add</span>Entrega ou prova</button></div>
+  <div class="cal">${DOW.map(d => `<div class="dow">${d}</div>`).join('')}${cells.map(d => { const k = iso(d), L = (by[k] || []).sort((a, b) => (a.kind === 'aula') - (b.kind === 'aula'));
+    return `<button class="day ${d.getMonth() !== m.getMonth() ? 'out' : ''} ${k === t ? 'today' : ''} ${k === S.sel ? 'sel' : ''}" data-d="${k}"><span class="n">${d.getDate()}</span>${L.slice(0, 3).map(e => `<span class="ev ${e.kind === 'aula' ? 'aula' : ''} ${e.status === 'feito' ? 'done' : ''}" style="--c:${cById(e.course_id)?.color || COLORS[0]}">${esc(e.kind === 'aula' ? (cById(e.course_id)?.name || 'Aula') : (e.title || KIND[e.kind][0]))}</span>`).join('')}${L.length > 3 ? `<span class="more">+${L.length - 3}</span>` : ''}</button>`; }).join('')}</div>
+  <section class="card elev" style="margin-top:14px"><div class="cardhead"><div class="title-m">${cap(fmtD(S.sel))}</div></div>${selEv.length ? selEv.map(e => evHtml(e)).join('') : '<div class="empty small">Nada neste dia.</div>'}</section>`;
+  $('#pm').onclick = () => { S.month = new Date(m.getFullYear(), m.getMonth() - 1, 1); viewCalendario(); };
+  $('#nm').onclick = () => { S.month = new Date(m.getFullYear(), m.getMonth() + 1, 1); viewCalendario(); };
+  $('#goToday').onclick = () => { S.month = new Date(new Date().getFullYear(), new Date().getMonth(), 1); S.sel = todayISO(); viewCalendario(); };
+  $$('.day').forEach(b => b.onclick = () => { S.sel = b.dataset.d; viewCalendario(); });
+  $('#addEv').onclick = () => openEvent(null, S.sel); bindDone();
+}
+function openEvent(ev, date) {
+  const d = modal(`<form><div class="title-l">${ev ? 'Editar' : 'Nova'} entrega ou prova</div>
+  <div class="field"><label>Disciplina</label><select name="course"><option value="">Sem disciplina</option>${S.courses.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div>
+  <div class="grid2"><div class="field"><label>Tipo</label><select name="kind"><option value="entrega">Entrega</option><option value="prova">Prova</option><option value="leitura">Leitura</option></select></div><div class="field"><label>Data</label><input type="date" name="date" required value="${date || todayISO()}"></div></div>
+  <div class="field"><label>Título</label><input name="title" required maxlength="120" placeholder="Ex.: Resenha do capítulo 3"></div>
+  <div class="dact"><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div></form>`);
+  const f = $('form', d); if (ev) { f.course.value = ev.course_id || ''; f.kind.value = ev.kind; f.date.value = ev.date; f.title.value = ev.title || ''; }
+  f.onsubmit = async e => { e.preventDefault(); const row = { owner: S.user.id, course_id: f.course.value || null, kind: f.kind.value, date: f.date.value, title: f.title.value.trim() }; const { error } = await sb.from('est_events').insert(row); if (error) return fail(error); d.close(); S.sel = row.date; await go(S.view); snack('Salvo'); };
+}
+
+/* ---------- DISCIPLINAS ---------- */
+async function viewDisciplinas() {
+  const t = todayISO();
+  $('#view').innerHTML = `<div class="topbar"><div class="display">Disciplinas</div><div class="sp"></div><button class="btn" id="addC"><span class="ms">add</span>Nova disciplina</button></div>
+  ${S.courses.length ? `<div class="cgrid">${S.courses.map(c => { const ev = S.events.filter(e => e.course_id === c.id), aulas = ev.filter(e => e.kind === 'aula'), pend = ev.filter(e => e.kind !== 'aula' && e.status !== 'feito' && e.date >= t), prox = pend[0];
+    return `<article class="card elev course" style="--c:${c.color}"><h3>${esc(c.name)}</h3><div class="small muted">${[c.professor, (c.weekdays || []).map(d => DOW[d]).join(' · ') + (c.start_time ? ' ' + c.start_time.slice(0, 5) : ''), c.room].filter(x => x && x.trim()).map(esc).join(' · ')}</div>
+    <div class="stat"><div><b>${aulas.length}</b>aulas</div><div><b>${pend.length}</b>entregas e provas</div><div><b>${S.books.filter(b => b.course_id === c.id).length}</b>livros</div></div>
+    ${prox ? `<div class="small"><span class="badge b-warn">Próxima</span> ${esc(prox.title || KIND[prox.kind][0])} · ${fmtD(prox.date)}</div>` : ''}
+    <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn tonal sm" data-sched="${c.id}"><span class="ms">upload_file</span>Cronograma</button><button class="btn text sm" data-editc="${c.id}">Editar</button></div></article>`; }).join('')}</div>`
+  : '<div class="card elev"><div class="empty"><span class="ms">auto_stories</span>Cadastre suas disciplinas para montar o calendário.</div></div>'}`;
+  $('#addC').onclick = () => openCourse(null);
+  $$('[data-editc]').forEach(b => b.onclick = () => openCourse(cById(b.dataset.editc)));
+  $$('[data-sched]').forEach(b => b.onclick = () => openSchedule(cById(b.dataset.sched)));
+}
+function openCourse(c) {
+  const d = modal(`<form><div class="title-l">${c ? 'Editar' : 'Nova'} disciplina</div>
+  <div class="field"><label>Nome</label><input name="name" required maxlength="80" placeholder="Ex.: Psicologia do Desenvolvimento I"></div>
+  <div class="grid2"><div class="field"><label>Professor(a)</label><input name="professor" maxlength="80"></div><div class="field"><label>Sala / link</label><input name="room" maxlength="80"></div></div>
+  <div class="field"><label>Dias de aula</label><div class="weekdays" id="wd">${[1, 2, 3, 4, 5, 6, 0].map(i => `<button type="button" class="chip" data-w="${i}">${DOW[i]}</button>`).join('')}</div></div>
+  <div class="grid2"><div class="field"><label>Início da aula</label><input type="time" name="start_time"></div><div class="field"><label>Fim da aula</label><input type="time" name="end_time"></div></div>
+  <div class="grid2"><div class="field"><label>Início do semestre</label><input type="date" name="term_start"></div><div class="field"><label>Fim do semestre</label><input type="date" name="term_end"></div></div>
+  <div class="field"><label>Cor</label><div class="swatches" id="sws">${COLORS.map(x => `<button type="button" class="sw" data-c="${x}" style="--c:${x}" aria-label="Cor ${x}"></button>`).join('')}</div></div>
+  <div class="dact">${c ? '<button type="button" class="btn danger" id="delC" style="margin-right:auto">Excluir</button>' : ''}<button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div></form>`);
+  const f = $('form', d); let wds = new Set(c?.weekdays || []), color = c?.color || COLORS[S.courses.length % COLORS.length];
+  if (c) { f.name.value = c.name; f.professor.value = c.professor || ''; f.room.value = c.room || ''; f.start_time.value = (c.start_time || '').slice(0, 5); f.end_time.value = (c.end_time || '').slice(0, 5); f.term_start.value = c.term_start || ''; f.term_end.value = c.term_end || ''; }
+  const paint = () => { $$('#wd .chip', d).forEach(b => b.classList.toggle('on', wds.has(+b.dataset.w))); $$('#sws .sw', d).forEach(b => b.classList.toggle('on', b.dataset.c === color)); }; paint();
+  $$('#wd .chip', d).forEach(b => b.onclick = () => { const w = +b.dataset.w; wds.has(w) ? wds.delete(w) : wds.add(w); paint(); });
+  $$('#sws .sw', d).forEach(b => b.onclick = () => { color = b.dataset.c; paint(); });
+  const del = $('#delC', d); if (del) del.onclick = async () => { if (!confirm('Excluir esta disciplina e todas as aulas e entregas dela?')) return; const { error } = await sb.from('est_courses').delete().eq('id', c.id); if (error) return fail(error); d.close(); go('disciplinas'); };
+  f.onsubmit = async e => { e.preventDefault(); const row = { owner: S.user.id, name: f.name.value.trim(), professor: f.professor.value.trim() || null, room: f.room.value.trim() || null, weekdays: [...wds].sort(), start_time: f.start_time.value || null, end_time: f.end_time.value || null, term_start: f.term_start.value || null, term_end: f.term_end.value || null, color };
+    const { data, error } = c ? await sb.from('est_courses').update(row).eq('id', c.id).select().single() : await sb.from('est_courses').insert(row).select().single(); if (error) return fail(error); d.close(); await go('disciplinas'); snack('Disciplina salva'); if (!c) { if (confirm('Quer colar o cronograma desta disciplina agora?')) openSchedule(data); } };
+}
+
+/* ---------- CRONOGRAMA (colar, gerar, .ics) ---------- */
+const classify = t => { const s = (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); return /\b(prova|av\d?|avaliacao|exame|teste|p\d)\b|2a chamada|segunda chamada/.test(s) ? 'prova' : /entrega|trabalho|seminario|relatorio|resenha|artigo|prazo|atividade|portfolio|fichamento|projeto|postar|enviar/.test(s) ? 'entrega' : /leitura|ler\b|capitulo|cap\./.test(s) ? 'leitura' : 'aula'; };
+function parseText(txt, c) {
+  const yr = c?.term_start ? +c.term_start.slice(0, 4) : new Date().getFullYear(), out = [], topics = [];
+  txt.split(/\r?\n/).map(l => l.trim()).filter(Boolean).forEach(l => {
+    const m = l.match(/(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2,4}))?/);
+    if (m) { let y = m[3] ? +m[3] : yr; if (y < 100) y += 2000; const mo = +m[2], da = +m[1]; if (mo < 1 || mo > 12 || da < 1 || da > 31) { topics.push(l); return; }
+      let title = (l.slice(0, m.index) + ' ' + l.slice(m.index + m[0].length)).replace(/^\s*(a|até|ao)\s+\d{1,2}[\/.\-]\d{1,2}([\/.\-]\d{2,4})?/i, '').replace(/^[\s\-–—:|·.,]+|[\s\-–—:|·.,]+$/g, '').replace(/\s{2,}/g, ' ');
+      out.push({ on: true, date: y + '-' + pad(mo) + '-' + pad(da), kind: classify(title || l), title: title || 'Aula' }); }
+    else topics.push(l.replace(/^[\s\-–—•*\d.)]+/, '').trim());
+  });
+  return { dated: out, topics: topics.filter(Boolean) };
+}
+function classDates(c) { if (!c.term_start || !c.term_end || !(c.weekdays || []).length) return []; const r = []; for (let s = c.term_start; s <= c.term_end; s = addDays(s, 1)) if (c.weekdays.includes(parse(s).getDay())) r.push(s); return r; }
+function parseICS(txt) {
+  const un = txt.replace(/\r?\n[ \t]/g, ''), out = [];
+  (un.match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || []).forEach(b => { const ds = b.match(/DTSTART[^:\n]*:(\d{4})(\d{2})(\d{2})/), su = b.match(/SUMMARY[^:\n]*:(.*)/); if (!ds) return; const title = (su ? su[1] : 'Evento').replace(/\\,/g, ',').replace(/\\n/g, ' ').trim(); out.push({ on: true, date: ds[1] + '-' + ds[2] + '-' + ds[3], kind: classify(title), title }); });
+  return out;
+}
+function openSchedule(c) {
+  const d = modal(`<div class="dbody"><div class="title-l">Cronograma de ${esc(c.name)}</div><div class="small muted">Suba o cronograma do jeito que o professor entregou. Você confere tudo antes de salvar.</div>
+  <div class="tabs"><button class="tab on" data-t="txt">Colar texto</button><button class="tab" data-t="gen">Gerar aulas do semestre</button><button class="tab" data-t="ics">Arquivo .ics</button></div>
+  <div id="pTxt"><div class="field" style="margin-top:0"><label>Uma linha por item, com a data</label><textarea id="sTxt" rows="7" placeholder="05/03 Apresentação da disciplina&#10;12/03 Piaget e o desenvolvimento cognitivo&#10;19/03 Entrega: resenha do capítulo 2&#10;26/03 Prova 1"></textarea></div><div class="small muted" style="margin-top:6px">Reconheço datas como 05/03, 5/3/2026 e 05-03. Prova, entrega, leitura e aula são identificadas pela palavra na linha, e você pode corrigir na conferência. Linhas sem data viram temas das aulas, na ordem.</div><div class="dact" style="margin-top:12px"><button class="btn tonal" id="doParse">Conferir</button></div></div>
+  <div id="pGen" class="hidden"><div class="notice"><span class="ms">info</span><div>${classDates(c).length ? `Vou criar <b>${classDates(c).length} aulas</b> (${(c.weekdays || []).map(i => DOW[i]).join(', ')} de ${c.term_start.split('-').reverse().join('/')} a ${c.term_end.split('-').reverse().join('/')}). Se quiser, cole abaixo os temas, um por linha, na ordem das aulas.` : 'Para gerar as aulas, edite a disciplina e informe os dias da semana e o início e o fim do semestre.'}</div></div><div class="field"><label>Temas das aulas (opcional)</label><textarea id="gTxt" rows="5" placeholder="Apresentação&#10;Teorias do desenvolvimento&#10;..."></textarea></div><div class="dact"><button class="btn tonal" id="doGen" ${classDates(c).length ? '' : 'disabled'}>Conferir</button></div></div>
+  <div id="pIcs" class="hidden"><div class="field" style="margin-top:0"><label>Arquivo de calendário (.ics)</label><input type="file" id="icsF" accept=".ics,text/calendar"></div><div class="small muted">Serve para o que você exportar do Google Agenda, Outlook ou da própria faculdade, se houver exportação.</div></div>
+  <div id="pPrev"></div></div>`, true);
+  let tab = 'txt'; $$('.tab', d).forEach(b => b.onclick = () => { tab = b.dataset.t; $$('.tab', d).forEach(x => x.classList.toggle('on', x === b)); $('#pTxt', d).classList.toggle('hidden', tab !== 'txt'); $('#pGen', d).classList.toggle('hidden', tab !== 'gen'); $('#pIcs', d).classList.toggle('hidden', tab !== 'ics'); $('#pPrev', d).innerHTML = ''; });
+  const prev = rows => {
+    if (!rows.length) { $('#pPrev', d).innerHTML = '<div class="notice warn"><span class="ms">warning</span><div>Não encontrei nenhuma linha com data. Confira o formato (ex.: 05/03 Tema).</div></div>'; return; }
+    rows.sort((a, b) => a.date.localeCompare(b.date));
+    $('#pPrev', d).innerHTML = `<div class="small" style="margin-top:12px"><b>${rows.length}</b> itens para adicionar. Desmarque o que não quiser e corrija o que precisar.</div><div class="prev">${rows.map((r, i) => `<div class="pr"><input type="checkbox" data-i="${i}" ${r.on ? 'checked' : ''} aria-label="Incluir"><input type="date" data-f="date" data-i="${i}" value="${r.date}"><select data-f="kind" data-i="${i}">${Object.entries(KIND).map(([k, v]) => `<option value="${k}" ${r.kind === k ? 'selected' : ''}>${v[0]}</option>`).join('')}</select><input class="tt" type="text" data-f="title" data-i="${i}" value="${esc(r.title)}"></div>`).join('')}</div>
+    <div class="dact"><button class="btn text" data-close>Cancelar</button><button class="btn" id="doSave">Adicionar ao calendário</button></div>`;
+    $$('#pPrev [data-close]', d).forEach(b => b.onclick = () => d.close());
+    $$('#pPrev input[type=checkbox]', d).forEach(x => x.onchange = () => rows[+x.dataset.i].on = x.checked);
+    $$('#pPrev [data-f]', d).forEach(x => x.onchange = () => rows[+x.dataset.i][x.dataset.f] = x.value);
+    $('#doSave', d).onclick = async e => { e.target.disabled = true; const have = new Set(S.events.filter(x => x.course_id === c.id).map(x => x.date + '|' + (x.title || '').toLowerCase())); const ins = rows.filter(r => r.on && r.date && !have.has(r.date + '|' + r.title.toLowerCase())).map(r => ({ owner: S.user.id, course_id: c.id, date: r.date, kind: r.kind, title: r.title.trim() || KIND[r.kind][0] }));
+      if (!ins.length) { snack('Nada novo para adicionar'); d.close(); return; } for (let i = 0; i < ins.length; i += 200) { const { error } = await sb.from('est_events').insert(ins.slice(i, i + 200)); if (error) return fail(error); }
+      d.close(); S.month = new Date(parse(ins[0].date).getFullYear(), parse(ins[0].date).getMonth(), 1); await go('disciplinas'); snack(ins.length + ' itens adicionados'); };
+  };
+  $('#doParse', d).onclick = () => { const { dated, topics } = parseText($('#sTxt', d).value, c); const rows = [...dated];
+    if (topics.length && classDates(c).length) { const used = new Set(dated.filter(r => r.kind === 'aula').map(r => r.date)); const free = classDates(c).filter(x => !used.has(x)); topics.slice(0, free.length).forEach((t, i) => rows.push({ on: true, date: free[i], kind: classify(t) === 'aula' ? 'aula' : classify(t), title: t })); }
+    prev(rows); };
+  $('#doGen', d).onclick = () => { const tp = $('#gTxt', d).value.split(/\r?\n/).map(x => x.replace(/^[\s\-–—•*\d.)]+/, '').trim()).filter(Boolean); prev(classDates(c).map((x, i) => ({ on: true, date: x, kind: 'aula', title: tp[i] || 'Aula ' + (i + 1) }))); };
+  $('#icsF', d).onchange = async e => { const f = e.target.files[0]; if (!f) return; prev(parseICS(await f.text())); };
+}
+
+/* ---------- ENTREGAS ---------- */
+async function viewEntregas() {
+  const t = todayISO(), all = S.events.filter(e => e.kind !== 'aula'), pend = all.filter(e => e.status !== 'feito'), done = all.filter(e => e.status === 'feito');
+  const G = [['Atrasadas', pend.filter(e => e.date < t), 'b-err'], ['Esta semana', pend.filter(e => e.date >= t && e.date <= addDays(t, 7)), 'b-warn'], ['Depois', pend.filter(e => e.date > addDays(t, 7)), 'b-info'], ['Feitas', done.slice(-15).reverse(), 'b-ok']];
+  $('#view').innerHTML = `<div class="topbar"><div class="display">Entregas e provas</div><div class="sp"></div><button class="btn" id="addEv"><span class="ms">add</span>Nova</button></div>
+  ${all.length ? G.map(([l, L, b]) => L.length ? `<section class="card elev" style="margin-bottom:12px"><div class="cardhead"><span class="badge ${b}">${l}</span><span class="small muted">${L.length}</span></div>${L.map(e => evHtml(e, { date: 1 })).join('')}</section>` : '').join('') : '<div class="card elev"><div class="empty"><span class="ms">assignment</span>Suas entregas e provas aparecem aqui. Cole o cronograma de uma disciplina ou adicione uma.</div></div>'}`;
+  $('#addEv').onclick = () => openEvent(null, todayISO()); bindDone();
+}
+
+/* ---------- LIVROS ---------- */
+async function viewLivros() {
+  $('#view').innerHTML = `<div class="topbar"><div class="display">Livros e leituras</div><div class="sp"></div><button class="btn" id="addB"><span class="ms">add</span>Novo livro</button></div>
+  ${S.books.length ? S.books.map(b => { const pct = b.total ? Math.min(100, Math.round(b.read / b.total * 100)) : 0, c = cById(b.course_id);
+    return `<article class="card elev" style="margin-bottom:12px"><div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><div class="title-m">${esc(b.title)}</div><div class="small muted">${esc([b.author, c?.name].filter(Boolean).join(' · '))}</div></div><button class="icon-btn" data-editb="${b.id}" aria-label="Editar"><span class="ms">edit</span></button></div><div class="bar"><i style="width:${pct}%"></i></div><div style="display:flex;align-items:center;gap:8px"><span class="small muted">${b.read || 0} de ${b.total || '?'} páginas · ${pct}%</span><span style="flex:1"></span><button class="btn tonal sm" data-pg="${b.id}" data-n="10">+10 págs</button><button class="btn tonal sm" data-pg="${b.id}" data-n="30">+30</button></div></article>`; }).join('')
+  : '<div class="card elev"><div class="empty"><span class="ms">menu_book</span>Adicione os livros das disciplinas e acompanhe quanto já leu.</div></div>'}`;
+  $('#addB').onclick = () => openBook(null);
+  $$('[data-editb]').forEach(x => x.onclick = () => openBook(S.books.find(b => b.id === x.dataset.editb)));
+  $$('[data-pg]').forEach(x => x.onclick = async () => { const b = S.books.find(y => y.id === x.dataset.pg), n = Math.min(b.total || 99999, (b.read || 0) + +x.dataset.n); const { error } = await sb.from('est_books').update({ read: n }).eq('id', b.id); if (error) return fail(error); go('livros'); });
+}
+function openBook(b) {
+  const d = modal(`<form><div class="title-l">${b ? 'Editar' : 'Novo'} livro</div><div class="field"><label>Título</label><input name="title" required maxlength="140"></div><div class="grid2"><div class="field"><label>Autor(a)</label><input name="author" maxlength="100"></div><div class="field"><label>Disciplina</label><select name="course"><option value="">—</option>${S.courses.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div></div>
+  <div class="grid2"><div class="field"><label>Total de páginas</label><input type="number" name="total" min="0" max="5000"></div><div class="field"><label>Páginas lidas</label><input type="number" name="read" min="0" max="5000" value="0"></div></div>
+  <div class="dact">${b ? '<button type="button" class="btn danger" id="delB" style="margin-right:auto">Excluir</button>' : ''}<button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div></form>`);
+  const f = $('form', d); if (b) { f.title.value = b.title; f.author.value = b.author || ''; f.course.value = b.course_id || ''; f.total.value = b.total || ''; f.read.value = b.read || 0; }
+  const del = $('#delB', d); if (del) del.onclick = async () => { if (!confirm('Excluir este livro?')) return; await sb.from('est_books').delete().eq('id', b.id); d.close(); go('livros'); };
+  f.onsubmit = async e => { e.preventDefault(); const row = { owner: S.user.id, title: f.title.value.trim(), author: f.author.value.trim() || null, course_id: f.course.value || null, total: +f.total.value || 0, read: +f.read.value || 0 }; const { error } = b ? await sb.from('est_books').update(row).eq('id', b.id) : await sb.from('est_books').insert(row); if (error) return fail(error); d.close(); go('livros'); };
+}
+
+/* ===== AlicIA: pesquisa científica com estratégia booleana ===== */
+const AL_TERMS = [['ansiedade generalizada', 'generalized anxiety disorder'], ['ansiedade social', 'social anxiety disorder'], ['ansiedade', 'anxiety'], ['depressão', 'depression'], ['depressao', 'depression'], ['pânico', 'panic disorder'], ['panico', 'panic disorder'],
+  ['tept', 'posttraumatic stress disorder'], ['estresse pós-traumático', 'posttraumatic stress disorder'], ['trauma', 'trauma'], ['toc', 'obsessive-compulsive disorder'], ['obsessivo', 'obsessive-compulsive disorder'], ['tdah', 'ADHD'], ['atenção', 'attention deficit'], ['autismo', 'autism spectrum disorder'], ['tea', 'autism spectrum disorder'],
+  ['luto', 'grief'], ['borderline', 'borderline personality disorder'], ['limítrofe', 'borderline personality disorder'], ['automutilação', 'self-harm'], ['suicid', 'suicidal ideation'], ['insônia', 'insomnia'], ['insonia', 'insomnia'], ['sono', 'sleep'], ['burnout', 'burnout'], ['estresse', 'stress'],
+  ['autoestima', 'self-esteem'], ['perfeccionismo', 'perfectionism'], ['procrastinação', 'procrastination'], ['relacionamento', 'relationship difficulties'], ['conjugal', 'couple distress'], ['casal', 'couple therapy'], ['família', 'family'], ['familiar', 'family'], ['raiva', 'anger'], ['agressividade', 'aggression'],
+  ['compulsão alimentar', 'binge eating disorder'], ['bulimia', 'bulimia nervosa'], ['anorexia', 'anorexia nervosa'], ['alimentar', 'eating disorder'], ['álcool', 'alcohol use disorder'], ['alcool', 'alcohol use disorder'], ['drogas', 'substance use disorder'], ['dependência', 'substance use disorder'], ['fobia', 'specific phobia'],
+  ['bipolar', 'bipolar disorder'], ['psicose', 'psychosis'], ['esquizofrenia', 'schizophrenia'], ['identidade de gênero', 'gender identity'], ['luto', 'bereavement'], ['solidão', 'loneliness'], ['bullying', 'bullying'], ['escola', 'school'], ['adolescente', 'adolescents'], ['criança', 'children'], ['idoso', 'older adults']];
+const AL_MESH = { 'generalized anxiety disorder': 'Anxiety Disorders', 'social anxiety disorder': 'Phobia, Social', anxiety: 'Anxiety', depression: 'Depressive Disorder', 'panic disorder': 'Panic Disorder', 'posttraumatic stress disorder': 'Stress Disorders, Post-Traumatic', 'obsessive-compulsive disorder': 'Obsessive-Compulsive Disorder', ADHD: 'Attention Deficit Disorder with Hyperactivity', 'autism spectrum disorder': 'Autism Spectrum Disorder', grief: 'Grief', bereavement: 'Bereavement', 'borderline personality disorder': 'Borderline Personality Disorder', 'self-harm': 'Self-Injurious Behavior', 'suicidal ideation': 'Suicidal Ideation', insomnia: 'Sleep Initiation and Maintenance Disorders', burnout: 'Burnout, Professional', stress: 'Stress, Psychological', 'binge eating disorder': 'Binge-Eating Disorder', 'bulimia nervosa': 'Bulimia Nervosa', 'anorexia nervosa': 'Anorexia Nervosa', 'alcohol use disorder': 'Alcohol-Related Disorders', 'substance use disorder': 'Substance-Related Disorders', 'specific phobia': 'Phobic Disorders', 'bipolar disorder': 'Bipolar Disorder', schizophrenia: 'Schizophrenia', psychosis: 'Psychotic Disorders', loneliness: 'Loneliness', bullying: 'Bullying', 'self-esteem': 'Self Concept' };
+const AL_SYN = { anxiety: ['anxious', 'anxiet*'], depression: ['depressive symptoms', 'major depress*'], 'posttraumatic stress disorder': ['PTSD'], 'obsessive-compulsive disorder': ['OCD'], ADHD: ['attention deficit*'], 'autism spectrum disorder': ['autis*'], insomnia: ['sleep disturbance*'], burnout: ['occupational stress'], grief: ['prolonged grief', 'complicated grief'], 'binge eating disorder': ['binge eating'], 'self-harm': ['self-injur*', 'nonsuicidal self-injury'] };
+const AL_APP_MESH = { 'cognitive behavioral therapy': 'Cognitive Behavioral Therapy', 'acceptance and commitment therapy': 'Acceptance and Commitment Therapy', 'psychodynamic therapy': 'Psychotherapy, Psychodynamic', 'systemic family therapy': 'Family Therapy', 'dialectical behavior therapy': 'Dialectical Behavior Therapy', 'mindfulness-based': 'Mindfulness' };
+function alEnglish(txt) { const t = (txt || '').toLowerCase(); const out = []; for (const [pt, en] of AL_TERMS) if (t.includes(pt) && !out.includes(en)) out.push(en); const lat = t.match(/[a-z]{4,}(?:\s+[a-z]{3,}){0,2}/g); if (!out.length && /^[\x00-\x7f]*$/.test(t) && t.trim()) out.push(t.trim()); return out.filter((x, i) => !out.some((y, j) => j !== i && y.length > x.length && y.toLowerCase().includes(x.toLowerCase()))).slice(0, 4); }
+const AL_POP = ['adolescents', 'children', 'older adults'];
+const alLevel = pt => /meta-analysis/i.test(pt) ? [1, 'Meta-análise'] : /systematic review/i.test(pt) ? [2, 'Revisão sistemática'] : /randomized controlled/i.test(pt) ? [3, 'Ensaio randomizado'] : /guideline/i.test(pt) ? [2, 'Diretriz'] : /review/i.test(pt) ? [4, 'Revisão'] : [5, 'Estudo'];
+
+async function alSearch(terms, o) {
+  const grp = t => { const parts = []; if (AL_MESH[t]) parts.push('"' + AL_MESH[t] + '"[MeSH Terms]'); parts.push('"' + t + '"[tiab]'); (AL_SYN[t] || []).forEach(x => parts.push(x.includes('*') ? x + '[tiab]' : '"' + x + '"[tiab]')); return '(' + parts.join(' OR ') + ')'; };
+  const POPM = { adolescents: 'Adolescent', children: 'Child', 'older adults': 'Aged' };
+  const cond = terms.filter(t => !AL_POP.includes(t)), pop = terms.filter(t => AL_POP.includes(t));
+  if (!cond.length) cond.push(...pop.splice(0));
+  const core = (cond.length > 1 ? '(' + cond.map(grp).join(' OR ') + ')' : grp(cond[0])) + (pop.length ? ' AND (' + pop.map(t => '"' + POPM[t] + '"[MeSH Terms] OR "' + t + '"[tiab]').join(' OR ') + ')' : '');
+  const type = { rev: '(meta-analysis[pt] OR systematic[sb] OR review[pt])', ens: '(randomized controlled trial[pt] OR clinical trial[pt])', any: '' }[o.type];
+  const goal = { panorama: '', interv: '(psychotherapy OR "treatment outcome" OR intervention* OR efficacy)', mecan: '(etiology OR "risk factors" OR mechanisms OR "cognitive model")', instr: '(assessment OR psychometric OR screening OR validation OR scale*)' }[o.goal];
+  const q = [core, goal, type, o.extra ? '(' + o.extra + ')' : '', 'hasabstract', o.years ? '(' + (new Date().getFullYear() - o.years) + ':3000[dp])' : ''].filter(Boolean).join(' AND ') + ' NOT (animals[mh] NOT humans[mh])';
+  const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+  const sr = await (await fetch(base + 'esearch.fcgi?db=pubmed&retmode=json&retmax=15&sort=relevance&term=' + encodeURIComponent(q))).json();
+  const ids = sr.esearchresult?.idlist || [], total = sr.esearchresult?.count || 0; if (!ids.length) return { q, items: [], total };
+  const xml = await (await fetch(base + 'efetch.fcgi?db=pubmed&retmode=xml&id=' + ids.join(','))).text();
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const items = [...doc.querySelectorAll('PubmedArticle')].map(a => { const g = sel => a.querySelector(sel)?.textContent?.trim() || ''; const pts = [...a.querySelectorAll('PublicationType')].map(x => x.textContent).join('; '); const [lv, lab] = alLevel(pts);
+    const ab = [...a.querySelectorAll('Abstract AbstractText')].map(x => (x.getAttribute('Label') ? x.getAttribute('Label') + ': ' : '') + x.textContent).join('\n');
+    const au = [...a.querySelectorAll('Author')].map(x => ({ l: x.querySelector('LastName')?.textContent || x.querySelector('CollectiveName')?.textContent || '', i: (x.querySelector('Initials')?.textContent || '').split('').join('. ') + (x.querySelector('Initials') ? '.' : '') })).filter(x => x.l);
+    const doi = [...a.querySelectorAll('ArticleId')].find(x => x.getAttribute('IdType') === 'doi')?.textContent;
+    return { id: g('PMID'), title: g('ArticleTitle'), journal: g('Journal Title'), year: g('PubDate Year') || (g('PubDate MedlineDate') || '').slice(0, 4), au, abstract: ab, doi, level: lv, label: lab, url: 'https://pubmed.ncbi.nlm.nih.gov/' + g('PMID') + '/' }; });
+  items.sort((x, y) => x.level - y.level || (y.year || 0) - (x.year || 0)); return { q, items, total };
+}
+const apa = x => { const au = x.au.slice(0, 6).map(a => a.l + ', ' + a.i).join(', ') + (x.au.length > 6 ? ', et al.' : ''); return `${au} (${x.year}). ${x.title.replace(/\.$/, '')}. ${x.journal}.${x.doi ? ' https://doi.org/' + x.doi : ''}`; };
+async function viewAlicia() {
+  $('#view').innerHTML = `<div class="topbar"><div><div class="display">AlicIA</div><div class="muted">Busca científica com estratégia, para trabalhos e TCC. Ela mostra a conta que fez.</div></div></div>
+  <div class="al-grid"><section class="card elev"><form id="alForm">
+    <div class="field" style="margin-top:0"><label>Tema do trabalho</label><textarea id="alQ" rows="3" required maxlength="400" placeholder="Ex.: terapia cognitivo-comportamental para ansiedade social em adolescentes"></textarea></div>
+    <div class="field"><label>Termos em inglês (opcional, separe por vírgula)</label><input id="alEn" placeholder="Ex.: social anxiety, adolescents"></div>
+    <div class="field"><label>O que você precisa</label><div class="chips" id="alGoal">${[['panorama', 'Panorama geral'], ['interv', 'Intervenções'], ['mecan', 'Mecanismos e causas'], ['instr', 'Instrumentos e escalas']].map(([k, l], i) => `<button type="button" class="chip ${i ? '' : 'on'}" data-v="${k}">${l}</button>`).join('')}</div></div>
+    <div class="grid2"><div class="field"><label>Tipo de estudo</label><select id="alType"><option value="rev">Revisões e meta-análises</option><option value="ens">Ensaios clínicos</option><option value="any">Qualquer tipo</option></select></div><div class="field"><label>Período</label><select id="alYears"><option value="5">Últimos 5 anos</option><option value="10" selected>Últimos 10 anos</option><option value="0">Sem limite</option></select></div></div>
+    <div class="field"><label>Filtro extra em inglês (opcional)</label><input id="alExtra" placeholder='Ex.: adolescent OR "young adult"'></div>
+    <button class="btn" id="alGo" style="width:100%;margin-top:16px"><span class="ms">search</span>Buscar</button>
+  </form></section>
+  <section id="alOut"><div class="card elev"><div class="cardhead"><div class="title-m">Como montar uma busca boa</div></div><table class="ops"><tr><td>AND</td><td>Exige todos os termos. Estreita o resultado.</td></tr><tr><td>OR</td><td>Aceita qualquer sinônimo. Amplia o resultado.</td></tr><tr><td>NOT</td><td>Exclui um assunto (ex.: estudos em animais).</td></tr><tr><td>"frase exata"</td><td>Busca as palavras juntas, na ordem.</td></tr><tr><td>termo*</td><td>Truncamento: anxi* acha anxiety, anxious.</td></tr><tr><td>[MeSH Terms]</td><td>Descritor oficial do PubMed, que agrupa sinônimos.</td></tr><tr><td>[tiab]</td><td>Procura só no título e no resumo.</td></tr><tr><td>( )</td><td>Agrupa partes: (A OR B) AND C.</td></tr></table><div class="small muted" style="margin-top:10px">Dica: comece com as revisões. Elas já reúnem e comparam dezenas de estudos, e a lista de referências delas leva aos artigos originais.</div></div></section></div>`;
+  let goal = 'panorama'; $$('#alGoal .chip').forEach(c => c.onclick = () => { goal = c.dataset.v; $$('#alGoal .chip').forEach(x => x.classList.toggle('on', x === c)); });
+  $('#alForm').onsubmit = async e => {
+    e.preventDefault(); const out = $('#alOut'), btn = $('#alGo'); btn.disabled = true; out.innerHTML = '<div class="card elev"><div class="empty"><span class="ms">search</span>Buscando nas bases…</div></div>';
+    const txt = $('#alQ').value.trim(), manual = $('#alEn').value.split(',').map(x => x.trim()).filter(Boolean), terms = manual.length ? manual : alEnglish(txt);
+    try {
+      if (!terms.length) { out.innerHTML = '<div class="card elev"><div class="notice warn"><span class="ms">info</span><div>Não reconheci o tema. Preencha os termos em inglês (ex.: grief, adolescents) ou cite um tema como ansiedade, depressão, luto, TOC, insônia.</div></div></div>'; return; }
+      const r = await alSearch(terms, { goal, type: $('#alType').value, years: +$('#alYears').value, extra: $('#alExtra').value.trim() });
+      const enq = terms.map(t => '"' + t + '"').join(' OR '), ptq = encodeURIComponent(txt);
+      out.innerHTML = `<div class="card elev" style="margin-bottom:12px"><div class="cardhead"><div class="title-m">Estratégia usada</div><span class="badge b-info">${Number(r.total).toLocaleString('pt-BR')} resultados no total</span></div><code class="q">${esc(r.q)}</code><div class="small muted">Mostro os 15 mais relevantes, com revisões e meta-análises primeiro. Se vieram poucos, tire o filtro de tipo ou amplie o período. Se vieram muitos, acrescente um termo com AND.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><a class="btn tonal sm" target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(r.q)}"><span class="ms">open_in_new</span>PubMed</a><a class="btn tonal sm" target="_blank" rel="noopener" href="https://scholar.google.com/scholar?q=${encodeURIComponent('(' + enq + ')')}"><span class="ms">open_in_new</span>Google Acadêmico</a><a class="btn tonal sm" target="_blank" rel="noopener" href="https://search.scielo.org/?q=${ptq}"><span class="ms">open_in_new</span>SciELO (português)</a><a class="btn tonal sm" target="_blank" rel="noopener" href="https://pesquisa.bvsalud.org/portal/?q=${ptq}"><span class="ms">open_in_new</span>BVS</a></div></div>` +
+        (r.items.length ? r.items.map((x, i) => `<div class="al-res"><span class="badge ${x.level <= 2 ? 'b-ok' : 'b-neutral'}">${esc(x.label)}</span> <span class="m">${esc(x.year)}</span><h4>${esc(x.title)}</h4><div class="m">${esc(x.au.slice(0, 3).map(a => a.l).join(', ') + (x.au.length > 3 ? ' et al.' : ''))} · ${esc(x.journal)}</div>${x.abstract ? `<details><summary>Ler resumo</summary><p>${esc(x.abstract)}</p></details>` : ''}<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><a class="btn text sm" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="ms">open_in_new</span>PMID ${esc(x.id)}</a><button class="btn text sm" data-apa="${i}"><span class="ms">content_copy</span>Copiar referência (APA)</button></div></div>`).join('') : '<div class="card elev"><div class="empty"><span class="ms">search</span>Nada encontrado. Experimente trocar para "Qualquer tipo" ou ampliar o período.</div></div>') +
+        '<div class="small muted" style="margin:8px 0">Bases públicas. Confira a referência antes de citar, e leia o artigo, não só o resumo. A formatação APA é uma base, ajuste conforme a norma da sua faculdade (ABNT, se for o caso).</div>';
+      $$('[data-apa]', out).forEach(b => b.onclick = async () => { const t = apa(r.items[+b.dataset.apa]); try { await navigator.clipboard.writeText(t); snack('Referência copiada'); } catch (_) { prompt('Copie a referência:', t); } });
+    } catch (err) { out.innerHTML = '<div class="card elev"><div class="notice warn"><span class="ms">warning</span><div>Não consegui falar com as bases agora. Tente de novo em instantes.</div></div></div>'; console.error(err); }
+    finally { btn.disabled = false; }
+  };
+}
+
+const VIEWS = { inicio: viewInicio, calendario: viewCalendario, disciplinas: viewDisciplinas, entregas: viewEntregas, livros: viewLivros, alicia: viewAlicia };
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) start(session.user); else $('#authView').classList.remove('hidden');
+  sb.auth.onAuthStateChange((ev, s) => { if (ev === 'SIGNED_OUT') { $('#appView').classList.add('hidden'); $('#authView').classList.remove('hidden'); } });
+})();
+})();
+</script>
+</body>
+</html>
