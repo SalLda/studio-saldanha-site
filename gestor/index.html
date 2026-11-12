@@ -211,6 +211,11 @@ dialog h2{font-size:24px}
   .st{flex-basis:86px}
 }
 /* ===== v2 shell ===== */
+.kpi.go{cursor:pointer;transition:transform .12s,box-shadow .12s}.kpi.go:hover{transform:translateY(-2px)}
+.hero .kpi.go:after{content:'ver detalhes ›';display:block;font-size:12px;margin-top:8px;opacity:.7}
+.kpis3 .kpi.hi2{background:#1F1C17;border-color:#1F1C17}.kpis3 .kpi.hi2 span{color:#CFC6B2}.kpis3 .kpi.hi2 b{color:var(--amber)}
+.fx{margin-top:12px}.fxh{display:flex;justify-content:space-between;font-weight:600;font-size:13px;margin:12px 0 4px;padding-top:8px;border-top:1px solid var(--line)}.fxh:first-child{border-top:0;padding-top:0;margin-top:0}.fxh span{font-variant-numeric:tabular-nums}.fxh.tot{background:var(--bg3);border:0;border-radius:10px;padding:8px 10px}
+.fxr{display:flex;justify-content:space-between;gap:10px;padding:6px 0}.fxr b{display:block;font-weight:600;font-size:14px}.fxr .fa{font-weight:600;font-variant-numeric:tabular-nums}.fxr.prev{opacity:.75}.fxr.prev .fa{color:var(--amber-ink)}
 .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
 .hero .kpi{border-radius:18px;padding:18px 22px;box-shadow:var(--sh);background:#fff;border:1px solid var(--line)}
 .hero .kpi span{font-size:14px;font-weight:500}
@@ -1109,6 +1114,12 @@ function sums(m, scope = 'todos') {
 function balance() { const o = F.set.opening || { amount: 0, date: '1970-01-01' }; let b = +o.amount; F.ent.forEach(e => { if (e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (e.kind === 'in') b += +e.amount; else if (e.pay !== 'credito') b -= +e.amount; }); return b; }
 function fatura() { const o = F.set.fatura || { amount: 0, date: '1970-01-01' }; let f = +o.amount; F.ent.forEach(e => { if (e.kind === 'out' && e.status === 'pago' && e.pay === 'credito' && e.paid_on && e.paid_on >= o.date) f += +e.amount; }); return f; }
 function dueSoon(days) { const lim = iso(new Date(Date.now() + days * 864e5)); return F.ent.filter(e => e.kind === 'out' && e.status === 'previsto' && e.date <= lim).sort((a, b) => a.date.localeCompare(b.date)); }
+function fixosRows() {
+  const L = F.rec.filter(r => r.kind === 'in' && r.rule !== 'orcamento').sort((x, y) => (y.active - x.active) || (y.amount - x.amount)); const ativos = L.filter(r => r.active), prev = L.filter(r => !r.active);
+  const row = r => { const when = r.rule === 'dia_util' ? `dia ${r.day} útil` : `dia ${r.day}`; return `<div class="fxr ${r.active ? '' : 'prev'}"><div><b>${esc(r.name.replace(/ \(.*\)/, ''))}</b><span class="sub">${r.scope === 'pj' ? 'PJ' : 'PF'} · ${esc(r.category || '')} · ${when}${r.active ? '' : ' · previsão'}</span></div><span class="fa">${BRL(r.amount)}</span></div>`; };
+  const tA = ativos.reduce((a, r) => a + +r.amount, 0), tP = prev.reduce((a, r) => a + +r.amount, 0);
+  return `<div class="fxh">Já fixos <span>${BRL(tA)}</span></div>${ativos.map(row).join('')}${prev.length ? `<div class="fxh">Previsões, ainda não fechadas <span>+ ${BRL(tP)}</span></div>${prev.map(row).join('')}` : ''}<div class="fxh tot">Total se tudo fechar <span>${BRL(tA + tP)}</span></div>`;
+}
 function cardDates() { const c = F.set.cartao || { fecha: 29, vence: 5 }, n = new Date(); let cl = new Date(n.getFullYear(), n.getMonth(), c.fecha); if (cl < new Date(n.getFullYear(), n.getMonth(), n.getDate())) cl = new Date(n.getFullYear(), n.getMonth() + 1, c.fecha);
   let dv = new Date(cl.getFullYear(), cl.getMonth() + (c.vence <= c.fecha ? 1 : 0), c.vence); return { cl: iso(cl), dv: iso(dv) }; }
 function cardTxt() { const d = cardDates(); return `fecha ${fmtDm(d.cl)} · vence ${fmtDm(d.dv)}`; }
@@ -1207,12 +1218,12 @@ async function viewInicio() {
     const low = pend.reduce((m, x) => (STG[x.status]?.i ?? 99) < (STG[m.status]?.i ?? 99) ? x : m, pend[0]); return { l: `${STG[low.status]?.label || low.status} · ${p.length - pend.length}/${p.length} publicados`, k: low.status }; };
   $('#main').innerHTML = `<div class="wrap2">${pageHead('Oi, Matheus', new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }), `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button><button class="btn logoutm" id="lo2">Sair</button>`)}
   <div class="hero">
-    <div class="kpi bal"><span>Saldo na conta</span><b>${BRL(bal)}</b><em>${proj >= 0 ? 'Previsto para o fim do mês' : 'Previsto para o fim do mês, atenção'}: <strong class="${proj >= 0 ? '' : 'neg'}">${BRL(proj)}</strong></em></div>
-    <div class="kpi prev"><span>Gastos previstos de ${monthLabel(m0).split(' ')[0].toLowerCase()}</span><b>${BRL(a.outAll)}</b><em>já pago ${BRL(a.outPaid)} · falta pagar ${BRL(Math.max(0, a.outAll - a.outPaid))}</em><div class="bar dark"><i style="width:${Math.min(100, a.outAll ? a.outPaid / a.outAll * 100 : 0)}%"></i></div><em class="sm">PJ ${BRL(pj.outAll)} · PF ${BRL(pf.outAll)}</em></div>
+    <div class="kpi bal go" data-goto="financeiro:resumo" title="Ver saldo e movimentos"><span>Saldo na conta</span><b>${BRL(bal)}</b><em>${proj >= 0 ? 'Previsto para o fim do mês' : 'Previsto para o fim do mês, atenção'}: <strong class="${proj >= 0 ? '' : 'neg'}">${BRL(proj)}</strong></em></div>
+    <div class="kpi prev go" data-goto="financeiro:gastos" title="Ver gastos por categoria"><span>Gastos previstos de ${monthLabel(m0).split(' ')[0].toLowerCase()}</span><b>${BRL(a.outAll)}</b><em>já pago ${BRL(a.outPaid)} · falta pagar ${BRL(Math.max(0, a.outAll - a.outPaid))}</em><div class="bar dark"><i style="width:${Math.min(100, a.outAll ? a.outPaid / a.outAll * 100 : 0)}%"></i></div><em class="sm">PJ ${BRL(pj.outAll)} · PF ${BRL(pf.outAll)}</em></div>
   </div>
   <div class="kpis3">
-    <div class="kpi"><span>Faturamento do mês</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
-    <div class="kpi"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em></div>
+    <div class="kpi go" data-goto="financeiro:lanc"><span>Faturamento do mês</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
+    <div class="kpi go" data-goto="financeiro:lanc"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em></div>
   </div>
   <div class="cols2">
    <div class="card"><div class="row"><h2 class="h2">Contas dos próximos 7 dias</h2><div class="sp"></div><a href="#" data-go="financeiro">ver tudo</a></div>
@@ -1221,7 +1232,8 @@ async function viewInicio() {
    <div>
      <div class="card" style="margin-top:0"><h2 class="h2">Meta de fixos: ${BRL(mf.meta)} por mês</h2>
        <div class="bar big"><i style="width:${Math.min(100, mf.ativos / mf.meta * 100)}%"></i><u style="left:${Math.min(100, mf.ativos / mf.meta * 100)}%;width:${Math.min(100 - Math.min(100, mf.ativos / mf.meta * 100), mf.pot / mf.meta * 100)}%"></u></div>
-       <p class="sub" style="margin:8px 0 0">Fixos ativos ${BRL(mf.ativos)}. Com Psi 1 e Psi 2 fechados chega a ${BRL(mf.ativos + mf.pot)}${mf.falta ? `, ainda faltam ${BRL(mf.falta)} para a meta.` : ', meta batida.'}</p></div>
+       <div class="fx">${fixosRows()}</div>
+       <p class="sub" style="margin:10px 0 0">${mf.falta ? `Mesmo com Psi 1 e Psi 2 fechados, faltam ${BRL(mf.falta)} para a meta.` : 'Com Psi 1 e Psi 2 fechados a meta é batida.'}</p></div>
      <div class="card"><h2 class="h2">Próximas entradas</h2><div class="elist">${nextIns.length ? nextIns.map(e => entRow(e, false)).join('') : '<div class="empty">Sem entradas previstas.</div>'}</div></div>
    </div></div>
   <div class="cols2">
@@ -1231,6 +1243,7 @@ async function viewInicio() {
      ${S.clients.filter(c => (c.kind || 'cliente') !== 'prospect').map(c => { const st = stat(c); return `<button class="crow" data-cl="${c.id}">${avatar(c)}<div><b>${esc(c.name)}</b><span class="sub">${esc(st.l)}</span></div><span class="badge stg k-${st.k === 'none' ? 'pauta' : st.k}">›</span></button>`; }).join('') || '<div class="empty">Sem clientes.</div>'}</div>
   </div></div>`;
   bindEnt($('#main')); $('#lo2').onclick = () => $('#logout').click(); $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
+  $$('[data-goto]').forEach(c => c.onclick = () => { const [v, t] = c.dataset.goto.split(':'); F.ftab = t; F.scope = 'todos'; setView(v); });
   $$('[data-go]').forEach(a => a.onclick = ev => { ev.preventDefault(); setView(a.dataset.go); });
   $$('[data-cl]').forEach(b => b.onclick = () => { S.tab = b.dataset.cl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
   $('#setFat-x')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Dia do vencimento da fatura (AAAA-MM-DD):', todayS()); if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) { await saveSet('fatura_due', { date: v }); rerenderView(); } });
@@ -1242,7 +1255,7 @@ function taskRow(t) {
 
 // ---------- financeiro ----------
 function viewFin() {
-  const m = F.m, tabs = [['resumo', 'Resumo'], ['lanc', 'Lançamentos'], ['fixas', 'Contas fixas'], ['dividas', 'Dívidas e metas']];
+  const m = F.m, tabs = [['resumo', 'Resumo'], ['lanc', 'Lançamentos'], ['fixas', 'Contas fixas'], ['gastos', 'Gastos por categoria'], ['dividas', 'Dívidas e metas']];
   $('#main').innerHTML = `<div class="wrap2">${pageHead('Financeiro', 'Tudo que entra e sai, separado em PJ e pessoa física.', `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button>`)}
   <div class="row" style="margin:6px 0 14px"><div class="monthnav"><button class="btn small" id="fPrev">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="fNext">›</button></div><div class="sp"></div>
    <div class="seg" id="fScope">${[['todos', 'Tudo'], ['pj', 'PJ'], ['pf', 'Pessoa física']].map(([k, l]) => `<button type="button" data-s="${k}" class="${F.scope === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
@@ -1250,7 +1263,7 @@ function viewFin() {
   $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
   $('#fPrev').onclick = async () => { F.m = addMonths(F.m, -1); await finMonth(); viewFin(); }; $('#fNext').onclick = async () => { F.m = addMonths(F.m, 1); await finMonth(); viewFin(); };
   $$('#fScope [data-s]').forEach(b => b.onclick = () => { F.scope = b.dataset.s; viewFin(); }); $$('#fTabs [data-t]').forEach(b => b.onclick = () => { F.ftab = b.dataset.t; viewFin(); });
-  ({ resumo: finResumo, lanc: finLanc, fixas: finFixas, dividas: finDividas })[F.ftab]($('#fBody'));
+  ({ resumo: finResumo, lanc: finLanc, fixas: finFixas, gastos: finGastos, dividas: finDividas })[F.ftab]($('#fBody'));
 }
 async function finMonth() { try { const from = iso(F.m); if (!F.ent.some(e => e.date >= from.slice(0, 7) + '-01' && e.date <= from.slice(0, 7) + '-31')) { const to = iso(new Date(F.m.getFullYear(), F.m.getMonth() + 1, 0)); const r = await sb.from('fin_entries').select('*').gte('date', from).lte('date', to); if (r.data?.length) F.ent.push(...r.data.filter(x => !F.ent.some(y => y.id === x.id))); }
   if (F.m >= firstOfMonth(new Date())) await ensureEntries(F.m); } catch (e) { fail(e); } }
@@ -1277,6 +1290,18 @@ function finResumo(el) {
 const BK = [{ k: 'ess', l: 'Essenciais', d: 'moradia, mercado, contas, saúde' }, { k: 'est', l: 'Estilo de vida e trabalho', d: 'ferramentas, equipamento, lazer' }, { k: 'fut', l: 'Futuro', d: 'viagem e investimento' }];
 const ESS = ['moradia', 'contas', 'mercado', 'saúde', 'farmácia', 'transporte', 'dívidas', 'educação', 'pensão'], FUT = ['viagem', 'investimento', 'reserva'];
 function bucketOf(c) { const x = String(c || '').toLowerCase(); return ESS.includes(x) ? 'ess' : FUT.includes(x) ? 'fut' : 'est'; }
+function finGastos(el) {
+  const m = F.m, only = F.onlyPend; const E = monthEnt(m, F.scope).filter(e => e.kind === 'out');
+  const groups = {}; const G = c => groups[c || 'Sem categoria'] ||= { items: [], prev: 0, paid: 0, extra: [] };
+  E.forEach(e => { const g = G(e.category); g.items.push(e); g.prev += +e.amount; if (e.status === 'pago') g.paid += +e.amount; });
+  F.rec.filter(r => r.active && r.rule === 'orcamento' && r.kind === 'out' && (F.scope === 'todos' || r.scope === F.scope)).forEach(r => { const used = E.filter(e => e.category === r.category && e.scope === r.scope).reduce((a, e) => a + +e.amount, 0); const rest = Math.max(0, +r.amount - used); if (rest > 0) { const g = G(r.category); g.extra.push({ name: r.name + ' (orçamento restante)', amount: rest }); g.prev += rest; } });
+  const cats = Object.entries(groups).sort((a, b) => b[1].prev - a[1].prev); const tp = cats.reduce((a, [, g]) => a + g.prev, 0), tpd = cats.reduce((a, [, g]) => a + g.paid, 0);
+  const bn = { ess: 'Essenciais', est: 'Estilo de vida e trabalho', fut: 'Futuro' };
+  el.innerHTML = `<div class="kpis3" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px"><div class="kpi"><span>Previsto no mês</span><b>${BRL(tp)}</b></div><div class="kpi"><span>Já pago</span><b>${BRL(tpd)}</b></div><div class="kpi hi2"><span>Falta pagar</span><b>${BRL(Math.max(0, tp - tpd))}</b></div></div>
+   <div class="row" style="margin:6px 0 10px"><label class="sub" style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" id="onlyP" style="width:auto" ${only ? 'checked' : ''}> Mostrar só o que ainda falta pagar</label></div>
+   ${cats.map(([c, g]) => { const items = g.items.filter(e => !only || e.status === 'previsto'); const ex = g.extra; if (!items.length && !ex.length) return ''; return `<div class="card"><div class="row"><h2 class="h2">${esc(c)}</h2><span class="badge">${bn[bucketOf(c)]}</span><div class="sp"></div><span class="sub">pago ${BRL(g.paid)} · previsto ${BRL(g.prev)} · ${Math.round(g.prev / (tp || 1) * 100)}%</span></div><div class="bar dark"><i style="width:${g.prev ? g.paid / g.prev * 100 : 0}%"></i></div><div class="elist" style="margin-top:6px">${items.map(e => entRow(e)).join('')}${ex.map(x => `<div class="erow"><div class="ed">no mês</div><div class="en"><b>${esc(x.name)}</b><span class="sub">ainda vai sendo gasto</span></div><div class="ea">− ${BRL(x.amount)}</div></div>`).join('')}</div></div>`; }).join('') || '<div class="empty">Sem gastos neste mês.</div>'}`;
+  bindEnt(el); $('#onlyP').onchange = e => { F.onlyPend = e.target.checked; viewFin(); };
+}
 function finLanc(el) {
   const E = monthEnt(F.m, F.scope).sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
   const ins = E.filter(e => e.kind === 'in'), outs = E.filter(e => e.kind === 'out');
