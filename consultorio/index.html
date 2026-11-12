@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,movie,music_note,north_east,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sync,task_alt,timer,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_balance_wallet,account_circle,add,admin_panel_settings,apps,assignment_turned_in,auto_awesome,badge,bolt,bookmark_add,calendar_month,campaign,check,check_circle,chevron_left,chevron_right,close,content_copy,database,delete,description,done,download,edit_note,emoji_events,event,event_available,event_busy,event_repeat,expand_more,face_3,folder,forward_to_inbox,gavel,gpp_maybe,group,help,history,hourglass_top,info,lightbulb,link,local_fire_department,lock,login,logout,menu,more_horiz,movie,music_note,north_east,open_in_new,payments,person,person_add,photo_camera,play_arrow,print,psychology,receipt_long,savings,schedule,search,search_off,shield,smart_display,south_west,space_dashboard,star,sync,task_alt,timer,trending_down,tune,verified,videocam,warning,wb_sunny,wifi_off&display=block" rel="stylesheet">
 <style>
 :root{
   --primary:#2E6A55;--on-primary:#FFFFFF;--primary-container:#B2F0D4;--on-primary-container:#002116;
@@ -81,6 +81,8 @@ h1,h2,h3{margin:0;font-weight:500}
 .chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--outline-variant);background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--on-surface-variant);white-space:nowrap}
 .chip.on{background:var(--secondary-container);color:var(--on-secondary-container);border-color:transparent}
 
+.pmit{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;padding:10px 12px;border-radius:10px;font:inherit;font-size:14px;color:var(--on-surface);cursor:pointer;text-align:left}.pmit:hover{background:var(--surface-c)}.pmit.danger{color:var(--error)}.pmit .ms{font-size:20px}
+#popMenu{position:fixed;left:84px;bottom:14px;z-index:60;min-width:250px;background:var(--surface-c-lowest);border:1px solid var(--outline-variant);border-radius:16px;padding:6px;box-shadow:0 8px 28px rgba(0,0,0,.2)}#popMenu hr{border:0;border-top:1px solid var(--outline-variant);margin:4px 6px}
 .fpanel{display:flex;gap:18px;flex-wrap:wrap;align-items:center;background:var(--panel,var(--surface-c-low));border-radius:var(--r-md);padding:10px 14px;margin:-4px 0 14px}
 .fpanel .fg{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.fpanel .fg>b{font-size:12px;color:var(--on-surface-variant);font-weight:600;margin-right:2px}
 .cmpx{margin-top:14px;border-top:1px solid var(--outline-variant);padding-top:12px}
@@ -423,10 +425,7 @@ dialog form{padding:24px}
     <button class="nav" data-view="conquistas"><span class="pill"><span class="ms fill">emoji_events</span></span>Conquistas</button>
     <button class="nav" id="navMore" type="button"><span class="pill"><span class="ms">menu</span></span>Mais</button>
     <div class="sp"></div>
-    <button class="icon-btn logout hidden" id="railMode" title="Alternar entre modo administrador e modo usuário"><span class="ms">admin_panel_settings</span></button>
-    <button class="icon-btn logout" id="railHello" title="Recado do Matheus (feedback)" style="background:var(--primary-container);color:var(--primary)"><span class="ms fill">campaign</span></button>
-    <button class="icon-btn logout" id="railProfile" title="Meu perfil"><span class="ms">account_circle</span></button>
-    <button class="icon-btn logout" id="logout" title="Sair"><span class="ms">logout</span></button>
+    <button class="icon-btn logout" id="railMenu" title="Menu: tutorial, perfil, modo e sair" aria-haspopup="menu"><span class="ms">more_horiz</span></button>
   </nav>
   <main class="main"><div class="wrap" id="view"></div></main>
 </div>
@@ -802,13 +801,12 @@ $('#navMore').onclick = () => {
   let d = $('#dlgMore'); if (!d) { d = document.createElement('dialog'); d.id = 'dlgMore'; document.body.appendChild(d); d.addEventListener('click', e => { if (e.target === d) d.close(); }); }
   const items = $$('#rail .nav').filter(b => !b.hasAttribute('data-core') && b.id !== 'navMore' && !b.classList.contains('hidden'));
   d.innerHTML = '<div class="title-m">Menu</div><div class="moregrid">' + items.map(b => `<button class="moreit ${b.dataset.view === S.view ? 'on' : ''}" data-mv="${b.dataset.view}"><span class="ms">${b.querySelector('.ms').textContent}</span>${esc(b.textContent.replace(b.querySelector('.ms').textContent, '').trim())}</button>`).join('') +
-    (S.admin ? `<button class="moreit" id="mvMode"><span class="ms">${S.userMode ? 'person' : 'admin_panel_settings'}</span>${S.userMode ? 'Modo usuário' : 'Modo admin'}</button>` : '') + '<button class="moreit" id="mvTour"><span class="ms">help</span>Tutorial</button><button class="moreit" id="mvProf"><span class="ms">account_circle</span>Meu perfil</button><button class="moreit" id="mvHello"><span class="ms">campaign</span>Recado</button><button class="moreit danger" id="mvOut"><span class="ms">logout</span>Sair</button></div>';
+    (S.admin ? `<button class="moreit" id="mvMode"><span class="ms">${S.userMode ? 'person' : 'admin_panel_settings'}</span>${S.userMode ? 'Modo usuário' : 'Modo admin'}</button>` : '') + '<button class="moreit" id="mvTour"><span class="ms">help</span>Tutorial</button><button class="moreit" id="mvProf"><span class="ms">account_circle</span>Meu perfil</button><button class="moreit danger" id="mvOut"><span class="ms">logout</span>Sair</button></div>';
   $$('[data-mv]', d).forEach(b => b.onclick = () => { d.close(); go(b.dataset.mv); });
-  $('#mvProf', d).onclick = () => { d.close(); openProfile(); }; $('#mvTour', d).onclick = () => { d.close(); openTour(); }; const mm = $('#mvMode', d); if (mm) mm.onclick = () => { d.close(); toggleMode(); }; $('#mvHello', d).onclick = () => { d.close(); openHello(); };
+  $('#mvProf', d).onclick = () => { d.close(); openProfile(); }; $('#mvTour', d).onclick = () => { d.close(); openTour(); }; const mm = $('#mvMode', d); if (mm) mm.onclick = () => { d.close(); toggleMode(); };
   $('#mvOut', d).onclick = async () => { await sb.auth.signOut(); location.reload(); };
   d.showModal();
 };
-$('#logout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
 
 async function boot() {
   const { data: { session } } = await sb.auth.getSession();
@@ -834,17 +832,26 @@ async function start(user) {
 }
 function syncMode() {
   $('#navAdmin').classList.toggle('hidden', !S.admin || !!S.userMode);
-  const rm = $('#railMode'); rm.classList.toggle('hidden', !S.admin);
-  rm.querySelector('.ms').textContent = S.userMode ? 'person' : 'admin_panel_settings';
-  rm.title = S.userMode ? 'Modo usuário (toque para voltar ao admin)' : 'Modo administrador (toque para ver como usuário)';
-  rm.style.background = S.userMode ? 'var(--tertiary-container)' : 'var(--primary-container)';
 }
 function toggleMode() {
   S.userMode = !S.userMode; try { localStorage.setItem('cons.mode', S.userMode ? 'user' : 'admin'); } catch (_) {}
   syncMode(); snack(S.userMode ? 'Modo usuário: você vê o sistema como um usuário novo (2 exemplos)' : 'Modo administrador');
   S.rendered = false; go(S.userMode && S.view === 'admin' ? 'inicio' : S.view);
 }
-$('#railMode').onclick = toggleMode;
+function openRailMenu() {
+  let m = $('#popMenu'); if (m) { m.remove(); return; }
+  m = document.createElement('div'); m.id = 'popMenu'; m.setAttribute('role', 'menu');
+  const it = (id, ic, t, cls = '') => `<button class="pmit ${cls}" id="${id}" role="menuitem"><span class="ms">${ic}</span>${t}</button>`;
+  m.innerHTML = it('pmTour', 'help', 'Tutorial') + it('pmProf', 'account_circle', 'Meu perfil') + (S.admin ? it('pmMode', S.userMode ? 'person' : 'admin_panel_settings', S.userMode ? 'Modo usuário (voltar ao admin)' : 'Modo admin (ver como usuário)') : '') + '<hr>' + it('pmOut', 'logout', 'Sair', 'danger');
+  document.body.appendChild(m);
+  const close = () => { m.remove(); document.removeEventListener('click', away, true); };
+  const away = e => { if (!m.contains(e.target) && !e.target.closest('#railMenu')) close(); };
+  setTimeout(() => document.addEventListener('click', away, true), 0);
+  $('#pmTour').onclick = () => { close(); openTour(); }; $('#pmProf').onclick = () => { close(); openProfile(); };
+  const pm = $('#pmMode'); if (pm) pm.onclick = () => { close(); toggleMode(); };
+  $('#pmOut').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+}
+$('#railMenu').onclick = openRailMenu;
 /* ---------- tutorial ---------- */
 const TOUR = [
   ['psychology', 'Bem-vinda(o) ao Gestaopsi', '<p>Aqui você cuida do lado <b>administrativo</b> do consultório: agenda, cobranças, recibos e documentos.</p><ul><li><b>Nada clínico</b> fica aqui. Nada de prontuário, queixa detalhada ou evolução.</li><li>Colocamos <b>2 pacientes de exemplo</b> (um presencial e um online) para você explorar sem medo. Remova quando quiser em <b>Pacientes</b>.</li></ul>'],
@@ -854,7 +861,7 @@ const TOUR = [
   ['group', 'Pacientes', '<p>Cadastro só com dados administrativos: horário, valor, forma de cobrança (por sessão, mensal, quinzenal) e, se quiser, o link da pasta no seu <b>Drive</b>.</p><ul><li>Cada paciente tem o histórico de sessões e pagamentos.</li><li>Contratos e laudos ficam no seu Drive; aqui fica só o atalho.</li></ul>'],
   ['receipt_long', 'Financeiro e Recibos', '<p>Marque a sessão como <b>paga</b> e ela vai para <b>Recibos</b>.</p><ul><li>O recibo do Receita Saúde deve ser emitido na data do pagamento. O sistema te avisa dos atrasados.</li><li>Em <b>Financeiro</b> você lança as despesas do mês, inclusive aluguel de sala por hora.</li></ul>'],
   ['face_3', 'AlicIA e Documentos', '<p><b>AlicIA</b> busca a melhor evidência disponível (PubMed e Europe PMC) a partir de abordagem, objetivo e perfil do caso, usando só iniciais e rotina, nunca o nome do paciente.</p><p><b>Documentos</b> tem 14 modelos prontos: declarações, atestado, relatório, laudo, parecer, encaminhamentos, contrato, TCLE online e mais. Preenche com os dados do paciente e você copia, imprime ou baixa em Word.</p>'],
-  ['check_circle', 'Pronto para começar', '<p>Explore à vontade com os exemplos. Quando estiver tudo claro, cadastre seu primeiro paciente em <b>Pacientes</b>.</p><p class="small muted">Para rever este tutorial: ícone <b>?</b> no topo do Início, ou <b>Mais → Tutorial</b> no celular.</p>']
+  ['check_circle', 'Pronto para começar', '<p>Explore à vontade com os exemplos. Quando estiver tudo claro, cadastre seu primeiro paciente em <b>Pacientes</b>.</p><p class="small muted">Para rever este tutorial: ícone <b>?</b> no topo do Início, ou o menu <b>⋯</b> na barra lateral (no celular, <b>Mais → Tutorial</b>).</p><p style="margin-top:14px"><button class="btn tonal" id="tkHello" type="button"><span class="ms">campaign</span>Mandar um recado pro Matheus</button></p><p class="small muted">Sugestão, dúvida ou bug? Chega direto no WhatsApp dele.</p>']
 ];
 function openTour(i = 0) {
   let d = $('#dlgTour'); if (!d) { d = document.createElement('dialog'); d.id = 'dlgTour'; d.style.width = 'min(520px,calc(100vw - 24px))'; document.body.appendChild(d); d.addEventListener('cancel', () => endTour()); }
@@ -862,7 +869,7 @@ function openTour(i = 0) {
   d.innerHTML = `<div style="padding:26px 24px 20px"><div class="tourdots">${TOUR.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
     <div class="touric"><span class="ms fill">${ic}</span></div><div class="title-l" style="text-align:center;margin-bottom:10px">${t}</div><div class="tourbody">${b}</div>
     <div class="dact" style="justify-content:space-between;margin-top:22px"><button class="btn text" id="tkSkip" type="button">${i === last ? '' : 'Pular'}</button><div style="display:flex;gap:8px">${i ? '<button class="btn outlined" id="tkBack" type="button">Voltar</button>' : ''}<button class="btn" id="tkNext" type="button">${i === last ? 'Começar' : 'Próximo'}</button></div></div></div>`;
-  $('#tkSkip', d).onclick = endTour; $('#tkNext', d).onclick = () => i === last ? endTour() : openTour(i + 1); const bk = $('#tkBack', d); if (bk) bk.onclick = () => openTour(i - 1);
+  $('#tkSkip', d).onclick = endTour; $('#tkNext', d).onclick = () => i === last ? endTour() : openTour(i + 1); const bk = $('#tkBack', d); if (bk) bk.onclick = () => openTour(i - 1); const th = $('#tkHello', d); if (th) th.onclick = () => { endTour(); openHello(); };
   if (!d.open) d.showModal();
 }
 async function endTour() {
@@ -958,7 +965,7 @@ async function viewInicio() {
   const name = (S.profile?.name || S.user.email.split('@')[0]).split(' ')[0];
   const today = S.sessions.filter(s => s.date === todayISO());
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="icon-btn" id="topTour" title="Tutorial" style="background:var(--surface-c-highest)"><span class="ms">help</span></button>${S.admin ? `<button class="icon-btn" id="topMode" title="${S.userMode ? 'Modo usuário (toque para voltar ao admin)' : 'Modo administrador (toque para ver como usuário)'}" style="background:${S.userMode ? 'var(--tertiary-container)' : 'var(--primary-container)'};color:var(--on-surface)"><span class="ms fill">${S.userMode ? 'person' : 'admin_panel_settings'}</span></button>` : ''}<button class="icon-btn" id="topHello" title="Recado do Matheus" style="background:var(--primary-container);color:var(--primary)"><span class="ms fill">campaign</span></button><button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
+  <div class="topbar"><div><div class="display">Olá, ${esc(name)}</div><div class="muted">Resumo de ${monthName(S.month).toLowerCase()}</div></div><div class="sp"></div>${monthSel()}<button class="icon-btn" id="topTour" title="Tutorial" style="background:var(--surface-c-highest)"><span class="ms">help</span></button>${S.admin ? `<button class="icon-btn" id="topMode" title="${S.userMode ? 'Modo usuário (toque para voltar ao admin)' : 'Modo administrador (toque para ver como usuário)'}" style="background:${S.userMode ? 'var(--tertiary-container)' : 'var(--primary-container)'};color:var(--on-surface)"><span class="ms fill">${S.userMode ? 'person' : 'admin_panel_settings'}</span></button>` : ''}<button class="avatar" id="topProfile" title="Meu perfil" style="border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)">${esc(initials(S.profile?.name || S.user.email))}</button></div>
   <div class="kpis"></div>`;
   const act = S.patients.filter(p => p.status === 'ativo'), pausa = S.patients.filter(p => p.status === 'pausa').length;
   $('.kpis').insertAdjacentHTML('beforebegin', `<div class="hero2">
@@ -997,7 +1004,7 @@ async function viewInicio() {
   </section>
   <div class="foot">Não registre informações clínicas aqui. Este sistema é administrativo.</div>`);
   bindMonth();
-  $('#topProfile').onclick = openProfile; $('#topHello').onclick = openHello; $('#topTour').onclick = () => openTour(); const tm = $('#topMode'); if (tm) tm.onclick = toggleMode;
+  $('#topProfile').onclick = openProfile; $('#topTour').onclick = () => openTour(); const tm = $('#topMode'); if (tm) tm.onclick = toggleMode;
   $$('[data-to]').forEach(el => el.onclick = () => jump(el.dataset.to));
   $$('[data-go]').forEach(el => el.onclick = () => go(el.dataset.go));
   $$('[data-pat]').forEach(el => el.onclick = () => openPatient(pById(el.dataset.pat)));
@@ -1954,9 +1961,7 @@ function openProfile() {
   f.name.value = p.name || ''; f.crp.value = p.crp || ''; f.cpf.value = p.cpf || ''; f.session_minutes.value = p.session_minutes ?? 50;
   $('#dlgProfile').showModal();
 }
-$('#railProfile').onclick = openProfile;
 function openHello() { $('#helloWa').href = 'https://wa.me/5553991662471?text=' + encodeURIComponent('Oi, Matheus! Tenho um feedback sobre o Gestaopsi: '); $('#dlgHello').showModal(); }
-$('#railHello').onclick = openHello;
 
 /* ---------- CONQUISTAS (tempo e dinheiro poupados) ---------- */
 // Estimativas em minutos por ação, comparando com fazer à mão (app da Receita, planilha, agenda de papel, extrato)
