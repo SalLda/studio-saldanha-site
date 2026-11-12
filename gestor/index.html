@@ -996,6 +996,9 @@ async function loadV2() {
   const r = await Promise.all(q); r.forEach(x => { if (x.error) throw x.error; });
   [F.rec, F.ent, F.debts, , F.tasks, F.tpl, F.offers, F.leads, F.docs] = r.map(x => x.data || []);
   F.set = {}; (r[3].data || []).forEach(s => F.set[s.key] = s.value);
+  // saldo e fatura somam tudo que foi pago desde a data de referência; busca o que ficou de fora do período carregado
+  const ref = [F.set.opening?.date, F.set.fatura?.date].filter(Boolean).sort()[0];
+  if (ref && ref < from) { const x = await sb.from('fin_entries').select('*').lt('date', from).gte('paid_on', ref); if (x.error) throw x.error; F.ent.unshift(...(x.data || [])); }
 }
 async function saveSet(key, value) { F.set[key] = value; const { error } = await sb.from('fin_settings').upsert({ owner: S.user.id, key, value }, { onConflict: 'owner,key' }); if (error) fail(error); }
 
@@ -1116,11 +1119,14 @@ function budgetRem(m, scope = 'todos') { // orçamentos variáveis: o que ainda 
   return out;
 }
 function sums(m, scope = 'todos') {
-  const E = monthEnt(m, scope), b = budgetRem(m, scope); const s = (k, st) => E.filter(e => e.kind === k && (!st || e.status === st)).reduce((a, e) => a + +e.amount, 0);
+  const E = monthEnt(m, scope).filter(e => !isFat(e)), b = budgetRem(m, scope); const s = (k, st) => E.filter(e => e.kind === k && (!st || e.status === st)).reduce((a, e) => a + +e.amount, 0);
   return { inPaid: s('in', 'pago'), inAll: s('in') + b.in, outPaid: s('out', 'pago'), outAll: s('out') + b.out };
 }
 function balance() { const o = F.set.opening || { amount: 0, date: '1970-01-01' }; let b = +o.amount; F.ent.forEach(e => { if (e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (e.kind === 'in') b += +e.amount; else if (e.pay !== 'credito') b -= +e.amount; }); return b; }
-function fatura() { const o = F.set.fatura || { amount: 0, date: '1970-01-01' }; let f = +o.amount; F.ent.forEach(e => { if (e.kind === 'out' && e.status === 'pago' && e.pay === 'credito' && e.paid_on && e.paid_on >= o.date) f += +e.amount; }); return f; }
+const FAT = 'Fatura do cartão', isFat = e => e.category === FAT;
+function fatura() { const o = F.set.fatura || { amount: 0, date: '1970-01-01' }; let f = +o.amount; F.ent.forEach(e => { if (e.kind !== 'out' || e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (isFat(e)) f -= +e.amount; else if (e.pay === 'credito') f += +e.amount; }); return Math.max(0, f); }
+async function payFatura() { const v = prompt('Quanto você pagou da fatura (R$)?', String(fatura().toFixed(2)).replace('.', ',')); const n = money(v); if (!isFinite(n) || n <= 0) return;
+  const r = await sb.from('fin_entries').insert({ kind: 'out', scope: 'pf', name: 'Pagamento da fatura', amount: n, date: todayS(), status: 'pago', paid_on: todayS(), pay: 'pix', category: FAT }).select(); if (r.error) return fail(r.error); F.ent.push(r.data[0]); toast('Fatura paga: saiu da conta, não conta como gasto novo'); rerenderView(); }
 function dueSoon(days) { const lim = iso(new Date(Date.now() + days * 864e5)); return F.ent.filter(e => e.kind === 'out' && e.status === 'previsto' && e.date <= lim).sort((a, b) => a.date.localeCompare(b.date)); }
 function fixosRows() {
   const L = F.rec.filter(r => r.kind === 'in' && r.rule !== 'orcamento').sort((x, y) => (y.active - x.active) || (y.amount - x.amount)); const ativos = L.filter(r => r.active), prev = L.filter(r => !r.active);
@@ -1231,7 +1237,7 @@ async function viewInicio() {
   </div>
   <div class="kpis3">
     <div class="kpi go" data-goto="financeiro:lanc"><span>Faturamento do mês</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
-    <div class="kpi go" data-goto="financeiro:lanc"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em></div>
+    <div class="kpi go" data-goto="financeiro:lanc"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em><em><a href="#" id="payFat">paguei a fatura</a></em></div>
   </div>
   <div class="cols2">
    <div class="card"><div class="row"><h2 class="h2">Contas dos próximos 7 dias</h2><div class="sp"></div><a href="#" data-go="financeiro">ver tudo</a></div>
@@ -1252,6 +1258,7 @@ async function viewInicio() {
   </div></div>`;
   bindEnt($('#main')); $('#lo2').onclick = () => $('#logout').click(); $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
   $$('[data-goto]').forEach(c => c.onclick = () => { const [v, t] = c.dataset.goto.split(':'); F.ftab = t; F.scope = 'todos'; setView(v); });
+  $('#payFat')?.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); payFatura(); });
   $$('[data-go]').forEach(a => a.onclick = ev => { ev.preventDefault(); setView(a.dataset.go); });
   $$('[data-cl]').forEach(b => b.onclick = () => { S.tab = b.dataset.cl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
   $('#setFat-x')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Dia do vencimento da fatura (AAAA-MM-DD):', todayS()); if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) { await saveSet('fatura_due', { date: v }); rerenderView(); } });
@@ -1342,7 +1349,7 @@ function budCalc(m, scope) {
     for (const r of res) for (const x of r.subs) if ((x.s.names || []).some(k => hit(nz(k), text, words))) return x;
     for (const r of res) for (const x of r.subs) if ((x.s.cats || []).some(k => nz(k) === cat)) return x;
     return null; };
-  monthEnt(m, scope).filter(e => e.kind === 'out').forEach(e => { const x = find(e), v = +e.amount; if (x) { x.used += v; if (e.status === 'pago') x.paid += v; } else { loose.used += v; loose.items.push(e); if (e.status === 'pago') loose.paid += v; } });
+  monthEnt(m, scope).filter(e => e.kind === 'out' && !isFat(e)).forEach(e => { const x = find(e), v = +e.amount; if (x) { x.used += v; if (e.status === 'pago') x.paid += v; } else { loose.used += v; loose.items.push(e); if (e.status === 'pago') loose.paid += v; } });
   res.forEach(r => r.subs.forEach(x => { r.lim += x.lim; r.used += x.used; r.paid += x.paid; }));
   return { res, loose, lim: res.reduce((a, r) => a + r.lim, 0), used: res.reduce((a, r) => a + r.used, 0) + loose.used, paid: res.reduce((a, r) => a + r.paid, 0) + loose.paid };
 }
@@ -1383,7 +1390,7 @@ function finCaixas(el) {
   $('#addGrp').onclick = async () => { const G = JSON.parse(JSON.stringify(budGroups())); const n = prompt('Nome do novo grupo:'); if (!n) return; G.push({ id: 'g' + Date.now(), name: n.trim(), color: COLORS_BUD[G.length % COLORS_BUD.length], subs: [] }); await saveBud(G); };
 }
 function finGastos(el) {
-  const m = F.m, only = F.onlyPend; const E = monthEnt(m, F.scope).filter(e => e.kind === 'out');
+  const m = F.m, only = F.onlyPend; const E = monthEnt(m, F.scope).filter(e => e.kind === 'out' && !isFat(e));
   const groups = {}; const G = c => groups[c || 'Sem categoria'] ||= { items: [], prev: 0, paid: 0, extra: [] };
   E.forEach(e => { const g = G(e.category); g.items.push(e); g.prev += +e.amount; if (e.status === 'pago') g.paid += +e.amount; });
   F.rec.filter(r => r.active && r.rule === 'orcamento' && r.kind === 'out' && (F.scope === 'todos' || r.scope === F.scope)).forEach(r => { const used = E.filter(e => e.category === r.category && e.scope === r.scope).reduce((a, e) => a + +e.amount, 0); const rest = Math.max(0, +r.amount - used); if (rest > 0) { const g = G(r.category); g.extra.push({ name: r.name + ' (orçamento restante)', amount: rest }); g.prev += rest; } });
