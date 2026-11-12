@@ -86,8 +86,9 @@ main{padding:20px 0 90px}
 /* cards */
 .card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-top:16px;box-shadow:var(--sh)}
 .card>h2,.card .h2{font-size:21px}
-.hero{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
-.hero h1{font-size:32px;line-height:1.1}
+.chero{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center}
+.chero h1{font-size:32px;line-height:1.1}
+.chero .side{display:flex;flex-direction:column;gap:8px;align-items:stretch;min-width:200px}
 .links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .monthnav{display:flex;align-items:center;gap:8px}
 .monthnav strong{font-family:var(--serif);font-size:22px;min-width:190px;text-align:center}
@@ -200,8 +201,8 @@ dialog h2{font-size:24px}
 .empty{color:var(--faint);font-size:14px;padding:14px 0;text-align:center}
 .notice{display:flex;gap:12px;align-items:flex-start;background:var(--terra-soft);border-radius:14px;padding:12px 14px;margin-top:16px}
 @media (max-width:760px){
-  .hero{grid-template-columns:auto 1fr}.hero .side{grid-column:1/-1}
-  .hero h1{font-size:26px}
+  .chero{grid-template-columns:auto minmax(0,1fr)}.chero .side{grid-column:1/-1;min-width:0}
+  .chero h1{font-size:26px}
   .kpis{grid-template-columns:repeat(2,1fr)}
   .grid2,.fr,.fr3{grid-template-columns:1fr}
   .cal{display:none}.agenda{display:block}
@@ -257,6 +258,33 @@ dialog h2{font-size:24px}
 .dn{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:10px}.dn svg{width:150px;height:150px;flex:none;color:var(--ink,#1F1C17)}.leg{flex:1;min-width:150px;font-size:13px}.leg div{display:flex;gap:8px;align-items:center;margin:5px 0}.leg i{width:10px;height:10px;border-radius:3px;flex:none}.leg .v{margin-left:auto;color:var(--dim)}
 .dot{width:12px;height:12px;border-radius:4px;flex:none;margin-right:8px}.brow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) 175px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}.brow:hover{background:var(--bg2,#faf8f3)}.brow .num{text-align:right;white-space:nowrap}
 @media(max-width:600px){.brow{grid-template-columns:minmax(0,1fr) auto}.brow .num{width:auto}.brow .bar{grid-column:1/-1;order:3}}
+
+/* marca do cliente, meta, cronograma, botão flutuante */
+.bwrap{background:var(--bg);color:var(--text);font-family:var(--sans);border-radius:24px;padding:4px 0 20px;margin:-4px 0 0}
+.bwrap h1,.bwrap .h2,.bwrap h2{font-family:var(--serif);font-weight:var(--dw,600);font-style:var(--ds,normal);text-transform:var(--dt,none)}
+.bwrap .btn.primary{background:var(--btn,var(--text));border-color:var(--btn,var(--text))}
+.metaM{grid-column:1/-1;border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px}
+.metaM .row b{font-size:15px}.metaM .bar{margin-top:2px}.metaM .warn{color:var(--terra);font-size:13.5px}
+.sl{list-style:none;margin:10px 0 0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg2)}
+.sl li{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:4px 14px;align-items:center;padding:11px 14px;border-top:1px solid var(--line);cursor:pointer}
+.sl li:first-child{border-top:0}.sl li:hover{background:var(--bg3)}
+.sl li.free{opacity:.7;border-style:dashed}.sl li.free .t b{font-weight:500;color:var(--dim)}
+.sl .d{font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}.sl .d small{display:block;color:var(--dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.sl .t{min-width:0}.sl .t b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis}.sl .t span{display:block;color:var(--dim);font-size:13px}
+.stt{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:4px 9px;border-radius:6px;white-space:nowrap;background:var(--bg3);color:var(--dim)}
+.stt.done{background:var(--sage-soft);color:var(--sage)}.stt.ready{background:var(--amber-soft);color:var(--amber-ink)}.stt.wip{background:var(--blue-soft);color:var(--blue)}.stt.todo{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line2)}
+@media(max-width:600px){.sl li{grid-template-columns:64px minmax(0,1fr)}.sl .s{grid-column:2}}
+.fab{position:fixed;right:24px;bottom:24px;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:12px 20px;font-size:15px}
+@media(max-width:860px){.fab{bottom:86px;right:16px}}
+.cover{display:flex;gap:12px;align-items:center;margin-top:8px}.cover img{width:90px;aspect-ratio:9/16;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.prog-it{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:12px 0;border-top:1px solid var(--line)}.prog-it:first-of-type{border-top:0}
+.prog-it .acts{display:flex;gap:6px;flex-wrap:wrap}
+.gleg{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}.gleg span{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--dim)}.gleg i{width:10px;height:10px;border-radius:3px}
+.chip.g{border-left-width:4px}
+.ret{display:grid;gap:8px}.ret .it{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--bg3)}.ret .it.aj{background:var(--terra-soft)}.ret .it.ap{background:var(--sage-soft)}
+.swpv{border-radius:10px;overflow:hidden;background:var(--bg3);aspect-ratio:4/5;position:relative}
+.swpv img{width:100%;height:100%;object-fit:cover;display:block}.swpv iframe{width:100%;height:100%;border:0;display:block}
+.swf{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
 .kpis4+.cols2,.cols2+.cols2,.card+.cols2{margin-top:16px}
 .cols2>div>.card:first-child{margin-top:0}
 td,th{white-space:nowrap}
@@ -368,14 +396,15 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
 <dialog id="postDlg" class="wide"><form method="dialog" id="postForm">
   <div class="row"><h2 id="postTitle">Post</h2><div class="sp"></div><span id="postStageBadge"></span></div>
   <div class="fr3">
-    <div><label>Data de publicação</label><input type="date" name="publish_date"></div>
+    <div><label>Data de publicação</label><input type="date" name="publish_date"><div class="sub" style="font-size:12px">Vazia: a data entra sozinha quando o cliente aprovar a pauta.</div></div>
     <div><label>Formato</label><select name="format"><option value="reels">Reels</option><option value="carrossel">Carrossel</option><option value="estatico">Estático</option><option value="stories">Stories</option></select></div>
     <div><label>Etapa</label><select name="status"></select></div>
   </div>
   <label>Tema / pauta</label><input name="title" required maxlength="200" placeholder="A ideia em uma frase">
-  <div class="fr">
-    <div><label>Objetivo deste post</label><input name="objective" maxlength="200" placeholder="Ex.: atrair quem ainda não conhece (topo)"></div>
-    <div><label>Pilar</label><input name="pillar" maxlength="60" list="pillars" placeholder="Ex.: educativo, bastidor, prova"></div>
+  <div class="fr3">
+    <div><label>Objetivo deste post</label><input name="objective" maxlength="200" placeholder="Ex.: atrair quem ainda não conhece"></div>
+    <div><label>Pilar</label><input name="pillar" maxlength="60" list="pillars" placeholder="Ex.: educativo, bastidor"></div>
+    <div><label>Etapa do funil</label><select name="funnel"><option value="">Escolher</option><option value="topo">Topo</option><option value="meio">Meio</option><option value="fundo">Fundo</option></select></div>
   </div>
   <label>Como ajuda no objetivo do mês</label><textarea name="relation" rows="2" style="min-height:60px"></textarea>
   <div class="sect">Copy e roteiro</div>
@@ -388,6 +417,10 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
     <label style="margin:8px 0 0;display:flex;gap:6px;align-items:center;justify-content:center;font-size:12px"><input type="checkbox" id="compressVid" checked style="width:auto"> comprimir vídeo</label></div>
   <input type="file" id="mediaInput" accept="image/*,video/*" multiple class="hidden">
   <div id="upState" class="sub hidden" style="margin-top:8px"><span id="upMsg"></span><div class="prog"><i id="upBar"></i></div></div>
+  <div class="sect">Capa</div>
+  <div class="sub">Capa do Reels ou primeira imagem que aparece no perfil. O cliente vê no aprovador.</div>
+  <div class="cover" id="coverBox"></div>
+  <input type="file" id="coverInput" accept="image/*" class="hidden">
   <div class="sect">Publicação</div>
   <label>Observações internas</label><textarea name="notes" rows="2" style="min-height:60px"></textarea>
   <label>Link do post publicado</label><input name="permalink" type="url" placeholder="https://www.instagram.com/p/...">
@@ -407,13 +440,16 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
   <label>WhatsApp do cliente (com DDD)</label><input name="whatsapp" inputmode="tel" placeholder="53 99999-9999">
   <label>Link do Planejador do Meta Business Suite</label><input name="planner_url" type="url" placeholder="https://business.facebook.com/latest/content_calendar?asset_id=...">
   <div class="sub" style="margin-top:6px">Abra o Planejador do cliente no Meta Business Suite e cole aqui o endereço da página (ele leva o asset_id da conta certa).</div>
+  <div class="fr"><div><label>Identidade visual da aba</label><select name="brand"><option value="">Studio S (padrão)</option><option value="weinerth">Weinerth</option><option value="varela">Clínica Varela</option><option value="power">Powerhouse</option><option value="omat">omatsaldanha</option></select></div>
+    <div><label>Conteúdos por semana</label><input name="posts_per_week" type="number" min="0" max="14" placeholder="2"></div></div>
+  <label>Dias de postar</label><div class="chips" id="postDaysBox"></div>
   <div class="mact"><button type="button" class="btn danger" id="clientDel">Excluir</button><div class="sp"></div><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar</button></div>
 </form></dialog>
 
 <dialog id="swDlg"><form method="dialog" id="swForm">
   <h2>Formato no swipe file</h2>
   <div class="fr">
-    <div><label>Nicho</label><select name="niche"><option>Psicólogo</option><option>Médico veterinário</option><option>Médico</option><option>Geral</option></select></div>
+    <div><label>Nicho</label><select name="niche"><option>Veterinária/pets</option><option>Clínica/oftalmo</option><option>Psicólogos</option><option>Marca pessoal</option><option>Psicólogo</option><option>Médico veterinário</option><option>Médico</option><option>Geral</option></select></div>
     <div><label>Formato</label><select name="format"><option>Reels</option><option>Carrossel</option><option>Estático</option><option>Stories</option></select></div>
   </div>
   <label>Nome do formato</label><input name="title" required maxlength="160">
@@ -565,7 +601,7 @@ async function start(user) {
     if (!count && SEED_SWIPE.length) await sb.from('swipe').insert(SEED_SWIPE).throwOnError();
   } catch (e) { fail(e); }
   let saved = null; try { saved = localStorage.getItem('gestor.tab'); } catch (_) {}
-  S.tab = (saved && (saved === 'swipe' || S.clients.some(c => c.id === saved))) ? saved : (S.clients[0]?.id || 'swipe');
+  S.tab = (saved && (saved === 'swipe' || saved === 'geral' || S.clients.some(c => c.id === saved))) ? saved : (S.clients[0]?.id || 'swipe');
   await loadUnseen(); buildShell();
   let v = 'inicio'; try { v = localStorage.getItem('gestor.view') || 'inicio'; } catch (_) {}
   if (!NAVL[v]) v = 'inicio';
@@ -582,10 +618,11 @@ async function loadUnseen() {
 // ---------- abas ----------
 function renderTabs() {
   $('#tabs').innerHTML = S.clients.map(c => `<button class="tab ${S.tab === c.id ? 'on' : ''}" data-tab="${c.id}">${avatar(c)}${esc(c.name)}${S.unseen[c.id] ? `<span class="dotn">${S.unseen[c.id]}</span>` : ''}</button>`).join('')
+    + `<button class="tab plain ${S.tab === 'geral' ? 'on' : ''}" data-tab="geral">Calendário geral${totalUnseen() ? `<span class="dotn">${totalUnseen()}</span>` : ''}</button>`
     + `<button class="tab plain ${S.tab === 'swipe' ? 'on' : ''}" data-tab="swipe">Swipe file</button>`;
   $$('#tabs [data-tab]').forEach(b => b.onclick = () => { if (S.tab !== b.dataset.tab) { S.stage = null; window.scrollTo(0, 0); } S.tab = b.dataset.tab; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} renderTabs(); route(); });
 }
-function route() { if (S.tab === 'swipe') renderSwipe(); else renderClient(); }
+function route() { if (S.tab === 'swipe') renderSwipe(); else if (S.tab === 'geral') renderGeral(); else renderClient(); }
 async function rerender() { const y = scrollY; await renderClient(); scrollTo(0, y); }
 
 // ---------- cliente ----------
@@ -603,8 +640,14 @@ async function renderClient() {
       sb.from('approvals').select('*').eq('client_id', c.id).order('at', { ascending: false }).limit(200)
     ]);
     for (const x of [p, und, mt, pm, r, pl, ap]) if (x.error) throw x.error;
-    S.posts = p.data.concat(und.data); S.metrics = mt.data; S.prevMetrics = pm.data; S.report = r.data; S.plan = pl.data; S.approvals = ap.data;
+    S.posts = [...new Map(p.data.concat(und.data).map(x => [x.id, x])).values()]; S.metrics = mt.data; S.prevMetrics = pm.data; S.report = r.data; S.plan = pl.data; S.approvals = ap.data;
+    if (await autoDate(c)) return renderClient();
   } catch (e) { fail(e); return; }
+  loadBrandFont(c);
+  const tgt = targetOf(c), inMonth = S.posts.filter(x => x.publish_date && x.publish_date >= start && x.publish_date < end), undated = S.posts.filter(x => !x.publish_date);
+  const planned = inMonth.length + undated.length, falta = Math.max(0, tgt - planned);
+  const toSend = S.posts.filter(x => ['pauta', 'copy', 'revisao'].includes(x.status)).length;
+  const toProg = S.posts.filter(x => x.status === 'agendar');
   const counts = Object.fromEntries(STAGES.map(([k]) => [k, 0])); S.posts.forEach(x => counts[x.status] = (counts[x.status] || 0) + 1);
   const firstOpen = STAGES.find(([k]) => k !== 'publicado' && counts[k]);
   const curIdx = firstOpen ? STG[firstOpen[0]].i : (S.posts.length ? 10 : 0);
@@ -614,7 +657,8 @@ async function renderClient() {
   const waitingClient = S.posts.filter(x => CLIENT_STAGES.includes(x.status)).length;
   const list = S.posts.filter(x => !S.stage || x.status === S.stage);
   $('#main').innerHTML = `
-    <section class="card hero">
+<div class="bwrap" style="${brandVars(c)}">
+    <section class="card chero">
       ${avatar(c, 'xl')}
       <div style="min-width:0"><h1>${esc(c.name)}</h1><div class="sub">${esc([ig && '@' + ig, c.niche].filter(Boolean).join(' · ')) || 'Complete o perfil do cliente'}</div>
         <div class="links">
@@ -623,20 +667,27 @@ async function renderClient() {
           ${yt ? `<a class="btn small" href="https://www.youtube.com/@${esc(yt)}" target="_blank" rel="noopener">${ICON.yt}YouTube</a>` : ''}
           ${c.site ? `<a class="btn small" href="${esc(/^https?:/.test(c.site) ? c.site : 'https://' + c.site)}" target="_blank" rel="noopener">${ICON.web}Site</a>` : ''}
           ${c.whatsapp ? `<a class="btn small" href="${waLink(c.whatsapp, '')}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a>` : ''}
-          <a class="btn small amber" href="${esc(c.planner_url || 'https://business.facebook.com/latest/content_calendar')}" target="_blank" rel="noopener">${ICON.cal}Planejador do Meta</a>
+          <a class="btn small" href="${esc(metaPlanner(c))}" target="_blank" rel="noopener">${ICON.cal}Planejador do Meta</a>
         </div></div>
-      <div class="side" style="display:flex;flex-direction:column;gap:8px;align-items:stretch">
+      <div class="side">
         <button class="btn primary" id="shareLink">${ICON.link}Link de aprovação${waitingClient ? ` · ${waitingClient}` : ''}</button>
+        ${toSend ? `<button class="btn amber" id="sendAll">Enviar ${toSend} pra aprovação</button>` : ''}
+        ${toProg.length ? `<button class="btn" id="progPosts">Programar posts · ${toProg.length}</button>` : ''}
         <button class="btn small ghost" id="editClient">Editar cliente</button>
       </div>
+      ${tgt ? `<div class="metaM"><div class="row"><b>Meta de ${monthLabel(m).split(' ')[0].toLowerCase()}: ${planned} de ${tgt} conteúdos</b><span class="sp"></span><span class="sub">${c.posts_per_week} por semana</span></div>
+        <div class="bar"><i style="width:${Math.min(100, planned / tgt * 100)}%;${planned >= tgt ? 'background:var(--sage)' : ''}"></i></div>
+        ${falta ? `<div class="warn">Faltam ${falta} ${falta === 1 ? 'pauta' : 'pautas'} pra bater a meta. <a href="#" id="fillMeta">Criar agora</a></div>` : '<div class="sub">Meta do mês batida.</div>'}</div>` : ''}
     </section>
+
+    <section class="card"><div class="row"><h2 class="h2">Cronograma de ${monthLabel(m).split(' ')[0].toLowerCase()}</h2><span class="sp"></span><span class="sub">toque numa peça para abrir</span></div>
+      ${schedHtml(c, inMonth, undated, start, end)}</section>
 
     ${unseen.length ? `<div class="notice"><span style="font-size:20px">💬</span><div style="flex:1"><b>${unseen.length} resposta(s) nova(s) do cliente</b>
       <ul class="hist">${unseen.slice(0, 6).map(a => { const p = S.posts.find(x => x.id === a.post_id); return `<li class="${a.decision === 'ajuste' ? 'aj' : 'ap'}"><b>${esc(a.by_name || 'Cliente')}</b> ${a.decision === 'aprovado' ? 'aprovou' : 'pediu ajuste em'} ${esc(STG[a.stage + '_aprovar']?.label.toLowerCase().replace('aprovação d', '') || a.stage)} de “${esc(p?.title || 'post')}”${a.target && a.target !== 'geral' ? ' (' + esc(a.target) + ')' : ''}${a.comment ? `: ${esc(a.comment)}` : ''}</li>`; }).join('')}</ul></div><button class="btn small" id="seenAll">Ok, vi</button></div>` : ''}
 
     <div class="row" style="justify-content:space-between;margin-top:22px">
       <div class="monthnav"><button class="btn small" id="prevM" aria-label="Mês anterior">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="nextM" aria-label="Próximo mês">›</button></div>
-      <button class="btn amber" id="addPost">+ Pauta</button>
     </div>
 
     <section class="card obj"><div class="ic">🎯</div><div><div class="sub" style="font-weight:600;color:var(--text)">Objetivo de ${monthLabel(m).toLowerCase()}</div>
@@ -666,10 +717,15 @@ async function renderClient() {
       <div class="sub" style="margin:4px 0 8px">Leitura qualitativa e próximos passos.</div>
       <textarea id="reportBody" rows="8" placeholder="Escreva ou cole a análise do mês…">${esc(S.report?.body || '')}</textarea>
       <div class="mact" style="position:static"><button class="btn small primary" id="saveReport">Salvar análise</button></div>
-    </section>`;
+    </section></div>
+    <button class="btn amber fab" id="addPost">+ Pauta</button>`;
   $('#prevM').onclick = () => { S.month = addMonths(S.month, -1); renderClient(); };
   $('#nextM').onclick = () => { S.month = addMonths(S.month, 1); renderClient(); };
-  $('#addPost').onclick = () => openPost({ publish_date: iso(new Date() < addMonths(m, 1) && new Date() >= m ? new Date() : m), status: 'pauta' });
+  $('#addPost').onclick = () => openPost({ publish_date: null, status: 'pauta' });
+  const fm = $('#fillMeta'); if (fm) fm.onclick = e => { e.preventDefault(); openPost({ publish_date: null, status: 'pauta' }); };
+  const sa2 = $('#sendAll'); if (sa2) sa2.onclick = () => sendAllToClient(c, shareUrl);
+  const pg = $('#progPosts'); if (pg) pg.onclick = () => openProgram(c, toProg);
+  $$('[data-free]').forEach(el => el.onclick = () => openPost({ publish_date: el.dataset.free, status: 'pauta' }));
   $('#importCsv').onclick = () => $('#csvInput').click();
   $('#saveReport').onclick = saveReport;
   $('#editClient').onclick = () => openClient(c);
@@ -715,6 +771,122 @@ function shareApproval(c, url, quiet) {
   navigator.clipboard?.writeText(url).then(() => toast('Link de aprovação copiado'), () => prompt('Copie o link:', url));
 }
 
+
+// ---------- marca, meta, cronograma, datas automáticas, programar, calendário geral ----------
+const BRANDS = {
+  weinerth: { vars: { '--bg': '#EAF0F1', '--bg2': '#FFFFFF', '--bg3': '#DCE8EB', '--line': '#D0DDE0', '--line2': '#AFC3C9', '--text': '#073C4C', '--dim': '#4F6F7A', '--faint': '#7C979F', '--amber': '#7CC4D6', '--amber-ink': '#0A4B5D', '--amber-soft': '#D9EEF3', '--btn': '#0A4B5D', '--serif': '"Montserrat",system-ui,sans-serif', '--sans': '"Montserrat",system-ui,sans-serif', '--dw': '800' }, font: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800&display=swap', accent: '#0A4B5D' },
+  varela: { vars: { '--bg': '#ECF1F3', '--bg2': '#FFFFFF', '--bg3': '#DFE8ED', '--line': '#D3DDE3', '--line2': '#B4C4CE', '--text': '#0B2230', '--dim': '#53697A', '--faint': '#8197A6', '--amber': '#9CCBF0', '--amber-ink': '#1F6FB5', '--amber-soft': '#DDEBF8', '--btn': '#1F6FB5', '--serif': '"Newsreader",Georgia,serif', '--sans': '"Instrument Sans",system-ui,sans-serif', '--dw': '400' }, font: 'https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Instrument+Sans:wght@400;500;600&display=swap', accent: '#1F6FB5' },
+  power: { vars: { '--bg': '#FAF6F8', '--bg2': '#FFFFFF', '--bg3': '#F2E8ED', '--line': '#E4DBE0', '--line2': '#CDBFC7', '--text': '#151317', '--dim': '#6B6369', '--faint': '#978D94', '--amber': '#FF5FA8', '--amber-ink': '#D3156F', '--amber-soft': '#FBE1EE', '--btn': '#151317', '--serif': '"Barlow Condensed","Arial Narrow",sans-serif', '--sans': '"Barlow",system-ui,sans-serif', '--dw': '800', '--ds': 'italic', '--dt': 'uppercase' }, font: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800&family=Barlow:wght@400;500;600&display=swap', accent: '#D3156F' },
+  omat: { vars: {}, font: null, accent: '#E7B64A' }
+};
+const brandOf = c => BRANDS[c?.brand] || null;
+const brandVars = c => { const b = brandOf(c); return b ? Object.entries(b.vars).map(([k, v]) => `${k}:${v}`).join(';').replace(/"/g, "'") : ''; };
+const accentOf = c => brandOf(c)?.accent || '#E7B64A';
+function loadBrandFont(c) { const b = brandOf(c); if (!b || !b.font || document.querySelector(`link[data-bf="${c.brand}"]`)) return; const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = b.font; l.dataset.bf = c.brand; document.head.appendChild(l); }
+const targetOf = c => (+c.posts_per_week || 0) * 4;
+const daysOf = c => (c.post_days && c.post_days.length) ? c.post_days : (+c.posts_per_week >= 3 ? [1, 3, 5] : +c.posts_per_week === 2 ? [2, 6] : +c.posts_per_week === 1 ? [3] : []);
+const assetOf = c => ((c.planner_url || '').match(/asset_id=(\d+)/) || [])[1] || c.meta_asset || null;
+const metaPlanner = c => c.planner_url || 'https://business.facebook.com/latest/content_calendar';
+const metaComposer = c => { const a = assetOf(c); return a ? `https://business.facebook.com/latest/composer/?asset_id=${a}` : metaPlanner(c); };
+const DOW = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const FUN = { topo: 'topo de funil', meio: 'meio de funil', fundo: 'fundo de funil' };
+function stKind(st) { return st === 'publicado' || st === 'agendado' ? 'done' : CLIENT_STAGES.includes(st) ? 'ready' : st === 'pauta' ? 'todo' : 'wip'; }
+function schedHtml(c, inMonth, undated, start, end) {
+  const used = new Set(inMonth.map(x => x.publish_date)), today = todayS(), rows = [];
+  inMonth.forEach(x => rows.push({ d: x.publish_date, p: x }));
+  const dd = daysOf(c);
+  if (dd.length) { const a = pd(start), b = pd(end); for (let d = new Date(a); d < b; d.setDate(d.getDate() + 1)) { const k = iso(d); if (dd.includes(d.getDay()) && !used.has(k) && k >= today) rows.push({ d: k, free: true }); } }
+  rows.sort((x, y) => x.d.localeCompare(y.d) || (x.free ? 1 : -1));
+  const li = r => { const d = pd(r.d), date = `<div class="d"><small>${DOW[d.getDay()]}</small>${pad(d.getDate())}/${pad(d.getMonth() + 1)}</div>`;
+    if (r.free) return `<li class="free" data-free="${r.d}">${date}<div class="t"><b>Faixa livre</b><span>toque para criar uma pauta neste dia</span></div><div class="s"><span class="stt todo">Livre</span></div></li>`;
+    const x = r.p; return `<li data-post="${x.id}">${date}<div class="t"><b>${esc(x.title || '(sem título)')}</b><span>${esc([FMT[x.format], FUN[x.funnel], x.pillar].filter(Boolean).join(' · '))}</span></div><div class="s"><span class="stt ${stKind(x.status)}">${esc(STG[x.status]?.label || '')}</span></div></li>`; };
+  const und = undated.map(x => `<li data-post="${x.id}"><div class="d"><small>auto</small>a definir</div><div class="t"><b>${esc(x.title || '(sem título)')}</b><span>${esc([FMT[x.format], FUN[x.funnel]].filter(Boolean).join(' · '))} · ganha data quando o cliente aprovar</span></div><div class="s"><span class="stt ${stKind(x.status)}">${esc(STG[x.status]?.label || '')}</span></div></li>`);
+  return rows.length || und.length ? `<ol class="sl">${rows.map(li).join('')}${und.join('')}</ol>` : '<div class="empty">Nenhuma peça neste mês ainda. Use o botão + Pauta.</div>';
+}
+async function autoDate(c) {
+  const need = S.posts.filter(x => !x.publish_date && !['pauta', 'pauta_aprovar'].includes(x.status)); if (!need.length) return false;
+  const dd = daysOf(c); if (!dd.length) return false;
+  const { data } = await sb.from('posts').select('publish_date').eq('client_id', c.id).gte('publish_date', todayS());
+  const used = new Set((data || []).map(x => x.publish_date)); let d = pd(todayS()); d.setDate(d.getDate() + 1); let n = 0;
+  for (const x of need) {
+    for (let i = 0; i < 180 && !(dd.includes(d.getDay()) && !used.has(iso(d))); i++) d.setDate(d.getDate() + 1);
+    const k = iso(d); used.add(k); const { error } = await sb.from('posts').update({ publish_date: k }).eq('id', x.id); if (error) { fail(error); return false; } n++;
+  }
+  toast(`${n} ${n === 1 ? 'peça aprovada ganhou' : 'peças aprovadas ganharam'} data no cronograma`); return n > 0;
+}
+async function sendAllToClient(c, url) {
+  const L = S.posts.filter(x => ['pauta', 'copy', 'revisao'].includes(x.status)); if (!L.length) return;
+  if (!confirm(`Enviar ${L.length} ${L.length === 1 ? 'peça' : 'peças'} pro cliente aprovar? Ele aprova tudo de uma vez ou uma por uma.`)) return;
+  for (const x of L) { const to = NEXT[x.status], row = { status: to, needs_changes: false }; if (x.needs_changes) row.round = (x.round || 1) + 1; const { error } = await sb.from('posts').update(row).eq('id', x.id); if (error) return fail(error); }
+  toast('Enviado pra aprovação'); await renderClient(); shareApproval(c, url);
+}
+let progDlg = null;
+function openProgram(c, L) {
+  if (!progDlg) { progDlg = document.createElement('dialog'); progDlg.className = 'wide'; document.body.appendChild(progDlg); }
+  L = L.slice().sort((a, b) => String(a.publish_date).localeCompare(String(b.publish_date)));
+  const files = x => (x.media || []).map((m, i) => `<a class="btn small" href="${esc(m.url)}" download target="_blank" rel="noopener">${m.type === 'video' ? 'Vídeo' : 'Imagem ' + (i + 1)}</a>`).join('') + (x.cover ? `<a class="btn small" href="${esc(x.cover.url)}" download target="_blank" rel="noopener">Capa</a>` : '');
+  progDlg.innerHTML = `<form method="dialog"><div class="row"><h2>Programar posts · ${esc(c.name)}</h2><div class="sp"></div><button class="btn ghost" value="x">Fechar</button></div>
+    <p class="sub" style="margin:6px 0 10px">Abre o Meta Business Suite do cliente com a tua conta, uma aba por post. Em cada aba: cola a legenda, sobe o vídeo ou o carrossel e a capa, e agenda no dia indicado. Se só abrir uma aba, permite pop-ups de omatsaldanha.com no Chrome (ícone na barra de endereço) e clica de novo.</p>
+    <div class="row" style="gap:8px;margin-bottom:6px"><button type="button" class="btn amber" id="openAll">Abrir ${L.length} ${L.length === 1 ? 'aba' : 'abas'} no Meta</button><a class="btn small" href="${esc(metaPlanner(c))}" target="_blank" rel="noopener">Abrir Planejador</a></div>
+    ${L.map(x => `<div class="prog-it"><div><b>${x.publish_date ? fmtD(x.publish_date) : 'Sem data'}</b> · ${esc(x.title)} <span class="sub">${esc(FMT[x.format] || '')}</span></div>
+      <div class="acts"><button type="button" class="btn small" data-cp="${x.id}">Copiar legenda</button>${files(x)}<a class="btn small" href="${esc(metaComposer(c))}" target="_blank" rel="noopener">Abrir no Meta</a><button type="button" class="btn small primary" data-agd="${x.id}">Agendei ✓</button></div></div>`).join('')}</form>`;
+  progDlg.querySelector('#openAll').onclick = () => { let ok = 0; L.forEach((x, i) => { const w = window.open(metaComposer(c), 'meta_' + x.id); if (w) ok++; }); toast(ok === L.length ? `${ok} abas abertas` : `Abriu ${ok} de ${L.length}. Permite pop-ups e clica de novo.`); };
+  progDlg.querySelectorAll('[data-cp]').forEach(b => b.onclick = () => { const x = L.find(y => y.id === b.dataset.cp); navigator.clipboard?.writeText(x.copy || '').then(() => toast('Legenda copiada'), () => prompt('Copie a legenda:', x.copy || '')); });
+  progDlg.querySelectorAll('[data-agd]').forEach(b => b.onclick = async () => { const { error } = await sb.from('posts').update({ status: 'agendado' }).eq('id', b.dataset.agd); if (error) return fail(error); b.closest('.prog-it').style.opacity = .45; b.disabled = true; b.textContent = 'Agendado'; });
+  progDlg.addEventListener('close', () => rerender(), { once: true });
+  progDlg.showModal();
+}
+function renderCover() {
+  const box = $('#coverBox'); if (!box) return;
+  box.innerHTML = cover ? `<img src="${esc(cover.url)}" alt="Capa"><div style="display:grid;gap:6px"><button type="button" class="btn small" id="coverPick">Trocar capa</button><button type="button" class="btn small danger" id="coverRm">Remover</button></div>` : `<button type="button" class="btn small" id="coverPick">+ Subir capa</button>`;
+  $('#coverPick').onclick = () => $('#coverInput').click();
+  const rm = $('#coverRm'); if (rm) rm.onclick = async () => { if (!confirm('Remover a capa?')) return; if (cover.path) await sb.storage.from('media').remove([cover.path]); cover = null; renderCover(); if (editingPost) await savePost(false); };
+}
+$('#coverInput').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (!(await savePost(false))) return;
+  try { const out = await GMedia.compressImage(f); const path = `${S.tab}/${editingPost.id}/cover-${Date.now()}.jpg`;
+    const { error } = await sb.storage.from('media').upload(path, out.blob, { contentType: 'image/jpeg', cacheControl: '31536000', upsert: false }); if (error) throw error;
+    if (cover?.path) await sb.storage.from('media').remove([cover.path]);
+    cover = { url: sb.storage.from('media').getPublicUrl(path).data.publicUrl, path }; renderCover(); await savePost(false); toast('Capa salva');
+  } catch (err) { fail(err); }
+};
+let editDays = [];
+function drawDays() { const box = $('#postDaysBox'); if (!box) return; box.innerHTML = DOW.map((d, i) => `<button type="button" class="chip2 ${editDays.includes(i) ? 'on' : ''}" data-dw="${i}">${d}</button>`).join(''); box.querySelectorAll('[data-dw]').forEach(b => b.onclick = () => { const i = +b.dataset.dw; editDays = editDays.includes(i) ? editDays.filter(x => x !== i) : [...editDays, i]; drawDays(); }); }
+const totalUnseen = () => Object.values(S.unseen || {}).reduce((a, n) => a + n, 0);
+async function renderGeral() {
+  const m = S.month, start = iso(m), end = iso(addMonths(m, 1));
+  let P = [], R = [];
+  try {
+    const [a, b] = await Promise.all([sb.from('posts').select('id,client_id,title,format,status,publish_date').gte('publish_date', start).lt('publish_date', end).order('publish_date'),
+      sb.from('approvals').select('id,client_id,post_id,decision,comment,target,by_name,at,stage,posts(title)').eq('seen', false).order('at', { ascending: false }).limit(40)]);
+    if (a.error) throw a.error; P = a.data || []; R = b.data || [];
+  } catch (e) { return fail(e); }
+  const cl = id => S.clients.find(x => x.id === id) || {};
+  const byDay = {}; P.forEach(x => (byDay[x.publish_date] = byDay[x.publish_date] || []).push(x));
+  const first = new Date(m), sd = (first.getDay() + 6) % 7, gs = new Date(m.getFullYear(), m.getMonth(), 1 - sd), today = todayS();
+  const gchip = x => { const c = cl(x.client_id); return `<button type="button" class="chip g k-${x.status}" data-gp="${x.id}" data-gc="${x.client_id}" style="border-left-color:${accentOf(c)}" title="${esc((c.name || '') + ' · ' + (STG[x.status]?.label || ''))}"><span class="fmt">${esc(initials(c.name))}</span>${esc(x.title || '(sem título)')}</button>`; };
+  let cal = '<div class="cal">' + ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => `<div class="wd">${d}</div>`).join('');
+  for (let i = 0; i < 42; i++) { const d = new Date(gs.getFullYear(), gs.getMonth(), gs.getDate() + i), k = iso(d); if (i >= 35 && d.getMonth() !== m.getMonth()) break;
+    cal += `<div class="day ${d.getMonth() !== m.getMonth() ? 'out' : ''} ${k === today ? 'today' : ''}"><span class="n">${d.getDate()}</span>${(byDay[k] || []).map(gchip).join('')}</div>`; }
+  cal += '</div>';
+  const days = Object.keys(byDay).sort();
+  const ag = '<div class="agenda">' + (days.length ? days.map(k => { const d = pd(k); return `<div class="it"><div class="d">${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' })}</div><div style="flex:1;display:grid;gap:6px">${byDay[k].map(gchip).join('')}</div></div>`; }).join('') : '<div class="empty">Nenhum post com data neste mês.</div>') + '</div>';
+  const per = S.clients.filter(c => targetOf(c)).map(c => { const n = P.filter(x => x.client_id === c.id).length, t = targetOf(c); return `<span><i style="background:${accentOf(c)}"></i>${esc(c.name)} ${n}/${t}</span>`; }).join('');
+  $('#main').innerHTML = `
+    <div class="row" style="justify-content:space-between"><div><h1 style="font-size:30px">Calendário geral</h1><div class="sub">Todos os clientes e conteúdos a postar.</div></div>
+      <div class="monthnav"><button class="btn small" id="gPrev">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="gNext">›</button></div></div>
+    ${R.length ? `<section class="card"><div class="row"><h2 class="h2">Retornos dos clientes</h2><span class="sp"></span><button class="btn small ghost" id="gSeen">Marcar tudo como visto</button></div>
+      <div class="ret" style="margin-top:10px">${R.map(a => `<div class="it ${a.decision === 'ajuste' ? 'aj' : 'ap'}"><div style="flex:1"><b>${esc(cl(a.client_id).name || '')}</b> · ${a.decision === 'aprovado' ? 'aprovou' : 'pediu ajuste em'} ${esc(a.stage === 'pauta' ? 'pauta' : a.stage === 'copy' ? 'copy' : 'post')}: ${esc(a.posts?.title || '')}${a.comment ? `<div class="sub">${esc(a.comment)}</div>` : ''}</div><button class="btn small" data-goc="${a.client_id}">Abrir</button></div>`).join('')}</div></section>` : ''}
+    <section class="card"><div class="gleg">${per || '<span>Defina os conteúdos por semana de cada cliente em Editar cliente.</span>'}</div>${cal}${ag}</section>`;
+  $('#gPrev').onclick = () => { S.month = addMonths(S.month, -1); renderGeral(); };
+  $('#gNext').onclick = () => { S.month = addMonths(S.month, 1); renderGeral(); };
+  const gs2 = $('#gSeen'); if (gs2) gs2.onclick = async () => { await sb.from('approvals').update({ seen: true }).eq('seen', false); S.unseen = {}; renderTabs(); renderGeral(); };
+  const go = (cid, pid) => { S.tab = cid; try { localStorage.setItem('gestor.tab', cid); } catch (_) {} renderTabs(); renderClient().then(() => { if (pid) { const p = S.posts.find(x => x.id === pid); if (p) openPost(p); } }); window.scrollTo(0, 0); };
+  $$('[data-gp]').forEach(b => b.onclick = () => go(b.dataset.gc, b.dataset.gp));
+  $$('[data-goc]').forEach(b => b.onclick = () => go(b.dataset.goc));
+}
+
 // ---------- calendário ----------
 function renderCalendar() {
   const m = S.month, first = new Date(m), startDow = (first.getDay() + 6) % 7;
@@ -739,13 +911,14 @@ function chip(p) { return `<button type="button" class="chip k-${p.status}" data
 // ---------- post (diálogo) ----------
 const postDlg = $('#postDlg'), postForm = $('#postForm');
 postForm.status.innerHTML = STAGES.map(([k, l]) => `<option value="${k}">${l}</option>`).join('');
-let editingPost = null, media = [];
+let editingPost = null, media = [], cover = null;
 function openPost(p) {
   editingPost = p && p.id ? p : null; media = [...(p?.media || [])];
   $('#postTitle').textContent = editingPost ? 'Editar peça' : 'Nova pauta';
   postForm.reset();
   postForm.publish_date.value = p?.publish_date || ''; postForm.format.value = p?.format || 'carrossel';
-  ['title', 'objective', 'pillar', 'relation', 'copy', 'script', 'notes', 'permalink'].forEach(k => postForm[k].value = p?.[k] || '');
+  ['title', 'objective', 'pillar', 'funnel', 'relation', 'copy', 'script', 'notes', 'permalink'].forEach(k => postForm[k].value = p?.[k] || '');
+  cover = p?.cover || null; renderCover();
   postForm.status.value = p?.status || 'pauta';
   $('#postStageBadge').innerHTML = editingPost ? `<span class="badge stg k-${p.status}">${esc(STG[p.status]?.label)}</span>${p.round > 1 ? ` <span class="badge">Rodada ${p.round}</span>` : ''}` : '';
   const H = (S.approvals || []).filter(a => a.post_id === p?.id).reverse();
@@ -755,7 +928,7 @@ function openPost(p) {
 }
 function postRow() {
   const f = postForm;
-  return { client_id: S.tab, publish_date: f.publish_date.value || null, format: f.format.value, title: f.title.value.trim(), status: f.status.value, objective: f.objective.value.trim() || null, pillar: f.pillar.value.trim() || null, relation: f.relation.value.trim() || null, copy: f.copy.value || null, script: f.script.value || null, notes: f.notes.value || null, permalink: f.permalink.value || null, media };
+  return { client_id: S.tab, publish_date: f.publish_date.value || null, format: f.format.value, title: f.title.value.trim(), status: f.status.value, objective: f.objective.value.trim() || null, pillar: f.pillar.value.trim() || null, funnel: f.funnel.value || null, cover, relation: f.relation.value.trim() || null, copy: f.copy.value || null, script: f.script.value || null, notes: f.notes.value || null, permalink: f.permalink.value || null, media };
 }
 async function savePost(close = true) {
   const row = postRow(); if (!row.title) { toast('Dê um tema para a pauta'); postForm.title.focus(); return false; }
@@ -818,7 +991,8 @@ async function handleFiles(files) {
 const clientDlg = $('#clientDlg'), clientForm = $('#clientForm'); let editingClient = null;
 function openClient(c) {
   editingClient = c || null; clientForm.reset(); $('#clientTitle').textContent = c ? 'Editar cliente' : 'Novo cliente';
-  ['name', 'niche', 'instagram', 'tiktok', 'youtube', 'site', 'whatsapp', 'planner_url'].forEach(k => clientForm[k].value = c?.[k] || '');
+  ['name', 'niche', 'instagram', 'tiktok', 'youtube', 'site', 'whatsapp', 'planner_url', 'brand', 'posts_per_week'].forEach(k => clientForm[k].value = c?.[k] ?? '');
+  editDays = [...(c?.post_days || [])]; drawDays();
   $('#clientDel').classList.toggle('hidden', !c); $('#clientAv').innerHTML = c ? avatar(c, 'xl') : ''; $('#clientPhotoBtn').parentNode.parentNode.classList.toggle('hidden', !c); clientDlg.showModal();
 }
 $('#clientPhotoBtn').onclick = () => $('#clientPhoto').click();
@@ -835,7 +1009,7 @@ $('#clientPhoto').onchange = async e => {
 $('#addClient').onclick = () => openClient();
 clientForm.addEventListener('submit', async e => {
   e.preventDefault(); const f = clientForm;
-  const row = { name: f.name.value.trim(), niche: f.niche.value.trim() || null, instagram: handleOf(f.instagram.value) || null, tiktok: handleOf(f.tiktok.value) || null, youtube: handleOf(f.youtube.value) || null, site: f.site.value.trim() || null, whatsapp: f.whatsapp.value.trim() || null, planner_url: f.planner_url.value.trim() || null, handle: handleOf(f.instagram.value) ? '@' + handleOf(f.instagram.value) : null };
+  const row = { name: f.name.value.trim(), niche: f.niche.value.trim() || null, instagram: handleOf(f.instagram.value) || null, tiktok: handleOf(f.tiktok.value) || null, youtube: handleOf(f.youtube.value) || null, site: f.site.value.trim() || null, whatsapp: f.whatsapp.value.trim() || null, planner_url: f.planner_url.value.trim() || null, brand: f.brand.value || null, posts_per_week: f.posts_per_week.value ? +f.posts_per_week.value : null, post_days: editDays.length ? editDays.slice().sort() : null, handle: handleOf(f.instagram.value) ? '@' + handleOf(f.instagram.value) : null };
     if (!editingClient) row.position = S.clients.length + 1;
   const { data, error } = editingClient ? await sb.from('clients').update(row).eq('id', editingClient.id).select().single() : await sb.from('clients').insert(row).select().single();
   if (error) return fail(error); clientDlg.close(); await loadClients(); S.tab = data.id; renderTabs(); route(); toast('Cliente salvo');
@@ -926,24 +1100,55 @@ $('#csvInput').addEventListener('change',e=>{
 
 
 // ---------- swipe ----------
+const SW_NICHES = ['Veterinária/pets', 'Clínica/oftalmo', 'Psicólogos', 'Marca pessoal'];
+const SW_PROMPT = `Rodar a pesquisa do swipe file do meu Gestor (omatsaldanha.com/gestor). Se existir a skill swipe-file-gestor, siga ela.
+Encontre referências recentes (últimos 60 dias) de Reels e carrosséis com engajamento alto para 4 nichos: Veterinária/pets, Clínica/oftalmo, Psicólogos e Marca pessoal. Para cada nicho, 4 a 6 posts variando a etapa do funil (topo, meio e fundo). Pode usar busca na web e o meu Chrome (Instagram já logado: hashtags, explorar e perfis de referência).
+Para cada post: link, plataforma, formato, tema, etapa do funil, engajamento visível (curtidas, comentários, views), gancho, estrutura e por que funciona. Não repita links que já estão no swipe.
+No fim, abra omatsaldanha.com/gestor no meu Chrome e grave tudo com window.gestorSwipeAdd([...]) usando os campos niche, platform, format, title, hook, structure, why, example_url, theme, funnel, engagement. Os nichos têm que ser exatamente: ${SW_NICHES.join(', ')}.`;
+function swEmbed(u) {
+  const ig = String(u || '').match(/instagram\.com\/(?:[\w.]+\/)?(p|reel|reels|tv)\/([\w-]+)/); if (ig) return `https://www.instagram.com/${ig[1] === 'reels' ? 'reel' : ig[1]}/${ig[2]}/embed/`;
+  const tt = String(u || '').match(/tiktok\.com\/.*\/video\/(\d+)/); if (tt) return `https://www.tiktok.com/embed/v2/${tt[1]}`;
+  const yt = String(u || '').match(/youtube\.com\/shorts\/([\w-]+)|youtu\.be\/([\w-]+)/); if (yt) return `https://www.youtube.com/embed/${yt[1] || yt[2]}`;
+  return null;
+}
+window.gestorSwipeAdd = async items => {
+  if (!Array.isArray(items) || !items.length) return 'nada pra gravar';
+  const { data: have } = await sb.from('swipe').select('example_url'); const H = new Set((have || []).map(x => x.example_url).filter(Boolean));
+  const today = todayS(), seen = new Set();
+  const rows = items.filter(x => x && x.title && x.example_url && !H.has(x.example_url) && !seen.has(x.example_url) && seen.add(x.example_url)).map(x => ({
+    niche: String(x.niche || 'Geral').slice(0, 60), format: String(x.format || 'Reels').slice(0, 30), title: String(x.title).slice(0, 160), hook: x.hook ? String(x.hook).slice(0, 300) : null,
+    structure: x.structure ? String(x.structure).slice(0, 1200) : null, why: x.why ? String(x.why).slice(0, 1200) : null, example_url: String(x.example_url).slice(0, 500),
+    platform: x.platform ? String(x.platform).slice(0, 30) : null, theme: x.theme ? String(x.theme).slice(0, 80) : null, funnel: ['topo', 'meio', 'fundo'].includes(x.funnel) ? x.funnel : null,
+    engagement: x.engagement ? String(x.engagement).slice(0, 120) : null, thumb: x.thumb ? String(x.thumb).slice(0, 500) : null, batch: today, source: 'pesquisa' }));
+  if (!rows.length) return 'tudo repetido, nada novo';
+  const { error } = await sb.from('swipe').insert(rows); if (error) throw error;
+  if (S.tab === 'swipe') renderSwipe(); return `${rows.length} referências gravadas`;
+};
 async function renderSwipe(){
-  const {data,error}=await sb.from('swipe').select('*').order('created_at'); if(error)return fail(error); S.swipe=data;
-  const niches=['Todos','Psicólogo','Médico veterinário','Médico','Geral'];
-  const list=S.swipe.filter(x=>S.niche==='Todos'||x.niche===S.niche);
+  const {data,error}=await sb.from('swipe').select('*').order('created_at',{ascending:false}); if(error)return fail(error); S.swipe=data;
+  const niches=['Todos',...new Set([...SW_NICHES,...S.swipe.map(x=>x.niche)])]; if(!niches.includes(S.niche))S.niche='Todos';
+  S.sfun=S.sfun||'todos';
+  const list=S.swipe.filter(x=>(S.niche==='Todos'||x.niche===S.niche)&&(S.sfun==='todos'||x.funnel===S.sfun));
+  const last=S.swipe.map(x=>x.batch).filter(Boolean).sort().pop();
   $('#main').innerHTML=`
-    <div class="row" style="justify-content:space-between"><div><h1 style="font-size:30px">Swipe file</h1><div class="sub">Formatos de Reels e carrossel que estão funcionando, por nicho. Adapte, não copie.</div></div>
-      <button class="btn small primary" id="addSw">+ Formato</button></div>
-    <div class="tabs" style="margin-top:14px">${niches.map(n=>`<button class="tab ${S.niche===n?'on':''}" data-n="${n}">${n}</button>`).join('')}</div>
-    <div class="swipe">${list.map(x=>`<article class="sw">
-      <div><span class="tag n">${esc(x.niche)}</span><span class="tag">${esc(x.format)}</span></div>
+    <div class="row" style="justify-content:space-between;gap:10px"><div><h1 style="font-size:30px">Swipe file</h1><div class="sub">Referências que estão funcionando, por nicho, tema e etapa do funil. Adapte, não copie.${last?` Última pesquisa: ${fmtD(last)}.`:''}</div></div>
+      <div class="row" style="gap:8px"><button class="btn amber" id="swSearch">Pesquisar referências</button><button class="btn small" id="addSw">+ Manual</button></div></div>
+    <div class="tabs" style="margin-top:14px">${niches.map(n=>`<button class="tab ${S.niche===n?'on':''}" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+    <div class="swf">${[['todos','Todo funil'],['topo','Topo'],['meio','Meio'],['fundo','Fundo']].map(([k,l])=>`<button class="chip2 ${S.sfun===k?'on':''}" data-sf="${k}">${l}</button>`).join('')}</div>
+    <div class="swipe">${list.map(x=>{ const em=swEmbed(x.example_url); return `<article class="sw">
+      ${x.thumb?`<div class="swpv"><img src="${esc(x.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`:em?`<div class="swpv"><iframe src="${esc(em)}" loading="lazy" title="${esc(x.title)}" allowtransparency="true" scrolling="no"></iframe></div>`:''}
+      <div><span class="tag n">${esc(x.niche)}</span><span class="tag">${esc(x.format)}</span>${x.funnel?`<span class="tag">${esc(FUN[x.funnel])}</span>`:''}${x.theme?`<span class="tag">${esc(x.theme)}</span>`:''}</div>
       <h3>${esc(x.title)}</h3>
+      ${x.engagement?`<div class="sub">📈 ${esc(x.engagement)}</div>`:''}
       ${x.hook?`<div class="hook">${esc(x.hook)}</div>`:''}
       ${x.structure?`<p><b style="color:var(--text)">Estrutura:</b> ${esc(x.structure)}</p>`:''}
       ${x.why?`<p><b style="color:var(--text)">Por que funciona:</b> ${esc(x.why)}</p>`:''}
-      <div class="act">${x.example_url?`<a class="btn small" href="${esc(x.example_url)}" target="_blank" rel="noopener">Referência</a>`:''}<button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
-    </article>`).join('')||'<div class="empty">Nada nesse nicho ainda.</div>'}</div>`;
+      <div class="act">${x.example_url?`<a class="btn small" href="${esc(x.example_url)}" target="_blank" rel="noopener">Ver post</a>`:''}<button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
+    </article>`; }).join('')||'<div class="empty">Nada aqui ainda. Toque em Pesquisar referências.</div>'}</div>`;
   document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{S.niche=b.dataset.n;renderSwipe();});
-  $('#addSw').onclick=()=>openSw({niche:S.niche==='Todos'?'Psicólogo':S.niche});
+  document.querySelectorAll('[data-sf]').forEach(b=>b.onclick=()=>{S.sfun=b.dataset.sf;renderSwipe();});
+  $('#swSearch').onclick=()=>{ window.open('https://claude.ai/new?q='+encodeURIComponent(SW_PROMPT),'_blank','noopener'); toast('Abri o Claude com o pedido pronto. É só enviar.'); };
+  $('#addSw').onclick=()=>openSw({niche:S.niche==='Todos'?SW_NICHES[0]:S.niche});
   document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openSw(S.swipe.find(x=>x.id===b.dataset.edit)));
 }
 const swDlg=$('#swDlg'), swForm=$('#swForm'); let editingSw=null;
@@ -1224,7 +1429,7 @@ async function viewInicio() {
   const tasks = F.tasks.filter(t => !t.done).sort((x, y) => (x.due || '9').localeCompare(y.due || '9')).slice(0, 7);
   const alert = pix + faturaDue > bal ? `<div class="note warn">Você precisa de ${BRL(pix + faturaDue - bal)} a mais no Pix para cobrir o que vence em 7 dias. Cartão ainda pode cobrir ${BRL(amb)} dos itens "Pix ou crédito".</div>`
     : `<div class="note ok">Dá para pagar tudo que é Pix nos próximos 7 dias e ainda sobram ${BRL(bal - pix - faturaDue)} na conta.</div>`;
-  const nextIns = F.ent.filter(e => e.kind === 'in' && e.status === 'previsto').sort((x, y) => x.date.localeCompare(y.date)).slice(0, 3);
+  const eom = iso(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)); const nextIns = F.ent.filter(e => e.kind === 'in' && e.status === 'previsto' && e.date <= eom).sort((x, y) => x.date.localeCompare(y.date)); const nextInsTot = nextIns.reduce((a, e) => a + +e.amount, 0);
   // status do mês por cliente
   const a0 = iso(m0), b0 = iso(new Date(m0.getFullYear(), m0.getMonth() + 1, 0)); let posts = [];
   try { const r = await sb.from('posts').select('client_id,status,publish_date').gte('publish_date', a0).lte('publish_date', b0); posts = r.data || []; } catch (_) {}
@@ -1248,7 +1453,7 @@ async function viewInicio() {
        <div class="bar big"><i style="width:${Math.min(100, mf.ativos / mf.meta * 100)}%"></i><u style="left:${Math.min(100, mf.ativos / mf.meta * 100)}%;width:${Math.min(100 - Math.min(100, mf.ativos / mf.meta * 100), mf.pot / mf.meta * 100)}%"></u></div>
        <div class="fx">${fixosRows()}</div>
        <p class="sub" style="margin:10px 0 0">${mf.falta ? `Mesmo com Psi 1 e Psi 2 fechados, faltam ${BRL(mf.falta)} para a meta.` : 'Com Psi 1 e Psi 2 fechados a meta é batida.'}</p></div>
-     <div class="card"><h2 class="h2">Próximas entradas</h2><div class="elist">${nextIns.length ? nextIns.map(e => entRow(e, false)).join('') : '<div class="empty">Sem entradas previstas.</div>'}</div></div>
+     <div class="card"><div class="row"><h2 class="h2">Próximas entradas</h2><div class="sp"></div><span class="sub">até o fim do mês · ${BRL(nextInsTot)}</span></div><div class="elist">${nextIns.length ? nextIns.map(e => entRow(e, false)).join('') : '<div class="empty">Sem entradas previstas.</div>'}</div></div>
    </div></div>
   <div class="cols2">
    <div class="card"><div class="row"><h2 class="h2">Próximas tarefas</h2><div class="sp"></div><a href="#" data-go="tarefas">ver todas</a></div>
