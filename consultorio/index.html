@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F7FAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gestaopsi">
 <title>Gestaopsi</title>
@@ -34,7 +34,7 @@
   --tertiary:#3D6373;--tertiary-container:#C1E8FB;
   --error:#BA1A1A;--error-container:#FFDAD6;--on-error-container:#410002;
   --warn:#8A5100;--warn-container:#FFDDB8;
-  --surface:#F6FBF6;--surface-dim:#D6DBD7;--surface-c-lowest:#FFFFFF;--surface-c-low:#F0F5F0;--surface-c:#EAEFEA;--surface-c-high:#E4EAE5;--surface-c-highest:#DFE4DF;
+  --surface:#FFFFFF;--surface-dim:#D6DBD7;--surface-c-lowest:#FFFFFF;--surface-c-low:#F5F7F6;--surface-c:#EEF2EF;--surface-c-high:#E7ECE9;--surface-c-highest:#DFE5E1;--panel:#F3F6F4;--dlg:#FFFFFF;
   --on-surface:#171D1A;--on-surface-variant:#404944;--outline:#707973;--outline-variant:#C0C9C2;
   --chart-1:#2E6A55;--chart-2:#3D6373;--chart-3:#8A5100;--chart-4:#BA1A1A;--chart-5:#7D5260;--chart-6:#4C662B;
   --font:'Roboto Flex',Roboto,system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -48,7 +48,7 @@
   --tertiary:#A5CCDF;--tertiary-container:#244C5B;
   --error:#FFB4AB;--error-container:#93000A;--on-error-container:#FFDAD6;
   --warn:#FFB95F;--warn-container:#693C00;
-  --surface:#0F1512;--surface-dim:#0F1512;--surface-c-lowest:#0A0F0D;--surface-c-low:#171D1A;--surface-c:#1B211E;--surface-c-high:#252B28;--surface-c-highest:#303633;
+  --surface:#0F1512;--surface-dim:#0F1512;--panel:#0A0F0D;--dlg:#252B28;--surface-c-lowest:#0A0F0D;--surface-c-low:#171D1A;--surface-c:#1B211E;--surface-c-high:#252B28;--surface-c-highest:#303633;
   --on-surface:#DEE4DF;--on-surface-variant:#C0C9C2;--outline:#8A938C;--outline-variant:#404944;
   --chart-1:#96D4B9;--chart-2:#A5CCDF;--chart-3:#FFB95F;--chart-4:#FFB4AB;--chart-5:#EFB8C8;--chart-6:#B1D18A;
 }}
@@ -106,7 +106,7 @@ h1,h2,h3{margin:0;font-weight:500}
 
 /* layout */
 .app{display:grid;grid-template-columns:96px 1fr;min-height:100dvh}
-.rail{position:sticky;top:0;height:100dvh;background:var(--surface);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:4px;border-right:1px solid var(--outline-variant)}
+.rail{position:sticky;top:0;height:100dvh;background:var(--surface-c-low);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:4px;border-right:1px solid var(--outline-variant)}
 .rail .logo{width:44px;height:44px;border-radius:14px;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;margin-bottom:18px}
 .nav{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;color:var(--on-surface-variant);font-size:12px;font-weight:600;padding:4px 0;width:80px}
 .nav .pill{width:56px;height:32px;border-radius:16px;display:grid;place-items:center;transition:background .15s}
@@ -123,7 +123,7 @@ h1,h2,h3{margin:0;font-weight:500}
 .monthsel strong{font-weight:600;min-width:150px;text-align:center;font-size:14px}
 .monthsel .icon-btn{width:32px;height:32px}
 .card{background:var(--surface-c-low);border-radius:var(--r-lg);padding:20px}
-.card.elev{background:var(--surface-c-lowest);box-shadow:var(--e1)}
+.card.elev{background:var(--surface-c-lowest);box-shadow:var(--e1);outline:1px solid rgba(0,0,0,.05)}
 .card+.card{margin-top:16px}
 .dash>.card{margin-top:0}
 .cardhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
@@ -186,7 +186,7 @@ h1,h2,h3{margin:0;font-weight:500}
 .post .thumb .play .ms{font-size:34px;color:#fff}
 .post .thumb .net{position:absolute;left:10px;top:10px;font-size:12px;font-weight:600;background:rgba(0,0,0,.45);padding:3px 10px;border-radius:12px}
 .av img{width:100%;height:100%;border-radius:inherit;object-fit:cover;display:block}
-.cprev{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;border-radius:var(--r-md);background:var(--surface-c-lowest)}
+.cprev{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;border-radius:var(--r-md);background:var(--panel)}
 .cprev:empty{display:none}
 .cprev .av{width:48px;height:48px;border-radius:24px;background:var(--secondary-container);display:grid;place-items:center;font-weight:700;overflow:hidden;flex:none}
 .ethics{margin-top:12px;border-radius:var(--r-md);padding:12px 14px;background:var(--warn-container);font-size:13px}
@@ -195,7 +195,7 @@ h1,h2,h3{margin:0;font-weight:500}
 .ethics.ok{background:var(--primary-container)}
 .embed{width:100%;aspect-ratio:9/16;max-height:72dvh;border:0;border-radius:var(--r-md);background:#000;display:block}
 .steps{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-.step{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);background:var(--surface-c-lowest)}
+.step{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);background:var(--panel)}
 .step .n{width:28px;height:28px;border-radius:14px;background:var(--surface-c-highest);display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
 .step.done .n{background:var(--primary);color:var(--on-primary)}
 .step .grow{min-width:0;flex:1}
@@ -215,14 +215,14 @@ h1,h2,h3{margin:0;font-weight:500}
 .notice.err{background:var(--error-container);color:var(--on-error-container)}
 .notice.info{background:var(--tertiary-container)}
 .brief{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.brief .box{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:14px}
+.brief .box{background:var(--panel);border-radius:var(--r-md);padding:14px}
 .brief .box ul{margin:6px 0 0;padding-left:18px}
 .tagcloud{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 @media (max-width:860px){.brief{grid-template-columns:1fr}}
 /* paciente */
 .dhead{display:flex;align-items:center;gap:14px}
 .dhead .avatar{width:52px;height:52px;border-radius:26px;font-size:18px;background:var(--primary-container);color:var(--on-primary-container)}
-.psec{background:var(--surface-c-lowest);border-radius:var(--r-lg);padding:14px 16px 16px;margin-top:14px}
+.psec{background:var(--panel);border-radius:var(--r-lg);padding:14px 16px 16px;margin-top:14px}
 .psec-h{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--primary);letter-spacing:.01em}
 .psec-h .ms{font-size:20px}
 .psec .hint{font-size:12px;color:var(--on-surface-variant);margin-top:6px}
@@ -243,25 +243,36 @@ h1,h2,h3{margin:0;font-weight:500}
 .ev b{font-weight:600;font-variant-numeric:tabular-nums;flex:none}
 .ev span.n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
 .ev .ms{font-size:14px;flex:none;opacity:.75}
-.ev .dot{width:7px;height:7px;border-radius:4px;background:var(--warn);flex:none}
+.ev .rc{flex:none;display:inline-grid;place-items:center;height:20px;padding:0 5px;border-radius:10px;background:#F29900;color:#fff;margin-left:auto}
+.ev .rc .ms{font-size:14px;opacity:1}
+.ev .ok{flex:none;color:var(--primary);margin-left:auto}
 .ev.st-agendada{--c:var(--outline);--cs:var(--surface-c)}.ev.st-realizada{--c:var(--primary);--cs:var(--primary-container)}
 .ev.st-falta{--c:var(--error);--cs:var(--error-container)}.ev.st-cancelada_paciente,.ev.st-cancelada_profissional{--c:var(--warn);--cs:var(--warn-container)}.ev.st-remarcada{--c:var(--tertiary);--cs:var(--tertiary-container)}
 .ev.big{padding:8px 10px;font-size:13px;flex-wrap:wrap}
 .mday.drop,.wcol.drop{outline:2px dashed var(--primary);outline-offset:-3px;background:var(--primary-container)}
 .ev[draggable=true]{cursor:grab}
-.resch{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:12px;padding:12px;border-radius:var(--r-md);background:var(--surface-c-lowest)}
+.resch{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:12px;padding:12px;border-radius:var(--r-md);background:var(--panel)}
 .resch .field{margin:0;flex:1;min-width:130px}
 .ev.busy{--c:#9AA0A6;--cs:repeating-linear-gradient(135deg,var(--surface-c) 0 6px,var(--surface-c-high) 6px 12px);cursor:default;color:var(--on-surface-variant)}
 .gbtn{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:16px;border:1px solid var(--outline-variant);background:var(--surface-c-lowest);font-weight:600;font-size:13px;cursor:pointer;color:var(--on-surface)}
 .gbtn svg{width:16px;height:16px}
 .gbtn.on{border-color:transparent;background:var(--primary-container);color:var(--on-primary-container)}
 .wgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
-.wcol{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:8px;display:flex;flex-direction:column;gap:6px;min-height:200px;min-width:0}
+.wcol{background:var(--panel);border-radius:var(--r-md);padding:8px;display:flex;flex-direction:column;gap:6px;min-height:200px;min-width:0}
 .wcol h4{margin:0 0 4px;font-size:13px;font-weight:600;text-transform:capitalize;display:flex;justify-content:space-between}
 .wcol.today h4{color:var(--primary)}
-@media (max-width:860px){.mday{min-height:74px;padding:3px}.ev:not(.big){font-size:10.5px;padding:2px 4px}.ev:not(.big) b,.ev:not(.big) .ms{display:none}.wgrid{grid-template-columns:1fr}.wcol{min-height:0}.filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-16px;margin-right:-16px;padding:0 16px}.filters::-webkit-scrollbar{display:none}.filters .sp{display:none}.nav{font-size:10px;min-width:0}.nav .pill{width:44px}}
+@media (max-width:860px){.mday{min-height:74px;padding:3px}.ev:not(.big){font-size:10.5px;padding:2px 4px}.ev:not(.big) b,.ev:not(.big) .ms:not(.rcm){display:none}.ev:not(.big) .rc{height:16px;padding:0 3px}.ev:not(.big) .rc .ms{font-size:12px}.wgrid{grid-template-columns:1fr}.wcol{min-height:0}.filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-16px;margin-right:-16px;padding:0 16px}.filters::-webkit-scrollbar{display:none}.filters .sp{display:none}.nav{font-size:10px;min-width:0}.nav .pill{width:44px}}
 .kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
-.kv div{background:var(--surface-c-lowest);border-radius:var(--r-md);padding:10px 12px}
+.kv>div{background:var(--panel);border-radius:var(--r-md);padding:10px 12px;position:relative;border:1px solid transparent}
+.kv>div[data-ed]{cursor:pointer;transition:border-color .12s,background .12s}
+.kv>div[data-ed]:hover{border-color:var(--primary);background:var(--surface-c-lowest)}
+.kv>div[data-ed]:hover::after{content:"Editar";position:absolute;right:10px;top:9px;font-size:11px;font-weight:600;color:var(--primary)}
+.kv>div.editing{border-color:var(--primary);background:var(--surface-c-lowest);grid-column:1/-1}
+.kv .ed{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center}
+.kv .ed input,.kv .ed select{height:40px;border:1px solid var(--outline);border-radius:var(--r-sm);padding:0 10px;background:transparent;min-width:0;flex:1 1 130px}
+.kv .ed label{font-size:12px;color:var(--on-surface-variant);display:flex;align-items:center;gap:6px;flex-basis:100%}
+.kv .ed label input{flex:none;height:auto}
+.dhead .when{cursor:pointer;border-bottom:1px dashed var(--outline)}
 .kv small{display:block;font-size:11px;font-weight:600;color:var(--on-surface-variant);letter-spacing:.03em}
 .kv b{font-weight:600;font-size:14px}
 .qs{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
@@ -288,7 +299,7 @@ h1,h2,h3{margin:0;font-weight:500}
 .hello img{width:132px;height:132px;border-radius:66px;object-fit:cover;box-shadow:0 0 0 4px var(--surface-c-high),0 0 0 6px var(--primary)}
 
 /* dialog */
-dialog{border:none;border-radius:var(--r-xl);background:var(--surface-c-high);color:var(--on-surface);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px)}
+dialog{border:none;border-radius:var(--r-xl);background:var(--dlg);box-shadow:var(--e3);color:var(--on-surface);padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px)}
 dialog::backdrop{background:rgba(0,0,0,.32)}
 dialog form{padding:24px}
 .dact{display:flex;gap:8px;justify-content:flex-end;margin-top:22px;flex-wrap:wrap}
@@ -1028,7 +1039,7 @@ async function viewAgenda() {
     <button class="btn tonal sm" id="gen"><span class="ms" style="font-size:18px">event_repeat</span>Gerar sessões do mês</button>
   </div>
   ${data.length || busy.length || S.agMode === 'lista' ? body : `<section class="card elev"><div class="empty"><span class="ms">event</span>Nenhuma sessão nesse período. Use “Gerar sessões do mês” para criar a agenda a partir dos horários fixos dos pacientes.</div></section>`}
-  <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span><span class="ms" style="font-size:14px">videocam</span> online</span><span><i style="display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--warn)"></i> pago sem recibo</span>${gcfg().connected ? '<span><i style="display:inline-block;width:12px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,#ddd 0 3px,#bbb 3px 6px)"></i> ocupado no Google</span>' : ''}<span>Toque no nome para ver o cadastro e emitir o recibo</span></div>`;
+  <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span><span class="ms" style="font-size:14px">videocam</span> online</span><span><span style="display:inline-grid;place-items:center;height:18px;padding:0 4px;border-radius:9px;background:#F29900;color:#fff;vertical-align:middle"><span class="ms fill" style="font-size:13px">receipt_long</span></span> pago, emitir recibo</span><span><span class="ms" style="font-size:15px;color:var(--primary)">task_alt</span> recibo emitido</span>${gcfg().connected ? '<span><i style="display:inline-block;width:12px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,#ddd 0 3px,#bbb 3px 6px)"></i> ocupado no Google</span>' : ''}<span>Toque no nome para ver o cadastro e emitir o recibo</span></div>`;
   if (S.agMode === 'semana') { $('#wPrev').onclick = () => { S.weekStart = addD(S.weekStart, -7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; $('#wNext').onclick = () => { S.weekStart = addD(S.weekStart, 7); S.month = fom(addD(S.weekStart, 3)); go('agenda'); }; }
   else bindMonth();
   $$('[data-mode]').forEach(b => b.onclick = () => { S.agMode = b.dataset.mode; go('agenda'); });
@@ -1051,7 +1062,7 @@ async function viewAgenda() {
 function evChip(x, big) {
   if (x.busy) return `<div class="ev busy ${big ? 'big' : ''}" title="Compromisso no teu Google Agenda"><b>${x.time.slice(0, 5)}</b><span class="n">Ocupado${big ? ' até ' + x.until : ''}</span></div>`;
   const p = pById(x.patient_id) || {};
-  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" draggable="true" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${p.modality === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<i class="dot" title="Pago, falta emitir recibo"></i>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
+  return `<button class="ev st-${x.status} ${big ? 'big' : ''}" data-ev="${x.id}" draggable="true" title="${esc(p.name)} · ${STATUS[x.status]}">${x.time ? `<b>${x.time.slice(0, 5)}</b>` : ''}<span class="n">${esc(big ? p.name : (p.name || '').split(' ')[0] + ' ' + ((p.name || '').split(' ')[1] || '').slice(0, 1))}</span>${p.modality === 'online' ? '<span class="ms">videocam</span>' : ''}${x.paid && !x.receipt_issued ? '<span class="rc" title="Pago: falta emitir o recibo no Receita Saúde"><span class="ms fill rcm">receipt_long</span></span>' : x.receipt_issued ? '<span class="ms ok" title="Recibo emitido" style="font-size:15px">task_alt</span>' : ''}${big ? `<span class="small muted" style="width:100%">${STATUS[x.status]}${Number(x.amount) > 0 ? ' · ' + SIT[situation(x)][0] : ''}</span>` : ''}</button>`;
 }
 const gIni = n => (n || '').split(/\s+/).filter(Boolean).map(w => w[0].toUpperCase() + '.').join('');
 function gcalUrl(x, p) {
@@ -1086,38 +1097,79 @@ async function moveSession(x, date, time) {
   go('agenda');
 }
 let evOpen = null;
-function openEv(x) {
+function openEv(x, editing) {
   if (!x) return; evOpen = x; const p = pById(x.patient_id) || {}, sit = situation(x);
   const rec = !(Number(x.amount) > 0) ? 'Sem cobrança' : x.receipt_issued ? 'Emitido' + (x.receipt_at ? ' em ' + fmtDate(x.receipt_at) : '') : x.paid ? 'Falta emitir' : 'Aguardando pagamento';
+  const opt = (v, cur, l) => `<option value="${v}" ${String(cur) === String(v) ? 'selected' : ''}>${l}</option>`;
+  const btns = '<button type="button" class="btn sm" data-save>Salvar</button><button type="button" class="btn text sm" data-cancel>Cancelar</button>';
+  // cada quadro: [rótulo, valor exibido, editor]
+  const K = {
+    data: ['DATA E HORA', `${parse(x.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })}${x.time ? ' · ' + x.time.slice(0, 5) : ''}`,
+      `<input type="date" id="e1" value="${x.date}"><input type="time" id="e2" value="${(x.time || '').slice(0, 5)}">${btns}`],
+    formato: ['FORMATO', p.modality === 'online' ? '<span class="ms" style="font-size:16px">videocam</span> Online' : 'Presencial',
+      `<select id="e1">${opt('presencial', p.modality, 'Presencial')}${opt('online', p.modality, 'Online')}</select>${btns}<label>Muda o cadastro de ${esc((p.name || '').split(' ')[0])} (todas as sessões)</label>`],
+    freq: ['FREQUÊNCIA', `${esc(cap(p.frequency || ''))}${p.weekday ? ' · ' + WD[p.weekday] + (p.session_time ? ' ' + p.session_time.slice(0, 5) : '') : ''}`,
+      `<select id="e1">${opt('semanal', p.frequency, 'Semanal')}${opt('quinzenal', p.frequency, 'Quinzenal')}${opt('mensal', p.frequency, 'Mensal')}</select><select id="e2">${opt('', p.weekday || '', 'Sem dia fixo')}${[1, 2, 3, 4, 5, 6].map(d => opt(d, p.weekday, WD[d])).join('')}</select><input type="time" id="e3" value="${(p.session_time || '').slice(0, 5)}">${btns}<label>Vale para as próximas sessões geradas</label>`],
+    valor: ['VALOR', brl(x.amount),
+      `<input type="number" id="e1" step="0.01" min="0" value="${Number(x.amount)}">${btns}<label><input type="checkbox" id="e2"> Usar como valor padrão de ${esc((p.name || '').split(' ')[0])}</label>`],
+    pag: ['PAGAMENTO', `${Number(x.amount) > 0 ? `<span class="badge ${SIT[sit][1]}">${SIT[sit][0]}</span>` : '—'} <span class="small muted">${BILLING[p.billing] || ''}</span>`,
+      `<select id="e1">${opt('false', x.paid, 'A receber')}${opt('true', x.paid, 'Pago')}</select><input type="date" id="e2" value="${x.paid_at || todayISO()}" title="Data do pagamento"><select id="e3">${opt('', x.method || '', 'Forma')}${['Pix', 'Dinheiro', 'Cartão', 'Transferência'].map(m => opt(m, x.method, m)).join('')}</select><select id="e4" title="Como paga">${Object.entries(BILLING).map(([k, l]) => opt(k, p.billing, l)).join('')}</select>${btns}`],
+    recibo: ['RECIBO (RECEITA SAÚDE)', x.paid && !x.receipt_issued ? `<span class="badge b-warn"><span class="ms fill" style="font-size:14px">receipt_long</span>${rec}</span>` : x.receipt_issued ? `<span class="ms" style="font-size:16px;color:var(--primary)">task_alt</span> ${rec}` : rec,
+      !x.paid ? `<span class="small muted" style="flex-basis:100%">O recibo é emitido na data do pagamento.</span><button type="button" class="btn sm" data-act="payrec"><span class="ms" style="font-size:18px">done</span>Marcar paga e emitir</button><button type="button" class="btn text sm" data-cancel>Cancelar</button>`
+        : x.receipt_issued ? `<button type="button" class="btn danger sm" data-act="unrec">Desmarcar (não foi emitido)</button><button type="button" class="btn text sm" data-cancel>Cancelar</button>`
+        : `<button type="button" class="btn sm" data-act="emit"><span class="ms" style="font-size:18px">receipt_long</span>Emitir agora (passo a passo)</button><button type="button" class="btn tonal sm" data-act="done">Já emiti</button><button type="button" class="btn text sm" data-cancel>Cancelar</button>`],
+    payer: ['QUEM PAGA', esc(p.payer_name || 'O próprio paciente'),
+      `<input id="e1" placeholder="Nome (vazio = o próprio paciente)" value="${esc(p.payer_name || '')}"><input id="e2" placeholder="CPF de quem paga" inputmode="numeric" value="${esc(p.payer_cpf || '')}">${btns}`]
+  };
   $('#evBody').innerHTML = `
-    <div class="dhead"><div class="avatar">${esc(initials(p.name))}</div><div class="grow"><div class="title-l">${esc(p.name)}</div><div class="small muted">${parse(x.date).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}${x.time ? ' · ' + x.time.slice(0, 5) : ''}</div></div><span class="badge ${STATUS_BADGE[x.status]}">${STATUS[x.status]}</span></div>
-    <div class="kv">
-      <div><small>FORMATO</small><b>${p.modality === 'online' ? '<span class="ms" style="font-size:16px">videocam</span> Online' : 'Presencial'}</b></div>
-      <div><small>FREQUÊNCIA</small><b>${esc(cap(p.frequency || ''))}${p.weekday ? ' · ' + WD[p.weekday] + (p.session_time ? ' ' + p.session_time.slice(0, 5) : '') : ''}</b></div>
-      <div><small>VALOR</small><b>${brl(x.amount)}</b></div>
-      <div><small>PAGAMENTO</small><b>${Number(x.amount) > 0 ? `<span class="badge ${SIT[sit][1]}">${SIT[sit][0]}</span>` : '—'} <span class="small muted">${BILLING[p.billing] || ''}</span></b></div>
-      <div><small>RECIBO (RECEITA SAÚDE)</small><b>${x.paid && !x.receipt_issued ? `<span class="badge b-warn">${rec}</span>` : rec}</b></div>
-      <div><small>QUEM PAGA</small><b>${esc(p.payer_name || 'O próprio paciente')}</b></div>
-    </div>
+    <div class="dhead"><div class="avatar">${esc(initials(p.name))}</div><div class="grow"><div class="title-l">${esc(p.name)}</div><div class="small muted"><span class="when" data-ed="data" title="Toque para reagendar">${parse(x.date).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}${x.time ? ' · ' + x.time.slice(0, 5) : ''}</span></div></div><span class="badge ${STATUS_BADGE[x.status]}">${STATUS[x.status]}</span></div>
+    <div class="small muted" style="margin-top:10px">Toque em qualquer quadro para editar.</div>
+    <div class="kv" style="margin-top:8px">${Object.entries(K).map(([k, [l, v, ed]]) => editing === k
+      ? `<div class="editing" data-k="${k}"><small>${l}</small><div class="ed">${ed}</div></div>`
+      : `<div data-ed="${k}"><small>${l}</small><b>${v}</b></div>`).join('')}</div>
     <div class="label" style="margin-top:16px">MARCAR ESTA SESSÃO</div>
     <div class="qs">${[['realizada', 'Realizada'], ['falta', 'Faltou'], ['cancelada_paciente', 'Paciente cancelou'], ['cancelada_profissional', 'Eu cancelei'], ['agendada', 'Agendada']].map(([k, l]) => `<button type="button" class="chip ${x.status === k ? 'on' : ''}" data-evst="${k}">${l}</button>`).join('')}</div>
-    <div class="resch hidden" id="evResch"><div class="field"><label>Nova data</label><input type="date" id="rsD" value="${x.date}"></div><div class="field"><label>Horário</label><input type="time" id="rsT" value="${(x.time || '').slice(0, 5)}"></div><button type="button" class="btn" id="rsOk"><span class="ms">event_repeat</span>Confirmar</button></div>
     <div class="qs" style="margin-top:16px">
-      <button type="button" class="btn tonal" id="evMove"><span class="ms">event_repeat</span>Reagendar</button>
       ${x.paid && !x.receipt_issued ? '<button type="button" class="btn" id="evRec"><span class="ms">receipt_long</span>Emitir recibo</button>' : ''}
       ${Number(x.amount) > 0 && !x.paid ? '<button type="button" class="btn tonal" id="evPay"><span class="ms">done</span>Marcar como paga</button>' : ''}
       ${p.docs_url ? `<a class="btn text" href="${esc(p.docs_url)}" target="_blank" rel="noopener"><span class="ms">folder</span>Documentos</a>` : ''}
       <a class="btn text" href="${gcalUrl(x, p)}" target="_blank" rel="noopener"><span class="ms">calendar_month</span>Google Agenda</a>
-      <button type="button" class="btn text" id="evEdit">Editar sessão</button>
-      <button type="button" class="btn text" id="evPat">Cadastro</button>
+      <button type="button" class="btn text" id="evPat">Cadastro completo</button>
+      <button type="button" class="btn text" id="evDel" style="color:var(--error)">Excluir sessão</button>
     </div>`;
-  $$('[data-evst]').forEach(b => b.onclick = async () => { const st = b.dataset.evst; const row = { status: st }; if (!x.paid) { row.amount = Number(p.session_price) * chargePct(p, st); } const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Sessão: ' + STATUS[st]); gAfterEdit(x.id); openEv(x); go('agenda'); });
-  const pay = $('#evPay'); if (pay) pay.onclick = async () => { const row = { paid: true, paid_at: todayISO() }; const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) return fail(error); Object.assign(x, row); snack('Paga. Já dá para emitir o recibo.'); openEv(x); go('agenda'); };
+  const after = async (msg, keep) => { snack(msg); gAfterEdit(x.id); openEv(x, keep); go('agenda'); };
+  const updS = async row => { const { error } = await sb.from('sessions').update(row).eq('id', x.id); if (error) { fail(error); return false; } Object.assign(x, row); return true; };
+  const updP = async row => { const { error } = await sb.from('patients').update(row).eq('id', p.id); if (error) { fail(error); return false; } Object.assign(p, row); return true; };
+  $$('#evBody [data-ed]').forEach(el => el.onclick = () => openEv(x, el.dataset.ed));
+  const box = $('#evBody .editing');
+  if (box) {
+    const v = id => ($('#' + id, box) || {}).value;
+    const f = $('input,select', box); if (f) f.focus();
+    $$('[data-cancel]', box).forEach(b => b.onclick = () => openEv(x));
+    box.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const sv = $('[data-save]', box); if (sv) sv.click(); } if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); openEv(x); } });
+    const sv = $('[data-save]', box); if (sv) sv.onclick = async () => {
+      const k = editing;
+      if (k === 'data') { const d = v('e1'), t = v('e2'); if (!d) return snack('Escolha a data'); if (d === x.date && t === (x.time || '').slice(0, 5)) return openEv(x); return moveSession(x, d, t ? t + ':00' : null); }
+      if (k === 'formato') { if (await updP({ modality: v('e1') })) after('Formato atualizado'); }
+      if (k === 'freq') { if (await updP({ frequency: v('e1'), weekday: v('e2') ? Number(v('e2')) : null, session_time: v('e3') || null })) after('Frequência atualizada'); }
+      if (k === 'valor') { const n = Number(v('e1') || 0); if (await updS({ amount: n })) { if ($('#e2', box).checked) await updP({ session_price: n }); after('Valor atualizado'); } }
+      if (k === 'pag') { const paid = v('e1') === 'true'; const row = { paid, paid_at: paid ? (v('e2') || todayISO()) : null, method: paid ? (v('e3') || null) : null };
+        if (await updS(row)) { if (v('e4') !== p.billing) { await updP({ billing: v('e4') }); if (!x.paid) await updS({ due_date: dueDate(p, x.date) }); } after(paid ? 'Pago. Emita o recibo no Receita Saúde.' : 'Marcado como a receber'); } }
+      if (k === 'payer') { if (await updP({ payer_name: v('e1').trim() || null, payer_cpf: v('e2').trim() || null })) after('Quem paga atualizado'); }
+    };
+    $$('[data-act]', box).forEach(b => b.onclick = async () => {
+      const a = b.dataset.act;
+      if (a === 'payrec') { if (await updS({ paid: true, paid_at: todayISO() })) { const g = receiptGroups(await pendingReceipts()).find(g => g.sessions.some(s => s.id === x.id)); go('agenda'); $('#dlgEv').close(); if (g) openReceipt(g); } }
+      if (a === 'emit') { const g = receiptGroups(await pendingReceipts()).find(g => g.sessions.some(s => s.id === x.id)); $('#dlgEv').close(); if (g) openReceipt(g); }
+      if (a === 'done') { if (await updS({ receipt_issued: true, receipt_at: todayISO() })) after('Recibo marcado como emitido'); }
+      if (a === 'unrec') { if (await updS({ receipt_issued: false, receipt_at: null, receipt_number: null })) after('Recibo desmarcado'); }
+    });
+  }
+  $$('[data-evst]').forEach(b => b.onclick = async () => { const st = b.dataset.evst; const row = { status: st }; if (!x.paid) { row.amount = Number(p.session_price) * chargePct(p, st); } if (await updS(row)) after('Sessão: ' + STATUS[st]); });
+  const pay = $('#evPay'); if (pay) pay.onclick = async () => { if (await updS({ paid: true, paid_at: todayISO() })) after('Paga. Já dá para emitir o recibo.'); };
   const rb = $('#evRec'); if (rb) rb.onclick = async () => { const g = receiptGroups(await pendingReceipts()).find(g => g.sessions.some(s => s.id === x.id)); $('#dlgEv').close(); if (g) openReceipt(g); };
-  $('#evEdit').onclick = () => { $('#dlgEv').close(); openSession(x); };
-  $('#evMove').onclick = () => { $('#evResch').classList.toggle('hidden'); $('#rsD').focus(); };
-  $('#rsOk').onclick = () => { const d = $('#rsD').value, t = $('#rsT').value; if (!d) return snack('Escolha a nova data'); if (d === x.date && t === (x.time || '').slice(0, 5)) return snack('Nada mudou'); moveSession(x, d, t ? t + ':00' : null); };
   $('#evPat').onclick = () => { $('#dlgEv').close(); openPatient(p); };
+  $('#evDel').onclick = async () => { if (!confirm('Excluir esta sessão?')) return; const { error } = await sb.from('sessions').delete().eq('id', x.id); if (error) return fail(error); $('#dlgEv').close(); snack('Sessão excluída'); go('agenda'); };
   if (!$('#dlgEv').open) $('#dlgEv').showModal();
 }
 function sessionRow(s) {
