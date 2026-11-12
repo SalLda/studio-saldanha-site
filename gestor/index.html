@@ -249,6 +249,9 @@ dialog h2{font-size:24px}
 .cols2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
 .cols2>.card,.cols2>div>.card{margin-top:16px}
 .cols2{margin-top:0}
+.dn{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:10px}.dn svg{width:150px;height:150px;flex:none;color:var(--ink,#1F1C17)}.leg{flex:1;min-width:150px;font-size:13px}.leg div{display:flex;gap:8px;align-items:center;margin:5px 0}.leg i{width:10px;height:10px;border-radius:3px;flex:none}.leg .v{margin-left:auto;color:var(--dim)}
+.dot{width:12px;height:12px;border-radius:4px;flex:none;margin-right:8px}.brow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) 175px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}.brow:hover{background:var(--bg2,#faf8f3)}.brow .num{text-align:right;white-space:nowrap}
+@media(max-width:600px){.brow{grid-template-columns:minmax(0,1fr) auto}.brow .num{width:auto}.brow .bar{grid-column:1/-1;order:3}}
 .kpis4+.cols2,.cols2+.cols2,.card+.cols2{margin-top:16px}
 .cols2>div>.card:first-child{margin-top:0}
 td,th{white-space:nowrap}
@@ -1255,7 +1258,7 @@ function taskRow(t) {
 
 // ---------- financeiro ----------
 function viewFin() {
-  const m = F.m, tabs = [['resumo', 'Resumo'], ['lanc', 'Lançamentos'], ['fixas', 'Contas fixas'], ['gastos', 'Gastos por categoria'], ['dividas', 'Dívidas e metas']];
+  const m = F.m, tabs = [['resumo', 'Resumo'], ['caixas', 'Caixinhas'], ['lanc', 'Lançamentos'], ['fixas', 'Contas fixas'], ['gastos', 'Gastos por categoria'], ['dividas', 'Dívidas e metas']];
   $('#main').innerHTML = `<div class="wrap2">${pageHead('Financeiro', 'Tudo que entra e sai, separado em PJ e pessoa física.', `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button>`)}
   <div class="row" style="margin:6px 0 14px"><div class="monthnav"><button class="btn small" id="fPrev">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="fNext">›</button></div><div class="sp"></div>
    <div class="seg" id="fScope">${[['todos', 'Tudo'], ['pj', 'PJ'], ['pf', 'Pessoa física']].map(([k, l]) => `<button type="button" data-s="${k}" class="${F.scope === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
@@ -1263,7 +1266,7 @@ function viewFin() {
   $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
   $('#fPrev').onclick = async () => { F.m = addMonths(F.m, -1); await finMonth(); viewFin(); }; $('#fNext').onclick = async () => { F.m = addMonths(F.m, 1); await finMonth(); viewFin(); };
   $$('#fScope [data-s]').forEach(b => b.onclick = () => { F.scope = b.dataset.s; viewFin(); }); $$('#fTabs [data-t]').forEach(b => b.onclick = () => { F.ftab = b.dataset.t; viewFin(); });
-  ({ resumo: finResumo, lanc: finLanc, fixas: finFixas, gastos: finGastos, dividas: finDividas })[F.ftab]($('#fBody'));
+  ({ resumo: finResumo, caixas: finCaixas, lanc: finLanc, fixas: finFixas, gastos: finGastos, dividas: finDividas })[F.ftab]($('#fBody'));
 }
 async function finMonth() { try { const from = iso(F.m); if (!F.ent.some(e => e.date >= from.slice(0, 7) + '-01' && e.date <= from.slice(0, 7) + '-31')) { const to = iso(new Date(F.m.getFullYear(), F.m.getMonth() + 1, 0)); const r = await sb.from('fin_entries').select('*').gte('date', from).lte('date', to); if (r.data?.length) F.ent.push(...r.data.filter(x => !F.ent.some(y => y.id === x.id))); }
   if (F.m >= firstOfMonth(new Date())) await ensureEntries(F.m); } catch (e) { fail(e); } }
@@ -1282,14 +1285,83 @@ function finResumo(el) {
     <tr><td><b>Pessoa física</b></td><td class="num">${BRL(sf.inPaid)}</td><td class="num">${BRL(sf.outPaid)}</td><td class="num">${BRL(sf.inAll - sf.outAll)}</td></tr></tbody></table>
     <p class="sub" style="margin:10px 0 0">${sobra >= goal ? `Dá para separar R$ 150 de viagem e R$ 300 de investimento este mês (sobra prevista de ${BRL(sobra)}).` : `Para separar R$ 150 de viagem e R$ 300 de investimento seriam necessários ${BRL(goal)} de sobra; hoje a previsão é ${BRL(sobra)}.`}</p></div>
    <div class="card"><h2 class="h2">Orçamentos do mês</h2>${buds.map(b => `<div class="bud"><div class="row"><b>${esc(b.r.name)}</b><span class="sp"></span><span class="sub">${BRL(b.used)} de ${BRL(b.r.amount)}</span></div><div class="bar ${b.r.kind === 'out' ? 'dark' : ''}"><i style="width:${b.pct}%"></i></div></div>`).join('') || '<div class="empty">Sem orçamentos.</div>'}</div></div>
-  <div class="card"><div class="row"><h2 class="h2">Caixinhas ${bp.ess}/${bp.est}/${bp.fut}</h2><div class="sp"></div><a href="#" id="editBk">ajustar</a></div><p class="sub" style="margin:4px 0 0">Meta de cada caixinha como parte da renda prevista do mês (${BRL(s.inAll)}).</p>${BK.map(k => { const lim = s.inAll * bp[k.k] / 100, prev = bkt[k.k].prev, pago = bkt[k.k].paid; const pct = lim ? Math.min(100, prev / lim * 100) : 0; return `<div class="bud"><div class="row"><b>${k.l}</b><span class="sub">${bp[k.k]}% · ${k.d}</span><span class="sp"></span><span class="sub ${prev > lim ? 'late' : ''}">previsto ${BRL(prev)} de ${BRL(lim)} · pago ${BRL(pago)}</span></div><div class="bar ${k.k === 'fut' ? '' : 'dark'}"><i style="width:${pct}%;${prev > lim ? 'background:var(--red)' : ''}"></i></div></div>`; }).join('')}</div>
+  ${budCard(m)}
   <div class="card"><h2 class="h2">Para onde foi o dinheiro</h2>${cats.map(([c, v]) => `<div class="bud"><div class="row"><b>${esc(c)}</b><span class="sp"></span><span class="sub">${BRL(v)} · ${Math.round(v / tot * 100)}%</span></div><div class="bar dark"><i style="width:${v / tot * 100}%"></i></div></div>`).join('') || '<div class="empty">Sem saídas neste mês.</div>'}</div>`;
+  $('#goCx')?.addEventListener('click', ev => { ev.preventDefault(); F.ftab = 'caixas'; viewFin(); });
   $('#editBk')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Porcentagens das caixinhas (essenciais/estilo/futuro), somando 100:', `${bp.ess}/${bp.est}/${bp.fut}`); const p = (v || '').split('/').map(Number); if (p.length === 3 && p.every(isFinite) && p.reduce((a, b) => a + b) === 100) { await saveSet('buckets', { ess: p[0], est: p[1], fut: p[2] }); rerenderView(); } else if (v) toast('Use três números somando 100, ex.: 60/30/10'); });
   $('#setBal')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Quanto você tem na conta agora (R$)?', String(balance()).replace('.', ',')); const n = money(v); if (isFinite(n)) { await saveSet('opening', { amount: n, date: todayS() }); rerenderView(); } });
 }
 const BK = [{ k: 'ess', l: 'Essenciais', d: 'moradia, mercado, contas, saúde' }, { k: 'est', l: 'Estilo de vida e trabalho', d: 'ferramentas, equipamento, lazer' }, { k: 'fut', l: 'Futuro', d: 'viagem e investimento' }];
 const ESS = ['moradia', 'contas', 'mercado', 'saúde', 'farmácia', 'transporte', 'dívidas', 'educação', 'pensão'], FUT = ['viagem', 'investimento', 'reserva'];
 function bucketOf(c) { const x = String(c || '').toLowerCase(); return ESS.includes(x) ? 'ess' : FUT.includes(x) ? 'fut' : 'est'; }
+// ---------- caixinhas: grupos, categorias e limites mensais ----------
+const BUD_DEF = [
+  { id: 'casa', name: 'Casa', color: '#F5C518', subs: [
+    { n: 'Aluguel', lim: 1100, names: ['aluguel'] }, { n: 'Internet', lim: 109.9, names: ['internet'] }, { n: 'Luz', lim: 150, names: ['luz'] },
+    { n: 'Água', lim: 20, names: ['agua'] }, { n: 'Gás', lim: 35, names: ['gas'] }, { n: 'Outros da casa', lim: 0, cats: ['moradia'] }] },
+  { id: 'comida', name: 'Alimentação', color: '#E8743B', subs: [{ n: 'Mercado', lim: 600, cats: ['mercado'] }, { n: 'Comer fora', lim: 0, cats: ['alimentacao fora'] }] },
+  { id: 'transp', name: 'Transporte', color: '#4F5BD5', subs: [{ n: 'Uber e transporte', lim: 200, cats: ['transporte'] }] },
+  { id: 'cuid', name: 'Cuidados pessoais', color: '#2FA37A', subs: [
+    { n: 'Academia', lim: 149, names: ['academia', '26fit'] }, { n: 'Psi (sessões)', lim: 240, names: ['psi'] }, { n: 'Minoxidil', lim: 35, names: ['minoxidil'] },
+    { n: 'Cetoconazol', lim: 20, names: ['cetoconazol'] }, { n: 'Outros cuidados', lim: 0, cats: ['saude', 'farmacia'] }] },
+  { id: 'assin', name: 'Assinaturas', color: '#8E6BBF', subs: [
+    { n: 'Claude', lim: 120, names: ['claude'] }, { n: 'CapCut', lim: 66, names: ['capcut'] }, { n: 'Google One', lim: 24, names: ['google one'] },
+    { n: 'Claro celular', lim: 35, names: ['claro'] }, { n: 'Outras assinaturas', lim: 0, cats: ['ferramentas', 'contas'] }] },
+  { id: 'fut', name: 'Futuro', color: '#1F1C17', subs: [{ n: 'Investimento', lim: 300, cats: ['investimento'] }, { n: 'Caixinha viagem', lim: 150, cats: ['viagem'] }] },
+  { id: 'trab', name: 'Trabalho (PJ)', color: '#6F8796', subs: [
+    { n: 'MacBook (parcela)', lim: 600, names: ['macbook'] }, { n: 'Câmera T5', lim: 400, names: ['camera'] }, { n: 'Outros do trabalho', lim: 0, cats: ['equipamento', 'anuncios'] }] },
+  { id: 'vida', name: 'Lazer e outros', color: '#D9534F', subs: [{ n: 'Lazer', lim: 0, cats: ['lazer'] }, { n: 'Dívidas e educação', lim: 0, cats: ['dividas', 'educacao'] }] }
+];
+const COLORS_BUD = ['#F5C518', '#E8743B', '#4F5BD5', '#2FA37A', '#8E6BBF', '#6F8796', '#D9534F', '#1F1C17'];
+const nz = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function budGroups() { return F.set.budget?.groups || BUD_DEF; }
+function budCalc(m, scope) {
+  const res = budGroups().map(g => ({ g, subs: g.subs.map(s => ({ s, used: 0, paid: 0 })), lim: 0, used: 0, paid: 0 })), loose = { used: 0, paid: 0, items: [] };
+  const hit = (k, text, words) => k.includes(' ') ? text.includes(k) : words.includes(k);
+  const find = e => { const text = nz(e.name), words = text.split(/[^a-z0-9]+/).filter(Boolean), cat = nz(e.category);
+    for (const r of res) for (const x of r.subs) if ((x.s.names || []).some(k => hit(nz(k), text, words))) return x;
+    for (const r of res) for (const x of r.subs) if ((x.s.cats || []).some(k => nz(k) === cat)) return x;
+    return null; };
+  monthEnt(m, scope).filter(e => e.kind === 'out').forEach(e => { const x = find(e), v = +e.amount; if (x) { x.used += v; if (e.status === 'pago') x.paid += v; } else { loose.used += v; loose.items.push(e); if (e.status === 'pago') loose.paid += v; } });
+  res.forEach(r => r.subs.forEach(x => { r.lim += +x.s.lim || 0; r.used += x.used; r.paid += x.paid; }));
+  return { res, loose, lim: res.reduce((a, r) => a + r.lim, 0), used: res.reduce((a, r) => a + r.used, 0) + loose.used, paid: res.reduce((a, r) => a + r.paid, 0) + loose.paid };
+}
+function donut(parts, center, sub) {
+  const tot = parts.reduce((a, p) => a + p.v, 0); let off = 25;
+  const segs = tot ? parts.map(p => { const d = p.v / tot * 100; const s = `<circle cx="21" cy="21" r="15.9155" fill="none" stroke="${p.color}" stroke-width="6" stroke-dasharray="${d} ${100 - d}" stroke-dashoffset="${off}"/>`; off -= d; return s; }).join('') : '';
+  return `<svg viewBox="0 0 42 42" role="img" aria-label="${esc(center)}"><circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--bg3)" stroke-width="6"/>${segs}<text x="21" y="21.5" text-anchor="middle" font-size="3.3" font-weight="700" fill="currentColor">${esc(center)}</text><text x="21" y="26" text-anchor="middle" font-size="2.6" fill="var(--dim)">${esc(sub || '')}</text></svg>`;
+}
+const legend = parts => `<div class="leg">${parts.map(p => `<div><i style="background:${p.color}"></i><span>${esc(p.label)}</span><span class="v">${BRL(p.v)}</span></div>`).join('')}</div>`;
+function budCard(m) {
+  const C = budCalc(m, F.scope);
+  return `<div class="card"><div class="row"><h2 class="h2">Caixinhas do mês</h2><div class="sp"></div><a href="#" id="goCx">ver e ajustar limites</a></div>${C.res.filter(r => r.lim || r.used).map(r => { const over = r.lim && r.used > r.lim; return `<div class="bud"><div class="row"><b>${esc(r.g.name)}</b><span class="sp"></span><span class="sub ${over ? 'late' : ''}">${BRL(r.used)}${r.lim ? ' de ' + BRL(r.lim) : ''}</span></div><div class="bar"><i style="width:${r.lim ? Math.min(100, r.used / r.lim * 100) : (r.used ? 100 : 0)}%;background:${over ? 'var(--red)' : r.g.color}"></i></div></div>`; }).join('')}</div>`;
+}
+async function saveBud(groups) { await saveSet('budget', { groups }); rerenderView(); }
+const parseLim = v => { const n = money(v); return isFinite(n) && n >= 0 ? n : NaN; };
+function finCaixas(el) {
+  const m = F.m, s = sums(m, F.scope), C = budCalc(m, F.scope), free = s.inAll - C.lim;
+  const limParts = C.res.filter(r => r.lim > 0).map(r => ({ v: r.lim, color: r.g.color, label: r.g.name }));
+  const usedParts = C.res.filter(r => r.used > 0).map(r => ({ v: r.used, color: r.g.color, label: r.g.name })); if (C.loose.used > 0) usedParts.push({ v: C.loose.used, color: '#B8B2A4', label: 'Sem caixinha' });
+  const groupHtml = C.res.map((r, gi) => { const over = r.lim && r.used > r.lim;
+    return `<div class="card"><div class="row"><i class="dot" style="background:${r.g.color}"></i><h2 class="h2">${esc(r.g.name)}</h2><div class="sp"></div><span class="sub ${over ? 'late' : ''}">limite ${BRL(r.lim)} · gasto ${BRL(r.used)} · ${r.lim ? (over ? 'estourou ' + BRL(r.used - r.lim) : 'sobra ' + BRL(r.lim - r.used)) : 'sem teto'}</span></div>
+    ${r.subs.map((x, si) => { const lim = +x.s.lim || 0, ov = lim && x.used > lim; return `<div class="brow" data-gi="${gi}" data-si="${si}" title="Clique para editar"><div><b>${esc(x.s.n)}</b></div><div class="bar" style="margin:0"><i style="width:${lim ? Math.min(100, x.used / lim * 100) : (x.used ? 100 : 0)}%;background:${ov ? 'var(--red)' : r.g.color}"></i></div><div class="num sub ${ov ? 'late' : ''}">${BRL(x.used)}${lim ? ' / ' + BRL(lim) : ' · sem teto'}</div></div>`; }).join('')}
+    <div style="margin-top:8px"><a href="#" class="addSub" data-gi="${gi}">+ categoria neste grupo</a></div></div>`; }).join('');
+  el.innerHTML = `<div class="kpis3" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px"><div class="kpi"><span>Renda prevista</span><b>${BRL(s.inAll)}</b></div><div class="kpi"><span>Separado nas caixinhas</span><b>${BRL(C.lim)}</b></div><div class="kpi hi2"><span>${free >= 0 ? 'Livre para distribuir' : 'Passou da renda'}</span><b>${BRL(Math.abs(free))}</b></div></div>
+  <div class="cols2"><div class="card"><h2 class="h2">Como a renda está dividida</h2><div class="dn">${donut(limParts, BRL(C.lim), 'em limites')}${legend(limParts)}</div></div>
+  <div class="card"><h2 class="h2">Para onde o dinheiro está indo</h2><div class="dn">${donut(usedParts, BRL(C.used), 'gasto + previsto')}${legend(usedParts)}</div></div></div>
+  <p class="sub" style="margin:12px 0">Clique numa categoria para mudar o limite. Cada gasto cai na categoria pelo nome (ex.: "Uber") ou pela categoria do lançamento. ${C.loose.used > 0 ? `<b>${BRL(C.loose.used)}</b> ainda sem caixinha: ${C.loose.items.map(e => esc(e.name)).join(', ')}.` : ''}</p>
+  ${groupHtml}<div style="margin:12px 0"><button class="btn" id="addGrp">+ novo grupo</button></div>`;
+  $$('.brow', el).forEach(r => r.onclick = async () => { const G = JSON.parse(JSON.stringify(budGroups())), gi = +r.dataset.gi, si = +r.dataset.si, x = G[gi].subs[si];
+    const v = prompt(`${x.n}: novo limite mensal em R$ (0 = sem teto).\nPara renomear escreva: nome: Novo nome\nPara apagar escreva: apagar`, String(x.lim).replace('.', ',')); if (v === null) return;
+    if (/^apagar$/i.test(v.trim())) { if (confirm(`Apagar "${x.n}"? Os gastos dele passam a aparecer como "sem caixinha".`)) { G[gi].subs.splice(si, 1); await saveBud(G); } return; }
+    const mm = v.match(/^nome:\s*(.+)$/i); if (mm) { x.n = mm[1].trim(); await saveBud(G); return; }
+    const n = parseLim(v); if (!isFinite(n)) return toast('Digite um valor, ex.: 600'); x.lim = n; await saveBud(G); });
+  $$('.addSub', el).forEach(a => a.onclick = async ev => { ev.preventDefault(); const G = JSON.parse(JSON.stringify(budGroups())), gi = +a.dataset.gi;
+    const n = prompt(`Nome da nova categoria em "${G[gi].name}":`); if (!n) return; const l = parseLim(prompt('Limite mensal em R$ (0 = sem teto):', '0')); if (!isFinite(l)) return toast('Valor inválido');
+    const k = (prompt('Palavras que encaixam gastos aqui, separadas por vírgula (ex.: uber, 99). Pode deixar vazio:', nz(n)) || '').split(',').map(t => t.trim()).filter(Boolean);
+    G[gi].subs.push({ n: n.trim(), lim: l, names: k }); await saveBud(G); });
+  $('#addGrp').onclick = async () => { const G = JSON.parse(JSON.stringify(budGroups())); const n = prompt('Nome do novo grupo:'); if (!n) return; G.push({ id: 'g' + Date.now(), name: n.trim(), color: COLORS_BUD[G.length % COLORS_BUD.length], subs: [] }); await saveBud(G); };
+}
 function finGastos(el) {
   const m = F.m, only = F.onlyPend; const E = monthEnt(m, F.scope).filter(e => e.kind === 'out');
   const groups = {}; const G = c => groups[c || 'Sem categoria'] ||= { items: [], prev: 0, paid: 0, extra: [] };
