@@ -438,6 +438,29 @@ dialog form{padding:24px}
 .pact{display:flex;gap:2px;align-items:center;margin-top:6px;opacity:.75}.pact button{border:0;background:transparent;width:30px;height:30px;border-radius:15px;display:grid;place-items:center;cursor:pointer;color:inherit}.pact button:hover{background:rgba(0,0,0,.1)}.pact .ms{font-size:18px}.pact .sp{flex:1}
 .pit .eth{position:absolute;top:6px;right:8px;color:#B3261E}
 @media (max-width:700px){.mural{grid-template-columns:repeat(4,82%)}}
+/* financeiro: roscas e metas */
+.dn{display:grid;grid-template-columns:minmax(180px,230px) 1fr;gap:20px;align-items:center}
+.dn svg{width:100%;height:auto;display:block;color:var(--on-surface)}
+.dleg{display:flex;flex-direction:column;gap:2px}
+.dleg .it{display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center;padding:8px 6px;border-radius:10px;font-size:14px}
+.dleg .it.click{cursor:pointer}.dleg .it.click:hover{background:var(--surface-c-low)}
+.dleg .it i{width:12px;height:12px;border-radius:4px;display:inline-block}
+.dleg .it .v{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.dleg .it.tot{border-top:1px solid var(--outline-variant);margin-top:4px;padding-top:12px;font-weight:600}
+.mrow{padding:10px 6px;border-radius:10px;cursor:pointer}.mrow:hover{background:var(--surface-c-low)}
+.mrow .top{display:flex;align-items:center;gap:10px;font-size:14px}.mrow .top i{width:12px;height:12px;border-radius:4px;flex:none}
+.mrow .top .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mrow .top .vv{font-variant-numeric:tabular-nums;font-size:13px;color:var(--on-surface-variant);white-space:nowrap}
+.mrow .top .vv.over{color:var(--error);font-weight:600}
+.mbar{height:6px;border-radius:99px;background:var(--surface-c-high);overflow:hidden;margin-top:7px}.mbar b{display:block;height:100%;border-radius:99px}
+.bal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.bal div{background:var(--surface-c-low);border-radius:14px;padding:12px 14px}.bal small{display:block;font-size:12px;color:var(--on-surface-variant)}.bal b{font-size:18px;font-variant-numeric:tabular-nums}
+.bal .neg b{color:var(--error)}
+#budBody h4{margin:14px 0 6px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--primary)}
+#budBody .brow{display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:center;padding:4px 0}
+#budBody .brow label{font-size:14px}
+#budBody .brow input{width:100%}
+@media (max-width:640px){.dn{grid-template-columns:1fr}.dn svg{max-width:240px;margin:0 auto}.bal{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -465,10 +488,10 @@ dialog form{padding:24px}
     <button class="nav" data-core data-view="pacientes"><span class="pill"><span class="ms">group</span></span>Pacientes</button>
     <button class="nav" data-view="financeiro"><span class="pill"><span class="ms">payments</span></span>Financeiro</button>
     <button class="nav" data-core data-view="recibos"><span class="pill"><span class="ms">receipt_long</span></span>Recibos</button>
-    <button class="nav" data-view="conteudo"><span class="pill"><span class="ms">auto_awesome</span></span>Conteúdo</button>
+    <button class="nav hidden" data-view="conteudo"><span class="pill"><span class="ms">auto_awesome</span></span>Conteúdo</button>
     <button class="nav" data-view="documentos"><span class="pill"><span class="ms">description</span></span>Documentos</button>
     <button class="nav hidden" id="navAdmin" data-view="admin"><span class="pill"><span class="ms">admin_panel_settings</span></span>Admin</button>
-    <button class="nav" data-view="alicia"><span class="pill"><span class="ms fill">face_3</span></span>AlicIA</button>
+    <button class="nav hidden" data-view="alicia"><span class="pill"><span class="ms fill">face_3</span></span>AlicIA</button>
     <button class="nav" data-view="conquistas"><span class="pill"><span class="ms fill">emoji_events</span></span>Conquistas</button>
     <button class="nav" id="navMore" type="button"><span class="pill"><span class="ms">menu</span></span>Mais</button>
     <div class="sp"></div>
@@ -619,7 +642,8 @@ dialog form{padding:24px}
 </form></dialog>
 
 <dialog id="dlgExp"><form id="fExp">
-  <div class="title-l">Despesa do consultório</div>
+  <div class="title-l">Despesa</div>
+  <div class="field"><label>De onde sai</label><select name="scope"><option value="pj">Consultório (PJ)</option><option value="pf">Pessoal (PF)</option></select></div>
   <div class="grid2">
     <div class="field"><label>Categoria</label><select name="category"></select></div>
     <div class="field"><label>Tipo</label><select name="kind"><option value="fixa">Fixa (todo mês)</option><option value="por_hora">Por hora de sala</option><option value="variavel">Variável</option></select></div>
@@ -637,6 +661,13 @@ dialog form{padding:24px}
   </div>
   <div class="field"><label>Descrição (opcional)</label><input name="description" maxlength="120"></div>
   <div class="dact"><button type="button" class="btn danger" id="eDel">Excluir</button><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar</button></div>
+</form></dialog>
+
+<dialog id="dlgBud"><form id="fBud">
+  <div class="title-l">Metas do mês</div>
+  <div class="small muted" style="margin:4px 0 6px">Quanto você quer gastar, no máximo, por mês em cada categoria. Deixe em branco o que não quiser acompanhar.</div>
+  <div id="budBody"></div>
+  <div class="dact"><div class="sp"></div><button type="button" class="btn text" data-close>Cancelar</button><button class="btn">Salvar metas</button></div>
 </form></dialog>
 
 <dialog id="dlgPreview"><form method="dialog" style="padding:16px">
@@ -807,7 +838,7 @@ function ethicsHtml(list, okMsg) {
   return `<b><span class="ms" style="font-size:18px;vertical-align:-4px">gpp_maybe</span> Revise antes de publicar</b><ul>${list.map(m => `<li>${esc(m)}</li>`).join('')}</ul><div class="small" style="margin-top:6px">Lembre: nome completo e CRP no perfil ou na legenda (Art. 20, a). Alerta automático, a decisão é sua.</div>`;
 }
 
-const S = { user: null, profile: null, view: 'inicio', month: fom(new Date()), patients: [], sessions: [], allOpen: [], finFilter: 'todos', creators: [], posts: [], trends: [], creatorFilter: null, postStatus: 'todos', started: false };
+const S = { user: null, profile: null, view: 'inicio', month: fom(new Date()), patients: [], sessions: [], allOpen: [], finFilter: 'resumo', finScope: 'todos', budgets: [], allExp: [], creators: [], posts: [], trends: [], creatorFilter: null, postStatus: 'todos', started: false };
 
 /* ---------- regras ---------- */
 function chargePct(p, status) {
@@ -930,10 +961,9 @@ const TOUR = [
   { ic: 'event_repeat', t: 'Gerar sessões do mês', view: 'agenda', sel: ['#gen'], b: 'Cria a agenda do mês inteiro a partir dos <b>horários fixos</b> de cada paciente. Você só ajusta o que fugir da regra.' },
   { ic: 'sync', t: 'Google Agenda e .ics', view: 'agenda', sel: ['#gConnect', '#gSync', '#ics'], b: 'Conecte o <b>Google Agenda</b> para as sessões aparecerem no celular, ou baixe um arquivo <b>.ics</b> para qualquer outra agenda.' },
   { ic: 'group', t: 'Cadastrar paciente', view: 'pacientes', sel: ['#fab', '#plist'], b: 'Toque em <b>Paciente</b> para cadastrar: horário, valor, forma de cobrança e o link da pasta no seu Drive. A lista ao lado mostra os exemplos, que você remove quando quiser.' },
-  { ic: 'account_balance_wallet', t: 'Financeiro', view: 'financeiro', sel: NAVQ('financeiro'), b: 'Cobranças, pagamentos e <b>despesas</b> do mês, inclusive aluguel de sala por hora. Marque a sessão como paga e ela segue para os recibos.' },
+  { ic: 'account_balance_wallet', t: 'Financeiro', view: 'financeiro', sel: NAVQ('financeiro'), b: 'O <b>Resumo</b> mostra o dinheiro da clínica numa rosca (gerado, recebido, a receber, em atraso e despesas) e, logo abaixo, os <b>gastos do consultório e pessoais</b> contra as metas que você define. Dá para baixar tudo em planilha.' },
   { ic: 'receipt_long', t: 'Recibos', view: 'recibos', sel: NAVQ('recibos'), b: 'Lista o que já foi pago e ainda <b>falta emitir no Receita Saúde</b>. O recibo é na data do pagamento, e o sistema avisa dos atrasados.' },
   { ic: 'description', t: 'Documentos', view: 'documentos', sel: NAVQ('documentos'), b: '14 modelos prontos: declarações, atestado, relatório, laudo, parecer, encaminhamentos, contrato e TCLE online. Preenche com os dados do paciente e você copia, imprime ou baixa em Word.' },
-  { ic: 'face_3', t: 'AlicIA', view: 'alicia', sel: NAVQ('alicia'), b: 'Busca a <b>melhor evidência disponível</b> (PubMed e Europe PMC) a partir de abordagem, objetivo e perfil do caso. Usa só iniciais e rotina, nunca o nome do paciente.' },
   { ic: 'help', t: 'Rever este tutorial', view: 'inicio', sel: ['#railMenu', '#topTour'], b: 'Quando quiser rever, é por aqui: o menu <b>⋯</b> na barra lateral (ou o <b>?</b> no topo do Início). No celular, <b>Mais → Tutorial</b>.' },
   { ic: 'photo', t: 'Obrigado por estar aqui!', b: '<p><b>Olá, eu sou o Matheus</b>, idealizador do Gestaopsi.</p><p>Fico muito feliz que você tenha chegado até aqui. Espero poupar algumas horas do teu mês e facilitar a gestão da tua clínica.</p><p>Qualquer sugestão, dúvida ou bug, me manda uma mensagem, eu leio tudo.</p><p style="margin-top:12px"><a class="btn" id="tkHello" target="_blank" rel="noopener" style="background:#1F7A4D;color:#fff"><span class="ms">campaign</span>Mandar mensagem no WhatsApp</a></p>' }
 ];
@@ -1003,10 +1033,11 @@ function maybeTour() {
 window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== S.view && S.started) go(v, true); });
 
 /* ---------- navegação ---------- */
+const HIDDEN_VIEWS = ['conteudo', 'alicia']; // escondidas do menu por enquanto (o código segue aqui)
 const VIEWS = { inicio: viewInicio, agenda: viewAgenda, pacientes: viewPacientes, alicia: viewAlicia, documentos: viewDocumentos, admin: viewAdmin, financeiro: viewFinanceiro, recibos: viewRecibos, conteudo: viewConteudo, conquistas: viewConquistas };
 $$('.nav[data-view]').forEach(b => b.onclick = () => go(b.dataset.view));
 async function go(v, fromHash) {
-  if (!VIEWS[v] || (v === 'admin' && S.userMode)) v = 'inicio';
+  if (!VIEWS[v] || HIDDEN_VIEWS.includes(v) || (v === 'admin' && S.userMode)) v = 'inicio';
   const same = S.view === v && S.rendered, y = window.scrollY;
   if (!same) track('abriu:' + v);
   S.view = v; try { localStorage.setItem('cons.view', v); } catch (_) {}
@@ -1037,7 +1068,12 @@ async function loadMonth() {
 }
 async function loadExpenses() {
   const { data, error } = await sb.from('expenses').select('*').eq('month', iso(S.month)).order('created_at');
-  if (error) throw error; S.expenses = S.userMode ? data.filter(e => !e.demo || /Plataforma|Anuidade/.test(e.category)) : data; return S.expenses;
+  if (error) throw error; const all = S.userMode ? data.filter(e => !e.demo || /Plataforma|Anuidade/.test(e.category)) : data;
+  S.allExp = all; S.expenses = all.filter(e => (e.scope || 'pj') === 'pj'); return S.expenses;
+}
+async function loadBudgets() {
+  const { data, error } = await sb.from('budgets').select('*'); if (error) { S.budgets = []; return S.budgets; }
+  S.budgets = data || []; return S.budgets;
 }
 async function loadPaidInMonth() {
   const { data, error } = await sb.from('sessions').select('*').eq('paid', true).gte('paid_at', iso(S.month)).lte('paid_at', iso(eom(S.month)));
@@ -1054,6 +1090,7 @@ function metrics(paidInMonth) {
     atraso: S.allOpen.reduce((a, s) => a + Number(s.amount), 0),
     previsto: S.sessions.filter(s => s.status === 'agendada').reduce((a, s) => a + Number(s.amount), 0),
     despesas: (S.expenses || []).reduce((a, e) => a + Number(e.amount), 0),
+    gastosPf: (S.allExp || []).filter(e => e.scope === 'pf').reduce((a, e) => a + Number(e.amount), 0),
     get lucro() { return this.recebido - this.despesas; }
   };
 }
@@ -1627,26 +1664,28 @@ $('#fSession').onsubmit = async e => {
 $('#sDel').onclick = async () => { if (!editingSession || !confirm('Excluir esta sessão?')) return; const { error } = await sb.from('sessions').delete().eq('id', editingSession.id); if (error) return fail(error); $('#dlgSession').close(); go(S.view); };
 
 /* ---------- FINANCEIRO ---------- */
+const PF_CATS = { 'Moradia': 'fixa', 'Alimentação': 'variavel', 'Transporte pessoal': 'variavel', 'Saúde e bem-estar': 'variavel', 'Lazer': 'variavel', 'Assinaturas': 'fixa', 'Educação pessoal': 'variavel', 'Dívidas e parcelas': 'fixa', 'Investimento e reserva': 'variavel', 'Família': 'variavel', 'Outros pessoais': 'variavel' };
 const EXP_CATS = { 'Aluguel de sala (fixo)': 'fixa', 'Aluguel de sala (por hora)': 'por_hora', 'Supervisão clínica': 'fixa', 'Terapia pessoal': 'fixa', 'Anuidade do CRP': 'fixa', 'Plataforma e software': 'fixa', 'Contador': 'fixa', 'Marketing e anúncios': 'variavel', 'Cursos e formação': 'variavel', 'Material e testes': 'variavel', 'Transporte': 'variavel', 'Outros': 'variavel' };
 async function viewFinanceiro() {
-  await loadPatients(); await loadMonth(); await loadExpenses();
+  await loadPatients(); await loadMonth(); await loadExpenses(); await loadBudgets();
   const paid = await loadPaidInMonth(); const M = metrics(paid);
   const F = S.finFilter;
   const chip = (k, l, v) => `<button class="chip ${F === k ? 'on' : ''}" data-f="${k}">${F === k ? '<span class="ms" style="font-size:18px">check</span>' : ''}${l} · ${brl(v)}</button>`;
   const head = `<div class="topbar"><div class="display">Financeiro</div><div class="sp"></div>${monthSel()}</div>
-  <div class="chips" style="margin-bottom:14px">${chip('todos', 'Gerado', M.gerado)}${chip('pago', 'Recebido', M.recebido)}${chip('areceber', 'A receber', M.areceber)}${chip('atrasado', 'Em atraso', M.atraso)}${chip('despesas', 'Despesas', M.despesas)}</div>`;
+  <div class="chips" style="margin-bottom:14px"><button class="chip ${F === 'resumo' ? 'on' : ''}" data-f="resumo">${F === 'resumo' ? '<span class="ms" style="font-size:18px">check</span>' : ''}Resumo</button>${chip('todos', 'Gerado', M.gerado)}${chip('pago', 'Recebido', M.recebido)}${chip('areceber', 'A receber', M.areceber)}${chip('atrasado', 'Em atraso', M.atraso)}${chip('despesas', 'Despesas', M.despesas)}</div>`;
+  if (F === 'resumo') return finResumo(head, M);
   if (F === 'despesas') {
-    const E = S.expenses;
+    const E = S.allExp;
     $('#view').innerHTML = head + `
     <div class="kpis" style="margin-bottom:16px">
       ${kpiStatic('account_balance_wallet', 'var(--secondary-container)', brl(M.recebido), 'Recebido')}
-      ${kpiStatic('trending_down', 'var(--error-container)', brl(M.despesas), 'Despesas')}
-      ${kpiStatic('savings', 'var(--primary-container)', brl(M.lucro), 'Lucro (recebido − despesas)')}
-      ${kpiStatic('payments', 'var(--warn-container)', brl(E.filter(e => !e.paid).reduce((a, e) => a + Number(e.amount), 0)), 'Despesas a pagar')}
+      ${kpiStatic('trending_down', 'var(--error-container)', brl(M.despesas), 'Despesas do consultório')}
+      ${kpiStatic('savings', 'var(--primary-container)', brl(M.lucro), 'Lucro (recebido − despesas do consultório)')}
+      ${kpiStatic('payments', 'var(--warn-container)', brl(E.filter(e => !e.paid).reduce((a, e) => a + Number(e.amount), 0)), 'Despesas a pagar (consultório e pessoais)')}
     </div>
-    <section class="card elev"><div class="cardhead"><div class="title-m">Despesas do consultório</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn text sm" id="copyFixed"><span class="ms" style="font-size:18px">content_copy</span>Repetir fixas do mês anterior</button></div></div>
+    <section class="card elev"><div class="cardhead"><div class="title-m">Despesas e gastos pessoais</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn text sm" id="copyFixed"><span class="ms" style="font-size:18px">content_copy</span>Repetir fixas do mês anterior</button></div></div>
     <div class="list">${E.length ? E.map(e => `<div class="row click" data-exp="${e.id}"><div class="avatar" style="background:var(--surface-c-highest)"><span class="ms" style="font-size:20px">${e.kind === 'por_hora' ? 'event' : 'receipt_long'}</span></div>
-      <div class="grow"><div class="t">${esc(e.category)}${e.demo ? ' <span class="badge b-neutral">exemplo</span>' : ''}</div><div class="s">${e.kind === 'por_hora' ? `${Number(e.hours || 0).toLocaleString('pt-BR')} h × ${brl(e.hourly_rate)}` : e.kind === 'fixa' ? 'Fixa' : 'Variável'}${e.description ? ' · ' + esc(e.description) : ''}</div></div>
+      <div class="grow"><div class="t">${esc(e.category)} <span class="badge ${e.scope === 'pf' ? 'b-info' : 'b-neutral'}">${e.scope === 'pf' ? 'Pessoal' : 'Consultório'}</span>${e.demo ? ' <span class="badge b-neutral">exemplo</span>' : ''}</div><div class="s">${e.kind === 'por_hora' ? `${Number(e.hours || 0).toLocaleString('pt-BR')} h × ${brl(e.hourly_rate)}` : e.kind === 'fixa' ? 'Fixa' : 'Variável'}${e.description ? ' · ' + esc(e.description) : ''}</div></div>
       <div style="text-align:right"><div class="num">${brl(e.amount)}</div><span class="badge ${e.paid ? 'b-ok' : 'b-warn'}">${e.paid ? 'Paga' : 'A pagar'}</span></div></div>`).join('')
       : `<div class="empty"><span class="ms">trending_down</span>Sem despesas em ${monthName(S.month).toLowerCase()}. Toque em “Despesa” para lançar aluguel de sala, supervisão, CRP...</div>`}</div></section>
     <div class="foot">Aluguel por hora: o app conta as sessões presenciais do mês (agendadas, realizadas e faltas) como horas de sala.</div>`;
@@ -1676,14 +1715,94 @@ async function viewFinanceiro() {
   $$('[data-f]').forEach(b => b.onclick = () => { S.finFilter = b.dataset.f; go('financeiro'); });
   $$('[data-pay]').forEach(b => b.onclick = async () => { const { error } = await sb.from('sessions').update({ paid: true, paid_at: todayISO() }).eq('id', b.dataset.pay); if (error) return fail(error); snack('Marcado como pago. Emita o recibo no Receita Saúde hoje.'); go('financeiro'); });
 }
+
+/* ---------- Financeiro: resumo com roscas, metas e planilha ---------- */
+const PALX = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var(--chart-4)', 'var(--chart-5)', 'var(--chart-6)', '#6F8796', '#C98A1B', '#1F7A4D', '#A04668', '#5B6BB0', '#8C8C3A', '#6D4C41', '#00838F'];
+function donutSvg(parts, center, sub) {
+  const tot = parts.reduce((a, p) => a + Math.max(0, p.v), 0); let off = 25;
+  const segs = tot ? parts.filter(p => p.v > 0).map(p => { const d = p.v / tot * 100; const x = `<circle cx="21" cy="21" r="15.9155" fill="none" stroke="${p.color}" stroke-width="6" stroke-dasharray="${d} ${100 - d}" stroke-dashoffset="${off}"/>`; off -= d; return x; }).join('') : '';
+  return `<svg viewBox="0 0 42 42" role="img" aria-label="${esc(center + ' ' + (sub || ''))}"><circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--surface-c-high)" stroke-width="6"/>${segs}<text x="21" y="21.2" text-anchor="middle" font-size="3.4" font-weight="700" fill="currentColor">${esc(center)}</text><text x="21" y="25.6" text-anchor="middle" font-size="2.2" fill="var(--on-surface-variant)">${esc(sub || '')}</text></svg>`;
+}
+const metaOf = (sc, c) => Number(S.budgets.find(b => b.scope === sc && b.category === c)?.amount || 0);
+function catRows(scope) {
+  const out = [];
+  for (const sc of (scope === 'todos' ? ['pj', 'pf'] : [scope])) {
+    const names = new Set(Object.keys(CATS[sc]));
+    S.allExp.filter(e => (e.scope || 'pj') === sc).forEach(e => names.add(e.category));
+    S.budgets.filter(b => b.scope === sc).forEach(b => names.add(b.category));
+    names.forEach(c => { const gasto = S.allExp.filter(e => (e.scope || 'pj') === sc && e.category === c).reduce((a, e) => a + Number(e.amount), 0), meta = metaOf(sc, c); if (gasto > 0 || meta > 0) out.push({ escopo: sc, categoria: c, gasto, meta }); });
+  }
+  return out.sort((a, b) => b.gasto - a.gasto || b.meta - a.meta);
+}
+function finResumo(head, M) {
+  const scope = S.finScope, R = catRows(scope), mes = monthName(S.month).toLowerCase();
+  const gasto = R.reduce((a, x) => a + x.gasto, 0), meta = R.reduce((a, x) => a + x.meta, 0), sobra = M.recebido - M.despesas - M.gastosPf;
+  const ring = [{ v: M.recebido, color: 'var(--chart-2)', l: 'Recebido', to: 'pago' }, { v: M.areceber, color: 'var(--chart-3)', l: 'A receber', to: 'areceber' }, { v: M.atraso, color: 'var(--chart-4)', l: 'Em atraso', to: 'atrasado' }, { v: M.despesas, color: 'var(--chart-5)', l: 'Despesas do consultório', to: 'despesas' }];
+  const item = (c, l, v, to, cls = '') => `<div class="it ${to ? 'click' : ''} ${cls}" ${to ? `data-to="${to}"` : ''}><i style="background:${c}"></i><span>${l}</span><span class="v">${brl(v)}</span></div>`;
+  const clinic = `<section class="card elev"><div class="cardhead"><div class="title-m">Clínica em ${mes}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn tonal sm" id="finExport"><span class="ms" style="font-size:18px">download</span>Exportar planilha</button></div></div>
+    <div class="dn">${donutSvg(ring, brl(M.gerado), 'gerado no mês')}<div class="dleg">${item('var(--chart-1)', 'Gerado', M.gerado, 'todos')}${ring.map(r => item(r.color, r.l, r.v, r.to)).join('')}${item('var(--chart-6)', 'Lucro (recebido − despesas)', M.lucro, 'despesas', 'tot')}</div></div></section>`;
+  const scChip = (k, l) => `<button class="chip ${scope === k ? 'on' : ''}" data-sc="${k}">${scope === k ? '<span class="ms" style="font-size:18px">check</span>' : ''}${l}</button>`;
+  const parts = R.map((x, i) => ({ v: gasto > 0 ? x.gasto : x.meta, color: PALX[i % PALX.length] }));
+  const rows = R.map((x, i) => { const over = x.meta > 0 && x.gasto > x.meta, pct = x.meta ? Math.min(100, x.gasto / x.meta * 100) : (x.gasto ? 100 : 0);
+    return `<div class="mrow" data-m="${x.escopo}|${esc(x.categoria)}"><div class="top"><i style="background:${PALX[i % PALX.length]}"></i><span class="nm">${esc(x.categoria)}${scope === 'todos' ? ` <span class="badge ${x.escopo === 'pf' ? 'b-info' : 'b-neutral'}">${x.escopo === 'pf' ? 'Pessoal' : 'PJ'}</span>` : ''}</span><span class="vv ${over ? 'over' : ''}">${brl(x.gasto)}${x.meta ? ' de ' + brl(x.meta) : ' · sem meta'}</span></div><div class="mbar"><b style="width:${pct}%;background:${over ? 'var(--error)' : PALX[i % PALX.length]};${x.meta ? '' : 'opacity:.3'}"></b></div></div>`; }).join('');
+  const sub = 'gasto no mês';
+  const gastos = `<section class="card elev"><div class="cardhead"><div class="title-m">Gastos do mês e metas</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn text sm" id="budOpen"><span class="ms" style="font-size:18px">tune</span>Metas</button><button class="btn text sm" id="gasPf"><span class="ms" style="font-size:18px">add</span>Gasto pessoal</button></div></div>
+    <div class="chips" style="margin-bottom:12px">${scChip('todos', 'Tudo')}${scChip('pj', 'Consultório (PJ)')}${scChip('pf', 'Pessoal (PF)')}</div>
+    ${R.length ? `<div class="dn">${donutSvg(parts, brl(gasto), sub)}<div>${rows}</div></div>` : `<div class="empty"><span class="ms">savings</span>Sem gastos nem metas aqui. Toque em “Metas” para definir quanto quer gastar por categoria e lance as despesas no botão “Despesa”.</div>`}
+    <div class="bal"><div><small>Despesas do consultório</small><b>${brl(M.despesas)}</b></div><div><small>Gastos pessoais</small><b>${brl(M.gastosPf)}</b></div><div class="${sobra < 0 ? 'neg' : ''}"><small>Sobra do mês (recebido − PJ − pessoal)</small><b>${brl(sobra)}</b></div></div></section>`;
+  $('#view').innerHTML = head + clinic + gastos + `<div class="foot">O gráfico da clínica mostra o que foi gerado, recebido, a receber, em atraso e as despesas do consultório. Os gastos pessoais ficam separados, para você enxergar o caminho do dinheiro entre PJ e PF.</div>`;
+  bindMonth();
+  $$('[data-f]').forEach(b => b.onclick = () => { S.finFilter = b.dataset.f; go('financeiro'); });
+  $$('[data-to]').forEach(b => b.onclick = () => { S.finFilter = b.dataset.to; go('financeiro'); });
+  $$('[data-sc]').forEach(b => b.onclick = () => { S.finScope = b.dataset.sc; go('financeiro'); });
+  $$('[data-m]').forEach(r => r.onclick = () => { const [sc, c] = r.dataset.m.split('|'); openBudgets({ sc, c }); });
+  $('#budOpen').onclick = () => openBudgets(); $('#gasPf').onclick = () => openExpense(null, 'pf'); $('#finExport').onclick = exportFinanceiro;
+  setFab('Despesa', () => openExpense());
+}
+function openBudgets(focus) {
+  const sec = (sc, t) => `<h4>${t}</h4>` + Object.keys(CATS[sc]).map(c => `<div class="brow"><label>${esc(c)}</label><input type="number" step="0.01" min="0" inputmode="decimal" placeholder="sem meta" data-bs="${sc}" data-bc="${esc(c)}" value="${metaOf(sc, c) || ''}"></div>`).join('');
+  $('#budBody').innerHTML = sec('pj', 'Consultório (PJ)') + sec('pf', 'Pessoal (PF)');
+  $('#dlgBud').showModal();
+  if (focus) { const el = [...$$('#budBody input')].find(i => i.dataset.bs === focus.sc && i.dataset.bc === focus.c); if (el) { el.scrollIntoView({ block: 'center' }); el.focus(); } }
+}
+$('#fBud').onsubmit = async ev => {
+  ev.preventDefault(); const up = [], del = [];
+  $$('#budBody input').forEach(i => { const sc = i.dataset.bs, c = i.dataset.bc, v = Number(i.value || 0), had = S.budgets.some(b => b.scope === sc && b.category === c);
+    if (v > 0) up.push({ owner: S.user.id, scope: sc, category: c, amount: v }); else if (had) del.push([sc, c]); });
+  try {
+    if (up.length) { const r = await sb.from('budgets').upsert(up, { onConflict: 'owner,scope,category' }); if (r.error) throw r.error; }
+    for (const [sc, c] of del) { const r = await sb.from('budgets').delete().eq('scope', sc).eq('category', c); if (r.error) throw r.error; }
+  } catch (e) { return fail(e); }
+  $('#dlgBud').close(); snack('Metas salvas'); go('financeiro');
+};
+const loadScript = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Não consegui carregar a exportação')); document.head.appendChild(s); });
+async function exportFinanceiro() {
+  const btn = $('#finExport'); if (btn) btn.disabled = true;
+  try {
+    snack('Montando a planilha...');
+    if (!window.JSZip) await loadScript('/gestor/vendor/jszip.min.js');
+    if (!window.FinXlsx) await loadScript('/consultorio/export-xlsx.js?v=1');
+    await loadExpenses(); await loadBudgets(); await loadMonth();
+    const paid = await loadPaidInMonth(), M = metrics(paid);
+    const byId = new Map(); S.sessions.filter(x => Number(x.amount) > 0 && x.status !== 'agendada').concat(paid).forEach(x => byId.set(x.id, x));
+    const sess = [...byId.values()].sort((a, b) => a.date.localeCompare(b.date)).map(x => ({ data: x.date, paciente: initials(pById(x.patient_id)?.name), status: STATUS[x.status] || x.status, valor: Number(x.amount), vence: x.due_date, pagoEm: x.paid ? x.paid_at : null, situacao: SIT[situation(x)][0] }));
+    const KIND = { fixa: 'Fixa', por_hora: 'Por hora de sala', variavel: 'Variável' };
+    const desp = S.allExp.map(e => ({ escopo: e.scope || 'pj', categoria: e.category, tipo: KIND[e.kind] || e.kind, descricao: e.description, valor: Number(e.amount), paga: !!e.paid }));
+    const bytes = await FinXlsx.build({ clinica: '', mes: monthName(S.month).toLowerCase(), geradoEm: todayISO(), kpis: { gerado: M.gerado, recebido: M.recebido, areceber: M.areceber, atraso: M.atraso, despesasPj: M.despesas, gastosPf: M.gastosPf }, sessoes: sess, despesas: desp, categorias: catRows('todos') }, window.JSZip);
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    const a = document.createElement('a'); a.href = url; a.download = `Gestaopsi-financeiro-${iso(S.month).slice(0, 7)}.xlsx`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+    track('financeiro:exportou'); snack('Planilha baixada (pacientes só com iniciais)');
+  } catch (e) { fail(e); } finally { if (btn) btn.disabled = false; }
+}
 function kpiStatic(ic, bg, v, l) { return `<div class="kpi" style="cursor:default"><div class="k-ic" style="background:${bg}"><span class="ms">${ic}</span></div><div class="v">${v}</div><div class="l">${l}</div></div>`; }
 function roomHours() { return S.sessions.filter(s => modOf(s, pById(s.patient_id)) === 'presencial' && !/cancelada|remarcada/.test(s.status)).length; }
 let editingExp = null;
-function openExpense(e) {
+const CATS = { pj: EXP_CATS, pf: PF_CATS };
+function fillCats(sc, cur) { const f = $('#fExp'), C = CATS[sc] || EXP_CATS; f.category.innerHTML = Object.keys(C).map(c => `<option>${c}</option>`).join(''); f.category.value = cur in C ? cur : (sc === 'pf' ? 'Outros pessoais' : 'Outros'); }
+function openExpense(e, scope) {
   editingExp = e || null; const f = $('#fExp'); f.reset();
-  f.category.innerHTML = Object.keys(EXP_CATS).map(c => `<option>${c}</option>`).join('');
-  const d = e || { category: 'Aluguel de sala (fixo)', kind: 'fixa', paid: false };
-  f.category.value = d.category in EXP_CATS ? d.category : 'Outros'; f.kind.value = d.kind; f.description.value = d.description || '';
+  const d = e || (scope === 'pf' ? { category: 'Moradia', kind: 'fixa', paid: false, scope: 'pf' } : { category: 'Aluguel de sala (fixo)', kind: 'fixa', paid: false, scope: 'pj' });
+  f.scope.value = d.scope || 'pj'; fillCats(f.scope.value, d.category); f.kind.value = d.kind; f.description.value = d.description || '';
   f.amount.value = d.amount ?? ''; f.hours.value = d.hours ?? ''; f.hourly_rate.value = d.hourly_rate ?? ''; f.paid.value = String(!!d.paid);
   expKind(); $('#eDel').classList.toggle('hidden', !e); $('#dlgExp').showModal();
 }
@@ -1693,12 +1812,13 @@ function expKind() {
   if (hr) { f.amount.value = (Number(f.hours.value || 0) * Number(f.hourly_rate.value || 0)).toFixed(2); $('#expHint').textContent = `Sessões presenciais em ${monthName(S.month).toLowerCase()}: ${roomHours()} (1 sessão = 1 hora de sala).`; }
 }
 { const f = $('#fExp');
-  f.category.addEventListener('change', () => { f.kind.value = EXP_CATS[f.category.value] || 'variavel'; expKind(); });
+  f.scope.addEventListener('change', () => { fillCats(f.scope.value, ''); f.kind.value = CATS[f.scope.value][f.category.value] || 'variavel'; expKind(); });
+  f.category.addEventListener('change', () => { f.kind.value = (CATS[f.scope.value] || EXP_CATS)[f.category.value] || 'variavel'; expKind(); });
   ['kind', 'hours', 'hourly_rate'].forEach(k => f[k].addEventListener('input', expKind));
   $('#useHours').onclick = () => { f.hours.value = roomHours(); expKind(); }; }
 $('#fExp').onsubmit = async ev => {
   ev.preventDefault(); const f = ev.target, hr = f.kind.value === 'por_hora';
-  const row = { month: iso(S.month), category: f.category.value, kind: f.kind.value, description: f.description.value.trim() || null, hours: hr ? Number(f.hours.value || 0) : null, hourly_rate: hr ? Number(f.hourly_rate.value || 0) : null, amount: hr ? Number(f.hours.value || 0) * Number(f.hourly_rate.value || 0) : Number(f.amount.value || 0), paid: f.paid.value === 'true' };
+  const row = { month: iso(S.month), scope: f.scope.value, category: f.category.value, kind: f.kind.value, description: f.description.value.trim() || null, hours: hr ? Number(f.hours.value || 0) : null, hourly_rate: hr ? Number(f.hourly_rate.value || 0) : null, amount: hr ? Number(f.hours.value || 0) * Number(f.hourly_rate.value || 0) : Number(f.amount.value || 0), paid: f.paid.value === 'true' };
   const { error } = editingExp ? await sb.from('expenses').update(row).eq('id', editingExp.id) : await sb.from('expenses').insert(row);
   if (error) return fail(error); $('#dlgExp').close(); snack('Despesa salva'); S.finFilter = 'despesas'; go('financeiro');
 };
@@ -1706,8 +1826,8 @@ $('#eDel').onclick = async () => { if (!editingExp || !confirm('Excluir esta des
 async function copyFixed() {
   const prev = iso(addM(S.month, -1));
   const { data, error } = await sb.from('expenses').select('*').eq('month', prev).in('kind', ['fixa', 'por_hora']); if (error) return fail(error);
-  const have = new Set(S.expenses.map(e => e.category));
-  const rows = (data || []).filter(e => !have.has(e.category)).map(e => ({ month: iso(S.month), category: e.category, kind: e.kind, description: e.description, hourly_rate: e.hourly_rate, hours: e.kind === 'por_hora' ? roomHours() : null, amount: e.kind === 'por_hora' ? roomHours() * Number(e.hourly_rate || 0) : e.amount, paid: false, demo: e.demo }));
+  const have = new Set(S.allExp.map(e => (e.scope || 'pj') + '|' + e.category));
+  const rows = (data || []).filter(e => !have.has((e.scope || 'pj') + '|' + e.category)).map(e => ({ month: iso(S.month), scope: e.scope || 'pj', category: e.category, kind: e.kind, description: e.description, hourly_rate: e.hourly_rate, hours: e.kind === 'por_hora' ? roomHours() : null, amount: e.kind === 'por_hora' ? roomHours() * Number(e.hourly_rate || 0) : e.amount, paid: false, demo: e.demo }));
   if (!rows.length) return snack('Nada novo para repetir do mês anterior.');
   const r = await sb.from('expenses').insert(rows); if (r.error) return fail(r.error); snack(rows.length + ' despesas repetidas'); go('financeiro');
 }
