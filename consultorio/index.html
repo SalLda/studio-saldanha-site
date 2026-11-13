@@ -350,6 +350,24 @@ h1,h2,h3{margin:0;font-weight:500}
 .moreit .ms{color:var(--primary);font-size:26px}
 .moreit.on{background:var(--secondary-container)}
 .moreit.danger .ms{color:var(--error)}
+/* admin: lançamento */
+.admck{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--outline-variant);cursor:pointer;font-size:14.5px;line-height:1.45}
+.admck:first-child{border-top:0}.admck input{margin:2px 0 0;width:18px;height:18px;flex:none;accent-color:var(--primary)}
+.admck.done span{text-decoration:line-through;color:var(--on-surface-variant)}
+.admgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:12px}
+.admbox{background:var(--surface-c-lowest);border-radius:var(--r-lg);padding:16px;box-shadow:var(--e1)}
+.admbox h4{margin:0 0 8px;font-size:15px}.admbox p{margin:0;color:var(--on-surface-variant);font-size:14px;line-height:1.5}
+.admprice{font-size:46px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.admhero{border-radius:28px;padding:26px;background:linear-gradient(135deg,#1F4D3E,#2E6A55 60%,#5E8F5A);color:#fff;display:grid;gap:10px}
+.admhero p{margin:0;opacity:.9;max-width:62ch}
+.admsteps{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.admsteps span{background:var(--surface-c);border-radius:99px;padding:6px 12px;font-size:13.5px}
+.admsteps span b{color:var(--primary);margin-right:6px}
+.admcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px;align-items:start}
+.admprog{height:6px;border-radius:3px;background:var(--surface-c-high);overflow:hidden;margin:6px 0 4px}.admprog i{display:block;height:100%;background:var(--primary)}
+.admrot{display:grid;gap:8px}.admrot .g{font-weight:600;font-size:15.5px}.admrot ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14px;color:var(--on-surface-variant)}
+.admcols>.card+.card{margin-top:0}.admrot .hd{display:grid;gap:6px;justify-items:start}.admrot .ft{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.admrot .cta{font-size:14px}.admrot select{max-width:170px}
+.admq{white-space:pre-wrap;background:var(--surface-c);border-radius:12px;padding:12px 14px;font-size:14.5px;line-height:1.5}
 /* admin */
 .adt{width:100%;border-collapse:collapse;font-size:13.5px}.adt th{text-align:left;font-size:12px;color:var(--on-surface-variant);padding:8px 10px;border-bottom:1px solid var(--outline-variant);white-space:nowrap}
 .adt td{padding:10px;border-bottom:1px solid var(--outline-variant);white-space:nowrap}.adt tr[data-u]{cursor:pointer}.adt tr[data-u]:hover,.adt tr.on{background:var(--primary-container)}
@@ -2536,6 +2554,7 @@ const adLabel = (a, m) => AD_LABEL[a] || (a.startsWith('abriu:') ? 'Abriu ' + ((
 const adAgo = ts => { if (!ts) return 'nunca'; const m = (Date.now() - new Date(ts)) / 60000; if (m < 2) return 'agora'; if (m < 60) return 'há ' + Math.round(m) + ' min'; if (m < 1440) return 'há ' + Math.round(m / 60) + ' h'; return 'há ' + Math.round(m / 1440) + ' d'; };
 const adWhen = ts => ts ? new Date(ts).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—';
 async function viewAdmin() {
+  if ((S.adminTab || 'uso') !== 'uso') return viewAdminDoc();
   const sel = S.adminSel || null;
   const [u, d, a] = await Promise.all([sb.rpc('admin_users'), sb.rpc('admin_daily', { p_user: sel, p_days: 30 }), sb.rpc('admin_activity', { p_user: sel, p_limit: 120 })]);
   if (u.error) { $('#view').innerHTML = '<div class="notice warn"><span class="ms">lock</span><div>Sem acesso a esta área.</div></div>'; return; }
@@ -2544,7 +2563,7 @@ async function viewAdmin() {
   const tm = n => n < 60 ? n + ' min' : (Math.round(n / 6) / 10).toLocaleString('pt-BR') + ' h';
   const mxV = Math.max(1, ...D.map(x => x.visits)), mxM = Math.max(1, ...D.map(x => x.minutes));
   $('#view').innerHTML = `
-  <div class="topbar"><div><div class="display">Admin</div><div class="muted">Quem usa o Gestaopsi. Só tu vê esta área. Nada de dados de pacientes aparece aqui.</div></div></div>
+  <div class="topbar"><div><div class="display">Admin</div><div class="muted">Quem usa o Gestaopsi. Só tu vê esta área. Nada de dados de pacientes aparece aqui.</div>${admTabs()}</div></div>
   <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
     ${kpiStatic('group', 'var(--primary-container)', U.length, 'Contas')}
     ${kpiStatic('bolt', 'var(--secondary-container)', act7, 'Ativas nos últimos 7 dias')}
@@ -2564,6 +2583,55 @@ async function viewAdmin() {
   <div class="foot">O histórico guarda só o tipo de ação e o horário, nunca nomes ou dados de pacientes.</div>`;
   $$('[data-u]').forEach(tr => tr.onclick = () => { S.adminSel = tr.dataset.u === S.adminSel ? null : tr.dataset.u; viewAdmin(); });
   const al = $('#adAll'); if (al) al.onclick = () => { S.adminSel = null; viewAdmin(); };
+  bindAdmTabs();
+}
+const ADT = [['uso', 'Uso', 'group'], ['lanc', 'Lançamento', 'payments'], ['road', 'Roadmap', 'task_alt'], ['cont', 'Conteúdo', 'smart_display']];
+const admTabs = () => `<div class="seg" style="margin-top:12px;flex-wrap:wrap">${ADT.map(([k, l, ic]) => `<button class="${(S.adminTab || 'uso') === k ? 'on' : ''}" data-adt="${k}"><span class="ms">${ic}</span>${l}</button>`).join('')}</div>`;
+function bindAdmTabs() { $$('[data-adt]').forEach(b => b.onclick = () => { S.adminTab = b.dataset.adt; viewAdmin(); }); }
+const admAt = (o, path) => path.split('.').reduce((a, k) => a == null ? a : a[/^\d+$/.test(k) ? +k : k], o);
+async function saveAdmDoc() { const { error } = await sb.from('admin_docs').update({ body: S.admDoc, updated_at: new Date().toISOString() }).eq('key', 'lancamento'); if (error) snack('Não salvou: ' + error.message); }
+async function viewAdminDoc() {
+  const tab = S.adminTab;
+  if (!S.admDoc) { const { data, error } = await sb.from('admin_docs').select('body').eq('key', 'lancamento').maybeSingle(); if (error || !data) { $('#view').innerHTML = `<div class="topbar"><div><div class="display">Admin</div>${admTabs()}</div></div><div class="notice warn"><span class="ms">lock</span><div>Não consegui abrir o plano de lançamento.</div></div>`; bindAdmTabs(); return; } S.admDoc = data.body; }
+  const D = S.admDoc;
+  const ck = (it, path) => `<label class="admck ${it.done ? 'done' : ''}"><input type="checkbox" data-ck="${path}" ${it.done ? 'checked' : ''}><span>${esc(it.txt)}</span></label>`;
+  const ul = L => `<ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px">${L.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  const card = (title, inner, sub) => `<section class="card elev" style="margin-top:16px"><div class="cardhead"><div class="title-m">${title}</div>${sub ? `<div class="small muted">${sub}</div>` : ''}</div>${inner}</section>`;
+  let body = '';
+  if (tab === 'lanc') {
+    const O = D.oferta, V = D.validacao, G = D.gtm;
+    body = `<div class="admhero" style="margin-top:16px"><div class="small" style="opacity:.8;letter-spacing:.08em;text-transform:uppercase">${esc(O.titulo)}</div><div class="admprice">${esc(O.preco)}</div><p>${esc(O.resumo)}</p></div>
+    <div class="notice" style="margin-top:12px"><span class="ms">lightbulb</span><div>${esc(O.decisao)}</div></div>
+    ${card('Preço frente aos concorrentes', `<div class="admgrid">${O.comparativo.map(c => `<div class="admbox"><h4>${esc(c.nome)}</h4><div style="font-weight:600;margin-bottom:6px">${esc(c.preco)}</div><p>${esc(c.nota)}</p></div>`).join('')}</div>`)}
+    ${card('O que o alpha tester topa em troca', ul(O.contrapartida))}
+    ${card('Pra começar a cobrar', O.cobrar.map((it, i) => ck(it, `oferta.cobrar.${i}`)).join(''), 'marque conforme for fazendo')}
+    ${card('Plano de validação', `<p style="margin:0 0 10px">${esc(V.objetivo)}</p><div class="admgrid">${V.metas.map(m => `<div class="admbox"><h4>${esc(m.k)}</h4><p>${esc(m.v)}</p></div>`).join('')}</div><p class="small muted" style="margin:10px 0 0">${esc(V.onde_medir)}</p>`)}
+    ${V.semanas.map((w, i) => card(esc(w.t), w.itens.map((it, j) => ck(it, `validacao.semanas.${i}.itens.${j}`)).join(''))).join('')}
+    ${card('Perguntas da conversa final', ul(V.perguntas))}
+    ${card('Quando parar ou mudar de rota', ul(V.parar))}
+    ${card('Entrada no mercado', `<div class="admbox" style="margin-bottom:12px"><h4>Posicionamento</h4><p>${esc(G.posicionamento)}</p></div><div class="admbox"><h4>Pra quem primeiro</h4><p>${esc(G.publico)}</p></div>
+      <div class="admgrid">${G.canais.map(c => `<div class="admbox"><h4>${esc(c.t)}</h4><p>${esc(c.d)}</p></div>`).join('')}</div>
+      <div style="margin:16px 0 6px;font-weight:600">Funil</div><div class="admsteps">${G.funil.map((f, i) => `<span><b>${i + 1}</b>${esc(f)}</span>`).join('')}</div>
+      <div style="margin:16px 0 6px;font-weight:600">Métricas da semana</div>${ul(G.metricas)}`)}
+    ${card('Convite pro alpha tester', `<div class="admq">${esc(G.convite)}</div><div style="margin-top:10px"><button class="btn tonal sm" id="admCopyInv"><span class="ms">content_copy</span>Copiar convite</button></div>`, 'troca o [nome] e manda individual')}`;
+  } else if (tab === 'road') {
+    body = `<div class="admcols">${D.roadmap.cols.map((c, i) => { const n = c.itens.filter(x => x.done).length; return `<section class="card elev"><div class="title-m">${esc(c.t)}</div><div class="admprog"><i style="width:${c.itens.length ? n / c.itens.length * 100 : 0}%"></i></div><div class="small muted" style="margin-bottom:6px">${n} de ${c.itens.length}</div>${c.itens.map((it, j) => ck(it, `roadmap.cols.${i}.itens.${j}`)).join('')}</section>`; }).join('')}</div>`;
+  } else {
+    const C = D.conteudo, ST = ['a gravar', 'gravado', 'editado', 'postado'];
+    body = `<div class="admgrid">${C.pilares.map(p => `<div class="admbox"><h4>${esc(p.t)}</h4><p>${esc(p.d)}</p></div>`).join('')}</div>
+    <div class="notice" style="margin-top:12px"><span class="ms">calendar_month</span><div>${esc(C.ritmo)}</div></div>
+    <div class="notice warn" style="margin-top:8px"><span class="ms">gpp_maybe</span><div>${esc(C.cuidados)}</div></div>
+    <div class="admcols">${C.roteiros.map((r, i) => `<section class="card elev admrot"><div class="hd"><span class="badge" style="background:var(--surface-c);color:var(--on-surface-variant)">${esc(r.pilar)}</span><div class="title-m">${esc(r.titulo)}</div></div>
+      <div class="g">“${esc(r.gancho)}”</div><ol>${r.corpo.map(x => `<li>${esc(x)}</li>`).join('')}</ol><div class="cta"><b>CTA:</b> ${esc(r.cta)}</div>
+      <div class="ft"><select data-st="conteudo.roteiros.${i}">${ST.map(o => `<option ${r.status === o ? 'selected' : ''}>${o}</option>`).join('')}</select><button class="btn text sm" data-cpr="${i}"><span class="ms">content_copy</span>Copiar roteiro</button></div></section>`).join('')}</div>`;
+  }
+  const sub = { lanc: 'Oferta alpha, validação e entrada no mercado.', road: 'O que já existe e o que vem. Marque conforme for entregando.', cont: 'Linha editorial e roteiros de reels pra divulgar o Gestaopsi.' }[tab];
+  $('#view').innerHTML = `<div class="topbar"><div><div class="display">Admin</div><div class="muted">${sub} Só tu vê esta área.</div>${admTabs()}</div></div>${body}<div class="foot">Salvo no banco do Gestaopsi, visível só pra conta de admin.</div>`;
+  bindAdmTabs();
+  $$('[data-ck]').forEach(c => c.onchange = async () => { const it = admAt(D, c.dataset.ck); it.done = c.checked; c.closest('.admck').classList.toggle('done', c.checked); await saveAdmDoc(); if (tab === 'road') viewAdminDoc(); });
+  $$('[data-st]').forEach(sl => sl.onchange = async () => { admAt(D, sl.dataset.st).status = sl.value; await saveAdmDoc(); snack('Status salvo'); });
+  $$('[data-cpr]').forEach(b => b.onclick = () => { const r = D.conteudo.roteiros[+b.dataset.cpr]; const t = `${r.titulo}\n\nGancho: ${r.gancho}\n${r.corpo.map((x, i) => (i + 1) + '. ' + x).join('\n')}\nCTA: ${r.cta}`; navigator.clipboard?.writeText(t).then(() => snack('Roteiro copiado')); });
+  const ci = $('#admCopyInv'); if (ci) ci.onclick = () => navigator.clipboard?.writeText(D.gtm.convite).then(() => snack('Convite copiado'));
 }
 async function viewConquistas() {
   await loadPatients();
