@@ -182,6 +182,13 @@ dialog h2{font-size:24px}
 .mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap;position:sticky;bottom:-22px;background:#fff;padding:12px 0 4px}
 .mact .sp{flex:1}
 .sect{font-family:var(--serif);font-size:17px;margin:20px 0 2px;padding-top:14px;border-top:1px solid var(--line)}
+.sect span{float:right;font-family:var(--sans);font-size:15px;font-weight:700}
+.kpis4 .why{display:block;text-decoration:none;font-size:11.5px;color:var(--amber-ink);margin-top:8px;font-weight:600}.kpis4 .kpi.hi .why{color:var(--amber)}
+.fa.pos{color:var(--sage)}
+.crow.ocl{align-items:flex-start;gap:12px;padding:12px 4px}.ocl>div{flex:1;min-width:0}.ocl b{display:block}.opb{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--bg3);color:var(--dim);margin:4px 5px 0 0}
+.opb.w{background:var(--amber-soft);color:var(--amber-ink)}.opb.r{background:var(--red-soft);color:var(--red)}.opb.g{background:var(--sage-soft);color:var(--sage)}
+.calr{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.calr:last-child{border-bottom:0}.calc{display:flex;gap:10px;align-items:center}
+.chip2.todo{border-color:var(--terra);color:var(--terra)}.chip2.wait{background:var(--amber-soft);border-color:var(--amber);color:var(--amber-ink)}
 /* mídia */
 .media{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:8px}
 .mi{position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:var(--bg3);border:1px solid var(--line)}
@@ -601,13 +608,34 @@ async function start(user) {
     if (!count && SEED_SWIPE.length) await sb.from('swipe').insert(SEED_SWIPE).throwOnError();
   } catch (e) { fail(e); }
   let saved = null; try { saved = localStorage.getItem('gestor.tab'); } catch (_) {}
-  S.tab = (saved && (saved === 'swipe' || saved === 'geral' || S.clients.some(c => c.id === saved))) ? saved : (S.clients[0]?.id || 'swipe');
+  S.tab = (saved && (saved === 'swipe' || saved === 'geral' || saved === 'resumo' || S.clients.some(c => c.id === saved))) ? saved : (S.clients[0]?.id || 'swipe');
   await loadUnseen(); buildShell();
   let v = 'inicio'; try { v = localStorage.getItem('gestor.view') || 'inicio'; } catch (_) {}
   if (!NAVL[v]) v = 'inicio';
   try { await loadV2(); await seedV2(); await loadV2(); await refreshGenerated(); F.ready = true; } catch (e) { fail(e); v = 'clientes'; }
   if (F.seeded) toast('Gestor configurado com seus dados');
   setView(v);
+  startAutoSync();
+}
+// Mantém o gestor em dia com o que foi lançado em outro aparelho (celular, por exemplo):
+// recarrega ao voltar para a aba, ao reconectar e a cada 45 segundos, sem mexer em nada que esteja aberto.
+let syncBusy = false, syncAt = Date.now();
+async function syncNow(force) {
+  if (syncBusy || !F.ready || !S.user) return;
+  if (!force && (document.hidden || Date.now() - syncAt < 15000)) return;
+  if (document.querySelector('dialog[open]')) return;
+  const ae = document.activeElement; if (!force && ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
+  syncBusy = true;
+  try { await loadV2(); syncAt = Date.now(); if (!document.querySelector('dialog[open]')) rerenderView(); }
+  catch (_) { /* sem rede: tenta de novo no próximo ciclo */ }
+  finally { syncBusy = false; }
+}
+function startAutoSync() {
+  if (S.syncing) return; S.syncing = true;
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) syncNow(); });
+  window.addEventListener('focus', () => syncNow());
+  window.addEventListener('online', () => syncNow(true));
+  setInterval(() => syncNow(), 45000);
 }
 async function loadClients() { const { data, error } = await sb.from('clients').select('*').order('position'); if (error) throw error; S.clients = data; }
 async function loadUnseen() {
@@ -617,12 +645,12 @@ async function loadUnseen() {
 
 // ---------- abas ----------
 function renderTabs() {
-  $('#tabs').innerHTML = S.clients.map(c => `<button class="tab ${S.tab === c.id ? 'on' : ''}" data-tab="${c.id}">${avatar(c)}${esc(c.name)}${S.unseen[c.id] ? `<span class="dotn">${S.unseen[c.id]}</span>` : ''}</button>`).join('')
+  $('#tabs').innerHTML = `<button class="tab plain ${S.tab === 'resumo' ? 'on' : ''}" data-tab="resumo">Resumo</button>` + S.clients.map(c => `<button class="tab ${S.tab === c.id ? 'on' : ''}" data-tab="${c.id}">${avatar(c)}${esc(c.name)}${S.unseen[c.id] ? `<span class="dotn">${S.unseen[c.id]}</span>` : ''}</button>`).join('')
     + `<button class="tab plain ${S.tab === 'geral' ? 'on' : ''}" data-tab="geral">Calendário geral${totalUnseen() ? `<span class="dotn">${totalUnseen()}</span>` : ''}</button>`
     + `<button class="tab plain ${S.tab === 'swipe' ? 'on' : ''}" data-tab="swipe">Swipe file</button>`;
   $$('#tabs [data-tab]').forEach(b => b.onclick = () => { if (S.tab !== b.dataset.tab) { S.stage = null; window.scrollTo(0, 0); } S.tab = b.dataset.tab; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} renderTabs(); route(); });
 }
-function route() { if (S.tab === 'swipe') renderSwipe(); else if (S.tab === 'geral') renderGeral(); else renderClient(); }
+function route() { if (S.tab === 'resumo') renderOpsPage(); else if (S.tab === 'swipe') renderSwipe(); else if (S.tab === 'geral') renderGeral(); else renderClient(); }
 async function rerender() { const y = scrollY; await renderClient(); scrollTo(0, y); }
 
 // ---------- cliente ----------
@@ -1187,7 +1215,7 @@ const NAVI = {
 };
 const NAVL = { inicio: 'Início', financeiro: 'Financeiro', tarefas: 'Tarefas', clientes: 'Clientes', agencia: 'Agência', ofertas: 'Ofertas' };
 
-const F = { rec: [], ent: [], debts: [], set: {}, tasks: [], tpl: [], offers: [], leads: [], docs: [], posts: [], m: firstOfMonth(new Date()), ftab: 'resumo', atab: 'clientes', scope: 'todos', sel: null, ready: false };
+const F = { rec: [], ent: [], debts: [], set: {}, tasks: [], tpl: [], offers: [], leads: [], docs: [], posts: [], m: firstOfMonth(new Date()), ftab: 'resumo', atab: 'resumo', ttab: 'resumo', scope: 'todos', sel: null, ready: false };
 
 // ---------- dados ----------
 async function loadV2() {
@@ -1332,6 +1360,15 @@ const FAT = 'Fatura do cartão', isFat = e => e.category === FAT;
 function fatura() { const o = F.set.fatura || { amount: 0, date: '1970-01-01' }; let f = +o.amount; F.ent.forEach(e => { if (e.kind !== 'out' || e.status !== 'pago' || !e.paid_on || e.paid_on < o.date) return; if (isFat(e)) f -= +e.amount; else if (e.pay === 'credito') f += +e.amount; }); return Math.max(0, f); }
 async function payFatura() { const v = prompt('Quanto você pagou da fatura (R$)?', String(fatura().toFixed(2)).replace('.', ',')); const n = money(v); if (!isFinite(n) || n <= 0) return;
   const r = await sb.from('fin_entries').insert({ kind: 'out', scope: 'pf', name: 'Pagamento da fatura', amount: n, date: todayS(), status: 'pago', paid_on: todayS(), pay: 'pix', category: FAT }).select(); if (r.error) return fail(r.error); F.ent.push(r.data[0]); toast('Fatura paga: saiu da conta, não conta como gasto novo'); rerenderView(); }
+const DUE_KEYS = ['7', '15', '30', 'mes0', 'mes1'];
+function dueDef(k) {
+  if (!k) { try { k = localStorage.getItem('gestor.dueR'); } catch (_) {} }
+  if (!DUE_KEYS.includes(k)) k = '7';
+  const cap = t => t[0].toUpperCase() + t.slice(1), m0 = firstOfMonth(new Date()), mn = d => d.toLocaleDateString('pt-BR', { month: 'long' }), eom = d => iso(new Date(d.getFullYear(), d.getMonth() + 1, 0));
+  if (k === 'mes0' || k === 'mes1') { const m = k === 'mes0' ? m0 : addMonths(m0, 1); return { k, days: 0, m, from: k === 'mes0' ? '0000-00-00' : iso(m), to: eom(m), tab: cap(mn(m)), long: `em ${mn(m)}` }; }
+  const n = +k; return { k, days: n, m: null, from: '0000-00-00', to: iso(new Date(Date.now() + n * 864e5)), tab: n + ' dias', long: `nos próximos ${n} dias` };
+}
+function dueList(D) { return F.ent.filter(e => e.kind === 'out' && e.status === 'previsto' && e.date >= D.from && e.date <= D.to).sort((a, b) => a.date.localeCompare(b.date)); }
 function dueSoon(days) { const lim = iso(new Date(Date.now() + days * 864e5)); return F.ent.filter(e => e.kind === 'out' && e.status === 'previsto' && e.date <= lim).sort((a, b) => a.date.localeCompare(b.date)); }
 function fixosRows() {
   const L = F.rec.filter(r => r.kind === 'in' && r.rule !== 'orcamento').sort((x, y) => (y.active - x.active) || (y.amount - x.amount)); const ativos = L.filter(r => r.active), prev = L.filter(r => !r.active);
@@ -1424,11 +1461,13 @@ function pageHead(title, sub, right = '') { return `<div class="phead"><div><h1>
 // ---------- início ----------
 async function viewInicio() {
   const m0 = firstOfMonth(new Date()); const a = sums(m0), pj = sums(m0, 'pj'), pf = sums(m0, 'pf');
-  const soon = dueSoon(7), faturaDue = dayDiff(cardDates().dv) <= 7 ? fatura() : 0, pix = soon.filter(e => e.pay === 'pix' || e.pay === 'debito').reduce((s, e) => s + +e.amount, 0), cred = soon.filter(e => e.pay === 'credito').reduce((s, e) => s + +e.amount, 0), amb = soon.filter(e => e.pay === 'ambos').reduce((s, e) => s + +e.amount, 0);
+  const DR = dueDef(S.dueR), soon = dueList(DR), dv0 = cardDates().dv, faturaDue = (dv0 >= DR.from && dv0 <= DR.to) ? fatura() : 0, pix = soon.filter(e => e.pay === 'pix' || e.pay === 'debito').reduce((s, e) => s + +e.amount, 0), cred = soon.filter(e => e.pay === 'credito').reduce((s, e) => s + +e.amount, 0), amb = soon.filter(e => e.pay === 'ambos').reduce((s, e) => s + +e.amount, 0);
   const bal = balance(), mf = metaFixos(); const bem = budgetRem(m0), proj = bal + (F.ent.filter(e => inMonth(m0, e.date) && e.status === 'previsto' && e.kind === 'in').reduce((x, e) => x + +e.amount, 0) + bem.in) - (F.ent.filter(e => inMonth(m0, e.date) && e.status === 'previsto' && e.kind === 'out' && e.pay !== 'credito').reduce((x, e) => x + +e.amount, 0) + bem.out);
   const tasks = F.tasks.filter(t => !t.done).sort((x, y) => (x.due || '9').localeCompare(y.due || '9')).slice(0, 7);
-  const alert = pix + faturaDue > bal ? `<div class="note warn">Você precisa de ${BRL(pix + faturaDue - bal)} a mais no Pix para cobrir o que vence em 7 dias. Cartão ainda pode cobrir ${BRL(amb)} dos itens "Pix ou crédito".</div>`
-    : `<div class="note ok">Dá para pagar tudo que é Pix nos próximos 7 dias e ainda sobram ${BRL(bal - pix - faturaDue)} na conta.</div>`;
+  const dueTot = soon.reduce((x, e) => x + +e.amount, 0) + (DR.m ? budgetRem(DR.m).out : 0), dueIn = DR.m ? F.ent.filter(e => e.kind === 'in' && e.status === 'previsto' && e.date >= DR.from && e.date <= DR.to).reduce((x, e) => x + +e.amount, 0) + budgetRem(DR.m).in : 0;
+  const alert = DR.m ? `<div class="note ok">Previsto para sair em ${esc(DR.tab.toLowerCase())}: <b>${BRL(dueTot)}</b> em ${soon.length} ${soon.length === 1 ? 'conta' : 'contas'}${budgetRem(DR.m).out ? ` (inclui ${BRL(budgetRem(DR.m).out)} de orçamentos variáveis que ainda não foram lançados)` : ''}. Previsto para entrar no mesmo período: <b>${BRL(dueIn)}</b>.</div>`
+    : pix + faturaDue > bal ? `<div class="note warn">Você precisa de ${BRL(pix + faturaDue - bal)} a mais no Pix para cobrir o que vence ${DR.long}. Cartão ainda pode cobrir ${BRL(amb)} dos itens "Pix ou crédito".</div>`
+    : `<div class="note ok">Dá para pagar tudo que é Pix ${DR.long} e ainda sobram ${BRL(bal - pix - faturaDue)} na conta.</div>`;
   const eom = iso(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)); const nextIns = F.ent.filter(e => e.kind === 'in' && e.status === 'previsto' && e.date <= eom).sort((x, y) => x.date.localeCompare(y.date)); const nextInsTot = nextIns.reduce((a, e) => a + +e.amount, 0);
   // status do mês por cliente
   const a0 = iso(m0), b0 = iso(new Date(m0.getFullYear(), m0.getMonth() + 1, 0)); let posts = [];
@@ -1445,9 +1484,10 @@ async function viewInicio() {
     <div class="kpi go" data-goto="financeiro:lanc"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em><em><a href="#" id="payFat">paguei a fatura</a></em></div>
   </div>
   <div class="cols2">
-   <div class="card"><div class="row"><h2 class="h2">Contas dos próximos 7 dias</h2><div class="sp"></div><a href="#" data-go="financeiro">ver tudo</a></div>
+   <div class="card"><div class="row"><h2 class="h2">Contas a pagar</h2><div class="sp"></div><a href="#" data-go="financeiro">ver tudo</a></div>
+     <div class="seg tabs2" id="dueSeg" style="margin:2px 0 10px">${DUE_KEYS.map(k => `<button type="button" data-r="${k}" class="${DR.k === k ? 'on' : ''}">${dueDef(k).tab}</button>`).join('')}</div>
      <div class="paysum"><span class="badge pay-pix">Pix ${BRL(pix)}</span><span class="badge pay-credito">Crédito ${BRL(cred)}</span>${faturaDue ? `<span class="badge sc-pj">Fatura vence ${fmtDm(cardDates().dv)}: ${BRL(faturaDue)}</span>` : ''}<span class="badge pay-ambos">Pix ou crédito ${BRL(amb)}</span></div>${alert}
-     <div class="elist">${soon.length ? soon.map(e => entRow(e)).join('') : '<div class="empty">Nada vencendo nos próximos 7 dias.</div>'}</div></div>
+     <div class="elist">${soon.length ? soon.map(e => entRow(e)).join('') : `<div class="empty">Nada previsto ${DR.long}.</div>`}</div></div>
    <div>
      <div class="card" style="margin-top:0"><h2 class="h2">Meta de fixos: ${BRL(mf.meta)} por mês</h2>
        <div class="bar big"><i style="width:${Math.min(100, mf.ativos / mf.meta * 100)}%"></i><u style="left:${Math.min(100, mf.ativos / mf.meta * 100)}%;width:${Math.min(100 - Math.min(100, mf.ativos / mf.meta * 100), mf.pot / mf.meta * 100)}%"></u></div>
@@ -1465,6 +1505,7 @@ async function viewInicio() {
   $$('[data-goto]').forEach(c => c.onclick = () => { const [v, t] = c.dataset.goto.split(':'); F.ftab = t; F.scope = 'todos'; setView(v); });
   $('#payFat')?.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); payFatura(); });
   $$('[data-go]').forEach(a => a.onclick = ev => { ev.preventDefault(); setView(a.dataset.go); });
+  $$('#dueSeg [data-r]').forEach(b => b.onclick = () => { S.dueR = b.dataset.r; try { localStorage.setItem('gestor.dueR', S.dueR); } catch (_) {} viewInicio(); });
   $$('[data-cl]').forEach(b => b.onclick = () => { S.tab = b.dataset.cl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
   $('#setFat-x')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Dia do vencimento da fatura (AAAA-MM-DD):', todayS()); if (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) { await saveSet('fatura_due', { date: v }); rerenderView(); } });
 }
@@ -1487,14 +1528,48 @@ function viewFin() {
 }
 async function finMonth() { try { const from = iso(F.m); if (!F.ent.some(e => e.date >= from.slice(0, 7) + '-01' && e.date <= from.slice(0, 7) + '-31')) { const to = iso(new Date(F.m.getFullYear(), F.m.getMonth() + 1, 0)); const r = await sb.from('fin_entries').select('*').gte('date', from).lte('date', to); if (r.data?.length) F.ent.push(...r.data.filter(x => !F.ent.some(y => y.id === x.id))); }
   if (F.m >= firstOfMonth(new Date())) await ensureEntries(F.m); } catch (e) { fail(e); } }
+async function adjustBalance() { const v = prompt('Quanto você tem na conta agora (R$)?', String(balance()).replace('.', ',')); const n = money(v); if (isFinite(n)) { await saveSet('opening', { amount: n, date: todayS() }); rerenderView(); } }
+function budgetLines(m, scope, kind) {
+  return F.rec.filter(r => r.active && r.rule === 'orcamento' && r.kind === kind && (scope === 'todos' || r.scope === scope)).map(r => {
+    const used = F.ent.filter(e => inMonth(m, e.date) && e.kind === kind && e.category === r.category && e.scope === r.scope).reduce((a, e) => a + +e.amount, 0);
+    return { name: r.name, category: r.category, scope: r.scope, plan: +r.amount, used, rest: Math.max(0, +r.amount - used) }; }).filter(x => x.rest > 0);
+}
+function openBreak(kind) {
+  const m = F.m, sc = F.scope, E = monthEnt(m, sc).filter(e => !isFat(e)), s = sums(m, sc), mes = monthLabel(m).split(' ')[0].toLowerCase(), scl = sc === 'todos' ? 'PJ e PF' : sc === 'pj' ? 'PJ' : 'PF';
+  const row = e => `<button type="button" class="rrow" data-be="${e.id}"><div><b>${esc(e.name)}</b><span class="sub">${fmtDm(e.date)} · ${esc(e.category || 'sem categoria')} · ${e.scope === 'pj' ? 'PJ' : 'PF'}${e.status === 'pago' ? ' · pago' : ' · previsto'}${e.pay ? ' · ' + esc(PAYL[e.pay] || e.pay) : ''}</span></div><span class="fa">${BRL(e.amount)}</span></button>`;
+  const brow = x => `<div class="rrow" style="cursor:default"><div><b>${esc(x.name)} (orçamento)</b><span class="sub">${x.scope === 'pj' ? 'PJ' : 'PF'} · previsto ${BRL(x.plan)}, já lançado ${BRL(x.used)}</span></div><span class="fa">${BRL(x.rest)}</span></div>`;
+  const grp = (t, L, tot, B = []) => `<div class="sect">${t}<span>${BRL(tot)}</span></div>${L.map(row).join('')}${B.map(brow).join('')}${L.length || B.length ? '' : '<div class="empty">Nada aqui.</div>'}`;
+  const byCat = (kd, st) => { const o = {}; E.filter(e => e.kind === kd && (!st || e.status === st)).forEach(e => o[e.category || 'Sem categoria'] = (o[e.category || 'Sem categoria'] || 0) + +e.amount); budgetLines(m, sc, kd).forEach(x => o[x.category || x.name] = (o[x.category || x.name] || 0) + x.rest); return Object.entries(o).sort((a, b) => b[1] - a[1]); };
+  let title, body, why;
+  if (kind === 'in' || kind === 'out') {
+    const k = kind, tot = k === 'in' ? 'inPaid' : 'outPaid', all = k === 'in' ? 'inAll' : 'outAll', pago = E.filter(e => e.kind === k && e.status === 'pago').sort((a, b) => a.date.localeCompare(b.date)), prev = E.filter(e => e.kind === k && e.status === 'previsto').sort((a, b) => a.date.localeCompare(b.date)), B = budgetLines(m, sc, k);
+    title = k === 'in' ? 'De onde vem o “Entrou”' : 'De onde vem o “Saiu”';
+    why = k === 'in' ? 'Entrou é só o que já foi marcado como recebido neste mês. Previsto soma o que ainda vai cair e os orçamentos variáveis (como Foto na Rua) que ainda faltam lançar.' : 'Saiu é só o que já foi marcado como pago neste mês. Previsto soma o que ainda vai vencer e os orçamentos variáveis que ainda faltam lançar. Pagamento da fatura do cartão não conta aqui, porque os gastos no crédito já entraram quando foram feitos.';
+    body = `<p class="sub" style="margin:2px 0 0">${why}</p>${grp(k === 'in' ? 'Já recebido' : 'Já pago', pago, s[tot])}${grp(k === 'in' ? 'Ainda vai entrar' : 'Ainda vai sair', prev, prev.reduce((a, e) => a + +e.amount, 0), B)}<div class="sect">Previsto total do mês<span>${BRL(s[all])}</span></div>`;
+  } else if (kind === 'sobra') {
+    title = 'Como a “Sobra prevista” é calculada';
+    const li = byCat('in'), lo = byCat('out'), line = ([c, v]) => `<div class="rrow" style="cursor:default"><div><b>${esc(c)}</b></div><span class="fa">${BRL(v)}</span></div>`;
+    body = `<p class="sub" style="margin:2px 0 0">Sobra prevista = tudo que está previsto para entrar em ${mes} menos tudo que está previsto para sair (já pago e ainda a pagar, mais os orçamentos variáveis que faltam lançar).</p><div class="sect">Entradas previstas<span>${BRL(s.inAll)}</span></div>${li.map(line).join('') || '<div class="empty">Sem entradas.</div>'}<div class="sect">Saídas previstas<span>− ${BRL(s.outAll)}</span></div>${lo.map(line).join('') || '<div class="empty">Sem saídas.</div>'}<div class="sect">Sobra prevista<span>${BRL(s.inAll - s.outAll)}</span></div>`;
+  } else {
+    const o = F.set.opening || { amount: 0, date: '1970-01-01' }, paid = F.ent.filter(e => e.status === 'pago' && e.paid_on && e.paid_on >= o.date && !isFat(e) || (isFat(e) && e.status === 'pago' && e.paid_on && e.paid_on >= o.date)).sort((a, b) => b.paid_on.localeCompare(a.paid_on)), cred = paid.filter(e => e.kind === 'out' && e.pay === 'credito' && !isFat(e));
+    const mv = paid.filter(e => !(e.kind === 'out' && e.pay === 'credito'));
+    title = 'Como o saldo na conta é calculado';
+    const mrow = e => `<div class="rrow" style="cursor:default"><div><b>${esc(e.name)}</b><span class="sub">${fmtDm(e.paid_on)} · ${esc(e.category || '')} · ${e.pay ? esc(PAYL[e.pay] || e.pay) : ''}</span></div><span class="fa ${e.kind === 'in' ? 'pos' : ''}">${e.kind === 'in' ? '+' : '−'} ${BRL(e.amount)}</span></div>`;
+    body = `<p class="sub" style="margin:2px 0 0">Saldo = o valor que você informou em ${pd(o.date).toLocaleDateString('pt-BR')} mais as entradas recebidas e menos as saídas pagas em Pix ou débito desde então. Gasto no crédito não sai da conta agora: vai para a fatura (${BRL(fatura())} em aberto).</p><div class="sect">Saldo informado<span>${BRL(o.amount)}</span></div><div class="sect">Movimentos desde ${pd(o.date).toLocaleDateString('pt-BR')}<span>${BRL(balance() - (+o.amount))}</span></div>${mv.map(mrow).join('') || '<div class="empty">Nenhum movimento desde essa data.</div>'}<div class="sect">Saldo atual<span>${BRL(balance())}</span></div>${cred.length ? `<p class="sub">${cred.length} gasto${cred.length > 1 ? 's' : ''} no crédito ${cred.length > 1 ? 'ficaram' : 'ficou'} de fora: foi para a fatura.</p>` : ''}<div class="mact"><button type="button" class="btn small" id="bkSet">Ajustar saldo</button></div>`;
+  }
+  const d = modal(`<div class="row"><h2>${title}</h2><div class="sp"></div><span class="sub">${monthLabel(m)} · ${scl}</span></div>${body}<div class="mact"><div class="sp"></div><button type="button" class="btn primary" id="bkClose">Fechar</button></div>`, true);
+  d.querySelector('#bkClose').onclick = () => d.close();
+  d.querySelector('#bkSet')?.addEventListener('click', () => { d.close(); adjustBalance(); });
+  d.querySelectorAll('[data-be]').forEach(b => b.onclick = () => { const e = F.ent.find(x => x.id === b.dataset.be); d.close(); if (e) openEntry(e); });
+}
 function finResumo(el) {
   const m = F.m, s = sums(m, F.scope), sobra = s.inAll - s.outAll;
-  el.innerHTML = `<div class="kpis4"><div class="kpi hi"><span>Entrou</span><b>${BRL(s.inPaid)}</b><em>previsto ${BRL(s.inAll)}</em></div><div class="kpi"><span>Saiu</span><b>${BRL(s.outPaid)}</b><em>previsto ${BRL(s.outAll)}</em></div><div class="kpi"><span>Sobra prevista</span><b class="${sobra >= 0 ? 'up' : 'down'}">${BRL(sobra)}</b><em>entradas previstas − saídas previstas</em></div><div class="kpi"><span>Saldo na conta</span><b>${BRL(balance())}</b><em><a href="#" id="setBal">ajustar saldo</a></em></div></div>
+  el.innerHTML = `<div class="kpis4"><div class="kpi hi go" data-bk="in" title="Ver de onde vem"><span>Entrou</span><b>${BRL(s.inPaid)}</b><em>previsto ${BRL(s.inAll)}</em><u class="why">ver de onde vem ›</u></div><div class="kpi go" data-bk="out" title="Ver de onde vem"><span>Saiu</span><b>${BRL(s.outPaid)}</b><em>previsto ${BRL(s.outAll)}</em><u class="why">ver de onde vem ›</u></div><div class="kpi go" data-bk="sobra" title="Ver a conta"><span>Sobra prevista</span><b class="${sobra >= 0 ? 'up' : 'down'}">${BRL(sobra)}</b><em>entradas previstas − saídas previstas</em><u class="why">ver a conta ›</u></div><div class="kpi go" data-bk="saldo" title="Ver como o saldo é calculado"><span>Saldo na conta</span><b>${BRL(balance())}</b><em>Pix e débito, sem o crédito</em><u class="why">ver como é calculado e ajustar ›</u></div></div>
   <div class="card"><div class="row"><h2 class="h2">Caixinhas do mês</h2><div class="sp"></div><span class="sub">gasto pago + previsto em cada categoria</span></div><div id="cxBody"></div></div>
   <div class="row" style="margin:30px 0 0"><h2 class="h2" style="margin:0">Metas e dívidas</h2><div class="sp"></div><button class="btn small" id="addGoal">+ meta</button><button class="btn small ghost" id="addDebt">+ dívida</button></div><div id="metaBody"></div>
   <section class="sep"><div class="sechead"><span>Contas fixas</span><small>o que se repete todo mês</small></div><div id="fixBody"></div></section>`;
   finCaixas($('#cxBody')); finMetas($('#metaBody')); finFixas($('#fixBody'));
-  $('#setBal')?.addEventListener('click', async ev => { ev.preventDefault(); const v = prompt('Quanto você tem na conta agora (R$)?', String(balance()).replace('.', ',')); const n = money(v); if (isFinite(n)) { await saveSet('opening', { amount: n, date: todayS() }); rerenderView(); } });
+  $$('[data-bk]', el).forEach(k => k.onclick = () => openBreak(k.dataset.bk));
   $('#addGoal').onclick = async () => { const n = prompt('Nome da meta (ex.: Moto):'); if (!n) return; const t = money(prompt('Quanto quer juntar (R$)?', '1000')); if (!isFinite(t) || t <= 0) return toast('Valor inválido'); await saveGoals([...getGoals(), { id: 'g' + Date.now(), name: n.trim(), target: t, saved: 0 }]); };
   $('#addDebt').onclick = () => openDebt();
 }
@@ -1658,14 +1733,20 @@ function openDebt(d0) {
 
 // ---------- tarefas ----------
 function viewTasks() {
+  const tabs = [['resumo', 'Resumo'], ['lista', 'Lista de tarefas']];
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Tarefas', 'Rotinas por cliente geram as tarefas de cada mês sozinhas.', `<button class="btn amber" id="addTask">+ Tarefa</button><button class="btn" id="tplBtn">Rotinas</button>`)}
+  <div class="seg tabs2" id="tTabs">${tabs.map(([k, l]) => `<button type="button" data-t="${k}" class="${F.ttab === k ? 'on' : ''}">${l}</button>`).join('')}</div><div id="tBody"></div></div>`;
+  $$('#tTabs [data-t]').forEach(b => b.onclick = () => { F.ttab = b.dataset.t; viewTasks(); }); $('#addTask').onclick = () => openTask(); $('#tplBtn').onclick = openTpl;
+  (F.ttab === 'lista' ? tasksList : opsResumo)($('#tBody'));
+}
+function tasksList(el) {
   const open = F.tasks.filter(t => !t.done), t0 = todayS(); const wk = iso(new Date(Date.now() + 7 * 864e5));
   const late = open.filter(t => t.due && t.due < t0), week = open.filter(t => !t.due || (t.due >= t0 && t.due <= wk)), later = open.filter(t => t.due && t.due > wk);
   const done = F.tasks.filter(t => t.done).sort((a, b) => (b.due || '').localeCompare(a.due || '')).slice(0, 8);
   const sec = (t, L, cls = '') => L.length ? `<div class="card ${cls}"><h2 class="h2">${t}</h2>${L.sort((a, b) => (a.due || '9').localeCompare(b.due || '9')).map(x => taskRow(x)).join('')}</div>` : '';
-  $('#main').innerHTML = `<div class="wrap2">${pageHead('Tarefas', 'Rotinas por cliente geram as tarefas de cada mês sozinhas.', `<button class="btn amber" id="addTask">+ Tarefa</button><button class="btn" id="tplBtn">Rotinas</button>`)}
-  ${sec('Atrasadas', late, 'warnc')}${sec('Próximos 7 dias', week)}${sec('Mais para frente', later)}${sec('Concluídas recentes', done)}${!open.length ? '<div class="card"><div class="empty">Nenhuma tarefa pendente. Respire.</div></div>' : ''}</div>`;
-  bindEnt($('#main')); $('#addTask').onclick = () => openTask(); $('#tplBtn').onclick = openTpl;
-  $$('.trow b', $('#main')).forEach(b => b.onclick = ev => { ev.preventDefault(); const id = b.closest('.trow').querySelector('[data-task]').dataset.task; openTask(F.tasks.find(x => x.id === id)); });
+  el.innerHTML = `${sec('Atrasadas', late, 'warnc')}${sec('Próximos 7 dias', week)}${sec('Mais para frente', later)}${sec('Concluídas recentes', done)}${!open.length ? '<div class="card"><div class="empty">Nenhuma tarefa pendente. Respire.</div></div>' : ''}`;
+  bindEnt(el);
+  $$('.trow b', el).forEach(b => b.onclick = ev => { ev.preventDefault(); const id = b.closest('.trow').querySelector('[data-task]').dataset.task; openTask(F.tasks.find(x => x.id === id)); });
 }
 function openTask(t0) {
   const t = t0 || { due: todayS() }; const d = modal(`<h2>${t.id ? 'Editar tarefa' : 'Nova tarefa'}</h2><label>Tarefa</label><input name="title" value="${esc(t.title || '')}" required>
@@ -1698,13 +1779,64 @@ function editTpl(t0) {
     try { await ensureTasks(firstOfMonth(new Date())); await ensureTasks(addMonths(firstOfMonth(new Date()), 1)); } catch (e) { fail(e); } d.close(); rerenderView(); };
 }
 
+
+// ---------- resumo operacional (tarefas, clientes e agência) ----------
+const OPS_G = [['ideia', 'Pauta e copy', ['pauta', 'copy'], '#4F5BD5'], ['prod', 'Produção e revisão', ['producao', 'edicao', 'revisao'], '#E8743B'], ['cli', 'Aguardando o cliente', CLIENT_STAGES, '#F5C518'], ['ag', 'Agendar e agendado', ['agendar', 'agendado'], '#2FA37A'], ['pub', 'Publicado', ['publicado'], '#6F8796']];
+async function opsLoad() {
+  const a = iso(firstOfMonth(new Date()));
+  const r = await sb.from('posts').select('id,client_id,title,format,status,publish_date,needs_changes').or(`publish_date.is.null,publish_date.gte.${a}`).order('publish_date');
+  if (r.error) throw r.error; return r.data || [];
+}
+function opsGo(w) { if (w === 'tarefas') { F.ttab = 'lista'; setView('tarefas'); } else if (w === 'aprov') { F.atab = 'aprov'; setView('agencia'); } else if (w === 'geral') { S.tab = 'geral'; try { localStorage.setItem('gestor.tab', 'geral'); } catch (_) {} setView('clientes'); } }
+async function opsResumo(el) {
+  const draw = P => { if (el.isConnected) opsDraw(el, P); };
+  if (S.opsPosts) draw(S.opsPosts); else el.innerHTML = '<div class="card"><div class="empty">Montando o resumo...</div></div>';
+  try { const P = await opsLoad(), changed = JSON.stringify(P) !== JSON.stringify(S.opsPosts); S.opsPosts = P; if (changed || !el.querySelector('.kpis4')) draw(P); } catch (e) { fail(e); }
+}
+function opsDraw(el, P) {
+  const t0 = todayS(), wk = iso(new Date(Date.now() + 7 * 864e5)), m0 = firstOfMonth(new Date()), m1 = addMonths(m0, 1), mes = d => d.toLocaleDateString('pt-BR', { month: 'long' }), M0 = iso(m0), E0 = iso(m1), E1 = iso(addMonths(m0, 2));
+  const cls = S.clients.filter(c => (c.kind || 'cliente') !== 'prospect'), cl = id => S.clients.find(x => x.id === id) || {};
+  const inM = (x, a, b) => x.publish_date && x.publish_date >= a && x.publish_date < b;
+  const cur = P.filter(x => inM(x, M0, E0) || !x.publish_date), studio = P.filter(x => !CLIENT_STAGES.includes(x.status) && !['agendado', 'publicado'].includes(x.status)), aguard = P.filter(x => CLIENT_STAGES.includes(x.status));
+  const openT = F.tasks.filter(t => !t.done), lateT = openT.filter(t => t.due && t.due < t0), weekT = openT.filter(t => t.due && t.due >= t0 && t.due <= wk);
+  const planned = (c, a, b) => P.filter(x => x.client_id === c.id && (inM(x, a, b) || (a === M0 && !x.publish_date))).length;
+  const falta = cls.reduce((n, c) => n + Math.max(0, targetOf(c) - planned(c, M0, E0)), 0);
+  const parts = OPS_G.map(([k, l, st, col]) => ({ k, l, v: cur.filter(x => st.includes(x.status)).length, color: col }));
+  const tot = parts.reduce((a, x) => a + x.v, 0);
+  const kpi = (l, v, em, go) => `<div class="kpi go" data-og="${go}"><span>${l}</span><b>${v}</b><em>${em}</em><u class="why">abrir ›</u></div>`;
+  const kp = `<div class="kpis4">${kpi('Aguardando o cliente', aguard.length, aguard.length ? 'pautas, copies ou posts esperando aprovação' : 'nada esperando aprovação', 'aprov')}${kpi('Para o Studio fazer', studio.length, 'pauta, copy, produção, revisão e agendar', 'geral')}${kpi('Tarefas atrasadas', lateT.length, `${weekT.length} nos próximos 7 dias`, 'tarefas')}${kpi('Falta planejar', falta, `conteúdos para bater a meta de ${mes(m0)}`, 'geral')}</div>`;
+  const ring = `<div class="card"><div class="row"><h2 class="h2">Conteúdos de ${mes(m0)}</h2><div class="sp"></div><span class="sub">com data no mês ou sem data</span></div>${tot ? `<div class="dn">${donut(parts, String(tot), 'conteúdos')}<div class="leg">${parts.map(x => `<div><i style="background:${x.color}"></i><span>${x.l}</span><span class="v">${x.v}</span></div>`).join('')}</div></div>` : '<div class="empty">Sem conteúdos neste mês ainda.</div>'}</div>`;
+  const nextDays = [...openT.filter(t => t.due && t.due <= wk).map(t => ({ d: t.due, t })), ...P.filter(x => x.publish_date && x.publish_date >= t0 && x.publish_date <= wk && x.status !== 'publicado').map(x => ({ d: x.publish_date, p: x }))].sort((a, b) => a.d.localeCompare(b.d));
+  const nd = nextDays.length ? nextDays.map(x => x.t ? taskRow(x.t) : `<button type="button" class="crow" data-pcl="${x.p.client_id}"><div><b>${esc(x.p.title || '(sem título)')}</b><span class="sub">publica ${relDay(x.p.publish_date)} · ${esc(cl(x.p.client_id).name || '')} · ${esc(STG[x.p.status]?.label || x.p.status)}</span></div><span class="badge">${esc(FMT[x.p.format] || x.p.format || '')}</span></button>`).join('') : '<div class="empty">Nada marcado para os próximos 7 dias.</div>';
+  const days = `<div class="card"><div class="row"><h2 class="h2">Próximos 7 dias</h2><div class="sp"></div><a href="#" data-og="tarefas">ver tarefas</a></div>${nd}</div>`;
+  const perClient = cls.map(c => {
+    const mine = P.filter(x => x.client_id === c.id), ag = mine.filter(x => CLIENT_STAGES.includes(x.status)).length, st = mine.filter(x => !CLIENT_STAGES.includes(x.status) && !['agendado', 'publicado'].includes(x.status)).length;
+    const tg = targetOf(c), pl = planned(c, M0, E0), tk = openT.filter(t => t.client_id === c.id), tl = tk.filter(t => t.due && t.due < t0).length, o = c.onboarding || {}, ob = ONB.filter(([k]) => o[k]).length;
+    const b = (cls2, txt) => `<span class="opb ${cls2}">${txt}</span>`;
+    return `<button type="button" class="crow ocl" data-pcl="${c.id}">${avatar(c)}<div><b>${esc(c.name)}</b><span>${[ag ? b('w', `${ag} aguardando o cliente`) : '', st ? b('', `${st} para o Studio`) : '', tg ? (pl >= tg ? b('g', `${pl}/${tg} planejados`) : b('r', `${pl}/${tg} planejados, faltam ${tg - pl}`)) : '', tk.length ? b(tl ? 'r' : '', `${tk.length} tarefa${tk.length > 1 ? 's' : ''}${tl ? `, ${tl} atrasada${tl > 1 ? 's' : ''}` : ''}`) : '', ob < ONB.length ? b('', `onboarding ${ob}/${ONB.length}`) : ''].join('') || b('g', 'tudo em dia')}</span></div></button>`; }).join('');
+  const who = `<div class="card"><div class="row"><h2 class="h2">O que falta de cada cliente</h2><div class="sp"></div><span class="sub">toque para abrir</span></div>${perClient || '<div class="empty">Sem clientes.</div>'}</div>`;
+  const calRow = c => { const tg = targetOf(c), a0 = planned(c, M0, E0), a1 = planned(c, E0, E1), wait = P.filter(x => x.client_id === c.id && CLIENT_STAGES.includes(x.status)).length;
+    const chip = (m, n, k) => { const ok = tg ? n >= tg : n > 0; return `<button type="button" class="chip2 ${ok ? '' : 'todo'}" data-cm="${c.id}|${iso(m)}">${mes(m).replace(/^./, x => x.toUpperCase())}: ${n}${tg ? '/' + tg : ''} ${ok ? '' : '· construir'}</button>`; };
+    return `<div class="calr"><div class="calc">${avatar(c)}<b>${esc(c.name)}</b></div><div class="chips" style="margin:0">${chip(m0, a0)}${chip(m1, a1)}${wait ? `<button type="button" class="chip2 wait" data-og="aprov">${wait} para aprovar</button>` : ''}</div></div>`; };
+  const cal = `<div class="card"><div class="row"><h2 class="h2">Calendários a construir e aprovar</h2><div class="sp"></div><a href="#" data-og="geral">calendário geral</a></div>${cls.map(calRow).join('') || '<div class="empty">Sem clientes.</div>'}</div>`;
+  el.innerHTML = `${kp}<div class="cols2" style="margin-top:16px"><div>${ring}${who}</div><div>${days}${cal}</div></div>`;
+  bindEnt(el);
+  $$('[data-og]', el).forEach(b => b.onclick = ev => { ev.preventDefault(); opsGo(b.dataset.og); });
+  $$('[data-pcl]', el).forEach(b => b.onclick = () => { S.tab = b.dataset.pcl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
+  $$('[data-cm]', el).forEach(b => b.onclick = () => { const [id, m] = b.dataset.cm.split('|'); S.tab = id; S.month = pd(m); try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
+}
+function renderOpsPage() {
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Resumo', 'O que falta de cada cliente, afazeres dos próximos dias e calendários a construir ou aprovar.')}<div id="oBody"></div></div>`;
+  opsResumo($('#oBody'));
+}
+
 // ---------- agência ----------
 function viewAgency() {
-  const tabs = [['clientes', 'Clientes e onboarding'], ['docs', 'Documentos'], ['aprov', 'Aprovações do mês']];
+  const tabs = [['resumo', 'Resumo'], ['clientes', 'Clientes e onboarding'], ['docs', 'Documentos'], ['aprov', 'Aprovações do mês']];
   $('#main').innerHTML = `<div class="wrap2">${pageHead('Agência', 'Cada cliente com onboarding, contrato, propostas, briefing e o link de aprovação.', `<button class="btn" id="addCl">+ Cliente</button><button class="btn amber" id="addDoc">+ Documento</button>`)}
   <div class="seg tabs2" id="aTabs">${tabs.map(([k, l]) => `<button type="button" data-t="${k}" class="${F.atab === k ? 'on' : ''}">${l}</button>`).join('')}</div><div id="aBody"></div></div>`;
   $$('#aTabs [data-t]').forEach(b => b.onclick = () => { F.atab = b.dataset.t; viewAgency(); }); $('#addCl').onclick = () => $('#addClient').click(); $('#addDoc').onclick = () => openDoc();
-  ({ clientes: agClientes, docs: agDocs, aprov: agAprov })[F.atab]($('#aBody'));
+  ({ resumo: opsResumo, clientes: agClientes, docs: agDocs, aprov: agAprov })[F.atab]($('#aBody'));
 }
 function agClientes(el) {
   el.innerHTML = `<div class="agrid">${S.clients.map(c => { const o = c.onboarding || {}; const done = ONB.filter(([k]) => o[k]).length; const n = F.docs.filter(d => d.client_id === c.id).length;
