@@ -364,6 +364,21 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
   }
 .logoutm{display:none}
 @media(max-width:900px){.logoutm{display:inline-flex}}
+.qcard{margin-top:0;margin-bottom:10px;padding:16px 18px}.qlog{max-height:300px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:10px 0 8px;padding:2px}
+.qm{max-width:94%;padding:9px 12px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14.5px}.qm.u{align-self:flex-end;background:var(--text);color:#fff;border-bottom-right-radius:4px}.qm.b{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px;width:min(94%,520px)}
+.qchips,.qsug{display:flex;flex-wrap:wrap;gap:6px}.qchips{margin-top:8px}.qsug{margin-bottom:8px}.qchip{border:1px solid var(--line2);background:#fff;border-radius:99px;padding:6px 12px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--text);width:auto;display:inline-block}.qchip.go{background:var(--text);color:#fff;border-color:var(--text)}.qchip.am{background:var(--amber);border-color:var(--amber);font-weight:600}.qchip:disabled{opacity:.45}
+.qform{display:flex;gap:8px}.qform input{flex:1;min-width:0;border-radius:99px;padding:11px 16px}.qform .btn{width:46px;padding:0;font-size:18px}
+.qbig{font-size:24px;font-weight:700}.qbig.in{color:var(--sage)}.qsum{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:14px;margin-top:6px}.qsum span{color:var(--dim)}
+.qrow{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:7px 0;font:inherit;color:inherit;cursor:pointer}.qrow .d{width:42px;flex:none;color:var(--dim);font-size:13px}.qrow .n{flex:1;min-width:0}.qrow .n b{display:block;font-weight:600}.qrow .n small{color:var(--dim);font-size:12px}.qrow .a{font-weight:600;white-space:nowrap}.qrow .a.in{color:var(--sage)}
+.lfbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 10px}.lfbar .seg{max-width:100%;overflow-x:auto}.lfbar input,.lfbar select{flex:1;min-width:160px;width:auto}
+.lcard{padding:4px 16px 8px;margin-top:4px}.lfsum{font-size:13.5px;color:var(--dim);padding:10px 0 2px}.lfsum .lfv{color:var(--text);font-weight:700}.lfsum .lfv.in{color:var(--sage)}
+.ldh{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding:14px 0 4px}
+.lrow{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}.ldh+.lrow{border-top:0}.lmain{flex:1;min-width:0}.lmain b{display:block;font-weight:600;overflow-wrap:anywhere}.lsub{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;font-size:12.5px;color:var(--dim);margin-top:3px}.lside{display:flex;flex-direction:row;align-items:center;gap:8px;flex:none}@media(max-width:760px){.lside{flex-direction:column;align-items:flex-end;gap:2px}}.lside .ea{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.lst.late{color:var(--red);font-weight:600}
+.ceg{padding:12px 0;border-top:1px solid var(--line)}.ceg:first-child{border-top:0}.ceg .gname{font-weight:700;font-size:15.5px;max-width:320px;width:auto;flex:1}
+.cehead,.cerow{display:grid;grid-template-columns:minmax(0,1.3fr) 120px minmax(0,1.5fr) 34px;gap:8px;align-items:center;margin:6px 0 0 22px}.cehead{color:var(--dim);font-size:12px;margin-top:10px}
+.cerow .lim{display:flex;align-items:center;gap:6px}.cerow .lim em{font-style:normal;color:var(--dim);font-size:13px}.cerow .del{padding:5px 0}.cerow input:disabled{background:var(--bg3);color:var(--dim)}
+.cedet{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}.cedet summary{cursor:pointer;font-weight:600}.cren{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:8px;align-items:center;margin-top:6px}
+@media(max-width:760px){.cehead{display:none}.cerow{grid-template-columns:minmax(0,1fr) 112px 34px;margin-left:0}.cerow .cek{grid-column:1/-1;grid-row:2}.cerow .del{grid-column:3;grid-row:1}.ceg .row{flex-wrap:nowrap}.qlog{max-height:240px}}
 </style>
 </head>
 <body>
@@ -1217,7 +1232,7 @@ const NAVI = {
 };
 const NAVL = { inicio: 'Início', financeiro: 'Financeiro', tarefas: 'Tarefas', clientes: 'Clientes', agencia: 'Agência', ofertas: 'Ofertas' };
 
-const F = { rec: [], ent: [], debts: [], set: {}, tasks: [], tpl: [], offers: [], leads: [], docs: [], posts: [], m: firstOfMonth(new Date()), ftab: 'resumo', atab: 'resumo', ttab: 'resumo', scope: 'todos', sel: null, ready: false };
+const F = { rec: [], ent: [], debts: [], set: {}, tasks: [], tpl: [], offers: [], leads: [], docs: [], posts: [], m: firstOfMonth(new Date()), ftab: 'lanc', atab: 'resumo', ttab: 'resumo', scope: 'todos', sel: null, ready: false };
 
 // ---------- dados ----------
 async function loadV2() {
@@ -1519,13 +1534,215 @@ function taskRow(t) {
 }
 
 // ---------- financeiro ----------
+// ---------- lançador rápido (chat) dentro do Financeiro ----------
+const Q = { box: null, log: null, pending: null, refocus: false };
+const Q_IN_W = /\b(recebi|recebido|recebimento|entrou|entrada|ganhei|vendi|venda|pagou|caiu|salário|salario|depositou|depósito|deposito|bolsa|pens[aã]o)\b/;
+const Q_CATS = [ // [categoria, tipo, escopo padrão, regex]
+  ['Foto na rua', 'in', 'pj', /foto na rua|fotos? (do|no) parque|foto avulsa|\bfotos?\b/],
+  ['Cliente', 'in', 'pj', /weinerth|varela|powerhouse|power house|psi ?[12]|cliente|mensalidade|contrato|jabá|briefing/],
+  ['Bolsa', 'in', 'pf', /bolsa|cnpq/], ['Pensão', 'in', 'pf', /pens[aã]o/],
+  ['Transporte', 'out', 'pf', /uber|99\b|[oô]nibus|gasolina|combust[ií]vel|passagem|t[aá]xi|estacionamento|pedágio/],
+  ['Mercado', 'out', 'pf', /mercado|supermercado|padaria|hortifruti|a[cç]ougue|feira|zaffari|nacional|bistek/],
+  ['Alimentação fora', 'out', 'pf', /ifood|lanche|restaurante|pizza|hamb[uú]rguer|burger|caf[eé]|almo[cç]o|janta|jantar|sorvete|a[cç]a[ií]|bar\b|cerveja|bebida|marmita|mc ?donald/],
+  ['Farmácia', 'out', 'pf', /farm[aá]cia|rem[eé]dio|minoxidil|cetoconazol|droga|vitamina|suplemento/],
+  ['Saúde', 'out', 'pf', /psi\b|psic[oó]log|terapia|consulta|exame|dentista|academia|26 ?fit|m[eé]dico/],
+  ['Moradia', 'out', 'pf', /aluguel|luz\b|energia|[aá]gua|internet|g[aá]s\b|condom[ií]nio|iptu|casa\b|m[oó]veis?|limpeza/],
+  ['Contas', 'out', 'pf', /claro|celular|telefone|plano|tim\b|vivo\b/],
+  ['Ferramentas', 'out', 'pj', /claude|capcut|canva|google one|assinatura|chatgpt|notion|figma|adobe|dom[ií]nio|hospedagem|vercel|app\b|software|licen[cç]a/],
+  ['Equipamento', 'out', 'pj', /c[aâ]mera|lente|tripé|trip[eé]|macbook|notebook|microfone|ilumina[cç][aã]o|cart[aã]o de mem[oó]ria|ssd|hd\b|equipamento|cabo|bateria/],
+  ['Anúncios', 'out', 'pj', /an[uú]ncio|tr[aá]fego|meta ads|impulsionar|impulsionamento|boost/],
+  ['Fatura do cartão', 'out', 'pf', /fatura|paguei (o )?cart[aã]o\b(?! de mem)/],
+  ['Dívidas', 'out', 'pf', /formatura|parcela|empr[eé]stimo/],
+  ['Educação', 'out', 'pf', /livro|curso|mensalidade da faculdade|apostila|xerox|c[oó]pia|ucpel/],
+  ['Viagem', 'out', 'pf', /viagem|hotel|hospedagem de viagem|passagem a[eé]rea|hostel/],
+  ['Investimento', 'out', 'pf', /invest|tesouro|cdb|poupan[cç]a|reserva/],
+  ['Lazer', 'out', 'pf', /cinema|show|jogo|steam|netflix|spotify|festa|ingresso|presente|roupa|t[eê]nis|corte de cabelo|barbeiro|lazer|role\b|rolê/]
+];
+function qnum(s) { s = String(s).replace(/\s/g, ''); if (/,\d{1,2}$/.test(s)) s = s.replace(/\./g, '').replace(',', '.'); else if (/\.\d{1,2}$/.test(s) && !/\.\d{3}$/.test(s)) { /* 12.5 */ } else s = s.replace(/[.,](?=\d{3}\b)/g, ''); return parseFloat(s); }
+function qparse(raw) {
+  let t = ' ' + raw.trim() + ' '; const low = t.toLowerCase().normalize('NFC');
+  const r = { raw, name: '', amount: null, kind: null, pay: null, scope: null, category: null, date: iso(new Date()), client_id: null };
+  if (/\bontem\b/.test(low)) { const d = new Date(); d.setDate(d.getDate() - 1); r.date = iso(d); t = t.replace(/ontem/i, ' '); }
+  else if (/\banteontem\b/.test(low)) { const d = new Date(); d.setDate(d.getDate() - 2); r.date = iso(d); t = t.replace(/anteontem/i, ' '); }
+  const dm = t.match(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/); if (dm) { const y = dm[3] ? (dm[3].length === 2 ? 2000 + +dm[3] : +dm[3]) : new Date().getFullYear(); r.date = `${y}-${pad(+dm[2])}-${pad(+dm[1])}`; t = t.replace(dm[0], ' '); }
+  t = t.replace(/\bhoje\b/i, ' ');
+  const am = t.match(/(?:r\$\s*)?(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|conto|contos|pila|pratas)?/i);
+  if (am) { r.amount = qnum(am[1]); if (/\bk\b/i.test(t.slice(am.index + am[0].length, am.index + am[0].length + 2))) r.amount *= 1000; t = t.replace(am[0], ' '); }
+  const l2 = t.toLowerCase();
+  if (/cr[eé]dito|cart[aã]o|nubank|\bcc\b|parcelad/.test(l2) && !/cart[aã]o de mem/.test(l2)) r.pay = 'credito'; else if (/d[eé]bito/.test(l2)) r.pay = 'debito'; else if (/\bpix\b|dinheiro|transfer|\bted\b|\bdoc\b|especie|espécie/.test(l2)) r.pay = 'pix';
+  if (Q_IN_W.test(l2) && !/paguei|comprei|gastei|\bpaga(r|do)\b/.test(l2)) r.kind = 'in'; else if (/paguei|comprei|gastei|gasto|\bpaga(r|do)\b|saiu|debitou|assinei/.test(l2)) r.kind = 'out';
+  for (const [c, k, sc, re] of Q_CATS) { if (re.test(l2) && (!r.kind || r.kind === k)) { r.category = c; r.kind = r.kind || k; r.scope = sc; break; } }
+  if (/\bpj\b|\bempresa\b|\bstudio\b|trabalho/.test(l2)) r.scope = 'pj'; else if (/\bpf\b|pessoal|\bmeu\b|\bminha\b/.test(l2) && !/minha (c[aâ]mera|empresa)/.test(l2)) r.scope = r.scope && /\bpf\b/.test(l2) ? 'pf' : r.scope || 'pf';
+  if (/\bpf\b/.test(l2)) r.scope = 'pf';
+  const c = S.clients.find(x => x.name.length > 2 && l2.includes(x.name.toLowerCase().split(' ')[0]) && (x.kind || 'cliente') !== 'pessoal'); if (c) { r.client_id = c.id; r.scope = 'pj'; if (!r.category) { r.category = 'Cliente'; r.kind = r.kind || 'in'; } }
+  r.name = t.replace(/\b(paguei|comprei|gastei|recebi|entrou|ganhei|vendi|no|na|de|do|da|em|com|um|uma|pix|cr[eé]dito|d[eé]bito|cart[aã]o|pj|pf|hoje|reais|real|r\$)\b/gi, ' ').replace(/[^\p{L}\p{N}\s+\-]/gu, ' ').replace(/\s+/g, ' ').trim();
+  if (!r.name) r.name = r.category || 'Lançamento';
+  r.name = r.name.charAt(0).toUpperCase() + r.name.slice(1);
+  const al = F.set.catalias || {}; if (r.category && r.category !== FAT && al[r.category]) r.category = al[r.category];
+  return r;
+}
+window.__qparse = qparse;
+function qSay(html, cls = 'b') { const d = document.createElement('div'); d.className = 'qm ' + cls; d.innerHTML = html; Q.log.appendChild(d); Q.log.scrollTop = Q.log.scrollHeight; return d; }
+function qChips(el, list) { const w = document.createElement('div'); w.className = 'qchips'; list.forEach(([label, fn, cls]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'qchip ' + (cls || ''); b.textContent = label; b.onclick = () => { w.querySelectorAll('button').forEach(x => x.disabled = true); fn(); }; w.appendChild(b); }); el.appendChild(w); Q.log.scrollTop = Q.log.scrollHeight; }
+function qIntent(t) {
+  const l = nz(t);
+  if (/^(meu )?saldo\b|^quanto (eu )?(tenho|sobrou|sobra)\b/.test(l)) return { type: 'saldo' };
+  const digits = /\d/.test(l), act = /\b(paguei|comprei|gastei|recebi|ganhei|vendi|assinei)\b/.test(l);
+  const noun = /(gast|saida|despes|ganh|entrad|receb|lancament|lancei|movimenta)/.test(l) || /^(ultim|recente)\w*(\s+\d+)?\s*$/.test(l);
+  if (!noun || /r\$|\breais\b/.test(l)) return null;
+  const cnt = l.match(/ultim\w*\s+(\d{1,2})\b/) || l.match(/\b(\d{1,2})\s+(?:ultim|gast|entrad|ganh|lanc|saida|receb|recente)/);
+  if (act && digits && !cnt) return null;
+  const strong = /\b(ultim\w*|recente\w*|quais|lista\w*|mostr\w*)\b/.test(l), weak = /\b(qual|ver|me d\w+|o que)\b|\?\s*$/.test(l), short = !digits && !act && l.trim().split(/\s+/).length <= 3;
+  if (!(strong || (weak && !digits) || short)) return null;
+  const wi = /(ganh|entrad|receb)/.test(l), wo = /(gast|saida|despes)/.test(l);
+  return { type: 'list', kind: wi && !wo ? 'in' : wo && !wi ? 'out' : null, scope: /\bpj\b|empresa|studio/.test(l) ? 'pj' : /\bpf\b|pessoal/.test(l) ? 'pf' : null,
+    period: /\bhoje\b/.test(l) ? 'hoje' : /\bontem\b/.test(l) ? 'ontem' : /\bsemana\b/.test(l) ? 'semana' : /\bmes\b/.test(l) ? 'mes' : null, n: Math.min(50, Math.max(1, cnt ? +cnt[1] : 8)) };
+}
+function qList(it) {
+  const today = todayS(), ym = today.slice(0, 7), day = e => e.paid_on || e.date, wk = iso(new Date(Date.now() - 6 * 864e5)), yd = iso(new Date(Date.now() - 864e5));
+  let L = F.ent.filter(e => e.status === 'pago' && (!it.kind || e.kind === it.kind) && (!it.scope || e.scope === it.scope));
+  if (it.period === 'hoje') L = L.filter(e => day(e) === today); else if (it.period === 'ontem') L = L.filter(e => day(e) === yd); else if (it.period === 'semana') L = L.filter(e => day(e) >= wk); else if (it.period === 'mes') L = L.filter(e => day(e).startsWith(ym));
+  L = [...L].sort((a, b) => day(b).localeCompare(day(a)) || String(b.created_at || '').localeCompare(String(a.created_at || '')));
+  const sh = L.slice(0, it.n), PER = { hoje: ' de hoje', ontem: ' de ontem', semana: ' dos últimos 7 dias', mes: ' deste mês' };
+  const title = (it.kind === 'in' ? 'Últimas entradas' : it.kind === 'out' ? 'Últimos gastos' : 'Últimos lançamentos') + (PER[it.period] || '') + (it.scope ? ' · ' + (it.scope === 'pj' ? 'PJ' : 'PF') : '');
+  if (!sh.length) return qSay('Não achei nada' + (it.kind === 'in' ? ' de entrada' : it.kind === 'out' ? ' de gasto' : '') + (PER[it.period] || '') + ' ainda.');
+  const dm = s => s.slice(8, 10) + '/' + s.slice(5, 7);
+  const rows = sh.map(e => `<button type="button" class="qrow" data-id="${esc(e.id)}"><span class="d">${dm(day(e))}</span><span class="n"><b>${esc(e.name)}</b><small>${esc(e.category || 'sem categoria')} · ${e.scope === 'pj' ? 'PJ' : 'PF'}${e.kind === 'out' && PAYL[e.pay] ? ' · ' + PAYL[e.pay] : ''}</small></span><span class="a ${e.kind}">${e.kind === 'in' ? '+' : '−'} ${BRL(e.amount)}</span></button>`).join('');
+  const tin = sh.filter(e => e.kind === 'in').reduce((a, e) => a + +e.amount, 0), tout = sh.filter(e => e.kind === 'out').reduce((a, e) => a + +e.amount, 0);
+  const sum = it.kind === 'in' ? `Total: ${BRL(tin)}` : it.kind === 'out' ? `Total: ${BRL(tout)}` : `Entrou ${BRL(tin)} · saiu ${BRL(tout)}`;
+  const b = qSay(`<b>${title}</b><div style="margin-top:6px">${rows}</div><div class="sub" style="margin-top:6px">${sum} (${sh.length}${L.length > sh.length ? ' de ' + L.length : ''})</div>`);
+  b.querySelectorAll('.qrow').forEach(r => r.onclick = () => { const e = F.ent.find(x => String(x.id) === r.dataset.id); if (e) openEntry(e); });
+  if (L.length > sh.length) qChips(b, [['Mostrar mais', () => qList({ ...it, n: Math.min(50, it.n + 10) })]]);
+  return b;
+}
+
+function qBuild() {
+  const b = document.createElement('div'); b.className = 'card qcard';
+  b.innerHTML = `<div class="row"><h2 class="h2">Lançar rápido</h2><div class="sp"></div><button type="button" class="btn small ghost" id="qForm">Formulário</button><button type="button" class="btn small" id="qCats">Categorias</button></div>
+   <div class="qlog" id="qlog" aria-live="polite"></div>
+   <div class="qsug"><button type="button" class="qchip" data-q="últimos gastos">Últimos gastos</button><button type="button" class="qchip" data-q="últimas entradas">Últimas entradas</button><button type="button" class="qchip" data-q="saldo">Saldo</button></div>
+   <form class="qform" autocomplete="off"><input id="qt" placeholder="uber 23,50 crédito · recebi 800 foto na rua · últimos gastos" enterkeyhint="send" autocapitalize="sentences"><button class="btn primary" aria-label="Enviar">↑</button></form>`;
+  Q.box = b; Q.log = b.querySelector('#qlog');
+  b.querySelector('form').onsubmit = ev => { ev.preventDefault(); const i = b.querySelector('#qt'), t = i.value.trim(); if (!t) return; i.value = ''; Q.refocus = true; qHandle(t); };
+  b.querySelectorAll('[data-q]').forEach(x => x.onclick = () => qHandle(x.dataset.q));
+  b.querySelector('#qForm').onclick = () => openEntry();
+  b.querySelector('#qCats').onclick = () => openCats();
+  qSay('Escreve o que gastou ou recebeu, do jeito que sair (ex.: "mercado 87 pix"). Ou pergunta: "últimos gastos", "saldo".');
+}
+function qMount() {
+  if (!Q.box) qBuild();
+  $('#qHold').appendChild(Q.box); Q.log.scrollTop = Q.log.scrollHeight;
+  if (Q.refocus) { Q.refocus = false; try { Q.box.querySelector('#qt').focus({ preventScroll: true }); } catch (_) {} }
+}
+function qMatch(p) { // conta prevista que combina com o texto
+  const words = nz(p.raw).split(/[^a-z0-9]+/).filter(w => w.length > 2 && !/^(paguei|conta|pix|credito|debito|reais|hoje|ontem|recebi)$/.test(w));
+  let best = null, sc = 0;
+  F.ent.filter(e => e.status === 'previsto' && e.kind === (p.kind || 'out')).forEach(e => { const nm = nz(e.name + ' ' + (e.category || '')); const s = words.filter(w => nm.includes(w)).length; if (s > sc) { sc = s; best = e; } });
+  return sc ? best : null;
+}
+async function qHandle(text) {
+  qSay(esc(text), 'u');
+  const it = qIntent(text); if (it) { Q.pending = null; return it.type === 'saldo' ? qSaldo() : qList(it); }
+  if (Q.pending && Q.pending.ask) { const f = Q.pending.ask; Q.pending.ask = null; return f(text); }
+  const p = qparse(text); Q.pending = { p };
+  if (!isFinite(p.amount) || p.amount == null) return qAskAmount(p);
+  const m = qMatch(p);
+  if (m) {
+    const b = qSay(`Parece a conta <b>${esc(m.name)}</b> (${BRL(m.amount)}, vence ${m.date.slice(8)}/${m.date.slice(5, 7)}). Marco como ${m.kind === 'in' ? 'recebida' : 'paga'}${Math.abs(m.amount - p.amount) > 0.005 ? ` com o valor de ${BRL(p.amount)}` : ''}?`);
+    return qChips(b, [['Sim, é essa', () => qMarkPaid(m, p), 'go'], ['Não, é um lançamento novo', () => qStep(p)]]);
+  }
+  qStep(p);
+}
+function qSaldo() { const s = sums(firstOfMonth(new Date())); qSay(`Saldo estimado: <b>${BRL(balance())}</b>.\nNo mês: entrou ${BRL(s.inPaid)}, saiu ${BRL(s.outPaid)}.`); }
+function qAskAmount(p) { qSay('Qual foi o valor?'); Q.pending = { p, ask: t => { const v = qnum((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { qSay('Não entendi o valor. Escreve só o número, tipo 23,50.'); return qAskAmount(p); } p.amount = v; qStep(p); } }; }
+function qStep(p) {
+  if (!p.kind) { const b = qSay(`${BRL(p.amount)}: entrou ou saiu?`); return qChips(b, [['Gastei', () => { p.kind = 'out'; qStep(p); }], ['Recebi', () => { p.kind = 'in'; qStep(p); }, 'am']]); }
+  if (!p.category) { const al = F.set.catalias || {}; const cats = [...new Set([...F.rec.map(r => r.category), ...F.ent.map(e => e.category), ...Q_CATS.map(c => c[0])].filter(Boolean))].filter(c => c !== FAT && !al[c]); const b = qSay('Em que categoria entra?'); return qChips(b, cats.slice(0, 16).map(c => [c, () => { p.category = c; const hit = Q_CATS.find(x => x[0] === c); if (hit && !p.scope) p.scope = hit[2]; qStep(p); }])); }
+  if (!p.scope) { const b = qSay('É PJ ou pessoa física?'); return qChips(b, [['PJ', () => { p.scope = 'pj'; qStep(p); }], ['Pessoa física', () => { p.scope = 'pf'; qStep(p); }]]); }
+  if (p.category === FAT) { p.pay = 'pix'; p.scope = p.scope || 'pf'; p.name = 'Pagamento da fatura'; }
+  if (p.kind === 'out' && !p.pay) { const b = qSay('Pagou como?'); return qChips(b, [['Pix', () => { p.pay = 'pix'; qStep(p); }], ['Crédito', () => { p.pay = 'credito'; qStep(p); }], ['Débito', () => { p.pay = 'debito'; qStep(p); }]]); }
+  if (p.kind === 'in' && !p.pay) p.pay = 'pix';
+  qConfirm(p);
+}
+function qCard(p) { return `<div class="qbig ${p.kind === 'in' ? 'in' : ''}">${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)}</div><div class="qsum"><span>O quê</span><b>${esc(p.name)}</b><span>Categoria</span><b>${esc(p.category)}</b><span>Conta</span><b>${p.scope === 'pj' ? 'PJ' : 'Pessoa física'}</b><span>Forma</span><b>${PAYL[p.pay]}</b><span>Data</span><b>${p.date.slice(8)}/${p.date.slice(5, 7)}</b></div>`; }
+function qConfirm(p) {
+  const b = qSay(qCard(p) + '<div class="sub" style="margin-top:6px">Salvo assim?</div>');
+  qChips(b, [['Salvar', () => qSave(p), 'go'], ['Trocar categoria', () => { p.category = null; qStep(p); }], ['Trocar conta', () => { p.scope = null; qStep(p); }], ['Trocar forma', () => { p.pay = null; qStep(p); }], ['Cancelar', () => { Q.pending = null; qSay('Cancelado.'); }]]);
+}
+async function qSave(p) {
+  const row = { kind: p.kind, scope: p.scope, name: p.name, amount: p.amount, date: p.date, status: 'pago', paid_on: p.date, pay: p.pay, category: p.category, client_id: p.client_id || null };
+  const { data, error } = await sb.from('fin_entries').insert(row).select(); if (error) return qSay('Não consegui salvar: ' + esc(error.message));
+  F.ent.push(data[0]); Q.pending = null; qDone(`Lançado: ${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)} em ${esc(p.category)}.`, data[0]);
+}
+async function qMarkPaid(m, p) {
+  const pay = m.pay === 'ambos' ? (p.pay || null) : (m.pay || p.pay);
+  const go = async pay => { const row = { status: 'pago', paid_on: p.date, pay: pay || 'pix', amount: p.amount }; const { error } = await sb.from('fin_entries').update(row).eq('id', m.id); if (error) return qSay('Não consegui salvar: ' + esc(error.message)); Object.assign(m, row); Q.pending = null; qDone(`${esc(m.name)} marcada como ${m.kind === 'in' ? 'recebida' : 'paga'}.`, m); };
+  if (m.kind === 'out' && !pay) { const b = qSay('Pagou como?'); return qChips(b, [['Pix', () => go('pix')], ['Crédito', () => go('credito')], ['Débito', () => go('debito')]]); }
+  go(pay);
+}
+function budSubMatch(s, e) { const text = nz(e.name), words = text.split(/[^a-z0-9]+/).filter(Boolean), cat = nz(e.category), hit = (k, t, w) => k.includes(' ') ? t.includes(k) : w.includes(k); return (s.names || []).some(k => hit(nz(k), text, words)) || (s.cats || []).some(k => nz(k) === cat); }
+function qBudLine(e) {
+  if (e.kind !== 'out') return ''; const C = budCalc(firstOfMonth(new Date()), 'todos'); const subs = C.res.flatMap(r => r.subs);
+  const x = subs.find(x => (x.s.names || []).length && budSubMatch({ names: x.s.names }, e)) || subs.find(x => budSubMatch({ cats: x.s.cats }, e));
+  if (!x || !x.lim) return ''; return `${x.s.n}: ${BRL(x.used)} de ${BRL(x.lim)} no mês${x.used > x.lim ? '. Passou do limite!' : '.'}`;
+}
+function qDone(msg, e) {
+  Q.refocus = true; rerenderView();
+  const s = sums(firstOfMonth(new Date())), bl = qBudLine(e);
+  qSay(`${msg}\nSaldo estimado: ${BRL(balance())}. No mês: entrou ${BRL(s.inPaid)}, saiu ${BRL(s.outPaid)}.${bl ? '\n' + bl : ''}`);
+}
+
+// ---------- editor de categorias e metas ----------
+function openCats(focus) {
+  const G = JSON.parse(JSON.stringify(budGroups()));
+  const known = [...new Set([...F.rec.map(r => r.category), ...F.ent.map(e => e.category)].filter(Boolean))].filter(c => c !== FAT).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const cnt = c => F.ent.filter(e => e.category === c).length;
+  const d = modal(`<div class="row"><h2>Categorias e metas</h2></div>
+    <p class="sub" style="margin:2px 0 10px">Troque o nome, a meta mensal (teto de gasto, 0 = sem teto) e as palavras que encaixam cada gasto na categoria.</p>
+    <div id="ceBody"></div><div style="margin:12px 0 4px"><button type="button" class="btn small" id="ceAddG">+ novo grupo</button></div>
+    <details class="cedet" id="ceDet"><summary>Renomear as categorias dos lançamentos <span class="sub">(troca em todos os lançamentos já feitos)</span></summary><div id="ceRen">${known.map(c => `<div class="cren"><input data-old="${esc(c)}" value="${esc(c)}" aria-label="Categoria ${esc(c)}"><span class="sub">${cnt(c)} lanç.</span></div>`).join('') || '<div class="empty">Ainda sem categorias.</div>'}</div></details>
+    <div class="mact"><div class="sp"></div><button type="button" class="btn" id="ceCancel">Cancelar</button><button type="button" class="btn primary" id="ceSave">Salvar</button></div>`, true);
+  d.querySelector('form').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.preventDefault(); });
+  const kw = s => [...(s.names || []), ...(s.cats || [])].join(', ');
+  const draw = () => { d.querySelector('#ceBody').innerHTML = G.map((g, gi) => `<div class="ceg" data-gi="${gi}"><div class="row"><i class="dot" style="background:${g.color}"></i><input class="gname" value="${esc(g.name)}" aria-label="Nome do grupo"><div class="sp"></div><button type="button" class="btn small ghost" data-delg="${gi}">remover grupo</button></div>
+      <div class="cehead"><span>Categoria</span><span>Meta por mês</span><span>Palavras que encaixam</span><span></span></div>
+      ${g.subs.map((s, si) => `<div class="cerow" data-si="${si}"><input class="cen" value="${esc(s.n)}" placeholder="Nome" aria-label="Nome da categoria"><span class="lim"><em>R$</em><input class="cel" inputmode="decimal" value="${s.dyn ? '' : String(s.lim || 0).replace('.', ',')}" ${s.dyn ? 'disabled placeholder="automático"' : ''} aria-label="Meta mensal"></span><input class="cek" value="${esc(kw(s))}" placeholder="ex.: uber, 99" ${s.dyn ? 'disabled' : ''} aria-label="Palavras que encaixam"><button type="button" class="btn small ghost del" data-dels="${gi}:${si}" aria-label="Remover categoria">×</button></div>`).join('')}
+      <button type="button" class="btn small ghost" data-adds="${gi}" style="margin:6px 0 0 22px">+ categoria</button></div>`).join('');
+    d.querySelectorAll('[data-delg]').forEach(b => b.onclick = () => { sync(); const g = G[+b.dataset.delg]; if (!confirm(`Remover o grupo "${g.name}" e as ${g.subs.length} categorias dele? Os gastos passam a aparecer como "sem caixinha".`)) return; G.splice(+b.dataset.delg, 1); draw(); });
+    d.querySelectorAll('[data-dels]').forEach(b => b.onclick = () => { sync(); const [gi, si] = b.dataset.dels.split(':').map(Number); G[gi].subs.splice(si, 1); draw(); });
+    d.querySelectorAll('[data-adds]').forEach(b => b.onclick = () => addSub(+b.dataset.adds)); };
+  const sync = () => d.querySelectorAll('.ceg').forEach(ge => { const g = G[+ge.dataset.gi]; if (!g) return; g.name = ge.querySelector('.gname').value.trim();
+    ge.querySelectorAll('.cerow').forEach(re => { const s = g.subs[+re.dataset.si]; if (!s) return; s.n = re.querySelector('.cen').value.trim(); if (s.dyn) return;
+      const v = re.querySelector('.cel').value.trim(); s.lim = v === '' ? 0 : parseLim(v);
+      const oc = (s.cats || []).map(nz), on = (s.names || []).map(nz), kn = known.map(nz), names = [], cats = [];
+      re.querySelector('.cek').value.split(',').map(t => t.trim()).filter(Boolean).forEach(w => { const k = nz(w); if (oc.includes(k)) cats.push(w); else if (on.includes(k)) names.push(w); else if (kn.includes(k)) cats.push(w); else names.push(w); });
+      if (names.length) s.names = names; else delete s.names; if (cats.length) s.cats = cats; else delete s.cats; }); });
+  const addSub = gi => { sync(); G[gi].subs.push({ n: '', lim: 0, _new: true }); draw(); const rows = d.querySelectorAll(`.ceg[data-gi="${gi}"] .cerow`); const r = rows[rows.length - 1]; r?.scrollIntoView({ block: 'center' }); r?.querySelector('.cen').focus(); };
+  const addGrp = () => { sync(); G.push({ id: 'g' + Date.now(), name: 'Novo grupo', color: COLORS_BUD[G.length % COLORS_BUD.length], subs: [] }); draw(); const gs = d.querySelectorAll('.gname'); const i = gs[gs.length - 1]; i?.scrollIntoView({ block: 'center' }); i?.focus(); i?.select(); };
+  draw(); d.querySelector('#ceAddG').onclick = addGrp; d.querySelector('#ceCancel').onclick = () => d.close();
+  if (focus?.addSub != null) addSub(focus.addSub); else if (focus?.addGrp) addGrp(); else if (focus?.gi != null) { const r = d.querySelector(`.ceg[data-gi="${focus.gi}"] .cerow[data-si="${focus.si}"] .cel`) || d.querySelector(`.ceg[data-gi="${focus.gi}"] .cerow[data-si="${focus.si}"] .cen`); r?.scrollIntoView({ block: 'center' }); r?.focus(); }
+  d.querySelector('#ceSave').onclick = async () => {
+    sync();
+    for (const g of G) for (const s of g.subs) if (s.n && !s.dyn && !isFinite(s.lim)) return toast(`Meta inválida em "${s.n}". Use só números, ex.: 600`);
+    G.forEach((g, i) => { g.name = g.name || 'Grupo ' + (i + 1); g.subs = g.subs.filter(s => s.n); g.subs.forEach(s => { if (s._new && !s.names && !s.cats && !s.dyn) s.names = [nz(s.n)]; delete s._new; }); });
+    const ren = [...d.querySelectorAll('[data-old]')].map(i => [i.dataset.old, i.value.trim()]).filter(([o, n]) => n && n !== o), alias = { ...(F.set.catalias || {}) };
+    for (const [o, n] of ren) {
+      const r1 = await sb.from('fin_entries').update({ category: n }).eq('category', o); if (r1.error) return fail(r1.error);
+      const r2 = await sb.from('fin_recurring').update({ category: n }).eq('category', o); if (r2.error) return fail(r2.error);
+      F.ent.forEach(e => { if (e.category === o) e.category = n; }); F.rec.forEach(r => { if (r.category === o) r.category = n; });
+      G.forEach(g => g.subs.forEach(s => { if (s.cats) s.cats = s.cats.map(c => nz(c) === nz(o) ? n : c); }));
+      Object.keys(alias).forEach(k => { if (alias[k] === o) alias[k] = n; }); alias[o] = n; }
+    await saveSet('budget', { groups: G }); if (ren.length) await saveSet('catalias', alias);
+    d.close(); toast(ren.length ? `Salvo. ${ren.length} categoria(s) renomeada(s)` : 'Salvo'); rerenderView(); };
+}
+
 function viewFin() {
-  const m = F.m, tabs = [['resumo', 'Resumo'], ['lanc', 'Lançamentos'], ['gastos', 'Gastos por categoria']];
-  $('#main').innerHTML = `<div class="wrap2">${pageHead('Financeiro', 'Tudo que entra e sai, separado em PJ e pessoa física.', `<button class="btn amber" id="qIn">+ Entrada</button><button class="btn primary" id="qOut">+ Gasto</button>`)}
+  const m = F.m, tabs = [['lanc', 'Lançamentos'], ['resumo', 'Resumo'], ['gastos', 'Gastos por categoria']];
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Financeiro', 'Tudo que entra e sai, separado em PJ e pessoa física.')}<div id="qHold"></div>
   <div class="row" style="margin:6px 0 14px"><div class="monthnav"><button class="btn small" id="fPrev">‹</button><strong>${monthLabel(m)}</strong><button class="btn small" id="fNext">›</button></div><div class="sp"></div>
    <div class="seg" id="fScope">${[['todos', 'Tudo'], ['pj', 'PJ'], ['pf', 'Pessoa física']].map(([k, l]) => `<button type="button" data-s="${k}" class="${F.scope === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
   <div class="seg tabs2" id="fTabs">${tabs.map(([k, l]) => `<button type="button" data-t="${k}" class="${F.ftab === k ? 'on' : ''}">${l}</button>`).join('')}</div><div id="fBody"></div></div>`;
-  $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
+  qMount();
   $('#fPrev').onclick = async () => { F.m = addMonths(F.m, -1); await finMonth(); viewFin(); }; $('#fNext').onclick = async () => { F.m = addMonths(F.m, 1); await finMonth(); viewFin(); };
   $$('#fScope [data-s]').forEach(b => b.onclick = () => { F.scope = b.dataset.s; viewFin(); }); $$('#fTabs [data-t]').forEach(b => b.onclick = () => { F.ftab = b.dataset.t; viewFin(); });
   (({ resumo: finResumo, lanc: finLanc, gastos: finGastos })[F.ftab] || finResumo)($('#fBody'));
@@ -1569,11 +1786,11 @@ function openBreak(kind) {
 function finResumo(el) {
   const m = F.m, s = sums(m, F.scope), sobra = s.inAll - s.outAll;
   el.innerHTML = `<div class="kpis4"><div class="kpi hi go" data-bk="in" title="Ver de onde vem"><span>Entrou</span><b>${BRL(s.inPaid)}</b><em>previsto ${BRL(s.inAll)}</em><u class="why">ver de onde vem ›</u></div><div class="kpi go" data-bk="out" title="Ver de onde vem"><span>Saiu</span><b>${BRL(s.outPaid)}</b><em>previsto ${BRL(s.outAll)}</em><u class="why">ver de onde vem ›</u></div><div class="kpi go" data-bk="sobra" title="Ver a conta"><span>Sobra prevista</span><b class="${sobra >= 0 ? 'up' : 'down'}">${BRL(sobra)}</b><em>entradas previstas − saídas previstas</em><u class="why">ver a conta ›</u></div><div class="kpi go" data-bk="saldo" title="Ver como o saldo é calculado"><span>Saldo na conta</span><b>${BRL(balance())}</b><em>Pix e débito, sem o crédito</em><u class="why">ver como é calculado e ajustar ›</u></div></div>
-  <div class="card"><div class="row"><h2 class="h2">Caixinhas do mês</h2><div class="sp"></div><span class="sub">gasto pago + previsto em cada categoria</span></div><div id="cxBody"></div></div>
+  <div class="card"><div class="row"><h2 class="h2">Caixinhas do mês</h2><div class="sp"></div><span class="sub">gasto pago + previsto em cada categoria</span><button class="btn small" id="editCats">Categorias e metas</button></div><div id="cxBody"></div></div>
   <div class="row" style="margin:30px 0 0"><h2 class="h2" style="margin:0">Metas e dívidas</h2><div class="sp"></div><button class="btn small" id="addGoal">+ meta</button><button class="btn small ghost" id="addDebt">+ dívida</button></div><div id="metaBody"></div>
   <section class="sep"><div class="sechead"><span>Contas fixas</span><small>o que se repete todo mês</small></div><div id="fixBody"></div></section>`;
   finCaixas($('#cxBody')); finMetas($('#metaBody')); finFixas($('#fixBody'));
-  $$('[data-bk]', el).forEach(k => k.onclick = () => openBreak(k.dataset.bk));
+  $$('[data-bk]', el).forEach(k => k.onclick = () => openBreak(k.dataset.bk)); $('#editCats').onclick = () => openCats();
   $('#addGoal').onclick = async () => { const n = prompt('Nome da meta (ex.: Moto):'); if (!n) return; const t = money(prompt('Quanto quer juntar (R$)?', '1000')); if (!isFinite(t) || t <= 0) return toast('Valor inválido'); await saveGoals([...getGoals(), { id: 'g' + Date.now(), name: n.trim(), target: t, saved: 0 }]); };
   $('#addDebt').onclick = () => openDebt();
 }
@@ -1655,23 +1872,15 @@ function finCaixas(el) {
   const groupHtml = C.res.map((r, gi) => { const over = r.lim && r.used > r.lim, pct = r.lim ? Math.min(100, r.used / r.lim * 100) : (r.used ? 100 : 0);
     return `<div class="cg"><div class="row"><i class="dot" style="background:${r.g.color}"></i><b class="gn">${esc(r.g.name)}</b><div class="sp"></div><span class="sub ${over ? 'late' : ''}">${BRL(r.used)}${r.lim ? ' de ' + BRL(r.lim) : ''}</span></div>
     <div class="bar" style="margin:7px 0 6px"><i style="width:${pct}%;background:${over ? 'var(--red)' : r.g.color}"></i></div>
-    ${r.subs.map((x, si) => `<div class="crow" data-gi="${gi}" data-si="${si}" title="Clique para editar"><span>${esc(x.s.n)}</span><span class="sub ${x.lim && x.used > x.lim ? 'late' : ''}">${BRL(x.used)}${x.lim ? ' / ' + BRL(x.lim) : ''}</span></div>`).join('')}
+    ${r.subs.map((x, si) => `<div class="crow" data-gi="${gi}" data-si="${si}" title="Clique para editar nome e meta"><span>${esc(x.s.n)}</span><span class="sub ${x.lim && x.used > x.lim ? 'late' : ''}">${BRL(x.used)}${x.lim ? ' / ' + BRL(x.lim) : ''}</span></div>`).join('')}
     <a href="#" class="addSub" data-gi="${gi}">+ categoria</a></div>`; }).join('');
   el.innerHTML = `<div class="cx"><div class="cxl">${donut(parts, BRL(C.used), 'gasto de ' + BRL(C.lim).replace('R$ ', ''))}
     <div class="cxfree ${free >= 0 ? '' : 'neg'}"><span>${free >= 0 ? 'Livre para distribuir' : 'Passou da renda prevista'}</span><b>${BRL(Math.abs(free))}</b><em>renda prevista ${BRL(s.inAll)}</em></div>
     ${C.loose.used > 0 ? `<p class="sub" style="margin:10px 0 0">${BRL(C.loose.used)} ainda sem caixinha: ${C.loose.items.map(e => esc(e.name)).join(', ')}.</p>` : ''}</div>
     <div class="cxr">${groupHtml}<div style="margin-top:14px"><button class="btn small" id="addGrp">+ novo grupo</button></div></div></div>`;
-  $$('.crow', el).forEach(r => r.onclick = async () => { const G = JSON.parse(JSON.stringify(budGroups())), gi = +r.dataset.gi, si = +r.dataset.si, x = G[gi].subs[si];
-    if (x.dyn) return toast('Esse limite é a parcela da meta; mude a meta mais abaixo.');
-    const v = prompt(`${x.n}: novo limite mensal em R$ (0 = sem teto).\nPara renomear escreva: nome: Novo nome\nPara apagar escreva: apagar`, String(x.lim).replace('.', ',')); if (v === null) return;
-    if (/^apagar$/i.test(v.trim())) { if (confirm(`Apagar "${x.n}"? Os gastos dele passam a aparecer como "sem caixinha".`)) { G[gi].subs.splice(si, 1); await saveBud(G); } return; }
-    const mm = v.match(/^nome:\s*(.+)$/i); if (mm) { x.n = mm[1].trim(); await saveBud(G); return; }
-    const n = parseLim(v); if (!isFinite(n)) return toast('Digite um valor, ex.: 600'); x.lim = n; await saveBud(G); });
-  $$('.addSub', el).forEach(a => a.onclick = async ev => { ev.preventDefault(); const G = JSON.parse(JSON.stringify(budGroups())), gi = +a.dataset.gi;
-    const n = prompt(`Nome da nova categoria em "${G[gi].name}":`); if (!n) return; const l = parseLim(prompt('Limite mensal em R$ (0 = sem teto):', '0')); if (!isFinite(l)) return toast('Valor inválido');
-    const k = (prompt('Palavras que encaixam gastos aqui, separadas por vírgula (ex.: uber, 99). Pode deixar vazio:', nz(n)) || '').split(',').map(t => t.trim()).filter(Boolean);
-    G[gi].subs.push({ n: n.trim(), lim: l, names: k }); await saveBud(G); });
-  $('#addGrp').onclick = async () => { const G = JSON.parse(JSON.stringify(budGroups())); const n = prompt('Nome do novo grupo:'); if (!n) return; G.push({ id: 'g' + Date.now(), name: n.trim(), color: COLORS_BUD[G.length % COLORS_BUD.length], subs: [] }); await saveBud(G); };
+  $$('.crow', el).forEach(r => r.onclick = () => openCats({ gi: +r.dataset.gi, si: +r.dataset.si }));
+  $$('.addSub', el).forEach(a => a.onclick = ev => { ev.preventDefault(); openCats({ addSub: +a.dataset.gi }); });
+  $('#addGrp').onclick = () => openCats({ addGrp: true });
 }
 function finGastos(el) {
   const m = F.m, only = F.onlyPend; const E = monthEnt(m, F.scope).filter(e => e.kind === 'out' && !isFat(e));
@@ -1685,11 +1894,31 @@ function finGastos(el) {
    ${cats.map(([c, g]) => { const items = g.items.filter(e => !only || e.status === 'previsto'); const ex = g.extra; if (!items.length && !ex.length) return ''; return `<div class="card"><div class="row"><h2 class="h2">${esc(c)}</h2><span class="badge">${bn[bucketOf(c)]}</span><div class="sp"></div><span class="sub">pago ${BRL(g.paid)} · previsto ${BRL(g.prev)} · ${Math.round(g.prev / (tp || 1) * 100)}%</span></div><div class="bar dark"><i style="width:${g.prev ? g.paid / g.prev * 100 : 0}%"></i></div><div class="elist" style="margin-top:6px">${items.map(e => entRow(e)).join('')}${ex.map(x => `<div class="erow"><div class="ed">no mês</div><div class="en"><b>${esc(x.name)}</b><span class="sub">ainda vai sendo gasto</span></div><div class="ea">− ${BRL(x.amount)}</div></div>`).join('')}</div></div>`; }).join('') || '<div class="empty">Sem gastos neste mês.</div>'}`;
   bindEnt(el); $('#onlyP').onchange = e => { F.onlyPend = e.target.checked; viewFin(); };
 }
+F.lf = { kind: 'todos', st: 'pago', q: '', cat: '' };
+function lanDay(s) { const n = dayDiff(s), d = pd(s), dd = pad(d.getDate()) + '/' + pad(d.getMonth() + 1); const w = WD[d.getDay()]; return n === 0 ? 'Hoje · ' + dd : n === -1 ? 'Ontem · ' + dd : w.charAt(0).toUpperCase() + w.slice(1) + ' · ' + dd; }
+function lanRow(e) {
+  const od = e.status === 'previsto' && dayDiff(e.date) < 0;
+  return `<div class="lrow ${e.status === 'pago' ? '' : 'prev'}" data-ent="${esc(e.id)}"><div class="lmain"><b>${esc(e.name)}</b><span class="lsub">${badgeScope(e.scope)}<span>${e.category ? esc(e.category) : 'sem categoria'}</span>${e.kind === 'out' && PAYL[e.pay] ? `<span>· ${PAYL[e.pay]}</span>` : ''}${e.status === 'previsto' ? `<span class="lst ${od ? 'late' : ''}">· ${od ? 'atrasado, era ' : 'previsto '}${relDay(e.date)}</span>` : ''}</span></div><div class="lside"><div class="ea ${e.kind}">${e.kind === 'in' ? '+' : '−'} ${BRL(e.amount)}</div>${e.status === 'previsto' ? `<button class="btn small" data-paid="${esc(e.id)}">${e.kind === 'in' ? 'Recebi' : 'Paguei'}</button>` : `<button class="btn small ghost" data-undo="${esc(e.id)}" title="Desfazer (volta para previsto)">✓</button>`}</div></div>`;
+}
 function finLanc(el) {
-  const E = monthEnt(F.m, F.scope).sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
-  const ins = E.filter(e => e.kind === 'in'), outs = E.filter(e => e.kind === 'out');
-  el.innerHTML = `<div class="cols2"><div class="card"><h2 class="h2">Entradas</h2><div class="elist">${ins.map(e => entRow(e, false)).join('') || '<div class="empty">Sem entradas.</div>'}</div></div><div class="card"><h2 class="h2">Gastos e contas</h2><div class="elist">${outs.map(e => entRow(e)).join('') || '<div class="empty">Sem gastos.</div>'}</div></div></div>`;
-  bindEnt(el);
+  const lf = F.lf, cats = [...new Set(monthEnt(F.m, F.scope).map(e => e.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')); if (lf.cat && !cats.includes(lf.cat)) lf.cat = '';
+  const seg = (id, list, cur) => `<div class="seg" id="${id}">${list.map(([k, l]) => `<button type="button" data-k="${k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  el.innerHTML = `<div class="lfbar">${seg('lfKind', [['todos', 'Tudo'], ['in', 'Entradas'], ['out', 'Gastos']], lf.kind)}${seg('lfSt', [['pago', 'Lançados'], ['previsto', 'A pagar / receber'], ['todos', 'Todos']], lf.st)}</div>
+   <div class="lfbar"><input id="lfQ" type="search" placeholder="Buscar por nome ou categoria" value="${esc(lf.q)}" autocomplete="off"><select id="lfCat"><option value="">Todas as categorias</option>${cats.map(c => `<option value="${esc(c)}" ${c === lf.cat ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div>
+   <div class="card lcard"><div class="lfsum" id="lfSum"></div><div id="lfList"></div></div>`;
+  $$('#lfKind [data-k]', el).forEach(b => b.onclick = () => { lf.kind = b.dataset.k; finLanc(el); }); $$('#lfSt [data-k]', el).forEach(b => b.onclick = () => { lf.st = b.dataset.k; finLanc(el); });
+  $('#lfQ', el).oninput = e => { lf.q = e.target.value; lanDraw(el); }; $('#lfCat', el).onchange = e => { lf.cat = e.target.value; lanDraw(el); };
+  lanDraw(el);
+}
+function lanDraw(el) {
+  const lf = F.lf, q = nz(lf.q.trim());
+  const L = monthEnt(F.m, F.scope).filter(e => (lf.kind === 'todos' || e.kind === lf.kind) && (lf.st === 'todos' || e.status === lf.st) && (!lf.cat || e.category === lf.cat) && (!q || nz(e.name + ' ' + (e.category || '')).includes(q)));
+  const asc = lf.st === 'previsto', day = e => e.status === 'pago' ? (e.paid_on || e.date) : e.date;
+  L.sort((a, b) => (asc ? day(a).localeCompare(day(b)) : day(b).localeCompare(day(a))) || String(b.created_at || '').localeCompare(String(a.created_at || '')));
+  const tin = L.filter(e => e.kind === 'in').reduce((a, e) => a + +e.amount, 0), tout = L.filter(e => e.kind === 'out').reduce((a, e) => a + +e.amount, 0);
+  $('#lfSum', el).innerHTML = L.length ? `<span class="lfv">${L.length}</span> ${L.length === 1 ? 'lançamento' : 'lançamentos'} · entrou <span class="lfv in">${BRL(tin)}</span> · saiu <span class="lfv">${BRL(tout)}</span>` : '';
+  let last = '', html = ''; L.forEach(e => { const k = day(e); if (k !== last) { last = k; html += `<div class="ldh">${lanDay(k)}</div>`; } html += lanRow(e); });
+  $('#lfList', el).innerHTML = html || '<div class="empty">Nada por aqui com esses filtros.</div>'; bindEnt($('#lfList', el));
 }
 function openRec(r0) {
   const r = r0 || { kind: 'out', scope: 'pf', rule: 'mensal', pay: 'ambos', active: true, day: 5 };
