@@ -185,6 +185,8 @@ dialog h2{font-size:24px}
 .sect span{float:right;font-family:var(--sans);font-size:15px;font-weight:700}
 .kpis4 .why{display:block;text-decoration:none;font-size:11.5px;color:var(--amber-ink);margin-top:8px;font-weight:600}.kpis4 .kpi.hi .why{color:var(--amber)}
 .fa.pos{color:var(--sage)}
+.nextd{display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px;margin:10px 0 6px;background:var(--bg3);cursor:pointer}.nextd>div:first-child{display:flex;flex-direction:column;min-width:86px}.nextd>div:first-child span{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;opacity:.8}.nextd b.big{font-family:var(--serif);font-size:34px;line-height:1.1}.nextd>div:last-child b{display:block;font-size:16px}
+.nextd.r{background:var(--red-soft);color:var(--red)}.nextd.w{background:var(--amber-soft);color:var(--amber-ink)}.nextd.g{background:var(--sage-soft);color:var(--sage)}
 .crow.ocl{align-items:flex-start;gap:12px;padding:12px 4px}.ocl>div{flex:1;min-width:0}.ocl b{display:block}.opb{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--bg3);color:var(--dim);margin:4px 5px 0 0}
 .opb.w{background:var(--amber-soft);color:var(--amber-ink)}.opb.r{background:var(--red-soft);color:var(--red)}.opb.g{background:var(--sage-soft);color:var(--sage)}
 .calr{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.calr:last-child{border-bottom:0}.calc{display:flex;gap:10px;align-items:center}
@@ -1479,6 +1481,7 @@ async function viewInicio() {
     <div class="kpi bal go" data-goto="financeiro:resumo" title="Ver saldo e movimentos"><span>Saldo na conta</span><b>${BRL(bal)}</b><em>${proj >= 0 ? 'Previsto para o fim do mês' : 'Previsto para o fim do mês, atenção'}: <strong class="${proj >= 0 ? '' : 'neg'}">${BRL(proj)}</strong></em></div>
     <div class="kpi prev go" data-goto="financeiro:gastos" title="Ver gastos por categoria"><span>Gastos previstos de ${monthLabel(m0).split(' ')[0].toLowerCase()}</span><b>${BRL(a.outAll)}</b><em>já pago ${BRL(a.outPaid)} · falta pagar ${BRL(Math.max(0, a.outAll - a.outPaid))}</em><div class="bar dark"><i style="width:${Math.min(100, a.outAll ? a.outPaid / a.outAll * 100 : 0)}%"></i></div><em class="sm">PJ ${BRL(pj.outAll)} · PF ${BRL(pf.outAll)}</em></div>
   </div>
+  <div id="entr"></div>
   <div class="kpis3">
     <div class="kpi go" data-goto="financeiro:lanc"><span>Faturamento do mês</span><b>${BRL(a.inPaid)}</b><em>previsto ${BRL(a.inAll)}</em><div class="bar"><i style="width:${Math.min(100, a.inAll ? a.inPaid / a.inAll * 100 : 0)}%"></i></div></div>
     <div class="kpi go" data-goto="financeiro:lanc"><span>Fatura do cartão</span><b>${BRL(fatura())}</b><em>${cardTxt()}</em><em><a href="#" id="payFat">paguei a fatura</a></em></div>
@@ -1501,6 +1504,7 @@ async function viewInicio() {
    <div class="card"><h2 class="h2">Status do mês por cliente</h2>
      ${S.clients.filter(c => (c.kind || 'cliente') !== 'prospect').map(c => { const st = stat(c); return `<button class="crow" data-cl="${c.id}">${avatar(c)}<div><b>${esc(c.name)}</b><span class="sub">${esc(st.l)}</span></div><span class="badge stg k-${st.k === 'none' ? 'pauta' : st.k}">›</span></button>`; }).join('') || '<div class="empty">Sem clientes.</div>'}</div>
   </div></div>`;
+  entregas($('#entr'));
   bindEnt($('#main')); $('#lo2').onclick = () => $('#logout').click(); $('#qIn').onclick = () => openEntry({ kind: 'in', scope: 'pj', date: todayS(), status: 'pago', pay: 'pix', category: '' }); $('#qOut').onclick = () => openEntry();
   $$('[data-goto]').forEach(c => c.onclick = () => { const [v, t] = c.dataset.goto.split(':'); F.ftab = t; F.scope = 'todos'; setView(v); });
   $('#payFat')?.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); payFatura(); });
@@ -1784,7 +1788,7 @@ function editTpl(t0) {
 const OPS_G = [['ideia', 'Pauta e copy', ['pauta', 'copy'], '#4F5BD5'], ['prod', 'Produção e revisão', ['producao', 'edicao', 'revisao'], '#E8743B'], ['cli', 'Aguardando o cliente', CLIENT_STAGES, '#F5C518'], ['ag', 'Agendar e agendado', ['agendar', 'agendado'], '#2FA37A'], ['pub', 'Publicado', ['publicado'], '#6F8796']];
 async function opsLoad() {
   const a = iso(firstOfMonth(new Date()));
-  const r = await sb.from('posts').select('id,client_id,title,format,status,publish_date,needs_changes').or(`publish_date.is.null,publish_date.gte.${a}`).order('publish_date');
+  const r = await sb.from('posts').select('id,client_id,title,format,status,publish_date,needs_changes').or(`publish_date.is.null,publish_date.gte.${a},status.neq.publicado`).order('publish_date');
   if (r.error) throw r.error; return r.data || [];
 }
 function opsGo(w) { if (w === 'tarefas') { F.ttab = 'lista'; setView('tarefas'); } else if (w === 'aprov') { F.atab = 'aprov'; setView('agencia'); } else if (w === 'geral') { S.tab = 'geral'; try { localStorage.setItem('gestor.tab', 'geral'); } catch (_) {} setView('clientes'); } }
@@ -1824,6 +1828,41 @@ function opsDraw(el, P) {
   $$('[data-og]', el).forEach(b => b.onclick = ev => { ev.preventDefault(); opsGo(b.dataset.og); });
   $$('[data-pcl]', el).forEach(b => b.onclick = () => { S.tab = b.dataset.pcl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
   $$('[data-cm]', el).forEach(b => b.onclick = () => { const [id, m] = b.dataset.cm.split('|'); S.tab = id; S.month = pd(m); try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
+}
+
+// ---------- Início: próximas entregas, rosca e estoque de conteúdo ----------
+async function entregas(el) {
+  if (!el) return;
+  const draw = P => { if (el.isConnected) entregasDraw(el, P); };
+  if (S.opsPosts) draw(S.opsPosts);
+  try { const P = await opsLoad(), changed = JSON.stringify(P) !== JSON.stringify(S.opsPosts); S.opsPosts = P; if (changed || !el.innerHTML) draw(P); } catch (_) {}
+}
+function entregasDraw(el, P) {
+  const t0 = todayS(), m0 = firstOfMonth(new Date()), m1 = addMonths(m0, 1), M0 = iso(m0), E0 = iso(m1), E1 = iso(addMonths(m0, 2)), mes = d => d.toLocaleDateString('pt-BR', { month: 'long' }), capM = d => mes(d).replace(/^./, x => x.toUpperCase());
+  const cls = S.clients.filter(c => (c.kind || 'cliente') !== 'prospect'), cl = id => S.clients.find(x => x.id === id) || {};
+  const open = P.filter(x => x.status !== 'publicado' && cls.some(c => c.id === x.client_id));
+  const dated = open.filter(x => x.publish_date).sort((a, b) => a.publish_date.localeCompare(b.publish_date));
+  const word = n => n < 0 ? `${-n} ${-n === 1 ? 'dia' : 'dias'} de atraso` : n === 0 ? 'hoje' : n === 1 ? 'amanhã' : `em ${n} dias`;
+  const tone = n => n <= 0 ? 'r' : n <= 2 ? 'w' : 'g';
+  const next = dated[0], nd = next ? dayDiff(next.publish_date) : null;
+  const hero = next ? `<div class="nextd ${tone(nd)}" data-pcl="${next.client_id}"><div><span>Próxima entrega</span><b class="big">${nd < 0 ? `-${-nd}d` : nd === 0 ? 'Hoje' : nd === 1 ? 'Amanhã' : nd + ' dias'}</b></div><div style="min-width:0"><b>${esc(next.title || '(sem título)')}</b><span class="sub" style="color:inherit;opacity:.85">${esc(cl(next.client_id).name || '')} · ${esc(STG[next.status]?.label || next.status)} · publica ${nd < 0 ? fmtDm(next.publish_date) : relDay(next.publish_date)}</span></div></div>`
+    : `<div class="nextd w"><div><span>Próxima entrega</span><b class="big">Sem data</b></div><div><b>Nenhum conteúdo com data marcada</b><span class="sub" style="color:inherit;opacity:.85">Marque as datas no calendário de cada cliente para o prazo aparecer aqui.</span></div></div>`;
+  const grp = OPS_G.filter(g => g[0] !== 'pub').map(([k, l, st, col]) => ({ l, v: open.filter(x => st.includes(x.status)).length, color: col }));
+  const tot = grp.reduce((a, x) => a + x.v, 0), pubM = P.filter(x => x.status === 'publicado' && x.publish_date >= M0 && x.publish_date < E0).length;
+  const ring = `<div class="dn">${donut(grp, String(tot), 'a entregar')}<div class="leg">${grp.map(x => `<div><i style="background:${x.color}"></i><span>${x.l}</span><span class="v">${x.v}</span></div>`).join('')}<div style="opacity:.75"><i style="background:var(--line2)"></i><span>Publicados em ${mes(m0)}</span><span class="v">${pubM}</span></div></div></div>`;
+  const upc = dated.slice(0, 5).map(x => { const n = dayDiff(x.publish_date); return `<button type="button" class="crow" data-pcl="${x.client_id}"><div><b>${esc(x.title || '(sem título)')}</b><span class="sub">${esc(cl(x.client_id).name || '')} · ${esc(STG[x.status]?.label || x.status)}</span></div><span class="opb ${tone(n)}">${word(n)}</span></button>`; }).join('') || '<div class="empty">Nada com data.</div>';
+  const planned = (c, a, b) => P.filter(x => x.client_id === c.id && ((x.publish_date && x.publish_date >= a && x.publish_date < b) || (a === M0 && !x.publish_date))).length;
+  const perC = cls.map(c => {
+    const ready = P.filter(x => x.client_id === c.id && ['post_aprovar', 'agendar', 'agendado'].includes(x.status) && x.publish_date && x.publish_date >= t0).sort((a, b) => b.publish_date.localeCompare(a.publish_date)), ahead = ready.length ? dayDiff(ready[0].publish_date) : 0;
+    const tg = targetOf(c), a0 = planned(c, M0, E0), a1 = planned(c, E0, E1), bad = (n) => tg ? n < tg : n === 0;
+    const stock = ahead >= 7 ? ['g', `pronto até ${fmtDm(ready[0].publish_date)} (${ahead} dias)`] : ahead > 0 ? ['w', `pronto só até ${fmtDm(ready[0].publish_date)} (${ahead} ${ahead === 1 ? 'dia' : 'dias'})`] : ['r', 'sem conteúdo pronto à frente'];
+    return `<div class="calr"><div class="calc">${avatar(c)}<b>${esc(c.name)}</b></div><div class="chips" style="margin:0"><span class="opb ${stock[0]}" style="margin:0">${stock[1]}</span><button type="button" class="chip2 ${bad(a0) ? 'todo' : ''}" data-cm="${c.id}|${M0}">${capM(m0)} ${a0}${tg ? '/' + tg : ''}</button><button type="button" class="chip2 ${bad(a1) ? 'todo' : ''}" data-cm="${c.id}|${E0}">${capM(m1)} ${a1}${tg ? '/' + tg : ''}${bad(a1) ? ' · construir' : ''}</button></div></div>`; }).join('');
+  el.innerHTML = `<div class="card"><div class="row"><h2 class="h2">Entregas</h2><div class="sp"></div><a href="#" id="entrGo">ver resumo completo</a></div>${hero}
+    <div class="cols2" style="margin-top:6px"><div>${ring}</div><div><div class="sub" style="margin:0 0 4px;font-weight:600">Próximos prazos</div>${upc}</div></div>
+    <div class="sub" style="margin:14px 0 2px;font-weight:600">Estoque de conteúdo e calendários por cliente</div>${perC || '<div class="empty">Sem clientes.</div>'}</div>`;
+  $$('[data-pcl]', el).forEach(b => b.onclick = () => { S.tab = b.dataset.pcl; try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
+  $$('[data-cm]', el).forEach(b => b.onclick = () => { const [id, m] = b.dataset.cm.split('|'); S.tab = id; S.month = pd(m); try { localStorage.setItem('gestor.tab', S.tab); } catch (_) {} setView('clientes'); });
+  $('#entrGo', el).onclick = ev => { ev.preventDefault(); S.tab = 'resumo'; try { localStorage.setItem('gestor.tab', 'resumo'); } catch (_) {} setView('clientes'); };
 }
 function renderOpsPage() {
   $('#main').innerHTML = `<div class="wrap2">${pageHead('Resumo', 'O que falta de cada cliente, afazeres dos próximos dias e calendários a construir ou aprovar.')}<div id="oBody"></div></div>`;
