@@ -1644,17 +1644,20 @@ async function qHandle(text) {
   qSay(esc(text), 'u');
   const it = qIntent(text); if (it) { Q.pending = null; return it.type === 'saldo' ? qSaldo() : qList(it); }
   if (Q.pending && Q.pending.ask) { const f = Q.pending.ask; Q.pending.ask = null; return f(text); }
-  const p = qparse(text); Q.pending = { p };
+  const p = qparse(text); Q.pending = { p }; qProceed(p);
+}
+function qProceed(p) {
   if (!isFinite(p.amount) || p.amount == null) return qAskAmount(p);
   const m = qMatch(p);
   if (m) {
-    const b = qSay(`Parece a conta <b>${esc(m.name)}</b> (${BRL(m.amount)}, vence ${m.date.slice(8)}/${m.date.slice(5, 7)}). Marco como ${m.kind === 'in' ? 'recebida' : 'paga'}${Math.abs(m.amount - p.amount) > 0.005 ? ` com o valor de ${BRL(p.amount)}` : ''}?`);
-    return qChips(b, [['Sim, é essa', () => qMarkPaid(m, p), 'go'], ['Não, é um lançamento novo', () => qStep(p)]]);
+    const far = Math.abs(m.amount - p.amount) > 0.3 * m.amount, diff = Math.abs(m.amount - p.amount) > 0.005;
+    const b = qSay(`Parece a conta <b>${esc(m.name)}</b> (${BRL(m.amount)}, vence ${m.date.slice(8)}/${m.date.slice(5, 7)}). Marco como ${m.kind === 'in' ? 'recebida' : 'paga'}${diff ? ` com o valor de ${BRL(p.amount)}` : ''}?${far ? `\n⚠️ O previsto era ${BRL(m.amount)} e entendi ${BRL(p.amount)}. Confere o valor.` : ''}`);
+    return qChips(b, [[far ? `Sim, com ${BRL(p.amount)}` : 'Sim, é essa', () => qMarkPaid(m, p), 'go'], ...(far ? [['Valor errado', () => { qSay('Qual o valor certo?'); Q.pending = { p, ask: t => { const v = qnum((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) return qSay('Não entendi o valor. Escreve só o número.'); p.amount = v; qProceed(p); } }; }]] : []), ['Não, é um lançamento novo', () => qStep(p)]]);
   }
   qStep(p);
 }
 function qSaldo() { const s = sums(firstOfMonth(new Date())); qSay(`Saldo estimado: <b>${BRL(balance())}</b>.\nNo mês: entrou ${BRL(s.inPaid)}, saiu ${BRL(s.outPaid)}.`); }
-function qAskAmount(p) { qSay('Qual foi o valor?'); Q.pending = { p, ask: t => { const v = qnum((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { qSay('Não entendi o valor. Escreve só o número, tipo 23,50.'); return qAskAmount(p); } p.amount = v; qStep(p); } }; }
+function qAskAmount(p) { qSay('Qual foi o valor?'); Q.pending = { p, ask: t => { const v = qnum((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { qSay('Não entendi o valor. Escreve só o número, tipo 23,50.'); return qAskAmount(p); } p.amount = v; qProceed(p); } }; }
 function qStep(p) {
   if (!p.kind) { const b = qSay(`${BRL(p.amount)}: entrou ou saiu?`); return qChips(b, [['Gastei', () => { p.kind = 'out'; qStep(p); }], ['Recebi', () => { p.kind = 'in'; qStep(p); }, 'am']]); }
   if (!p.category) { const al = F.set.catalias || {}; const cats = [...new Set([...F.rec.map(r => r.category), ...F.ent.map(e => e.category), ...Q_CATS.map(c => c[0])].filter(Boolean))].filter(c => c !== FAT && !al[c]); const b = qSay('Em que categoria entra?'); return qChips(b, cats.slice(0, 16).map(c => [c, () => { p.category = c; const hit = Q_CATS.find(x => x[0] === c); if (hit && !p.scope) p.scope = hit[2]; qStep(p); }])); }
@@ -1672,13 +1675,24 @@ function qConfirm(p) {
 async function qSave(p) {
   const row = { kind: p.kind, scope: p.scope, name: p.name, amount: p.amount, date: p.date, status: 'pago', paid_on: p.date, pay: p.pay, category: p.category, client_id: p.client_id || null };
   const { data, error } = await sb.from('fin_entries').insert(row).select(); if (error) return qSay('Não consegui salvar: ' + esc(error.message));
-  F.ent.push(data[0]); Q.pending = null; qDone(`Lançado: ${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)} em ${esc(p.category)}.`, data[0]);
+  const e = data[0]; F.ent.push(e); Q.pending = null;
+  qDone(`Lançado: ${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)} em ${esc(p.category)}.`, e, async () => { const r = await sb.from('fin_entries').delete().eq('id', e.id); if (r.error) return qSay('Não consegui desfazer: ' + esc(r.error.message)); F.ent = F.ent.filter(x => x.id !== e.id); Q.refocus = true; rerenderView(); qSay('Desfeito: lançamento apagado.'); });
 }
 async function qMarkPaid(m, p) {
   const pay = m.pay === 'ambos' ? (p.pay || null) : (m.pay || p.pay);
-  const go = async pay => { const row = { status: 'pago', paid_on: p.date, pay: pay || 'pix', amount: p.amount }; const { error } = await sb.from('fin_entries').update(row).eq('id', m.id); if (error) return qSay('Não consegui salvar: ' + esc(error.message)); Object.assign(m, row); Q.pending = null; qDone(`${esc(m.name)} marcada como ${m.kind === 'in' ? 'recebida' : 'paga'}.`, m); };
+  const go = async pay => {
+    const prev = { status: m.status, paid_on: m.paid_on, pay: m.pay, amount: m.amount, name: m.name };
+    const row = { status: 'pago', paid_on: p.date, pay: pay || 'pix', amount: p.amount, name: m.name.replace(/\s*\([^)]*previs[aã]o[^)]*\)/i, '').trim() || m.name };
+    const { error } = await sb.from('fin_entries').update(row).eq('id', m.id); if (error) return qSay('Não consegui salvar: ' + esc(error.message));
+    Object.assign(m, row); Q.pending = null;
+    qDone(`${esc(m.name)} marcada como ${m.kind === 'in' ? 'recebida' : 'paga'} com ${BRL(m.amount)}.`, m, async () => { const r = await sb.from('fin_entries').update(prev).eq('id', m.id); if (r.error) return qSay('Não consegui desfazer: ' + esc(r.error.message)); Object.assign(m, prev); Q.refocus = true; rerenderView(); qSay('Desfeito: voltou a ficar como previsto.'); }); };
   if (m.kind === 'out' && !pay) { const b = qSay('Pagou como?'); return qChips(b, [['Pix', () => go('pix')], ['Crédito', () => go('credito')], ['Débito', () => go('debito')]]); }
   go(pay);
+}
+function qFixAmount(e) {
+  qSay('Qual o valor certo?'); Q.pending = { ask: async t => { const v = qnum((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { qSay('Não entendi o valor. Escreve só o número.'); return qFixAmount(e); }
+    const { error } = await sb.from('fin_entries').update({ amount: v }).eq('id', e.id); if (error) return qSay('Não consegui salvar: ' + esc(error.message));
+    e.amount = v; Q.pending = null; Q.refocus = true; rerenderView(); qSay(`Corrigido: ${esc(e.name)} agora é ${BRL(v)}.`); } };
 }
 function budSubMatch(s, e) { const text = nz(e.name), words = text.split(/[^a-z0-9]+/).filter(Boolean), cat = nz(e.category), hit = (k, t, w) => k.includes(' ') ? t.includes(k) : w.includes(k); return (s.names || []).some(k => hit(nz(k), text, words)) || (s.cats || []).some(k => nz(k) === cat); }
 function qBudLine(e) {
@@ -1686,10 +1700,11 @@ function qBudLine(e) {
   const x = subs.find(x => (x.s.names || []).length && budSubMatch({ names: x.s.names }, e)) || subs.find(x => budSubMatch({ cats: x.s.cats }, e));
   if (!x || !x.lim) return ''; return `${x.s.n}: ${BRL(x.used)} de ${BRL(x.lim)} no mês${x.used > x.lim ? '. Passou do limite!' : '.'}`;
 }
-function qDone(msg, e) {
+function qDone(msg, e, undo) {
   Q.refocus = true; rerenderView();
   const s = sums(firstOfMonth(new Date())), bl = qBudLine(e);
-  qSay(`${msg}\nSaldo estimado: ${BRL(balance())}. No mês: entrou ${BRL(s.inPaid)}, saiu ${BRL(s.outPaid)}.${bl ? '\n' + bl : ''}`);
+  const b = qSay(`${msg}\nSaldo estimado: ${BRL(balance())}. No mês: entrou ${BRL(s.inPaid)}, saiu ${BRL(s.outPaid)}.${bl ? '\n' + bl : ''}`);
+  qChips(b, [['Corrigir valor', () => qFixAmount(e)], ['Desfazer', undo]]);
 }
 
 // ---------- editor de categorias e metas ----------
