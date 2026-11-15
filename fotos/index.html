@@ -49,9 +49,6 @@ h1 span { color: var(--amber); }
 .lead { color: var(--muted); max-width: 52ch; margin: 0; }
 .lead b { color: var(--fg); font-weight: 500; }
 
-.ig { border: 1px solid var(--amber); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; background: var(--surface); }
-.ig strong { color: var(--amber); font-weight: 700; }
-.ig p { margin: 0; font-size: 15px; }
 
 .bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border-block: 1px solid var(--line); padding-block: 12px; }
 .bar .count { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; }
@@ -78,13 +75,6 @@ footer .tel { color: var(--fg); font-variant-numeric: tabular-nums; font-weight:
 .handle { color: var(--muted); font-size: 14px; }
 @media (prefers-reduced-motion: no-preference) { .btn { transition: filter .15s; } }
 
-.promo { border: 1px solid var(--amber); border-radius: 12px; background: var(--surface); padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 14px; }
-.promo h2 { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 5.4vw, 30px); line-height: 1.15; margin: 0; text-wrap: balance; }
-.promo .pix { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
-.promo .pix p { margin: 0; color: var(--muted); font-size: 15px; }
-.promo .pix p b { color: var(--fg); font-weight: 500; }
-.pixrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.pixkey { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px; letter-spacing: .04em; color: var(--amber); user-select: all; }
 
 .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; position: sticky; top: 0; z-index: 5; background: var(--bg); padding-block: 10px; }
 .tabs::-webkit-scrollbar { display: none; }
@@ -100,23 +90,6 @@ footer .tel { color: var(--fg); font-variant-numeric: tabular-nums; font-weight:
 </head>
 <body>
 <div class="wrap">
-<section class="promo" aria-label="Contato e contribuição">
-<h2>Precisa de uma identidade visual e de um planejamento para as suas redes sociais?</h2>
-<a class="btn solid" href="https://wa.me/5553991662471?text=Oi!%20Vi%20as%20fotos%20e%20queria%20saber%20sobre%20identidade%20visual%20e%20planejamento%20de%20redes%20sociais." target="_blank" rel="noopener">Me chama no WhatsApp</a>
-<div class="pix">
-<p><b>Quer contribuir com um valor a mais?</b> Envie para o Pix:</p>
-<div class="pixrow">
-<span class="pixkey" id="pixkey">05845088089</span>
-<button class="btn" type="button" id="pixcopy">Copiar chave Pix</button>
-</div>
-</div>
-</section>
-
-<div class="ig" id="ig" hidden>
-<strong>Abra no navegador para baixar</strong>
-<p>Pelo Instagram a foto pode não baixar direito. Toque nos três pontinhos no canto da tela e escolha <b>Abrir no navegador</b> (ou Abrir no Safari / Chrome). Depois é só baixar.</p>
-</div>
-
 <nav class="tabs" role="tablist" aria-label="Dias" id="tabs"></nav>
 
 <section class="panel" id="panel" role="tabpanel" aria-live="polite">
@@ -221,19 +194,6 @@ function show(id, push) {
 show((location.hash || '').slice(1), false);
 window.addEventListener('hashchange', function () { show((location.hash || '').slice(1), false); });
 
-if (/Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent || '')) document.getElementById('ig').hidden = false;
-
-var btn = document.getElementById('pixcopy');
-btn.addEventListener('click', function () {
-  var key = document.getElementById('pixkey').textContent.trim();
-  function ok() { btn.textContent = 'Chave copiada!'; setTimeout(function () { btn.textContent = 'Copiar chave Pix'; }, 2200); }
-  function fallback() {
-    var r = document.createRange(); r.selectNodeContents(document.getElementById('pixkey'));
-    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-    try { document.execCommand('copy'); ok(); } catch (e) { btn.textContent = 'Toque e segure na chave'; }
-  }
-  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(key).then(ok, fallback); } else { fallback(); }
-});
 </script>
 
 </body>
