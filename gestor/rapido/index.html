@@ -174,16 +174,19 @@ async function handle(text) {
   { const it = qIntent(text); if (it) { pending = null; return it.type === 'saldo' ? say(`Saldo estimado: <b>${BRL(bal())}</b>.\nNo mês: entrou ${BRL(monthSums().in)}, saiu ${BRL(monthSums().out)}.`) : qList(it); } }
   if (pending && pending.ask) { const f = pending.ask; pending.ask = null; return f(text); }
   const p = parse(text); pending = { p };
-  const miss = [];
+  proceed(p);
+}
+function proceed(p) {
   if (!isFinite(p.amount) || p.amount == null) return askAmount(p);
   const m = findMatch(p);
   if (m) {
-    const b = say(`Parece a conta <b>${esc(m.name)}</b> (${BRL(m.amount)}, vence ${m.date.slice(8)}/${m.date.slice(5, 7)}). Marco como ${m.kind === 'in' ? 'recebida' : 'paga'}${Math.abs(m.amount - p.amount) > 0.005 ? ` com o valor de ${BRL(p.amount)}` : ''}?`);
-    chips(b, [['Sim, é essa', () => markPaid(m, p), 'go'], ['Não, é um gasto novo', () => step(p)]]); return;
+    const far = Math.abs(m.amount - p.amount) > 0.3 * m.amount, diff = Math.abs(m.amount - p.amount) > 0.005;
+    const b = say(`Parece a conta <b>${esc(m.name)}</b> (${BRL(m.amount)}, vence ${m.date.slice(8)}/${m.date.slice(5, 7)}). Marco como ${m.kind === 'in' ? 'recebida' : 'paga'}${diff ? ` com o valor de ${BRL(p.amount)}` : ''}?${far ? `\n⚠️ O previsto era ${BRL(m.amount)} e entendi ${BRL(p.amount)}. Confere o valor.` : ''}`);
+    return chips(b, [[far ? `Sim, com ${BRL(p.amount)}` : 'Sim, é essa', () => markPaid(m, p), 'go'], ...(far ? [['Valor errado', () => { say('Qual o valor certo?'); pending = { p, ask: t => { const v = num((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) return say('Não entendi o valor. Escreve só o número.'); p.amount = v; proceed(p); } }; }]] : []), ['Não, é um gasto novo', () => step(p)]]);
   }
   step(p);
 }
-function askAmount(p) { const b = say('Qual foi o valor?'); pending.ask = t => { const v = num((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { say('Não entendi o valor. Escreve só o número, tipo 23,50.'); pending.ask = f => askAmount(p) && 0; return askAmount(p); } p.amount = v; step(p); }; }
+function askAmount(p) { const b = say('Qual foi o valor?'); pending.ask = t => { const v = num((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { say('Não entendi o valor. Escreve só o número, tipo 23,50.'); pending.ask = f => askAmount(p) && 0; return askAmount(p); } p.amount = v; proceed(p); }; }
 function step(p) {
   if (!p.kind) { const b = say(`${BRL(p.amount)}: entrou ou saiu?`); return chips(b, [['Gastei', () => { p.kind = 'out'; step(p); }], ['Recebi', () => { p.kind = 'in'; step(p); }, 'am']]); }
   if (!p.category) { const cats = [...new Set([...REC.map(r => r.category), ...ENT.map(e => e.category)].filter(Boolean))].filter(c => !!c); const b = say('Em que categoria entra?'); return chips(b, cats.slice(0, 14).map(c => [c, () => { p.category = c; const hit = CATS.find(x => x[0] === c); if (hit && !p.scope) p.scope = hit[2]; step(p); }])); }
@@ -201,19 +204,26 @@ function confirm_(p) {
 async function save(p) {
   const row = { kind: p.kind, scope: p.scope, name: p.name, amount: p.amount, date: p.date, status: 'pago', paid_on: p.date, pay: p.pay, category: p.category, client_id: p.client_id || null };
   const { data, error } = await sb.from('fin_entries').insert(row).select(); if (error) return say('Não consegui salvar: ' + esc(error.message));
-  ENT.push(data[0]); pending = null; done(`Lançado: ${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)} em ${esc(p.category)}.`, p.category, p.scope, p.kind);
+  const e = data[0]; ENT.push(e); pending = null;
+  done(`Lançado: ${p.kind === 'in' ? '+' : '−'} ${BRL(p.amount)} em ${esc(p.category)}.`, p.category, p.scope, p.kind, e, async () => { const r = await sb.from('fin_entries').delete().eq('id', e.id); if (r.error) return say('Não consegui desfazer: ' + esc(r.error.message)); ENT = ENT.filter(x => x.id !== e.id); bal(); say('Desfeito: lançamento apagado.'); });
 }
 async function markPaid(m, p) {
   const pay = m.pay === 'ambos' ? (p.pay || null) : (m.pay || p.pay);
-  const go = async pay => { const row = { status: 'pago', paid_on: p.date, pay: pay || 'pix', amount: p.amount }; const { error } = await sb.from('fin_entries').update(row).eq('id', m.id); if (error) return say('Não consegui salvar: ' + esc(error.message)); Object.assign(m, row); pending = null; done(`${esc(m.name)} marcada como ${m.kind === 'in' ? 'recebida' : 'paga'}.`, m.category, m.scope, m.kind); };
+  const go = async pay => { const prev = { status: m.status, paid_on: m.paid_on, pay: m.pay, amount: m.amount, name: m.name }; const row = { status: 'pago', paid_on: p.date, pay: pay || 'pix', amount: p.amount, name: m.name.replace(/\s*\([^)]*previs[aã]o[^)]*\)/i, '').trim() || m.name }; const { error } = await sb.from('fin_entries').update(row).eq('id', m.id); if (error) return say('Não consegui salvar: ' + esc(error.message)); Object.assign(m, row); pending = null;
+    done(`${esc(m.name)} marcada como ${m.kind === 'in' ? 'recebida' : 'paga'} com ${BRL(m.amount)}.`, m.category, m.scope, m.kind, m, async () => { const r = await sb.from('fin_entries').update(prev).eq('id', m.id); if (r.error) return say('Não consegui desfazer: ' + esc(r.error.message)); Object.assign(m, prev); bal(); say('Desfeito: voltou a ficar como previsto.'); }); };
   if (m.kind === 'out' && !pay) { const b = say('Pagou como?'); return chips(b, [['Pix', () => go('pix')], ['Crédito', () => go('credito')], ['Débito', () => go('debito')]]); }
   go(pay);
 }
-function done(msg, cat, scope, kind) {
+function fixAmount(e) {
+  say('Qual o valor certo?'); pending = { ask: async t => { const v = num((t.match(/\d[\d.,]*/) || [''])[0]); if (!isFinite(v)) { say('Não entendi o valor. Escreve só o número.'); return fixAmount(e); }
+    const { error } = await sb.from('fin_entries').update({ amount: v }).eq('id', e.id); if (error) return say('Não consegui salvar: ' + esc(error.message)); e.amount = v; pending = null; bal(); say(`Corrigido: ${esc(e.name)} agora é ${BRL(v)}.`); } };
+}
+function done(msg, cat, scope, kind, e, undo) {
   bal(); const s = monthSums(); let extra = '';
   const bud = REC.find(r => r.active && r.rule === 'orcamento' && r.category === cat && r.scope === scope && r.kind === kind);
-  if (bud) { const used = ENT.filter(e => e.date.startsWith(iso(new Date()).slice(0, 7)) && e.kind === kind && e.category === cat && e.scope === scope).reduce((a, e) => a + +e.amount, 0); extra = `\n${esc(bud.name)}: ${BRL(used)} de ${BRL(bud.amount)} do mês.`; }
-  say(`${msg}\nSaldo estimado: ${BRL(bal())}. No mês: entrou ${BRL(s.in)}, saiu ${BRL(s.out)}.${extra}`);
+  if (bud) { const used = ENT.filter(x => x.date.startsWith(iso(new Date()).slice(0, 7)) && x.kind === kind && x.category === cat && x.scope === scope).reduce((a, x) => a + +x.amount, 0); extra = `\n${esc(bud.name)}: ${BRL(used)} de ${BRL(bud.amount)} do mês.`; }
+  const b = say(`${msg}\nSaldo estimado: ${BRL(bal())}. No mês: entrou ${BRL(s.in)}, saiu ${BRL(s.out)}.${extra}`);
+  chips(b, [['Corrigir valor', () => fixAmount(e)], ['Desfazer', undo]]);
 }
 
 // ---------- boot ----------
