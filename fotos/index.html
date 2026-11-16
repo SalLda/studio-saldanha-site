@@ -101,7 +101,7 @@ footer .tel { color: var(--fg); font-variant-numeric: tabular-nums; font-weight:
 
 <section class="panel" id="panel" role="tabpanel" aria-live="polite">
 <header>
-<div class="eyebrow">Fotos em alta qualidade</div>
+<div class="eyebrow" id="eyebrow">Fotos em alta qualidade</div>
 <h1 id="h1"></h1>
 <p class="lead" id="lead"></p>
 </header>
@@ -152,7 +152,15 @@ var DAYS = [
   { id: '14-de-novembro', day: '14 de', month: 'novembro', short: '14 nov', wa: '14 de novembro',
     lead: 'Ache a sua foto, toque em <b>Baixar</b> e ela vem em alta qualidade, pronta para postar.',
     items: ["0772", "0783", "0795", "0815", "0822", "0825", "0833", "0836", "0841", "0887", "0892", "0894", "0898", "0902", "0907", "0914", "0916", "0917", "0923", "0936", "0945", "0950", "0955"],
-    base: '/fotos/14-de-novembro/' }
+    base: '/fotos/14-de-novembro/' },
+  { id: '15-nov-4-galeria', day: '4 Galeria', month: 'evento', short: '15 nov · 4 Galeria', eyebrow: '15 de novembro · Fotos em alta qualidade', wa: '4 Galeria, 15 de novembro',
+    lead: 'Ache a sua foto, toque em <b>Baixar</b> e ela vem em alta qualidade, pronta para postar.',
+    items: ["1138", "1140", "1142", "1145", "1148", "1153", "1154", "1155", "1156", "1157", "1159", "1161", "1162", "1164", "1166", "1167", "1168", "1169", "1170", "1174", "1175", "1177", "1182", "1183", "1186", "1189", "1191", "1193", "1197", "1198", "1200", "1203", "1204", "1205", "1206", "1208", "1211", "1212", "1213", "1214", "1215", "1216", "1218", "1219", "1220", "1222", "1224", "1226", "1231", "1232", "1233", "1236", "1237", "1239", "1242", "1242-Prompt", "1244", "1246", "1248", "1249", "1252", "1256", "1257", "1258", "1261", "1262", "1263", "1264", "1265", "1266", "1269", "1274", "1277", "1286", "1289", "1291", "1292", "1293", "1295", "1296"],
+    base: '/fotos/15-de-novembro/4-galeria/' },
+  { id: '15-nov-rua', day: 'Fotos de', month: 'rua', short: '15 nov · Rua', eyebrow: '15 de novembro · Fotos em alta qualidade', wa: '15 de novembro (rua)',
+    lead: 'Ache a sua foto, toque em <b>Baixar</b> e ela vem em alta qualidade, pronta para postar.',
+    items: ["0981", "0982", "1035", "1047", "1056", "1062", "1069", "1070", "1074", "1087", "1105", "1131", "Crianca", "Parque"],
+    base: '/fotos/15-de-novembro/rua/' }
 ];
 DAYS.forEach(function (d) {
   if (d.base) {
@@ -179,6 +187,7 @@ function show(id, push) {
   document.getElementById('panel').setAttribute('aria-labelledby', 'tab-' + d.id);
   var act = document.getElementById('tab-' + d.id); if (act) tabs.scrollLeft = act.offsetLeft - (tabs.clientWidth - act.offsetWidth) / 2;
   document.getElementById('h1').innerHTML = esc(d.day) + ' <span>' + esc(d.month) + '</span>';
+  document.getElementById('eyebrow').textContent = d.eyebrow || 'Fotos em alta qualidade';
   document.getElementById('lead').innerHTML = d.lead;
   document.getElementById('count').textContent = d.items.length + ' fotos';
   var dr = document.getElementById('drive');
