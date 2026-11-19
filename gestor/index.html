@@ -293,6 +293,11 @@ dialog h2{font-size:24px}
 .ret{display:grid;gap:8px}.ret .it{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--bg3)}.ret .it.aj{background:var(--terra-soft)}.ret .it.ap{background:var(--sage-soft)}
 .swpv{border-radius:10px;overflow:hidden;background:var(--bg3);aspect-ratio:4/5;position:relative}
 .swpv img{width:100%;height:100%;object-fit:cover;display:block}.swpv iframe{width:100%;height:100%;border:0;display:block}
+.swpv.car{aspect-ratio:3/4}.swsl{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:10px}.swsl img{height:280px;width:auto;flex:none;scroll-snap-align:start;border-radius:8px}
+.sw .act{flex-wrap:wrap}.cvb{padding:16px;display:flex;flex-direction:column;gap:8px}.cvb .btn{justify-content:center;text-align:center}
+.swc{font-size:10px;background:var(--line2);border-radius:99px;padding:0 6px;margin-left:3px}
+.swr{display:flex;flex-direction:column;gap:1px;font-size:13px;color:var(--dim)}.swk{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--text)}
+.swvh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}.swvb{height:min(78dvh,760px);overflow:hidden}.swvb iframe{width:100%;height:100%;border:0;display:block}
 .swf{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
 .kpis4+.cols2,.cols2+.cols2,.card+.cols2{margin-top:16px}
 .cols2>div>.card:first-child{margin-top:0}
@@ -473,17 +478,28 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
 <dialog id="swDlg"><form method="dialog" id="swForm">
   <h2>Formato no swipe file</h2>
   <div class="fr">
-    <div><label>Nicho</label><select name="niche"><option>Veterinária/pets</option><option>Clínica/oftalmo</option><option>Psicólogos</option><option>Marca pessoal</option><option>Psicólogo</option><option>Médico veterinário</option><option>Médico</option><option>Geral</option></select></div>
-    <div><label>Formato</label><select name="format"><option>Reels</option><option>Carrossel</option><option>Estático</option><option>Stories</option></select></div>
+    <div><label>Cliente / marca</label><input name="niche" list="swNL" required maxlength="60" placeholder="omatsaldanha"><datalist id="swNL"></datalist></div>
+    <div><label>Formato</label><select name="format"><option>Carrossel</option><option>Reels</option><option>Estático</option><option>Stories</option></select></div>
   </div>
-  <label>Nome do formato</label><input name="title" required maxlength="160">
+  <div class="fr">
+    <div><label>Etapa do funil</label><select name="funnel"><option value="">—</option><option value="topo">Topo</option><option value="meio">Meio</option><option value="fundo">Fundo</option></select></div>
+    <div><label>Tema</label><input name="theme" maxlength="80"></div>
+  </div>
+  <label>Nome do formato</label><input name="title" required maxlength="160" placeholder="Formato 1 · Carrossel fotografia">
+  <label>Link de referência (Instagram, TikTok, YouTube)</label><input name="example_url" type="url" placeholder="https://">
+  <label>Objetivo</label><textarea name="objetivo" rows="2"></textarea>
+  <label>O que medir</label><textarea name="medir" rows="2" placeholder="Salvamentos, compartilhamentos, alcance..."></textarea>
   <label>Gancho de exemplo</label><input name="hook" maxlength="300">
   <label>Estrutura</label><textarea name="structure" rows="3"></textarea>
   <label>Por que funciona</label><textarea name="why" rows="2"></textarea>
-  <label>Link de referência</label><input name="example_url" type="url" placeholder="https://">
+  <label>Notas</label><textarea name="notas" rows="2"></textarea>
+  <label>Imagens dos slides (um link por linha, opcional)</label><textarea name="slides" rows="2" placeholder="https://..."></textarea>
+  <label>Modelo no Canva (link de modelo, opcional)</label><input name="canva" type="url" placeholder="https://www.canva.com/...">
   <div class="mact"><button type="button" class="btn danger" id="swDel">Excluir</button><div class="sp"></div>
     <button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar</button></div>
 </form></dialog>
+<dialog id="swCv"><div class="swvh"><h2 id="cvT" style="margin:0;font-size:18px"></h2><button type="button" class="btn small" id="cvClose">Fechar</button></div><div id="cvB" class="cvb"></div></dialog>
+<dialog id="swView"><div class="swvh"><h2 id="swVT" style="margin:0;font-size:18px"></h2><button type="button" class="btn small" id="swVClose">Fechar</button></div><div id="swVB" class="swvb"></div></dialog>
 
 <input type="file" id="csvInput" accept=".csv,text/csv" class="hidden">
 <div class="toast" id="toast"></div>
@@ -1145,7 +1161,7 @@ $('#csvInput').addEventListener('change',e=>{
 
 
 // ---------- swipe ----------
-const SW_NICHES = ['Veterinária/pets', 'Clínica/oftalmo', 'Psicólogos', 'Marca pessoal'];
+const SW_NICHES = ['omatsaldanha', 'Veterinária/pets', 'Clínica/oftalmo', 'Psicólogos', 'Marca pessoal'];
 const SW_PROMPT = `Rodar a pesquisa do swipe file do meu Gestor (omatsaldanha.com/gestor). Se existir a skill swipe-file-gestor, siga ela.
 Encontre referências recentes (últimos 60 dias) de Reels e carrosséis com engajamento alto para 4 nichos: Veterinária/pets, Clínica/oftalmo, Psicólogos e Marca pessoal. Para cada nicho, 4 a 6 posts variando a etapa do funil (topo, meio e fundo). Pode usar busca na web e o meu Chrome (Instagram já logado: hashtags, explorar e perfis de referência).
 Para cada post: link, plataforma, formato, tema, etapa do funil, engajamento visível (curtidas, comentários, views), gancho, estrutura e por que funciona. Não repita links que já estão no swipe.
@@ -1169,38 +1185,101 @@ window.gestorSwipeAdd = async items => {
   const { error } = await sb.from('swipe').insert(rows); if (error) throw error;
   if (S.tab === 'swipe') renderSwipe(); return `${rows.length} referências gravadas`;
 };
+const SW_SEED_KEY = 'sw_seed_omat_v1';
+const SW_SEED = [
+  { niche: 'omatsaldanha', format: 'Carrossel', title: 'Formato 1 · Carrossel fotografia', funnel: 'topo', theme: 'Fotografia',
+    hook: 'Uma frase curta + fotos em contexto',
+    structure: 'Capa com a frase → fotos da rua/cotidiano em sequência, cada uma no seu contexto → fecha com a imagem mais forte.',
+    why: 'Funcionou super bem com a frase e as fotos em contexto.', example_url: 'https://www.instagram.com/p/Df1C_zkG-pZ/',
+    metrics: { objetivo: 'Alcance e identificação: ser descoberto por quem ainda não me segue.', medir: 'Salvamentos, compartilhamentos, alcance de não seguidores, seguidores novos.', notas: '' } },
+  { niche: 'omatsaldanha', format: 'Carrossel', title: 'Formato 2 · Dump do mês', funnel: 'meio', theme: 'Bastidor / cotidiano',
+    hook: 'O mês em fotos, sem explicar demais',
+    structure: 'Fotos soltas do mês (rua, estudo, casa, café) em sequência → legenda curta e pessoal.',
+    why: 'Gera conexão e proximidade: a pessoa vê a rotina e passa a me conhecer.', example_url: 'https://www.instagram.com/p/DfFj8kWm0NI/',
+    metrics: { objetivo: 'Conexão e proximidade com quem já me segue.', medir: 'Respostas e DMs, comentários, compartilhamentos, visitas ao perfil.', notas: '' } },
+  { niche: 'omatsaldanha', format: 'Reels', title: 'Formato 3 · Talking head com tema social', funnel: 'meio', theme: 'Psicologia / sociedade',
+    hook: 'Um tema latente da sociedade, trazido a partir de um livro ou artigo',
+    structure: 'Falando para a câmera → apresenta o tema social → leitura de um trecho de livro ou artigo → minha leitura psicológica em poucas frases.',
+    why: 'Traz um tema que já está na cabeça das pessoas, com base em leitura. Constrói autoridade sem ficar comercial.', example_url: 'https://www.instagram.com/reel/DbBtsoBpEXw/',
+    metrics: { objetivo: 'Autoridade e conversa sobre temas que importam.', medir: 'Retenção (3s e tempo médio assistido), comentários, compartilhamentos, seguidores novos.', notas: '' } }
+];
+async function swSeedOmat() {
+  try { if (localStorage.getItem(SW_SEED_KEY)) return; } catch (e) {}
+  const { data: have, error } = await sb.from('swipe').select('example_url'); if (error) return;
+  const H = new Set((have || []).map(x => x.example_url));
+  for (const r of SW_SEED) { if (H.has(r.example_url)) continue; const { error: e2 } = await sb.from('swipe').insert({ ...r, platform: 'Instagram', source: 'manual' }); if (e2) return; await new Promise(k => setTimeout(k, 30)); }
+  try { localStorage.setItem(SW_SEED_KEY, '1'); } catch (e) {}
+}
+const swM = x => (x && x.metrics && typeof x.metrics === 'object' && !Array.isArray(x.metrics)) ? x.metrics : {};
+const swSlides = x => String(swM(x).slides || '').split(/\s+/).filter(u => /^https?:\/\//.test(u));
+function swNiches() {
+  const out = [], seen = new Set(), add = n => { n = String(n || '').trim(); const k = n.toLowerCase(); if (n && !seen.has(k)) { seen.add(k); out.push(n); } };
+  SW_NICHES.forEach(add); (S.clients || []).forEach(c => add(c.name)); S.swipe.forEach(x => add(x.niche)); return out;
+}
 async function renderSwipe(){
+  await swSeedOmat();
   const {data,error}=await sb.from('swipe').select('*').order('created_at',{ascending:false}); if(error)return fail(error); S.swipe=data;
-  const niches=['Todos',...new Set([...SW_NICHES,...S.swipe.map(x=>x.niche)])]; if(!niches.includes(S.niche))S.niche='Todos';
+  const niches=['Todos',...swNiches()]; if(!niches.includes(S.niche))S.niche='Todos';
   S.sfun=S.sfun||'todos';
-  const list=S.swipe.filter(x=>(S.niche==='Todos'||x.niche===S.niche)&&(S.sfun==='todos'||x.funnel===S.sfun));
+  let list=S.swipe.filter(x=>(S.niche==='Todos'||x.niche===S.niche)&&(S.sfun==='todos'||x.funnel===S.sfun));
+  if(S.niche!=='Todos') list=[...list].sort((a,b)=>String(a.created_at)<String(b.created_at)?-1:1);
   const last=S.swipe.map(x=>x.batch).filter(Boolean).sort().pop();
+  const cnt=n=>S.swipe.filter(x=>x.niche===n).length;
   $('#main').innerHTML=`
-    <div class="row" style="justify-content:space-between;gap:10px"><div><h1 style="font-size:30px">Swipe file</h1><div class="sub">Referências que estão funcionando, por nicho, tema e etapa do funil. Adapte, não copie.${last?` Última pesquisa: ${fmtD(last)}.`:''}</div></div>
-      <div class="row" style="gap:8px"><button class="btn amber" id="swSearch">Pesquisar referências</button><button class="btn small" id="addSw">+ Manual</button></div></div>
-    <div class="tabs" style="margin-top:14px">${niches.map(n=>`<button class="tab ${S.niche===n?'on':''}" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+    <div class="row" style="justify-content:space-between;gap:10px"><div><h1 style="font-size:30px">Swipe file</h1><div class="sub">Formatos escolhidos por cliente, com etapa do funil, objetivo e o que medir. Adapte, não copie.${last?` Última pesquisa: ${fmtD(last)}.`:''}</div></div>
+      <div class="row" style="gap:8px"><button class="btn amber" id="swSearch">Pesquisar referências</button><button class="btn small" id="addSw">+ Formato</button></div></div>
+    <div class="tabs" style="margin-top:14px">${niches.map(n=>`<button class="tab ${S.niche===n?'on':''}" data-n="${esc(n)}">${esc(n)}${n!=='Todos'&&cnt(n)?` <span class="swc">${cnt(n)}</span>`:''}</button>`).join('')}</div>
     <div class="swf">${[['todos','Todo funil'],['topo','Topo'],['meio','Meio'],['fundo','Fundo']].map(([k,l])=>`<button class="chip2 ${S.sfun===k?'on':''}" data-sf="${k}">${l}</button>`).join('')}</div>
-    <div class="swipe">${list.map(x=>{ const em=swEmbed(x.example_url); return `<article class="sw">
-      ${x.thumb?`<div class="swpv"><img src="${esc(x.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`:em?`<div class="swpv"><iframe src="${esc(em)}" loading="lazy" title="${esc(x.title)}" allowtransparency="true" scrolling="no"></iframe></div>`:''}
+    <div class="swipe">${list.map(x=>{ const m=swM(x), sl=swSlides(x), em=swEmbed(x.example_url), car=/carrossel/i.test(x.format);
+      const pv=sl.length?`<div class="swsl">${sl.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`
+        :x.thumb?`<div class="swpv"><img src="${esc(x.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+        :em?`<div class="swpv ${car?'car':''}"><iframe src="${esc(em)}" loading="lazy" title="${esc(x.title)}" allowtransparency="true" scrolling="no"></iframe></div>`:'';
+      const row=(k,v)=>v?`<div class="swr"><span class="swk">${k}</span><span>${esc(v)}</span></div>`:'';
+      return `<article class="sw">
+      ${pv}
       <div><span class="tag n">${esc(x.niche)}</span><span class="tag">${esc(x.format)}</span>${x.funnel?`<span class="tag">${esc(FUN[x.funnel])}</span>`:''}${x.theme?`<span class="tag">${esc(x.theme)}</span>`:''}</div>
       <h3>${esc(x.title)}</h3>
       ${x.engagement?`<div class="sub">📈 ${esc(x.engagement)}</div>`:''}
       ${x.hook?`<div class="hook">${esc(x.hook)}</div>`:''}
-      ${x.structure?`<p><b style="color:var(--text)">Estrutura:</b> ${esc(x.structure)}</p>`:''}
-      ${x.why?`<p><b style="color:var(--text)">Por que funciona:</b> ${esc(x.why)}</p>`:''}
-      <div class="act">${x.example_url?`<a class="btn small" href="${esc(x.example_url)}" target="_blank" rel="noopener">Ver post</a>`:''}<button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
-    </article>`; }).join('')||'<div class="empty">Nada aqui ainda. Toque em Pesquisar referências.</div>'}</div>`;
+      ${row('Objetivo',m.objetivo)}${row('O que medir',m.medir)}${row('Estrutura',x.structure)}${row('Por que funciona',x.why)}${row('Notas',m.notas)}
+      <div class="act">${x.example_url?`<button class="btn small" data-view="${x.id}">${car?'Ver carrossel':'Ver post'}</button><a class="btn small ghost" href="${esc(x.example_url)}" target="_blank" rel="noopener">Abrir no Instagram</a>`:''}<button class="btn small amber" data-cv="${x.id}">Canva</button><button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
+    </article>`; }).join('')||'<div class="empty">Nada aqui ainda. Toque em + Formato.</div>'}</div>`;
   document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{S.niche=b.dataset.n;renderSwipe();});
   document.querySelectorAll('[data-sf]').forEach(b=>b.onclick=()=>{S.sfun=b.dataset.sf;renderSwipe();});
   $('#swSearch').onclick=()=>{ window.open('https://claude.ai/new?q='+encodeURIComponent(SW_PROMPT),'_blank','noopener'); toast('Abri o Claude com o pedido pronto. É só enviar.'); };
   $('#addSw').onclick=()=>openSw({niche:S.niche==='Todos'?SW_NICHES[0]:S.niche});
   document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openSw(S.swipe.find(x=>x.id===b.dataset.edit)));
+  document.querySelectorAll('[data-cv]').forEach(b=>b.onclick=()=>openCv(S.swipe.find(x=>x.id===b.dataset.cv)));
+  document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>viewSw(S.swipe.find(x=>x.id===b.dataset.view)));
 }
 const swDlg=$('#swDlg'), swForm=$('#swForm'); let editingSw=null;
-function openSw(x){ editingSw=x&&x.id?x:null; swForm.reset(); ['niche','format','title','hook','structure','why','example_url'].forEach(k=>{ if(x&&x[k]!=null)swForm[k].value=x[k]; }); $('#swDel').classList.toggle('hidden',!editingSw); swDlg.showModal(); }
+function viewSw(x){ const em=swEmbed(x.example_url); $('#swVT').textContent=x.title; $('#swVB').innerHTML=em?`<iframe src="${esc(em)}captioned/" title="${esc(x.title)}" allowtransparency="true" scrolling="yes"></iframe>`:'<div class="empty">Sem prévia. Use Abrir no Instagram.</div>'; $('#swView').showModal(); }
+$('#swVClose').onclick=()=>{ $('#swVB').innerHTML=''; $('#swView').close(); };
+const CV_NEW = { Carrossel: 'https://www.canva.com/create/instagram-posts/', 'Estático': 'https://www.canva.com/create/instagram-posts/', Reels: 'https://www.canva.com/create/instagram-reels/', Stories: 'https://www.canva.com/create/instagram-stories/' };
+const swSlideText = x => [x.hook&&('Capa / gancho: '+x.hook), ...String(x.structure||'').split(/\s*→\s*/).filter(Boolean).map((t,i)=>`Slide ${i+2}: ${t}`)].filter(Boolean).join('\n');
+let cvX=null;
+function openCv(x){ cvX=x; const m=swM(x), sl=swSlides(x);
+  $('#cvT').textContent='Replicar no Canva · '+x.title;
+  $('#cvB').innerHTML=`<p class="sub" style="margin:0 0 10px">Abra o modelo, troque as frases e as fotos e salve como novo design. Assim o formato se repete com outro conteúdo.</p>
+    ${m.canva?`<a class="btn primary" href="${esc(m.canva)}" target="_blank" rel="noopener">Usar meu modelo no Canva</a>`:`<div class="sub" style="margin:0 0 8px">Ainda sem modelo salvo. Monte o modelo uma vez no Canva, compartilhe como link de modelo e cole no Editar deste formato.</div>`}
+    <a class="btn ${m.canva?'ghost':'primary'}" href="${CV_NEW[x.format]||CV_NEW['Carrossel']}" target="_blank" rel="noopener">Criar do zero no Canva (${esc(x.format)})</a>
+    <button type="button" class="btn ghost" id="cvTxt">Copiar roteiro dos textos</button>
+    ${sl.length?`<button type="button" class="btn ghost" id="cvImg">Copiar links dos slides</button>`:''}
+    ${x.example_url?`<a class="btn ghost" href="${esc(x.example_url)}" target="_blank" rel="noopener">Abrir referência</a>`:''}`;
+  const cp=async(t,msg)=>{ try{ await navigator.clipboard.writeText(t); toast(msg); }catch(e){ prompt('Copie:',t); } };
+  $('#cvTxt').onclick=()=>cp(swSlideText(x)||x.title,'Roteiro copiado. Cole no Canva ou nas notas.');
+  if(sl.length)$('#cvImg').onclick=()=>cp(sl.join('\n'),'Links copiados');
+  $('#swCv').showModal(); }
+$('#cvClose').onclick=()=>$('#swCv').close();
+function openSw(x){ editingSw=x&&x.id?x:null; swForm.reset(); const m=swM(x);
+  ['niche','format','title','hook','structure','why','example_url','funnel','theme'].forEach(k=>{ if(x&&x[k]!=null)swForm[k].value=x[k]; });
+  swForm.objetivo.value=m.objetivo||''; swForm.medir.value=m.medir||''; swForm.notas.value=m.notas||''; swForm.slides.value=String(m.slides||''); swForm.canva.value=m.canva||'';
+  $('#swNL').innerHTML=swNiches().map(n=>`<option value="${esc(n)}">`).join('');
+  $('#swDel').classList.toggle('hidden',!editingSw); swDlg.showModal(); }
 swForm.addEventListener('submit',async e=>{
-  e.preventDefault(); const f=swForm;
-  const row={niche:f.niche.value,format:f.format.value,title:f.title.value.trim(),hook:f.hook.value||null,structure:f.structure.value||null,why:f.why.value||null,example_url:f.example_url.value||null};
+  e.preventDefault(); const f=swForm, old=swM(editingSw);
+  const metrics={...old,objetivo:f.objetivo.value.trim(),medir:f.medir.value.trim(),notas:f.notas.value.trim(),slides:f.slides.value.trim(),canva:f.canva.value.trim()};
+  const row={niche:f.niche.value.trim()||'Geral',format:f.format.value,title:f.title.value.trim(),hook:f.hook.value||null,structure:f.structure.value||null,why:f.why.value||null,example_url:f.example_url.value.trim()||null,funnel:f.funnel.value||null,theme:f.theme.value.trim()||null,metrics};
   const {error}=await(editingSw?sb.from('swipe').update(row).eq('id',editingSw.id):sb.from('swipe').insert(row)); if(error)return fail(error);
   swDlg.close(); toast('Salvo'); renderSwipe();
 });
