@@ -294,10 +294,22 @@ dialog h2{font-size:24px}
 .swpv{border-radius:10px;overflow:hidden;background:var(--bg3);aspect-ratio:4/5;position:relative}
 .swpv img{width:100%;height:100%;object-fit:cover;display:block}.swpv iframe{width:100%;height:100%;border:0;display:block}
 .swpv.car{aspect-ratio:3/4}.swsl{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:10px}.swsl img{height:280px;width:auto;flex:none;scroll-snap-align:start;border-radius:8px}
-.sw .act{flex-wrap:wrap}.cvb{padding:16px;display:flex;flex-direction:column;gap:8px}.cvb .btn{justify-content:center;text-align:center}
+.sw .act{flex-wrap:wrap}
 .swc{font-size:10px;background:var(--line2);border-radius:99px;padding:0 6px;margin-left:3px}
 .swr{display:flex;flex-direction:column;gap:1px;font-size:13px;color:var(--dim)}.swk{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--text)}
 .swvh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}.swvb{height:min(78dvh,760px);overflow:hidden}.swvb iframe{width:100%;height:100%;border:0;display:block}
+.ctabs{display:flex;gap:8px;margin:16px 0 14px;flex-wrap:wrap}
+.fun3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.fcol{display:flex;flex-direction:column;gap:10px;min-width:0}.fch{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;padding:2px 2px 4px}
+.goals{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.goal{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}.goal .gh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gnum{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-family:var(--serif)}.gf{font-size:18px;color:var(--dim)}.gt{font-size:26px;font-weight:600}.gn{font-family:inherit;font-size:13px;color:var(--dim);margin-left:auto}.gn b{display:inline!important;color:var(--text)}
+.spk{color:var(--amber);flex:none}
+.wkbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.wkr{display:grid;grid-template-columns:1fr 150px;gap:10px;align-items:center;margin-top:8px}.wkr label{margin:0}
+.hscroll{overflow-x:auto}.htab{border-collapse:collapse;width:100%;font-size:13px}.htab th,.htab td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.htab th:first-child,.htab td:first-child{text-align:left}
+.htab small{display:block;font-size:11px}.htab .up{color:var(--sage)}.htab .dn{color:var(--terra)}
+@media(max-width:820px){.fun3{grid-template-columns:1fr}}
 .swf{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
 .kpis4+.cols2,.cols2+.cols2,.card+.cols2{margin-top:16px}
 .cols2>div>.card:first-child{margin-top:0}
@@ -466,6 +478,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
   <div class="fr"><div><label>Nome</label><input name="name" required maxlength="80"></div><div><label>Nicho</label><input name="niche" maxlength="60" placeholder="Psicólogo, Médico, Veterinário…"></div></div>
   <div class="fr"><div><label>Instagram (@ ou link)</label><input name="instagram" placeholder="@perfil"></div><div><label>TikTok</label><input name="tiktok" placeholder="@perfil"></div></div>
   <div class="fr"><div><label>YouTube</label><input name="youtube" placeholder="@canal"></div><div><label>Site</label><input name="site" placeholder="https://"></div></div>
+  <label>Link do projeto no Figma</label><input name="figma_url" type="url" placeholder="https://www.figma.com/design/...">
   <label>WhatsApp do cliente (com DDD)</label><input name="whatsapp" inputmode="tel" placeholder="53 99999-9999">
   <label>Link do Planejador do Meta Business Suite</label><input name="planner_url" type="url" placeholder="https://business.facebook.com/latest/content_calendar?asset_id=...">
   <div class="sub" style="margin-top:6px">Abra o Planejador do cliente no Meta Business Suite e cole aqui o endereço da página (ele leva o asset_id da conta certa).</div>
@@ -494,11 +507,25 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;
   <label>Por que funciona</label><textarea name="why" rows="2"></textarea>
   <label>Notas</label><textarea name="notas" rows="2"></textarea>
   <label>Imagens dos slides (um link por linha, opcional)</label><textarea name="slides" rows="2" placeholder="https://..."></textarea>
-  <label>Modelo no Canva (link de modelo, opcional)</label><input name="canva" type="url" placeholder="https://www.canva.com/...">
   <div class="mact"><button type="button" class="btn danger" id="swDel">Excluir</button><div class="sp"></div>
     <button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar</button></div>
 </form></dialog>
-<dialog id="swCv"><div class="swvh"><h2 id="cvT" style="margin:0;font-size:18px"></h2><button type="button" class="btn small" id="cvClose">Fechar</button></div><div id="cvB" class="cvb"></div></dialog>
+<dialog id="gDlg"><form method="dialog" id="gForm">
+  <h2>Meta</h2>
+  <label>Número a acompanhar</label><input name="metric" list="gMl" required maxlength="60" placeholder="Seguidores"><datalist id="gMl"></datalist>
+  <div class="fr"><div><label>Etapa do funil</label><select name="funnel"><option value="">—</option><option value="topo">Topo</option><option value="meio">Meio</option><option value="fundo">Fundo</option></select></div>
+  <div><label>Plataforma</label><select name="platform"><option value="">—</option><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>Google</option><option>Site</option><option>WhatsApp</option></select></div></div>
+  <div class="fr"><div><label>De (valor de partida)</label><input name="start_value" inputmode="decimal" placeholder="1400"></div><div><label>Para (meta)</label><input name="target_value" inputmode="decimal" required placeholder="1600"></div></div>
+  <label>Prazo (opcional)</label><input name="deadline" type="date">
+  <div class="mact"><button type="button" class="btn danger" id="gDel">Excluir</button><div class="sp"></div><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar</button></div>
+</form></dialog>
+<dialog id="wkDlg"><form method="dialog" id="wkForm">
+  <h2 id="wkTitle">Números da semana</h2>
+  <label>Semana (segunda-feira)</label><input name="week" type="date">
+  <div id="wkRows"></div>
+  <button type="button" class="btn small" id="wkAdd" style="margin-top:10px">+ Outro número</button>
+  <div class="mact"><div class="sp"></div><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" value="save">Salvar semana</button></div>
+</form></dialog>
 <dialog id="swView"><div class="swvh"><h2 id="swVT" style="margin:0;font-size:18px"></h2><button type="button" class="btn small" id="swVClose">Fechar</button></div><div id="swVB" class="swvb"></div></dialog>
 
 <input type="file" id="csvInput" accept=".csv,text/csv" class="hidden">
@@ -723,6 +750,7 @@ async function renderClient() {
       ${avatar(c, 'xl')}
       <div style="min-width:0"><h1>${esc(c.name)}</h1><div class="sub">${esc([ig && '@' + ig, c.niche].filter(Boolean).join(' · ')) || 'Complete o perfil do cliente'}</div>
         <div class="links">
+          ${c.figma_url ? `<a class="btn small" href="${esc(c.figma_url)}" target="_blank" rel="noopener"><svg width="12" height="16" viewBox="0 0 38 57" aria-hidden="true" style="margin-right:6px"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>Figma</a>` : ''}
           ${ig ? `<a class="btn small" href="https://www.instagram.com/${esc(ig)}/" target="_blank" rel="noopener">${ICON.ig}Instagram</a>` : ''}
           ${tt ? `<a class="btn small" href="https://www.tiktok.com/@${esc(tt)}" target="_blank" rel="noopener">${ICON.tt}TikTok</a>` : ''}
           ${yt ? `<a class="btn small" href="https://www.youtube.com/@${esc(yt)}" target="_blank" rel="noopener">${ICON.yt}YouTube</a>` : ''}
@@ -741,6 +769,8 @@ async function renderClient() {
         ${falta ? `<div class="warn">Faltam ${falta} ${falta === 1 ? 'pauta' : 'pautas'} pra bater a meta. <a href="#" id="fillMeta">Criar agora</a></div>` : '<div class="sub">Meta do mês batida.</div>'}</div>` : ''}
     </section>
 
+    <div class="ctabs"><button class="chip2" data-ct="prod">Produção</button><button class="chip2" data-ct="metas">Metas</button><button class="chip2" data-ct="swipe">Swipe file</button></div>
+    <div id="ctMetas" class="hidden"></div><div id="ctSwipe" class="hidden"></div><div id="ctProd">
     <section class="card"><div class="row"><h2 class="h2">Cronograma de ${monthLabel(m).split(' ')[0].toLowerCase()}</h2><span class="sp"></span><span class="sub">toque numa peça para abrir</span></div>
       ${schedHtml(c, inMonth, undated, start, end)}</section>
 
@@ -778,8 +808,9 @@ async function renderClient() {
       <div class="sub" style="margin:4px 0 8px">Leitura qualitativa e próximos passos.</div>
       <textarea id="reportBody" rows="8" placeholder="Escreva ou cole a análise do mês…">${esc(S.report?.body || '')}</textarea>
       <div class="mact" style="position:static"><button class="btn small primary" id="saveReport">Salvar análise</button></div>
-    </section></div>
+    </section></div></div>
     <button class="btn amber fab" id="addPost">+ Pauta</button>`;
+  ctInit(c);
   $('#prevM').onclick = () => { S.month = addMonths(S.month, -1); renderClient(); };
   $('#nextM').onclick = () => { S.month = addMonths(S.month, 1); renderClient(); };
   $('#addPost').onclick = () => openPost({ publish_date: null, status: 'pauta' });
@@ -1052,7 +1083,7 @@ async function handleFiles(files) {
 const clientDlg = $('#clientDlg'), clientForm = $('#clientForm'); let editingClient = null;
 function openClient(c) {
   editingClient = c || null; clientForm.reset(); $('#clientTitle').textContent = c ? 'Editar cliente' : 'Novo cliente';
-  ['name', 'niche', 'instagram', 'tiktok', 'youtube', 'site', 'whatsapp', 'planner_url', 'brand', 'posts_per_week'].forEach(k => clientForm[k].value = c?.[k] ?? '');
+  ['name', 'niche', 'instagram', 'tiktok', 'youtube', 'site', 'whatsapp', 'planner_url', 'brand', 'posts_per_week', 'figma_url'].forEach(k => clientForm[k].value = c?.[k] ?? '');
   editDays = [...(c?.post_days || [])]; drawDays();
   $('#clientDel').classList.toggle('hidden', !c); $('#clientAv').innerHTML = c ? avatar(c, 'xl') : ''; $('#clientPhotoBtn').parentNode.parentNode.classList.toggle('hidden', !c); clientDlg.showModal();
 }
@@ -1070,7 +1101,7 @@ $('#clientPhoto').onchange = async e => {
 $('#addClient').onclick = () => openClient();
 clientForm.addEventListener('submit', async e => {
   e.preventDefault(); const f = clientForm;
-  const row = { name: f.name.value.trim(), niche: f.niche.value.trim() || null, instagram: handleOf(f.instagram.value) || null, tiktok: handleOf(f.tiktok.value) || null, youtube: handleOf(f.youtube.value) || null, site: f.site.value.trim() || null, whatsapp: f.whatsapp.value.trim() || null, planner_url: f.planner_url.value.trim() || null, brand: f.brand.value || null, posts_per_week: f.posts_per_week.value ? +f.posts_per_week.value : null, post_days: editDays.length ? editDays.slice().sort() : null, handle: handleOf(f.instagram.value) ? '@' + handleOf(f.instagram.value) : null };
+  const row = { name: f.name.value.trim(), niche: f.niche.value.trim() || null, instagram: handleOf(f.instagram.value) || null, tiktok: handleOf(f.tiktok.value) || null, youtube: handleOf(f.youtube.value) || null, site: f.site.value.trim() || null, whatsapp: f.whatsapp.value.trim() || null, planner_url: f.planner_url.value.trim() || null, figma_url: f.figma_url.value.trim() || null, brand: f.brand.value || null, posts_per_week: f.posts_per_week.value ? +f.posts_per_week.value : null, post_days: editDays.length ? editDays.slice().sort() : null, handle: handleOf(f.instagram.value) ? '@' + handleOf(f.instagram.value) : null };
     if (!editingClient) row.position = S.clients.length + 1;
   const { data, error } = editingClient ? await sb.from('clients').update(row).eq('id', editingClient.id).select().single() : await sb.from('clients').insert(row).select().single();
   if (error) return fail(error); clientDlg.close(); await loadClients(); S.tab = data.id; renderTabs(); route(); toast('Cliente salvo');
@@ -1216,6 +1247,20 @@ function swNiches() {
   const out = [], seen = new Set(), add = n => { n = String(n || '').trim(); const k = n.toLowerCase(); if (n && !seen.has(k)) { seen.add(k); out.push(n); } };
   SW_NICHES.forEach(add); (S.clients || []).forEach(c => add(c.name)); S.swipe.forEach(x => add(x.niche)); return out;
 }
+function swCard(x){ const m=swM(x), sl=swSlides(x), em=swEmbed(x.example_url), car=/carrossel/i.test(x.format);
+      const pv=sl.length?`<div class="swsl">${sl.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`
+        :x.thumb?`<div class="swpv"><img src="${esc(x.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
+        :em?`<div class="swpv ${car?'car':''}"><iframe src="${esc(em)}" loading="lazy" title="${esc(x.title)}" allowtransparency="true" scrolling="no"></iframe></div>`:'';
+      const row=(k,v)=>v?`<div class="swr"><span class="swk">${k}</span><span>${esc(v)}</span></div>`:'';
+      return `<article class="sw">
+      ${pv}
+      <div><span class="tag n">${esc(x.niche)}</span><span class="tag">${esc(x.format)}</span>${x.funnel?`<span class="tag">${esc(FUN[x.funnel])}</span>`:''}${x.theme?`<span class="tag">${esc(x.theme)}</span>`:''}</div>
+      <h3>${esc(x.title)}</h3>
+      ${x.engagement?`<div class="sub">📈 ${esc(x.engagement)}</div>`:''}
+      ${x.hook?`<div class="hook">${esc(x.hook)}</div>`:''}
+      ${row('Objetivo',m.objetivo)}${row('O que medir',m.medir)}${row('Estrutura',x.structure)}${row('Por que funciona',x.why)}${row('Notas',m.notas)}
+      <div class="act">${x.example_url?`<button class="btn small" data-view="${x.id}">${car?'Ver carrossel':'Ver post'}</button><a class="btn small ghost" href="${esc(x.example_url)}" target="_blank" rel="noopener">Abrir no Instagram</a>`:''}<button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
+    </article>`; }
 async function renderSwipe(){
   await swSeedOmat();
   const {data,error}=await sb.from('swipe').select('*').order('created_at',{ascending:false}); if(error)return fail(error); S.swipe=data;
@@ -1230,60 +1275,121 @@ async function renderSwipe(){
       <div class="row" style="gap:8px"><button class="btn amber" id="swSearch">Pesquisar referências</button><button class="btn small" id="addSw">+ Formato</button></div></div>
     <div class="tabs" style="margin-top:14px">${niches.map(n=>`<button class="tab ${S.niche===n?'on':''}" data-n="${esc(n)}">${esc(n)}${n!=='Todos'&&cnt(n)?` <span class="swc">${cnt(n)}</span>`:''}</button>`).join('')}</div>
     <div class="swf">${[['todos','Todo funil'],['topo','Topo'],['meio','Meio'],['fundo','Fundo']].map(([k,l])=>`<button class="chip2 ${S.sfun===k?'on':''}" data-sf="${k}">${l}</button>`).join('')}</div>
-    <div class="swipe">${list.map(x=>{ const m=swM(x), sl=swSlides(x), em=swEmbed(x.example_url), car=/carrossel/i.test(x.format);
-      const pv=sl.length?`<div class="swsl">${sl.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`
-        :x.thumb?`<div class="swpv"><img src="${esc(x.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`
-        :em?`<div class="swpv ${car?'car':''}"><iframe src="${esc(em)}" loading="lazy" title="${esc(x.title)}" allowtransparency="true" scrolling="no"></iframe></div>`:'';
-      const row=(k,v)=>v?`<div class="swr"><span class="swk">${k}</span><span>${esc(v)}</span></div>`:'';
-      return `<article class="sw">
-      ${pv}
-      <div><span class="tag n">${esc(x.niche)}</span><span class="tag">${esc(x.format)}</span>${x.funnel?`<span class="tag">${esc(FUN[x.funnel])}</span>`:''}${x.theme?`<span class="tag">${esc(x.theme)}</span>`:''}</div>
-      <h3>${esc(x.title)}</h3>
-      ${x.engagement?`<div class="sub">📈 ${esc(x.engagement)}</div>`:''}
-      ${x.hook?`<div class="hook">${esc(x.hook)}</div>`:''}
-      ${row('Objetivo',m.objetivo)}${row('O que medir',m.medir)}${row('Estrutura',x.structure)}${row('Por que funciona',x.why)}${row('Notas',m.notas)}
-      <div class="act">${x.example_url?`<button class="btn small" data-view="${x.id}">${car?'Ver carrossel':'Ver post'}</button><a class="btn small ghost" href="${esc(x.example_url)}" target="_blank" rel="noopener">Abrir no Instagram</a>`:''}<button class="btn small amber" data-cv="${x.id}">Canva</button><button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
-    </article>`; }).join('')||'<div class="empty">Nada aqui ainda. Toque em + Formato.</div>'}</div>`;
+    <div class="swipe">${list.map(swCard).join('')||'<div class="empty">Nada aqui ainda. Toque em + Formato.</div>'}</div>`;
   document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{S.niche=b.dataset.n;renderSwipe();});
   document.querySelectorAll('[data-sf]').forEach(b=>b.onclick=()=>{S.sfun=b.dataset.sf;renderSwipe();});
   $('#swSearch').onclick=()=>{ window.open('https://claude.ai/new?q='+encodeURIComponent(SW_PROMPT),'_blank','noopener'); toast('Abri o Claude com o pedido pronto. É só enviar.'); };
   $('#addSw').onclick=()=>openSw({niche:S.niche==='Todos'?SW_NICHES[0]:S.niche});
   document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openSw(S.swipe.find(x=>x.id===b.dataset.edit)));
-  document.querySelectorAll('[data-cv]').forEach(b=>b.onclick=()=>openCv(S.swipe.find(x=>x.id===b.dataset.cv)));
   document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>viewSw(S.swipe.find(x=>x.id===b.dataset.view)));
 }
+const swRefresh=()=>S.tab==='swipe'?renderSwipe():renderClient();
+function swBind(){ document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openSw(S.swipe.find(x=>x.id===b.dataset.edit))); document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>viewSw(S.swipe.find(x=>x.id===b.dataset.view))); }
 const swDlg=$('#swDlg'), swForm=$('#swForm'); let editingSw=null;
 function viewSw(x){ const em=swEmbed(x.example_url); $('#swVT').textContent=x.title; $('#swVB').innerHTML=em?`<iframe src="${esc(em)}captioned/" title="${esc(x.title)}" allowtransparency="true" scrolling="yes"></iframe>`:'<div class="empty">Sem prévia. Use Abrir no Instagram.</div>'; $('#swView').showModal(); }
 $('#swVClose').onclick=()=>{ $('#swVB').innerHTML=''; $('#swView').close(); };
-const CV_NEW = { Carrossel: 'https://www.canva.com/create/instagram-posts/', 'Estático': 'https://www.canva.com/create/instagram-posts/', Reels: 'https://www.canva.com/create/instagram-reels/', Stories: 'https://www.canva.com/create/instagram-stories/' };
-const swSlideText = x => [x.hook&&('Capa / gancho: '+x.hook), ...String(x.structure||'').split(/\s*→\s*/).filter(Boolean).map((t,i)=>`Slide ${i+2}: ${t}`)].filter(Boolean).join('\n');
-let cvX=null;
-function openCv(x){ cvX=x; const m=swM(x), sl=swSlides(x);
-  $('#cvT').textContent='Replicar no Canva · '+x.title;
-  $('#cvB').innerHTML=`<p class="sub" style="margin:0 0 10px">Abra o modelo, troque as frases e as fotos e salve como novo design. Assim o formato se repete com outro conteúdo.</p>
-    ${m.canva?`<a class="btn primary" href="${esc(m.canva)}" target="_blank" rel="noopener">Usar meu modelo no Canva</a>`:`<div class="sub" style="margin:0 0 8px">Ainda sem modelo salvo. Monte o modelo uma vez no Canva, compartilhe como link de modelo e cole no Editar deste formato.</div>`}
-    <a class="btn ${m.canva?'ghost':'primary'}" href="${CV_NEW[x.format]||CV_NEW['Carrossel']}" target="_blank" rel="noopener">Criar do zero no Canva (${esc(x.format)})</a>
-    <button type="button" class="btn ghost" id="cvTxt">Copiar roteiro dos textos</button>
-    ${sl.length?`<button type="button" class="btn ghost" id="cvImg">Copiar links dos slides</button>`:''}
-    ${x.example_url?`<a class="btn ghost" href="${esc(x.example_url)}" target="_blank" rel="noopener">Abrir referência</a>`:''}`;
-  const cp=async(t,msg)=>{ try{ await navigator.clipboard.writeText(t); toast(msg); }catch(e){ prompt('Copie:',t); } };
-  $('#cvTxt').onclick=()=>cp(swSlideText(x)||x.title,'Roteiro copiado. Cole no Canva ou nas notas.');
-  if(sl.length)$('#cvImg').onclick=()=>cp(sl.join('\n'),'Links copiados');
-  $('#swCv').showModal(); }
-$('#cvClose').onclick=()=>$('#swCv').close();
 function openSw(x){ editingSw=x&&x.id?x:null; swForm.reset(); const m=swM(x);
   ['niche','format','title','hook','structure','why','example_url','funnel','theme'].forEach(k=>{ if(x&&x[k]!=null)swForm[k].value=x[k]; });
-  swForm.objetivo.value=m.objetivo||''; swForm.medir.value=m.medir||''; swForm.notas.value=m.notas||''; swForm.slides.value=String(m.slides||''); swForm.canva.value=m.canva||'';
+  swForm.objetivo.value=m.objetivo||''; swForm.medir.value=m.medir||''; swForm.notas.value=m.notas||''; swForm.slides.value=String(m.slides||'');
   $('#swNL').innerHTML=swNiches().map(n=>`<option value="${esc(n)}">`).join('');
   $('#swDel').classList.toggle('hidden',!editingSw); swDlg.showModal(); }
 swForm.addEventListener('submit',async e=>{
   e.preventDefault(); const f=swForm, old=swM(editingSw);
-  const metrics={...old,objetivo:f.objetivo.value.trim(),medir:f.medir.value.trim(),notas:f.notas.value.trim(),slides:f.slides.value.trim(),canva:f.canva.value.trim()};
+  const metrics={...old,objetivo:f.objetivo.value.trim(),medir:f.medir.value.trim(),notas:f.notas.value.trim(),slides:f.slides.value.trim()};
   const row={niche:f.niche.value.trim()||'Geral',format:f.format.value,title:f.title.value.trim(),hook:f.hook.value||null,structure:f.structure.value||null,why:f.why.value||null,example_url:f.example_url.value.trim()||null,funnel:f.funnel.value||null,theme:f.theme.value.trim()||null,metrics};
   const {error}=await(editingSw?sb.from('swipe').update(row).eq('id',editingSw.id):sb.from('swipe').insert(row)); if(error)return fail(error);
-  swDlg.close(); toast('Salvo'); renderSwipe();
+  swDlg.close(); toast('Salvo'); swRefresh();
 });
-$('#swDel').onclick=async()=>{ if(!editingSw||!confirm('Excluir este formato?'))return; const {error}=await sb.from('swipe').delete().eq('id',editingSw.id); if(error)return fail(error); swDlg.close(); renderSwipe(); };
+$('#swDel').onclick=async()=>{ if(!editingSw||!confirm('Excluir este formato?'))return; const {error}=await sb.from('swipe').delete().eq('id',editingSw.id); if(error)return fail(error); swDlg.close(); swRefresh(); };
+
+// ---------- abas dentro do cliente: Produção | Metas | Swipe ----------
+const GF = [['topo', 'Topo de funil', 'Quem ainda não conhece: alcance e novos seguidores'], ['meio', 'Meio de funil', 'Quem já viu: confiança, interação e visitas'], ['fundo', 'Fundo de funil', 'Quem decide: conversa, lead e agendamento']];
+const G_METRICS = ['Seguidores', 'Alcance', 'Visualizações', 'Visitas ao perfil', 'Interações', 'Compartilhamentos', 'Salvamentos', 'Cliques no link', 'Conversas no WhatsApp', 'Leads', 'Agendamentos'];
+const nf = n => (n == null || n === '' || isNaN(n)) ? '—' : Number(n).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+const wkOf = d => { d = d ? new Date(d + 'T12:00') : new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return iso(d); };
+const swFor = c => { const k = [c.name, c.instagram, handleOf(c.instagram)].filter(Boolean).map(x => String(x).toLowerCase()); return S.swipe.filter(x => k.includes(String(x.niche || '').toLowerCase())); };
+function ctInit(c) {
+  S.ctab = S.ctab || 'prod';
+  const sh = () => { ['prod', 'metas', 'swipe'].forEach(k => { const el = $('#ct' + k[0].toUpperCase() + k.slice(1)); if (el) el.classList.toggle('hidden', S.ctab !== k); }); $$('[data-ct]').forEach(b => b.classList.toggle('on', b.dataset.ct === S.ctab)); if (S.ctab === 'metas') renderMetas(c); if (S.ctab === 'swipe') renderCSwipe(c); };
+  $$('[data-ct]').forEach(b => b.onclick = () => { S.ctab = b.dataset.ct; sh(); });
+  sh();
+}
+async function renderCSwipe(c) {
+  const host = $('#ctSwipe'); if (!host) return;
+  const { data, error } = await sb.from('swipe').select('*').order('created_at', { ascending: true }); if (error) return fail(error); S.swipe = data;
+  const L = swFor(c), by = f => L.filter(x => (x.funnel || '') === f);
+  const col = ([k, t, d]) => `<div class="fcol"><div class="fch"><div><b>${t}</b><div class="sub">${d}</div></div><button class="btn small" data-addf="${k}">+ Formato</button></div>${by(k).map(swCard).join('') || '<div class="empty" style="padding:14px">Nenhum formato aqui ainda.</div>'}</div>`;
+  const none = by('');
+  host.innerHTML = `<div class="sub" style="margin:2px 0 12px">Os formatos escolhidos para ${esc(c.name)}, organizados pelo funil. Cada um traz o objetivo e o que medir.</div>
+    <div class="fun3">${GF.map(col).join('')}</div>
+    ${none.length ? `<h2 class="h2" style="margin:18px 0 8px">Sem etapa definida</h2><div class="swipe">${none.map(swCard).join('')}</div>` : ''}`;
+  $$('[data-addf]', host).forEach(b => b.onclick = () => openSw({ niche: c.name, funnel: b.dataset.addf, format: 'Carrossel' }));
+  swBind();
+}
+// ---------- metas ----------
+const sparkSvg = vals => { if (vals.length < 2) return ''; const w = 96, h = 26, mn = Math.min(...vals), mx = Math.max(...vals), r = (mx - mn) || 1; const pts = vals.map((v, i) => `${(i / (vals.length - 1) * w).toFixed(1)},${(h - 3 - (v - mn) / r * (h - 6)).toFixed(1)}`).join(' '); return `<svg class="spk" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`; };
+async function renderMetas(c) {
+  const host = $('#ctMetas'); if (!host) return;
+  const [g, k] = await Promise.all([sb.from('goals').select('*').eq('client_id', c.id).order('position').order('created_at'), sb.from('kpi_snaps').select('*').eq('client_id', c.id).order('week')]);
+  if (g.error || k.error) { host.innerHTML = '<div class="empty">Não consegui carregar as metas.</div>'; return fail(g.error || k.error); }
+  S.goals = g.data; S.snaps = k.data;
+  const wk = wkOf(), done = S.snaps.filter(x => x.week === wk).length;
+  const series = m => S.snaps.filter(x => x.metric === m).sort((a, b) => a.week < b.week ? -1 : 1);
+  const cur = gl => { const s = series(gl.metric); return s.length ? +s[s.length - 1].value : (gl.start_value != null ? +gl.start_value : null); };
+  const goalCard = gl => {
+    const s = series(gl.metric), now = cur(gl), a = gl.start_value != null ? +gl.start_value : (s.length ? +s[0].value : 0), t = +gl.target_value;
+    const p = now == null || t === a ? 0 : Math.max(0, Math.min(100, (now - a) / (t - a) * 100));
+    let pace = ''; if (gl.deadline && now != null) { const wl = Math.max(1, Math.ceil((new Date(gl.deadline + 'T12:00') - new Date()) / 6048e5)); const need = (t - now) / wl; pace = (t - now) <= 0 ? 'Meta batida' : `${nf(need)} por semana até ${fmtD(gl.deadline)}`; }
+    return `<article class="goal"><div class="gh"><div><b>${esc(gl.metric)}</b>${gl.platform ? `<span class="tag">${esc(gl.platform)}</span>` : ''}</div><button class="btn small ghost" data-goal="${gl.id}">Editar</button></div>
+      <div class="gnum"><span class="gf">${nf(a)}</span><span class="ga">→</span><span class="gt">${nf(t)}</span><span class="gn">agora <b style="display:inline">${nf(now)}</b></span>${sparkSvg(s.map(x => +x.value))}</div>
+      <div class="bar"><i style="width:${p}%;${p >= 100 ? 'background:var(--sage)' : ''}"></i></div><div class="sub">${Math.round(p)}% da meta${pace ? ' · ' + esc(pace) : ''}</div></article>`;
+  };
+  const gcol = ([f, t, d]) => { const L = S.goals.filter(x => (x.funnel || '') === f); return `<div class="fcol"><div class="fch"><div><b>${t}</b><div class="sub">${d}</div></div><button class="btn small" data-addg="${f}">+ Meta</button></div>${L.map(goalCard).join('') || '<div class="empty" style="padding:14px">Sem meta nesta etapa.</div>'}</div>`; };
+  const loose = S.goals.filter(x => !x.funnel);
+  const tracked = [...new Set([...S.goals.map(x => x.metric), ...S.snaps.map(x => x.metric)])];
+  const weeks = [...new Set(S.snaps.map(x => x.week))].sort().slice(-6);
+  const hist = tracked.length && weeks.length ? `<div class="card" style="margin-top:14px"><h2 class="h2">Histórico semanal</h2><div class="hscroll"><table class="htab"><thead><tr><th>Número</th>${weeks.map(w => `<th>${fmtD(w)}</th>`).join('')}</tr></thead><tbody>${tracked.map(m => `<tr><td>${esc(m)}</td>${weeks.map((w, i) => { const v = S.snaps.find(x => x.metric === m && x.week === w); const pv = i ? S.snaps.find(x => x.metric === m && x.week === weeks[i - 1]) : null; const dl = v && pv ? v.value - pv.value : null; return `<td>${v ? nf(v.value) : '—'}${dl ? `<small class="${dl > 0 ? 'up' : 'dn'}">${dl > 0 ? '+' : ''}${nf(dl)}</small>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div></div>` : '';
+  host.innerHTML = `<div class="card wkbox"><div style="flex:1;min-width:0"><b>${done ? 'Semana de ' + fmtD(wk) + ' registrada' : 'Falta registrar a semana de ' + fmtD(wk)}</b><div class="sub">${done ? done + ' número(s) salvo(s) nesta semana.' : 'Toda segunda, anote os números de cada rede. A plataforma guarda o histórico e acompanha as metas.'}</div></div><button class="btn ${done ? '' : 'primary'}" id="wkOpen">Registrar semana</button></div>
+    <div class="row" style="justify-content:space-between;margin:14px 0 8px"><h2 class="h2">Metas de ${esc(c.name)}</h2><button class="btn small" id="addGoal">+ Meta</button></div>
+    <div class="fun3">${GF.map(gcol).join('')}</div>
+    ${loose.length ? `<h2 class="h2" style="margin:18px 0 8px">Sem etapa</h2><div class="goals">${loose.map(goalCard).join('')}</div>` : ''}
+    ${hist}`;
+  $('#wkOpen').onclick = () => openWk(c, tracked);
+  $('#addGoal').onclick = () => openGoal(c, { funnel: '' });
+  $$('[data-addg]', host).forEach(b => b.onclick = () => openGoal(c, { funnel: b.dataset.addg }));
+  $$('[data-goal]', host).forEach(b => b.onclick = () => openGoal(c, S.goals.find(x => x.id === b.dataset.goal)));
+}
+const gDlg = $('#gDlg'), gForm = $('#gForm'); let editingGoal = null, goalClient = null;
+function openGoal(c, g) {
+  goalClient = c; editingGoal = g && g.id ? g : null; gForm.reset();
+  $('#gMl').innerHTML = [...new Set([...G_METRICS, ...(S.snaps || []).map(x => x.metric)])].map(m => `<option value="${esc(m)}">`).join('');
+  ['metric', 'funnel', 'platform', 'start_value', 'target_value', 'deadline'].forEach(k => { if (g && g[k] != null) gForm[k].value = g[k]; });
+  $('#gDel').classList.toggle('hidden', !editingGoal); gDlg.showModal();
+}
+gForm.addEventListener('submit', async e => {
+  e.preventDefault(); const f = gForm, num = v => v === '' ? null : +String(v).replace(/\./g, '').replace(',', '.');
+  const row = { client_id: goalClient.id, metric: f.metric.value.trim(), funnel: f.funnel.value || null, platform: f.platform.value || null, start_value: num(f.start_value.value), target_value: num(f.target_value.value), deadline: f.deadline.value || null };
+  if (!row.metric || row.target_value == null || isNaN(row.target_value)) return toast('Preencha o número e a meta');
+  const { error } = await (editingGoal ? sb.from('goals').update(row).eq('id', editingGoal.id) : sb.from('goals').insert(row)); if (error) return fail(error);
+  if (!editingGoal && row.start_value != null && !(S.snaps || []).some(x => x.metric === row.metric)) await sb.from('kpi_snaps').upsert({ client_id: goalClient.id, week: wkOf(), metric: row.metric, value: row.start_value }, { onConflict: 'client_id,week,metric' });
+  gDlg.close(); toast('Meta salva'); renderMetas(goalClient);
+});
+$('#gDel').onclick = async () => { if (!editingGoal || !confirm('Excluir esta meta? O histórico de números continua salvo.')) return; const { error } = await sb.from('goals').delete().eq('id', editingGoal.id); if (error) return fail(error); gDlg.close(); renderMetas(goalClient); };
+const wkDlg = $('#wkDlg'), wkForm = $('#wkForm'); let wkClient = null;
+function openWk(c, tracked) {
+  wkClient = c; const last = m => { const s = (S.snaps || []).filter(x => x.metric === m).sort((a, b) => a.week < b.week ? -1 : 1); return s.length ? s[s.length - 1].value : null; };
+  const list = [...new Set([...tracked, 'Seguidores'])]; const wk = wkOf();
+  $('#wkRows').innerHTML = list.map(m => { const cur = (S.snaps || []).find(x => x.metric === m && x.week === wk), l = last(m); return `<div class="wkr"><label>${esc(m)}</label><input data-m="${esc(m)}" inputmode="decimal" value="${cur ? cur.value : ''}" placeholder="${l != null ? 'última: ' + nf(l) : ''}"></div>`; }).join('');
+  wkForm.week.value = wk; $('#wkTitle').textContent = 'Números da semana · ' + c.name; wkDlg.showModal();
+}
+$('#wkAdd').onclick = () => { const m = prompt('Nome do número (ex.: Visitas ao perfil)'); if (!m || !m.trim()) return; const d = document.createElement('div'); d.className = 'wkr'; d.innerHTML = `<label>${esc(m.trim())}</label><input data-m="${esc(m.trim())}" inputmode="decimal">`; $('#wkRows').appendChild(d); d.querySelector('input').focus(); };
+wkForm.addEventListener('submit', async e => {
+  e.preventDefault(); const week = wkOf(wkForm.week.value || undefined);
+  const rows = [...$$('#wkRows input')].map(i => ({ client_id: wkClient.id, week, metric: i.dataset.m, value: i.value === '' ? null : +String(i.value).replace(/\./g, '').replace(',', '.') })).filter(r => r.value != null && !isNaN(r.value));
+  if (!rows.length) return toast('Preencha ao menos um número');
+  const { error } = await sb.from('kpi_snaps').upsert(rows, { onConflict: 'client_id,week,metric' }); if (error) return fail(error);
+  wkDlg.close(); toast('Semana registrada'); renderMetas(wkClient);
+});
 
 
 // ======================= GESTOR v2: início, financeiro, tarefas, agência, ofertas =======================
