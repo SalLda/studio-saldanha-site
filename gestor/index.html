@@ -1413,9 +1413,10 @@ const NAVI = {
   tarefas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12l3 3 5-6"/></svg>',
   clientes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg>',
   agencia: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
-  ofertas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></svg>'
+  ofertas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></svg>',
+  fotos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 };
-const NAVL = { inicio: 'Início', financeiro: 'Financeiro', tarefas: 'Tarefas', clientes: 'Clientes', agencia: 'Agência', ofertas: 'Ofertas' };
+const NAVL = { inicio: 'Início', financeiro: 'Financeiro', tarefas: 'Tarefas', clientes: 'Clientes', agencia: 'Agência', ofertas: 'Ofertas', fotos: 'Fotos' };
 
 const F = { rec: [], ent: [], debts: [], set: {}, tasks: [], tpl: [], offers: [], leads: [], docs: [], posts: [], m: firstOfMonth(new Date()), ftab: 'lanc', atab: 'resumo', ttab: 'resumo', scope: 'todos', sel: null, ready: false };
 
@@ -1655,7 +1656,7 @@ function setView(v) {
   if (v === 'clientes') { renderTabs(); route(); } else rerenderView();
 }
 function rerenderView() {
-  const y = scrollY; ({ inicio: viewInicio, financeiro: viewFin, tarefas: viewTasks, agencia: viewAgency, ofertas: viewOffers })[S.view]?.();
+  const y = scrollY; ({ inicio: viewInicio, financeiro: viewFin, tarefas: viewTasks, agencia: viewAgency, ofertas: viewOffers, fotos: viewFotos })[S.view]?.();
   if (S.view !== 'clientes') scrollTo(0, y);
 }
 function pageHead(title, sub, right = '') { return `<div class="phead"><div><h1>${title}</h1>${sub ? `<div class="sub">${sub}</div>` : ''}</div><div class="sp"></div>${right}</div>`; }
@@ -2392,6 +2393,55 @@ function openLead(l0) {
   d.querySelector('#lSave').onclick = async () => { if (!f.name.value.trim()) return; const row = { name: f.name.value.trim(), segment: f.segment.value.trim() || null, status: f.status.value, last_contact: f.last_contact.value || null, offer_id: f.offer_id.value || null, notes: f.notes.value.trim() || null };
     const q = l.id ? sb.from('leads').update(row).eq('id', l.id).select() : sb.from('leads').insert(row).select(); const { data, error } = await q; if (error) return fail(error);
     if (l.id) Object.assign(F.leads.find(x => x.id === l.id), data[0]); else F.leads.push(data[0]); d.close(); rerenderView(); };
+}
+
+// ---------- fotos (vendas das galerias privadas) ----------
+const FOTO_FN = CFG.url + '/functions/v1/fotos';
+const fotoDT = d => d ? new Date(d).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+async function viewFotos() {
+  if (!F.fotos) $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Carregando pedidos…')}</div>`;
+  const [g, p] = await Promise.all([
+    sb.from('foto_galerias').select('id,nome,titulo,token,ativo,created_at').order('created_at'),
+    sb.from('foto_pedidos').select('id,galeria_id,qtd,valor,status,cliente_nome,whatsapp,created_at,paid_at,pix_expira,asaas_id').order('created_at', { ascending: false }).limit(500)
+  ]);
+  if (S.view !== 'fotos') return;
+  if (g.error || p.error) { fail(g.error || p.error); return; }
+  F.fotos = { g: g.data, p: p.data }; paintFotos();
+}
+function paintFotos() {
+  const { g, p } = F.fotos, flt = F.fotoF || 'pago', G = Object.fromEntries(g.map(x => [x.id, x]));
+  const pagos = p.filter(x => x.status === 'pago'), pend = p.filter(x => x.status === 'pendente'), erro = p.filter(x => x.status === 'erro');
+  const rec = pagos.reduce((s, x) => s + +x.valor, 0), nfotos = pagos.reduce((s, x) => s + (+x.qtd || 0), 0);
+  const L = flt === 'todos' ? p : p.filter(x => x.status === flt);
+  const FL = [['pago', `Pagos ${pagos.length}`], ['pendente', `Pendentes ${pend.length}`], ['erro', `Com erro ${erro.length}`], ['todos', 'Todos']];
+  const link = x => location.origin + '/escolha/?t=' + x.token;
+  const stat = x => x.status === 'pago' ? '<span class="badge ok">Pago</span>'
+    : x.status === 'pendente' ? (x.pix_expira && new Date(x.pix_expira) < new Date() ? '<span class="badge">Pix expirou</span>' : '<span class="badge warn">Aguardando Pix</span>')
+    : '<span class="badge warn">Erro</span>';
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<button class="btn" id="fRef">Atualizar</button>`)}
+  <div class="kpis3">
+    <div class="kpi"><span>Recebido (bruto)</span><b>${BRL(rec)}</b><em>antes da taxa do Asaas</em></div>
+    <div class="kpi"><span>Pedidos pagos</span><b>${pagos.length}</b><em>${nfotos} ${nfotos === 1 ? 'foto vendida' : 'fotos vendidas'}</em></div>
+    <div class="kpi"><span>Aguardando Pix</span><b>${pend.length}</b><em>${BRL(pend.reduce((s, x) => s + +x.valor, 0))} em aberto</em></div>
+    <div class="kpi"><span>Ticket médio</span><b>${BRL(pagos.length ? rec / pagos.length : 0)}</b><em>por pedido pago</em></div>
+  </div>
+  <div class="card" style="margin-top:12px"><div class="row"><h2 class="h2">Links por grupo</h2></div>
+    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
+  </div>
+  <div class="row" style="margin:22px 0 10px"><h2 class="h2">Pedidos</h2><div class="sp"></div><div class="seg" id="fSeg">${FL.map(([k, l]) => `<button type="button" data-f="${k}" class="${flt === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
+  <div class="card">${L.length ? L.map(x => { const ga = G[x.galeria_id]; return `<div class="row" style="padding:9px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap;align-items:center"><div style="min-width:0;flex:1 1 220px"><b>${esc(x.cliente_nome || 'Sem nome')}</b> <span class="sub">· ${esc(ga ? (ga.nome || ga.titulo) : '')}</span><div class="sub">${x.qtd} ${x.qtd === 1 ? 'foto' : 'fotos'} · pedido ${fotoDT(x.created_at)}${x.paid_at ? ' · pago ' + fotoDT(x.paid_at) : ''}</div></div><b>${BRL(x.valor)}</b>${stat(x)}${x.whatsapp ? `<a class="btn small ghost" href="${waLink(x.whatsapp, '')}" target="_blank" rel="noopener">WhatsApp</a>` : ''}${x.status === 'pendente' && ga ? `<button class="btn small" data-chk="${x.id}" data-tok="${esc(ga.token)}">Conferir no Asaas</button>` : ''}</div>`; }).join('') : '<div class="sub" style="padding:6px 0">Nenhum pedido nesse filtro.</div>'}</div>
+  </div>`;
+  $('#fRef').onclick = () => viewFotos();
+  $$('#fSeg [data-f]').forEach(b => b.onclick = () => { F.fotoF = b.dataset.f; paintFotos(); });
+  $$('[data-cp]').forEach(b => b.onclick = () => { const x = g.find(y => y.id === b.dataset.cp); navigator.clipboard?.writeText(link(x)).then(() => toast('Link copiado'), () => prompt('Copie o link:', link(x))); });
+  $$('[data-chk]').forEach(b => b.onclick = async () => {
+    b.disabled = true; b.textContent = 'Conferindo…';
+    try {
+      const r = await fetch(FOTO_FN + '/check', { method: 'POST', headers: { 'content-type': 'application/json', apikey: CFG.key }, body: JSON.stringify({ pedido: b.dataset.chk, token: b.dataset.tok }) }).then(x => x.json());
+      toast(r.status === 'pago' ? 'Pago! Download liberado pro cliente' : 'Ainda não caiu no Asaas');
+    } catch (e) { fail(e); }
+    viewFotos();
+  });
 }
 
 // ---------- shell ----------
