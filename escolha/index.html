@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1C1C1C">
+<title>Escolha suas fotos | omatsaldanha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1C1C1C;--card:#262626;--line:#3a3a3a;--amber:#F0B429;--moss:#7A9B7E;--ink:#F4F1EA;--mut:#A8A39A;--err:#e5736b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.5}
+body{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+header{padding:34px 0 8px}
+.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);font-weight:700}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,6vw,48px);line-height:1.08;margin:10px 0 12px}
+.lead{color:var(--mut);max-width:560px;margin:0}
+.tiers{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 6px}
+.tier{border:1px solid var(--line);border-radius:14px;padding:10px 14px;background:var(--card);font-size:14px}
+.tier b{font-size:17px;color:var(--amber);font-weight:700}
+.tier s{color:var(--mut)}
+.tier em{display:block;font-style:normal;color:var(--moss);font-size:12px}
+.how{color:var(--mut);font-size:14px;margin:6px 0 22px}
+.grid{column-count:2;column-gap:10px}
+@media(min-width:720px){.grid{column-count:3}}
+@media(min-width:1000px){.grid{column-count:4}}
+.ph{position:relative;break-inside:avoid;margin:0 0 10px;border-radius:12px;overflow:hidden;background:var(--card);cursor:zoom-in;outline:2px solid transparent;outline-offset:-2px;transition:outline-color .15s}
+.ph img{display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+.ph.on{outline-color:var(--amber)}
+.ph.on::after{content:"";position:absolute;inset:0;background:rgba(240,180,41,.14);pointer-events:none}
+.pick{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.35);display:grid;place-items:center;cursor:pointer;z-index:2;padding:0;color:transparent}
+.pick svg{width:18px;height:18px}
+.ph.on .pick{background:var(--amber);border-color:var(--amber);color:#1C1C1C}
+#bar{position:fixed;left:0;right:0;bottom:0;background:#151515;border-top:1px solid var(--line);padding:12px 18px calc(12px + env(safe-area-inset-bottom));display:none;z-index:20}
+#bar.show{display:block}
+.barin{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px;justify-content:space-between}
+.barinfo small{display:block;color:var(--mut);font-size:12.5px;max-width:300px}
+.price{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--amber);line-height:1.1}
+.price s{font-family:'Space Grotesk';font-size:14px;color:var(--mut);font-weight:400;margin-right:6px}
+.btn{background:var(--amber);color:#1C1C1C;border:0;border-radius:12px;padding:13px 22px;font:700 16px 'Space Grotesk';cursor:pointer}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.moss{background:var(--moss);color:#101010}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;z-index:40}
+.sheet.show{display:flex}
+.panel{background:var(--bg);border:1px solid var(--line);width:100%;max-width:480px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom))}
+@media(min-width:560px){.sheet{align-items:center}.panel{border-radius:20px}}
+.panel h2{font-family:'Fraunces',serif;margin:0 0 4px;font-size:26px}
+.panel p{color:var(--mut);margin:4px 0 14px;font-size:14.5px}
+label{display:block;font-size:13px;color:var(--mut);margin:12px 0 5px}
+input{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:13px;font:16px 'Space Grotesk'}
+input:focus{outline:2px solid var(--amber);border-color:transparent}
+.note{font-size:12.5px;color:var(--mut);margin-top:8px}
+.err{color:var(--err);font-size:14px;margin-top:10px;min-height:1px}
+.sum{display:flex;justify-content:space-between;align-items:baseline;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0 4px;background:var(--card)}
+.qr{background:#fff;border-radius:14px;padding:12px;width:240px;height:240px;margin:14px auto;display:block}
+.code{width:100%;font-size:12px;color:var(--mut);word-break:break-all;background:var(--card);border-radius:10px;padding:10px;border:1px solid var(--line);max-height:74px;overflow:auto}
+.wait{display:flex;gap:10px;align-items:center;color:var(--mut);font-size:14px;margin-top:14px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--amber);animation:p 1.1s infinite}
+@keyframes p{50%{opacity:.25}}
+.center{text-align:center}
+.okmark{width:64px;height:64px;border-radius:50%;background:var(--moss);display:grid;place-items:center;margin:0 auto 10px;color:#101010}
+.dl{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:8px;margin:8px 0;background:var(--card)}
+.dl img{width:62px;height:62px;object-fit:cover;border-radius:8px}
+.dl span{flex:1;font-size:14px;color:var(--mut)}
+.dl a{background:var(--amber);color:#1C1C1C;text-decoration:none;font-weight:700;border-radius:10px;padding:10px 14px;font-size:14px}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;z-index:50;flex-direction:column}
+#lb.show{display:flex}
+.lbtop{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;color:var(--mut);font-size:14px}
+.lbimg{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;padding:0 8px}
+.lbimg img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;-webkit-touch-callout:none;user-select:none}
+.nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:0;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer}
+.nav.l{left:10px}.nav.r{right:10px}
+.lbbot{padding:14px 18px calc(18px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+.msg{padding:70px 0;text-align:center;color:var(--mut)}
+.msg h1{color:var(--ink)}
+a.link{color:var(--amber)}
+footer{color:var(--mut);font-size:12.5px;padding:30px 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="msg">Carregando suas fotos...</div></div>
+
+<div id="bar"><div class="barin">
+  <div class="barinfo"><div class="price" id="bprice"></div><small id="bhint"></small></div>
+  <button class="btn" id="bgo">Continuar</button>
+</div></div>
+
+<div class="sheet" id="sheet"><div class="panel" id="panel"></div></div>
+
+<div id="lb">
+  <div class="lbtop"><span id="lbcount"></span><button class="btn ghost" id="lbx" style="padding:8px 14px">Fechar</button></div>
+  <div class="lbimg"><button class="nav l" id="lbp" aria-label="Anterior">&#8249;</button><img id="lbi" alt="" draggable="false"><button class="nav r" id="lbn" aria-label="Próxima">&#8250;</button></div>
+  <div class="lbbot"><button class="btn" id="lbs"></button></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const SB='https://uwpbvolvzftrcnjuwoao.supabase.co';
+const AK='sb_publishable_Yfi_WJXhCwcNJ0DvklVjfA_Uz3RVOBu';
+const FN=SB+'/functions/v1/fotos';
+const WA='https://wa.me/5553991662471';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const qs=new URLSearchParams(location.search);
+const TOKEN=qs.get('t')||'';
+const brl=c=>'R$ '+(c/100).toLocaleString('pt-BR',{minimumFractionDigits:c%100?2:0,maximumFractionDigits:2});
+let G=null, sel=new Set(), poll=null, lbIdx=0, PAID=null;
+
+// menor preço em centavos para exatamente n fotos combinando pacotes
+function melhor(n,tiers){
+  const t=tiers.map(x=>({q:+x.qtd,c:Math.round(+x.preco*100)})).filter(x=>x.q>0&&x.c>0);
+  const b=Array(n+1).fill(Infinity);b[0]=0;
+  for(let i=1;i<=n;i++)for(const p of t)if(i>=p.q&&b[i-p.q]+p.c<b[i])b[i]=b[i-p.q]+p.c;
+  return b[n];
+}
+const unit=()=>Math.round(+G.preco.find(x=>+x.qtd===1).preco*100);
+
+async function rpc(name,args){
+  const r=await fetch(SB+'/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:AK,'content-type':'application/json'},body:JSON.stringify(args)});
+  if(!r.ok)throw new Error('rpc '+r.status);
+  return r.json();
+}
+
+function msg(t,h){$('#app').innerHTML='<div class="msg"><h1>'+h+'</h1><p>'+t+'</p></div>';$('#bar').classList.remove('show')}
+
+async function init(){
+  if(!TOKEN)return msg('Esse link está incompleto. Pede pro Matheus mandar de novo.','Link sem código');
+  let g;try{g=await rpc('foto_galeria',{p_token:TOKEN})}catch(e){return msg('Deu problema pra carregar. Tenta de novo em instantes.','Ops')}
+  if(!g)return msg('Esse link não está mais ativo. Fala com o Matheus no <a class="link" href="'+WA+'">WhatsApp</a>.','Link inválido');
+  G=g;document.title=g.titulo+' | omatsaldanha';
+  const h=(location.hash.match(/p=([0-9a-f-]{36})/)||[])[1]||localStorage.getItem('fp_'+TOKEN);
+  if(h){try{const s=await rpc('foto_pedido_status',{p_pedido:h,p_token:TOKEN});if(s){if(s.status==='pago')return showPaid(h,s);if(s.status==='pendente'&&s.pix_payload&&!(s.expira&&new Date(s.expira)<new Date()))return showPix(h,s)}}catch(e){}
+    try{localStorage.removeItem('fp_'+TOKEN)}catch(e){}}
+  render();
+}
+
+function tiersHtml(){
+  const u=unit();
+  return G.preco.slice().sort((a,b)=>a.qtd-b.qtd).map(t=>{
+    const c=Math.round(t.preco*100),de=t.qtd*u;
+    if(t.qtd===1)return '<div class="tier"><b>'+brl(c)+'</b> cada foto</div>';
+    return '<div class="tier">'+t.qtd+' fotos: <s>'+brl(de)+'</s> <b>'+brl(c)+'</b><em>economiza '+brl(de-c)+'</em></div>';
+  }).join('');
+}
+
+function render(){
+  const its=G.itens;
+  $('#app').innerHTML='<header><div class="brand">omatsaldanha</div><h1>'+esc(G.titulo)+'</h1>'
+   +'<p class="lead">Oi! Sou o Matheus. Separei essas fotos pra ti. Toca no círculo pra escolher as que mais gostou, paga pelo Pix e as originais, em alta qualidade, liberam na hora.</p>'
+   +'<div class="tiers">'+tiersHtml()+'</div><p class="how">Toca na foto pra ver maior. A marca d\'água sai nas originais.</p></header>'
+   +'<div class="grid" id="grid">'+its.map((x,i)=>'<figure class="ph" data-i="'+i+'"><img src="'+esc(x.preview)+'" width="'+x.w+'" height="'+x.h+'" loading="lazy" draggable="false" alt="Foto '+(i+1)+'">'
+   +'<button class="pick" data-id="'+x.id+'" aria-label="Escolher foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></figure>').join('')+'</div>'
+   +'<footer>Fotos por Matheus Saldanha, Pelotas/RS. Pagamento via Pix processado pelo Asaas.</footer>';
+  $('#grid').addEventListener('contextmenu',e=>e.preventDefault());
+  $('#grid').addEventListener('click',e=>{
+    const pk=e.target.closest('.pick');
+    if(pk){e.stopPropagation();toggle(pk.dataset.id);return}
+    const ph=e.target.closest('.ph');if(ph)openLb(+ph.dataset.i);
+  });
+  sync();
+}
+
+function toggle(id){sel.has(id)?sel.delete(id):sel.add(id);sync()}
+
+function sync(){
+  document.querySelectorAll('.ph').forEach(p=>{const id=G.itens[+p.dataset.i].id;p.classList.toggle('on',sel.has(id))});
+  const n=sel.size,bar=$('#bar');
+  if(!n){
+    if(PAID){$('#bprice').textContent='Pagamento confirmado';$('#bhint').textContent='Tuas fotos estão liberadas.';$('#bgo').textContent='Baixar fotos';bar.classList.add('show')}
+    else bar.classList.remove('show');
+    return}
+  $('#bgo').textContent='Continuar';
+  const por=melhor(n,G.preco),de=n*unit();
+  $('#bprice').innerHTML=(por<de?'<s>'+brl(de)+'</s>':'')+brl(por);
+  let hint=n+' foto'+(n>1?'s':'')+' escolhida'+(n>1?'s':'');
+  if(por<de)hint+=' · você economiza '+brl(de-por);
+  const nxt=G.preco.map(t=>({q:+t.qtd,c:Math.round(t.preco*100)})).filter(t=>t.q>n).sort((a,b)=>a.q-b.q)[0];
+  if(nxt&&nxt.q-n<=3){const r=nxt.q-n;hint+=nxt.c<=por?' · leva '+nxt.q+' pelo mesmo preço':' · mais '+r+' e o pacote de '+nxt.q+' sai '+brl(nxt.c)}
+  $('#bhint').textContent=hint;bar.classList.add('show');
+}
+
+/* lightbox */
+function openLb(i){lbIdx=i;paintLb();$('#lb').classList.add('show')}
+function paintLb(){
+  const x=G.itens[lbIdx];$('#lbi').src=x.preview;
+  $('#lbcount').textContent=(lbIdx+1)+' de '+G.itens.length;
+  const on=sel.has(x.id);$('#lbs').textContent=on?'Escolhida (tirar)':'Escolher essa foto';$('#lbs').className='btn'+(on?' moss':'');
+}
+function stepLb(d){lbIdx=(lbIdx+d+G.itens.length)%G.itens.length;paintLb()}
+$('#lbx').onclick=()=>$('#lb').classList.remove('show');
+$('#lbp').onclick=()=>stepLb(-1);$('#lbn').onclick=()=>stepLb(1);
+$('#lbs').onclick=()=>{toggle(G.itens[lbIdx].id);paintLb()};
+$('#lbi').addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if(!$('#lb').classList.contains('show'))return;if(e.key==='Escape')$('#lb').classList.remove('show');if(e.key==='ArrowLeft')stepLb(-1);if(e.key==='ArrowRight')stepLb(1)});
+let tx=null;$('#lb').addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+$('#lb').addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)stepLb(dx<0?1:-1);tx=null});
+
+/* checkout */
+const sheet=$('#sheet'),panel=$('#panel');
+function openSheet(h){panel.innerHTML=h;sheet.classList.add('show')}
+function closeSheet(){sheet.classList.remove('show')}
+sheet.addEventListener('click',e=>{if(e.target===sheet&&!poll)closeSheet()});
+$('#bgo').onclick=()=>{if(PAID&&!sel.size)showPaid(PAID.id,PAID.s);else checkout()};
+
+function maskCpf(v){v=v.replace(/\D/g,'').slice(0,14);return v.length<=11?v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2'):v}
+function checkout(){
+  const n=sel.size;if(!n)return;
+  const por=melhor(n,G.preco),de=n*unit();
+  openSheet('<h2>Quase lá</h2><p>Preciso de uns dados pra gerar o Pix.</p>'
+   +'<div class="sum"><span>'+n+' foto'+(n>1?'s':'')+'</span><span class="price">'+(por<de?'<s>'+brl(de)+'</s>':'')+brl(por)+'</span></div>'
+   +'<label for="fn">Nome completo</label><input id="fn" autocomplete="name">'
+   +'<label for="fc">CPF</label><input id="fc" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00">'
+   +'<label for="fw">WhatsApp (opcional)</label><input id="fw" inputmode="tel" autocomplete="tel" placeholder="(53) 90000-0000">'
+   +'<p class="note">O Asaas, que processa o Pix, exige nome e CPF de quem paga. Eu não guardo teu CPF.</p>'
+   +'<div class="err" id="fe"></div><div style="display:flex;gap:10px;margin-top:14px"><button class="btn ghost" id="fx">Voltar</button><button class="btn" id="fg" style="flex:1">Gerar Pix</button></div>');
+  $('#fc').oninput=e=>{e.target.value=maskCpf(e.target.value)};
+  $('#fx').onclick=closeSheet;
+  $('#fg').onclick=async()=>{
+    const nome=$('#fn').value.trim(),cpf=$('#fc').value,zap=$('#fw').value;
+    if(nome.length<3)return $('#fe').textContent='Coloca teu nome completo.';
+    if(cpf.replace(/\D/g,'').length<11)return $('#fe').textContent='Confere o CPF.';
+    $('#fe').textContent='';$('#fg').disabled=true;$('#fg').textContent='Gerando...';
+    try{
+      const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({token:TOKEN,itens:[...sel],nome,cpf,whatsapp:zap})});
+      const j=await r.json();
+      if(!r.ok)throw new Error(j.erro||'Erro');
+      try{localStorage.setItem('fp_'+TOKEN,j.pedido)}catch(e){}
+      history.replaceState(null,'','#p='+j.pedido);
+      showPix(j.pedido,j);
+    }catch(e){$('#fe').textContent=e.message;$('#fg').disabled=false;$('#fg').textContent='Gerar Pix'}
+  };
+}
+
+function stopPoll(){if(poll){clearInterval(poll);poll=null}}
+function showPix(id,s){
+  $('#bar').classList.remove('show');
+  if(!$('#grid'))render();
+  const valor=Math.round(+s.valor*100);
+  openSheet('<div class="center"><h2>Paga com Pix</h2><p>'+(s.qtd||sel.size||'')+' foto(s) · <b style="color:var(--amber)">'+brl(valor)+'</b></p>'
+   +'<img class="qr" alt="QR Code Pix" src="data:image/png;base64,'+esc(s.pix_img)+'">'
+   +'<div class="code" id="pc">'+esc(s.pix_payload)+'</div>'
+   +'<button class="btn" id="cp" style="margin-top:12px;width:100%">Copiar código Pix</button>'
+   +'<p class="note">No app do banco: Pix &gt; Pix Copia e Cola, ou lê o QR Code.</p>'
+   +'<div class="wait"><span class="dot"></span><span id="ws">Esperando o pagamento. Essa tela atualiza sozinha.</span></div>'
+   +'<button class="btn ghost" id="nv" style="margin-top:16px;width:100%">Cancelar e voltar</button></div>');
+  $('#cp').onclick=async()=>{
+    try{await navigator.clipboard.writeText(s.pix_payload)}catch(e){const r=document.createRange();r.selectNodeContents($('#pc'));const se=getSelection();se.removeAllRanges();se.addRange(r);try{document.execCommand('copy')}catch(_){}}
+    $('#cp').textContent='Copiado!';setTimeout(()=>{const b=$('#cp');if(b)b.textContent='Copiar código Pix'},1800);
+  };
+  $('#nv').onclick=()=>{stopPoll();try{localStorage.removeItem('fp_'+TOKEN)}catch(e){}history.replaceState(null,'','?t='+encodeURIComponent(TOKEN));closeSheet();sync()};
+  stopPoll();let t0=Date.now();
+  poll=setInterval(async()=>{
+    try{
+      const r=await rpc('foto_pedido_status',{p_pedido:id,p_token:TOKEN});
+      if(r&&r.status==='pago'){stopPoll();showPaid(id,r)}
+      else if(s.expira&&new Date(s.expira)<new Date()){stopPoll();const w=$('#ws');if(w)w.textContent='Esse Pix venceu. Cancela e gera outro.'}
+    }catch(e){}
+    if(Date.now()-t0>30*60*1000)stopPoll();
+  },3500);
+}
+
+function dlUrl(id){return 'https://drive.google.com/uc?export=download&id='+encodeURIComponent(id)}
+function showPaid(id,s){
+  stopPoll();PAID={id,s};
+  if(!$('#grid'))render();
+  const byName={};G.itens.forEach(x=>byName[x.nome]=x);
+  const list=(s.itens||[]);
+  openSheet('<div class="center"><div class="okmark"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>'
+   +'<h2>Pagamento confirmado</h2><p>Valeu demais! Aqui estão tuas fotos em alta qualidade.</p></div>'
+   +list.map(x=>'<div class="dl"><img src="'+esc(byName[x.nome]?byName[x.nome].preview:'')+'" alt=""><span>'+esc(x.nome)+'</span><a href="'+dlUrl(x.drive_id)+'" rel="noopener">Baixar</a></div>').join('')
+   +(list.length>1?'<button class="btn" id="all" style="width:100%;margin-top:10px">Baixar todas</button>':'')
+   +'<p class="note">Guarda esse link: ele continua liberando as fotos que tu comprou. Se o navegador bloquear vários downloads, baixa uma por uma. Qualquer problema, chama no <a class="link" href="'+WA+'">WhatsApp</a>.</p>');
+  const all=$('#all');if(all)all.onclick=()=>{list.forEach((x,i)=>setTimeout(()=>{const a=document.createElement('a');a.href=dlUrl(x.drive_id);a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},i*900))};
+  try{localStorage.setItem('fp_'+TOKEN,id)}catch(e){}
+  history.replaceState(null,'','#p='+id);
+  sync();
+}
+
+init();
+})();
+</script>
+</body>
+</html>
