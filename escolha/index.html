@@ -255,10 +255,18 @@ function showPix(id,s){
     $('#cp').textContent='Copiado!';setTimeout(()=>{const b=$('#cp');if(b)b.textContent='Copiar código Pix'},1800);
   };
   $('#nv').onclick=()=>{stopPoll();try{localStorage.removeItem('fp_'+TOKEN)}catch(e){}history.replaceState(null,'','?t='+encodeURIComponent(TOKEN));closeSheet();sync()};
-  stopPoll();let t0=Date.now();
+  stopPoll();let t0=Date.now(),lastCheck=0;
   poll=setInterval(async()=>{
     try{
-      const r=await rpc('foto_pedido_status',{p_pedido:id,p_token:TOKEN});
+      let r=await rpc('foto_pedido_status',{p_pedido:id,p_token:TOKEN});
+      // rede de segurança: se o aviso do banco demorar, confere direto no Asaas
+      if(r&&r.status!=='pago'&&Date.now()-t0>25000&&Date.now()-lastCheck>12000){
+        lastCheck=Date.now();
+        try{
+          const c=await fetch(FN+'/check',{method:'POST',headers:{'content-type':'application/json',apikey:AK},body:JSON.stringify({pedido:id,token:TOKEN})}).then(x=>x.json());
+          if(c&&c.status==='pago')r=await rpc('foto_pedido_status',{p_pedido:id,p_token:TOKEN});
+        }catch(_){}
+      }
       if(r&&r.status==='pago'){stopPoll();showPaid(id,r)}
       else if(s.expira&&new Date(s.expira)<new Date()){stopPoll();const w=$('#ws');if(w)w.textContent='Esse Pix venceu. Cancela e gera outro.'}
     }catch(e){}
