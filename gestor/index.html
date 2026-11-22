@@ -2418,7 +2418,7 @@ function paintFotos() {
   const stat = x => x.status === 'pago' ? '<span class="badge ok">Pago</span>'
     : x.status === 'pendente' ? (x.pix_expira && new Date(x.pix_expira) < new Date() ? '<span class="badge">Pix expirou</span>' : '<span class="badge warn">Aguardando Pix</span>')
     : '<span class="badge warn">Erro</span>';
-  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<button class="btn" id="fRef">Atualizar</button>`)}
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<a class="btn amber" href="https://drive.google.com/drive/folders/1k94hRZ2Xm1CB6mpto-TlGgvSpNT4BeCg?usp=sharing" target="_blank" rel="noopener">Pasta das fotos no Drive</a><button class="btn" id="fRef">Atualizar</button>`)}
   <div class="kpis3">
     <div class="kpi"><span>Recebido (bruto)</span><b>${BRL(rec)}</b><em>antes da taxa do Asaas</em></div>
     <div class="kpi"><span>Pedidos pagos</span><b>${pagos.length}</b><em>${nfotos} ${nfotos === 1 ? 'foto vendida' : 'fotos vendidas'}</em></div>
