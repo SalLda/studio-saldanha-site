@@ -481,6 +481,21 @@ details.fold .wrap2{padding:6px 14px 14px}
 
 .lrow{display:flex;gap:6px;margin:6px 0;align-items:center}.lrow input{flex:1;margin:0}.lseg{flex-wrap:wrap;margin:10px 0}.lseg button{flex:0 0 auto}
 dialog .fold{margin:8px 0}
+/* galerias */
+.gact{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.gdrop{border:2px dashed var(--line2);border-radius:16px;padding:22px;text-align:center;cursor:pointer;margin-top:12px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
+.gdrop:hover,.gdrop.over{border-color:var(--amber);background:var(--amber-soft)}
+.gdrop.has{border-style:solid;border-color:var(--sage)}
+.gdrop b{font-family:var(--serif);font-size:18px}
+.gcount{font-weight:600;color:var(--sage)}
+.tedit{display:grid;gap:8px;margin-top:8px}
+.trow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.trow input{width:68px;padding:7px 9px}
+.trow .tp{width:84px}
+.trow .tx{display:flex;gap:4px;align-items:center;font-size:13px;color:var(--dim)}
+.trow .tx input{width:56px}
+.trow .tm{font-size:12.5px;color:var(--dim);min-width:110px}
+.tall{font-style:normal;font-size:11px;font-weight:700;background:var(--amber-soft);color:var(--amber-ink);border-radius:99px;padding:1px 8px;margin-left:2px}
 
 </style>
 </head>
@@ -2477,6 +2492,193 @@ function openLead(l0) {
     if (l.id) Object.assign(F.leads.find(x => x.id === l.id), data[0]); else F.leads.push(data[0]); d.close(); rerenderView(); };
 }
 
+// ---------- galerias: criar, subir fotos, preços, enviar ----------
+const GAL_MAX = 60;
+const slugG = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 24) || 'foto';
+const rnd = n => { const a = new Uint8Array(n); crypto.getRandomValues(a); return [...a].map(b => b.toString(36).padStart(2, '0')).join('').slice(0, n); };
+const brG = v => 'R$ ' + (Math.round(v * 100) / 100).toLocaleString('pt-BR', { minimumFractionDigits: Number.isInteger(Math.round(v * 100) / 100) ? 0 : 2, maximumFractionDigits: 2 });
+// faixas sugeridas: 1 = 15, 3 = 35, 6 = 60, 10 = 85, "todas" = última faixa + 5 por foto extra
+function tiersPadrao(n) {
+  const base = [[1, 15], [3, 35], [6, 60], [10, 85]];
+  const t = base.filter(([q]) => q < n);
+  if (n >= 1) { const last = t[t.length - 1] || [0, 0]; t.push([n, n <= 1 ? 15 : last[1] + 5 * (n - last[0])]); }
+  return t.map(([q, p]) => ({ qtd: q, preco: p }));
+}
+function validaTiers(rows) {
+  const r = rows.map(x => ({ qtd: Math.round(+x.qtd), preco: Math.round(+x.preco * 100) / 100 })).sort((a, b) => a.qtd - b.qtd);
+  if (!r.length) return { err: 'Coloca pelo menos uma faixa.' };
+  if (!r.some(x => x.qtd === 1)) return { err: 'Precisa ter a faixa de 1 foto.' };
+  for (let i = 0; i < r.length; i++) {
+    if (!(r[i].qtd >= 1) || !(r[i].preco > 0)) return { err: 'Confere quantidade e preço de cada faixa.' };
+    if (i && r[i].qtd === r[i - 1].qtd) return { err: 'Tem duas faixas com a mesma quantidade.' };
+    if (i && r[i].preco < r[i - 1].preco) return { err: `${r[i].qtd} fotos não pode custar menos que ${r[i - 1].qtd}.` };
+    if (i && r[i].preco / r[i].qtd >= r[i - 1].preco / r[i - 1].qtd) return { err: `A faixa de ${r[i].qtd} fotos precisa sair mais barata por foto que a de ${r[i - 1].qtd}.` };
+  }
+  return { tiers: r };
+}
+// editor de faixas dentro de um elemento; devolve { get, setN }
+function tierEditor(host, n0, init) {
+  let n = n0, rows = (init && init.length ? init : tiersPadrao(n0)).map(x => ({ qtd: +x.qtd, preco: +x.preco }));
+  const unit = () => (rows.find(x => +x.qtd === 1) || rows[0] || { preco: 15, qtd: 1 }).preco / ((rows.find(x => +x.qtd === 1) || rows[0] || { qtd: 1 }).qtd || 1);
+  const off = x => { const u = unit(), full = u * x.qtd; return full > 0 && x.qtd > 1 ? Math.round((1 - x.preco / full) * 100) : 0; };
+  const info = x => x.qtd > 0 && x.preco > 0 ? `${brG(x.preco / x.qtd)} por foto` : '';
+  function draw() {
+    host.innerHTML = `<div class="tedit">${rows.map((x, i) => `<div class="trow" data-i="${i}"><input class="tq" inputmode="numeric" value="${x.qtd || ''}" aria-label="Quantidade"><span>${x.qtd === n && n > 1 ? 'fotos <em class="tall">todas</em>' : 'foto' + (x.qtd === 1 ? '' : 's')}</span><span class="tr">R$</span><input class="tp" inputmode="decimal" value="${x.preco ? String(x.preco).replace('.', ',') : ''}" aria-label="Preço"><span class="tm" data-m>${info(x)}</span><span class="tx"><input class="to" inputmode="numeric" value="${x.qtd > 1 ? off(x) : ''}" ${x.qtd > 1 ? '' : 'disabled'} aria-label="Desconto"> % off</span><button type="button" class="btn small ghost" data-del="${i}" ${rows.length < 2 ? 'disabled' : ''}>×</button></div>`).join('')}
+    </div><div class="row" style="gap:8px;margin-top:8px;flex-wrap:wrap"><button type="button" class="btn small" data-add>+ Faixa</button><button type="button" class="btn small ghost" data-sug>Sugerir pelas ${n} foto${n === 1 ? '' : 's'}</button></div>`;
+  }
+  function upd(i) { const el = host.querySelector(`.trow[data-i="${i}"]`); if (!el) return; el.querySelector('[data-m]').textContent = info(rows[i]); host.querySelectorAll('.trow').forEach((r, j) => { const o = r.querySelector('.to'); if (o && o !== document.activeElement) o.value = rows[j].qtd > 1 ? off(rows[j]) : ''; const m = r.querySelector('[data-m]'); m.textContent = info(rows[j]); }); }
+  host.addEventListener('input', e => {
+    const r = e.target.closest('.trow'); if (!r) return; const i = +r.dataset.i, x = rows[i], num = v => parseFloat(String(v).replace(',', '.')) || 0;
+    if (e.target.classList.contains('tq')) x.qtd = Math.round(num(e.target.value));
+    else if (e.target.classList.contains('tp')) x.preco = num(e.target.value);
+    else if (e.target.classList.contains('to')) { const p = Math.min(90, Math.max(0, num(e.target.value))); x.preco = Math.round(unit() * x.qtd * (1 - p / 100)); const pi = r.querySelector('.tp'); pi.value = String(x.preco).replace('.', ','); }
+    upd(i);
+  });
+  host.addEventListener('click', e => {
+    if (e.target.closest('[data-del]')) { rows.splice(+e.target.closest('[data-del]').dataset.del, 1); draw(); }
+    else if (e.target.closest('[data-add]')) { const mx = Math.max(0, ...rows.map(x => +x.qtd || 0)); rows.push({ qtd: Math.min(n, mx + 1) || 1, preco: 0 }); draw(); }
+    else if (e.target.closest('[data-sug]')) { rows = tiersPadrao(n); draw(); }
+  });
+  draw();
+  return { get: () => validaTiers(rows), setN: v => { n = v; if (!init || !init.length) rows = tiersPadrao(n); draw(); }, redo: v => { n = v; rows = tiersPadrao(n); draw(); } };
+}
+// miniatura com marca d'água + original
+async function galPrepara(file, reduz) {
+  const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  const W = bmp.width, H = bmp.height, side = (long) => { const k = Math.min(1, long / Math.max(W, H)); return [Math.round(W * k), Math.round(H * k)]; };
+  const [pw, ph] = side(1000), cv = document.createElement('canvas'); cv.width = pw; cv.height = ph;
+  const c = cv.getContext('2d'); c.drawImage(bmp, 0, 0, pw, ph);
+  const fs = Math.max(16, Math.round(pw / 14)); c.font = `700 ${fs}px "Space Grotesk",Arial,sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.save(); c.translate(pw / 2, ph / 2); c.rotate(-Math.PI / 6);
+  const step = fs * 3.2, wd = Math.hypot(pw, ph);
+  for (let y = -wd; y < wd; y += step) for (let x = -wd; x < wd; x += step * 2.6) {
+    const ox = (Math.round(y / step) % 2) ? step * 1.3 : 0;
+    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillText('omatsaldanha', x + ox + 2, y + 2);
+    c.fillStyle = 'rgba(255,255,255,.42)'; c.fillText('omatsaldanha', x + ox, y);
+  }
+  c.restore();
+  const prev = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.8));
+  let orig = file;
+  if (reduz || !/jpe?g/i.test(file.type)) {
+    const [ow, oh] = reduz ? side(3000) : [W, H], oc = document.createElement('canvas'); oc.width = ow; oc.height = oh; oc.getContext('2d').drawImage(bmp, 0, 0, ow, oh);
+    orig = await new Promise(r => oc.toBlob(r, 'image/jpeg', 0.92));
+  }
+  bmp.close && bmp.close();
+  return { prev, orig, w: pw, h: ph };
+}
+async function galSobe(gid, files, pos0, reduz, base, onProg) {
+  const done = []; let k = 0, fails = [];
+  async function one(i) {
+    const f = files[i];
+    try {
+      const { prev, orig, w, h } = await galPrepara(f, reduz), path = `${gid}/${rnd(14)}.jpg`;
+      const a = await sb.storage.from('fotos-previa').upload(path, prev, { contentType: 'image/jpeg', upsert: false }); if (a.error) throw a.error;
+      const b = await sb.storage.from('fotos-originais').upload(path, orig, { contentType: 'image/jpeg', upsert: false }); if (b.error) { await sb.storage.from('fotos-previa').remove([path]); throw b.error; }
+      const url = sb.storage.from('fotos-previa').getPublicUrl(path).data.publicUrl;
+      done[i] = { galeria_id: gid, drive_id: 'sb:' + path, nome: `${base}-${String(pos0 + i + 1).padStart(2, '0')}.jpg`, preview: url, w, h, pos: pos0 + i };
+    } catch (e) { fails.push(f.name + ': ' + (e.message || e)); }
+    onProg(++k, files.length);
+  }
+  let next = 0; const worker = async () => { while (next < files.length) await one(next++); };
+  await Promise.all([worker(), worker(), worker()]);
+  const rows = done.filter(Boolean);
+  if (rows.length) { const r = await sb.from('foto_itens').insert(rows); if (r.error) throw r.error; }
+  return { ok: rows.length, fails };
+}
+function galFilesBox(id) { return `<div class="gdrop" id="${id}"><input type="file" accept="image/*" multiple hidden><b>Escolher fotos</b><span class="sub">ou arrasta aqui · até ${GAL_MAX} fotos · JPG</span><div class="gcount sub" data-c></div></div>`; }
+function galFilesInit(d, id, onChange) {
+  const box = d.querySelector('#' + id), inp = box.querySelector('input'); let files = [];
+  const set = list => { files = [...list].filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|heic|webp)$/i.test(f.name)).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })); if (files.length > GAL_MAX) { toast(`Máximo ${GAL_MAX} fotos por vez`); files = files.slice(0, GAL_MAX); } box.querySelector('[data-c]').textContent = files.length ? `${files.length} foto${files.length > 1 ? 's' : ''} pronta${files.length > 1 ? 's' : ''}` : ''; box.classList.toggle('has', !!files.length); onChange(files); };
+  box.addEventListener('click', () => inp.click()); inp.addEventListener('change', () => set(inp.files));
+  box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('over'); }); box.addEventListener('dragleave', () => box.classList.remove('over'));
+  box.addEventListener('drop', e => { e.preventDefault(); box.classList.remove('over'); set(e.dataTransfer.files); });
+  return () => files;
+}
+function galMsg(g, n) {
+  const t = (g.preco || []).slice().sort((a, b) => a.qtd - b.qtd), link = location.origin + '/escolha/?t=' + g.token;
+  const faixas = t.filter(x => x.qtd > 1).map(x => x.qtd === n && n > 1 ? `todas as ${x.qtd} por ${brG(x.preco)}` : `${x.qtd} por ${brG(x.preco)}`);
+  const um = t.find(x => x.qtd === 1);
+  return `Oi! Aqui é o Matheus, o fotógrafo que passou aí. Separei as fotos ${g.nome ? 'do(a) ' + g.nome : 'de vocês'} num link privado:\n\n${link}\n\nÉ só tocar nas que gostar e pagar por Pix. Cada uma sai ${um ? brG(um.preco) : ''}${faixas.length ? ', mas quanto mais fotos, menos pesa cada uma: ' + faixas.join(', ') : ''}. As originais, sem marca d'água, liberam na hora do pagamento.`;
+}
+function openZap(g, n, zap) {
+  const d = modal(`<div class="row"><h2>Mensagem pro WhatsApp</h2></div><p class="sub">Edita se quiser. Copia e cola, ou abre direto na conversa.</p><textarea id="zm" rows="9" style="width:100%">${esc(galMsg(g, n))}</textarea><label>WhatsApp do cliente (opcional)</label><input id="zn" inputmode="tel" placeholder="(53) 90000-0000" value="${esc(zap || '')}">
+    <div class="mact"><button type="button" class="btn" id="zx">Fechar</button><div class="sp"></div><button type="button" class="btn" id="zc">Copiar mensagem</button><button type="button" class="btn amber" id="zo">Abrir no WhatsApp</button></div>`);
+  d.querySelector('#zx').onclick = () => d.close();
+  d.querySelector('#zc').onclick = () => navigator.clipboard?.writeText(d.querySelector('#zm').value).then(() => toast('Mensagem copiada'), () => { d.querySelector('#zm').select(); });
+  d.querySelector('#zo').onclick = () => { const num = d.querySelector('#zn').value.replace(/\D/g, ''), tx = d.querySelector('#zm').value; window.open(num ? waLink(num, tx) : 'https://wa.me/?text=' + encodeURIComponent(tx), '_blank', 'noopener'); };
+}
+function openNovaGaleria() {
+  const d = modal(`<div class="row"><h2>Nova galeria</h2></div><p class="sub">Uma por estabelecimento, família ou pessoa. Sobe as fotos, ajusta os preços e manda o link.</p>
+    <div class="fr"><div><label>Nome (quem é)</label><input name="nome" required placeholder="Ex.: Barbearia do Zé" maxlength="60"></div><div><label>Título que o cliente vê</label><input name="titulo" placeholder="Ex.: Fotos da Barbearia do Zé" maxlength="80"></div></div>
+    ${galFilesBox('gfb')}
+    <label>Qualidade das originais</label><select name="q"><option value="1">Reduzidas (3000 px, recomendado: ocupa menos espaço)</option><option value="0">Arquivo original sem mexer</option></select>
+    <div class="sect">Preços <span id="gTot"></span></div><div id="gTier"></div>
+    <div class="sub" id="gProg" style="display:none;margin-top:10px"></div><div class="bar" id="gBar" style="display:none;margin-top:6px"><i style="width:0%"></i></div>
+    <div class="mact"><button type="button" class="btn" id="gCancel">Cancelar</button><div class="sp"></div><button type="button" class="btn primary" id="gGo">Criar galeria e subir fotos</button></div>`, true);
+  const f = d.querySelector('form'); let files = [];
+  const ed = tierEditor(d.querySelector('#gTier'), 1);
+  const get = galFilesInit(d, 'gfb', l => { files = l; ed.redo(Math.max(1, l.length)); d.querySelector('#gTot').textContent = l.length ? l.length + ' fotos' : ''; });
+  d.querySelector('#gCancel').onclick = () => d.close();
+  d.querySelector('#gGo').onclick = async () => {
+    const nome = f.nome.value.trim(), titulo = f.titulo.value.trim() || ('Fotos ' + nome);
+    if (!nome) { toast('Coloca o nome'); f.nome.focus(); return; }
+    if (!files.length) { toast('Escolhe as fotos'); return; }
+    const v = ed.get(); if (v.err) { toast(v.err); return; }
+    const btn = d.querySelector('#gGo'), pr = d.querySelector('#gProg'), bar = d.querySelector('#gBar'); btn.disabled = true; pr.style.display = bar.style.display = 'block';
+    let gid = null;
+    try {
+      const u = (await sb.auth.getUser()).data.user, token = rnd(24);
+      const ins = await sb.from('foto_galerias').insert({ owner: u.id, nome, titulo, token, preco: v.tiers, ativo: true }).select('id,nome,titulo,token,preco').single();
+      if (ins.error) throw ins.error; gid = ins.data.id;
+      const r = await galSobe(gid, files, 0, f.q.value === '1', slugG(nome), (k, t) => { pr.textContent = `Subindo ${k} de ${t}… não fecha essa janela`; bar.firstElementChild.style.width = Math.round(k / t * 100) + '%'; });
+      if (!r.ok) throw new Error('Nenhuma foto subiu. ' + (r.fails[0] || ''));
+      d.close(); await viewFotos();
+      toast(r.fails.length ? `Galeria criada, mas ${r.fails.length} foto(s) falharam` : 'Galeria criada');
+      openZap(ins.data, r.ok);
+    } catch (e) { fail(e); btn.disabled = false; pr.textContent = 'Deu erro: ' + (e.message || e); if (gid) { pr.textContent += ' (a galeria ficou criada, abre ela na lista e usa "+ Fotos")'; viewFotos(); } }
+  };
+}
+function openPrecos(g, n) {
+  const d = modal(`<div class="row"><h2>Preços · ${esc(g.nome || g.titulo)}</h2></div><p class="sub">${n} foto${n === 1 ? '' : 's'} na galeria. O desconto é calculado sobre o preço da foto avulsa.</p><div id="pT"></div>
+    <div class="mact"><button type="button" class="btn" id="pX">Cancelar</button><div class="sp"></div><button type="button" class="btn primary" id="pS">Salvar preços</button></div>`);
+  const ed = tierEditor(d.querySelector('#pT'), n, g.preco);
+  d.querySelector('#pX').onclick = () => d.close();
+  d.querySelector('#pS').onclick = async () => { const v = ed.get(); if (v.err) { toast(v.err); return; } const r = await sb.from('foto_galerias').update({ preco: v.tiers }).eq('id', g.id); if (r.error) return fail(r.error); d.close(); toast('Preços salvos'); viewFotos(); };
+}
+function openAddFotos(g, n) {
+  const d = modal(`<div class="row"><h2>+ Fotos · ${esc(g.nome || g.titulo)}</h2></div><p class="sub">Hoje tem ${n}. Máximo ${GAL_MAX} por vez.</p>${galFilesBox('gfb2')}
+    <label>Qualidade das originais</label><select name="q"><option value="1">Reduzidas (3000 px)</option><option value="0">Arquivo original sem mexer</option></select>
+    <div class="sub" id="gProg" style="display:none;margin-top:10px"></div><div class="bar" id="gBar" style="display:none;margin-top:6px"><i style="width:0%"></i></div>
+    <div class="mact"><button type="button" class="btn" id="aX">Cancelar</button><div class="sp"></div><button type="button" class="btn primary" id="aGo">Subir fotos</button></div>`);
+  let files = []; galFilesInit(d, 'gfb2', l => { files = l; });
+  d.querySelector('#aX').onclick = () => d.close();
+  d.querySelector('#aGo').onclick = async () => {
+    if (!files.length) { toast('Escolhe as fotos'); return; }
+    const btn = d.querySelector('#aGo'), pr = d.querySelector('#gProg'), bar = d.querySelector('#gBar'); btn.disabled = true; pr.style.display = bar.style.display = 'block';
+    try {
+      const mx = await sb.from('foto_itens').select('pos,nome').eq('galeria_id', g.id).order('pos', { ascending: false }).limit(1);
+      const pos0 = mx.data && mx.data[0] ? mx.data[0].pos + 1 : 0;
+      const r = await galSobe(g.id, files, pos0, d.querySelector('[name=q]').value === '1', slugG(g.nome || g.titulo), (k, t) => { pr.textContent = `Subindo ${k} de ${t}…`; bar.firstElementChild.style.width = Math.round(k / t * 100) + '%'; });
+      d.close(); await viewFotos(); toast(`${r.ok} foto(s) adicionada(s)${r.fails.length ? ', ' + r.fails.length + ' falharam' : ''}`);
+      if (r.ok) { const g2 = F.fotos.g.find(x => x.id === g.id); if (g2) openPrecos(g2, n + r.ok); }
+    } catch (e) { fail(e); btn.disabled = false; pr.textContent = 'Deu erro: ' + (e.message || e); }
+  };
+}
+async function galToggle(g) { const r = await sb.from('foto_galerias').update({ ativo: !g.ativo }).eq('id', g.id); if (r.error) return fail(r.error); toast(g.ativo ? 'Link desativado' : 'Link ativado'); viewFotos(); }
+async function galDel(g, nPed) {
+  if (nPed) { toast('Essa galeria já tem pedidos. Desativa o link em vez de excluir.'); return; }
+  if (!confirm(`Excluir "${g.nome || g.titulo}" e todas as fotos dela? Não dá pra desfazer.`)) return;
+  try {
+    const it = await sb.from('foto_itens').select('drive_id').eq('galeria_id', g.id); if (it.error) throw it.error;
+    const paths = (it.data || []).map(x => x.drive_id).filter(x => /^sb:/.test(x)).map(x => x.slice(3));
+    for (let i = 0; i < paths.length; i += 50) { const part = paths.slice(i, i + 50); await sb.storage.from('fotos-previa').remove(part); await sb.storage.from('fotos-originais').remove(part); }
+    const a = await sb.from('foto_itens').delete().eq('galeria_id', g.id); if (a.error) throw a.error;
+    const b = await sb.from('foto_galerias').delete().eq('id', g.id); if (b.error) throw b.error;
+    toast('Galeria excluída'); viewFotos();
+  } catch (e) { fail(e); }
+}
+
+
 // ---------- foco (TDAH): blocos de 30 min, XP, sequência e recompensas ----------
 const FOCUS_MIN = 30, BREAK_MIN = 5, MINI_MIN = 5, DAY_GOAL = 4, LVL_XP = 600, RING = 2 * Math.PI * 88;
 const DEF_REWARDS = ['☕ Um café especial', '🎮 15 min de jogo, sem culpa', '🎧 Uma música favorita no volume alto', '🚶 5 min de caminhada', '🍫 Um docinho'];
@@ -2793,16 +2995,18 @@ const FOTO_FN = CFG.url + '/functions/v1/fotos';
 const fotoDT = d => d ? new Date(d).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
 async function viewFotos() {
   if (!F.fotos) $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Carregando pedidos…')}</div>`;
-  const [g, p] = await Promise.all([
-    sb.from('foto_galerias').select('id,nome,titulo,token,ativo,created_at').order('created_at'),
-    sb.from('foto_pedidos').select('id,galeria_id,qtd,valor,status,cliente_nome,whatsapp,created_at,paid_at,pix_expira,asaas_id').order('created_at', { ascending: false }).limit(500)
+  const [g, p, it] = await Promise.all([
+    sb.from('foto_galerias').select('id,nome,titulo,token,ativo,created_at,preco').order('created_at'),
+    sb.from('foto_pedidos').select('id,galeria_id,qtd,valor,status,cliente_nome,whatsapp,created_at,paid_at,pix_expira,asaas_id').order('created_at', { ascending: false }).limit(500),
+    sb.from('foto_itens').select('galeria_id').limit(5000)
   ]);
   if (S.view !== 'fotos') return;
   if (g.error || p.error) { fail(g.error || p.error); return; }
-  F.fotos = { g: g.data, p: p.data }; paintFotos();
+  const n = {}; (it.data || []).forEach(x => { n[x.galeria_id] = (n[x.galeria_id] || 0) + 1; });
+  F.fotos = { g: g.data, p: p.data, n }; paintFotos();
 }
 function paintFotos() {
-  const { g, p } = F.fotos, flt = F.fotoF || 'pago', G = Object.fromEntries(g.map(x => [x.id, x]));
+  const { g, p, n: NF = {} } = F.fotos, flt = F.fotoF || 'pago', G = Object.fromEntries(g.map(x => [x.id, x]));
   const pagos = p.filter(x => x.status === 'pago'), pend = p.filter(x => x.status === 'pendente'), erro = p.filter(x => x.status === 'erro');
   const rec = pagos.reduce((s, x) => s + +x.valor, 0), nfotos = pagos.reduce((s, x) => s + (+x.qtd || 0), 0);
   const L = flt === 'todos' ? p : p.filter(x => x.status === flt);
@@ -2811,7 +3015,7 @@ function paintFotos() {
   const stat = x => x.status === 'pago' ? '<span class="badge ok">Pago</span>'
     : x.status === 'pendente' ? (x.pix_expira && new Date(x.pix_expira) < new Date() ? '<span class="badge">Pix expirou</span>' : '<span class="badge warn">Aguardando Pix</span>')
     : '<span class="badge warn">Erro</span>';
-  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<a class="btn amber" href="https://drive.google.com/drive/folders/1k94hRZ2Xm1CB6mpto-TlGgvSpNT4BeCg?usp=sharing" target="_blank" rel="noopener">Pasta das fotos no Drive</a><button class="btn" id="fRef">Atualizar</button>`)}
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<button class="btn primary" id="gNew">+ Nova galeria</button><a class="btn" href="https://drive.google.com/drive/folders/1k94hRZ2Xm1CB6mpto-TlGgvSpNT4BeCg?usp=sharing" target="_blank" rel="noopener">Pasta das fotos no Drive</a><button class="btn" id="fRef">Atualizar</button>`)}
   <div class="kpis3">
     <div class="kpi"><span>Recebido (bruto)</span><b>${BRL(rec)}</b><em>antes da taxa do Asaas</em></div>
     <div class="kpi"><span>Pedidos pagos</span><b>${pagos.length}</b><em>${nfotos} ${nfotos === 1 ? 'foto vendida' : 'fotos vendidas'}</em></div>
@@ -2819,13 +3023,20 @@ function paintFotos() {
     <div class="kpi"><span>Ticket médio</span><b>${BRL(pagos.length ? rec / pagos.length : 0)}</b><em>por pedido pago</em></div>
   </div>
   <div class="card" style="margin-top:12px"><div class="row"><h2 class="h2">Links por grupo</h2></div>
-    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
+    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${NF[x.id] || 0} fotos · ${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><div class="gact"><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button><button class="btn small" data-gz="${x.id}">WhatsApp</button><button class="btn small ghost" data-gp="${x.id}">Preços</button><button class="btn small ghost" data-ga="${x.id}">+ Fotos</button><button class="btn small ghost" data-gt="${x.id}">${x.ativo ? 'Desativar' : 'Ativar'}</button><button class="btn small ghost" data-gd="${x.id}">Excluir</button></div></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
   </div>
   <div class="row" style="margin:22px 0 10px"><h2 class="h2">Pedidos</h2><div class="sp"></div><div class="seg" id="fSeg">${FL.map(([k, l]) => `<button type="button" data-f="${k}" class="${flt === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
   <div class="card">${L.length ? L.map(x => { const ga = G[x.galeria_id]; return `<div class="row" style="padding:9px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap;align-items:center"><div style="min-width:0;flex:1 1 220px"><b>${esc(x.cliente_nome || 'Sem nome')}</b> <span class="sub">· ${esc(ga ? (ga.nome || ga.titulo) : '')}</span><div class="sub">${x.qtd} ${x.qtd === 1 ? 'foto' : 'fotos'} · pedido ${fotoDT(x.created_at)}${x.paid_at ? ' · pago ' + fotoDT(x.paid_at) : ''}</div></div><b>${BRL(x.valor)}</b>${stat(x)}${x.whatsapp ? `<a class="btn small ghost" href="${waLink(x.whatsapp, '')}" target="_blank" rel="noopener">WhatsApp</a>` : ''}${x.status === 'pendente' && ga ? `<button class="btn small" data-chk="${x.id}" data-tok="${esc(ga.token)}">Conferir no Asaas</button>` : ''}</div>`; }).join('') : '<div class="sub" style="padding:6px 0">Nenhum pedido nesse filtro.</div>'}</div>
   </div>`;
   $('#fRef').onclick = () => viewFotos();
   $$('#fSeg [data-f]').forEach(b => b.onclick = () => { F.fotoF = b.dataset.f; paintFotos(); });
+  const gg = id => g.find(y => y.id === id), npe = id => p.filter(o => o.galeria_id === id).length;
+  $('#gNew').onclick = openNovaGaleria;
+  $$('[data-gz]').forEach(b => b.onclick = () => openZap(gg(b.dataset.gz), NF[b.dataset.gz] || 0));
+  $$('[data-gp]').forEach(b => b.onclick = () => openPrecos(gg(b.dataset.gp), NF[b.dataset.gp] || 0));
+  $$('[data-ga]').forEach(b => b.onclick = () => openAddFotos(gg(b.dataset.ga), NF[b.dataset.ga] || 0));
+  $$('[data-gt]').forEach(b => b.onclick = () => galToggle(gg(b.dataset.gt)));
+  $$('[data-gd]').forEach(b => b.onclick = () => galDel(gg(b.dataset.gd), npe(b.dataset.gd)));
   $$('[data-cp]').forEach(b => b.onclick = () => { const x = g.find(y => y.id === b.dataset.cp); navigator.clipboard?.writeText(link(x)).then(() => toast('Link copiado'), () => prompt('Copie o link:', link(x))); });
   $$('[data-chk]').forEach(b => b.onclick = async () => {
     b.disabled = true; b.textContent = 'Conferindo…';
