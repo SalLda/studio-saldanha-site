@@ -2598,7 +2598,7 @@ function galMsg(g, n) {
   const t = (g.preco || []).slice().sort((a, b) => a.qtd - b.qtd), link = location.origin + '/escolha/?t=' + g.token;
   const faixas = t.filter(x => x.qtd > 1).map(x => x.qtd === n && n > 1 ? `todas as ${x.qtd} por ${brG(x.preco)}` : `${x.qtd} por ${brG(x.preco)}`);
   const um = t.find(x => x.qtd === 1);
-  return `Oi! Aqui é o Matheus, o fotógrafo que passou aí. Separei as fotos ${g.nome ? 'do(a) ' + g.nome : 'de vocês'} num link privado:\n\n${link}\n\nÉ só tocar nas que gostar e pagar por Pix. Cada uma sai ${um ? brG(um.preco) : ''}${faixas.length ? ', mas quanto mais fotos, menos pesa cada uma: ' + faixas.join(', ') : ''}. As originais, sem marca d'água, liberam na hora do pagamento.`;
+  return `Oi! Aqui é o Matheus, o fotógrafo que passou aí. Separei as fotos ${g.nome ? 'de ' + g.nome : 'de vocês'} num link privado:\n\n${link}\n\nÉ só tocar nas que gostar e pagar por Pix. Cada uma sai ${um ? brG(um.preco) : ''}${faixas.length ? ', mas quanto mais fotos, menos pesa cada uma: ' + faixas.join(', ') : ''}. As originais, sem marca d'água, liberam na hora do pagamento.`;
 }
 function openZap(g, n, zap) {
   const d = modal(`<div class="row"><h2>Mensagem pro WhatsApp</h2></div><p class="sub">Edita se quiser. Copia e cola, ou abre direto na conversa.</p><textarea id="zm" rows="9" style="width:100%">${esc(galMsg(g, n))}</textarea><label>WhatsApp do cliente (opcional)</label><input id="zn" inputmode="tel" placeholder="(53) 90000-0000" value="${esc(zap || '')}">
