@@ -183,6 +183,8 @@ function sync(){
   if(por<de)hint+=' · você economiza '+brl(de-por);
   const nxt=G.preco.map(t=>({q:+t.qtd,c:Math.round(t.preco*100)})).filter(t=>t.q>n).sort((a,b)=>a.q-b.q)[0];
   if(nxt&&nxt.q-n<=3){const r=nxt.q-n;hint+=nxt.c<=por?' · leva '+nxt.q+' pelo mesmo preço':' · mais '+r+' e o pacote de '+nxt.q+' sai '+brl(nxt.c)}
+  const tot=G.itens.length;
+  if(!(nxt&&nxt.q-n<=3)&&n<tot&&n>=2){const pa=melhor(tot,G.preco);if(pa<=por)hint+=' · leva todas as '+tot+' pelo mesmo preço';else if(pa-por<=por*0.6)hint+=' · todas as '+tot+' saem '+brl(pa)}
   $('#bhint').textContent=hint;bar.classList.add('show');
 }
 
@@ -274,7 +276,7 @@ function showPix(id,s){
   },3500);
 }
 
-function dlUrl(id){return 'https://drive.google.com/uc?export=download&id='+encodeURIComponent(id)}
+function dlUrl(id,nome){if(/^sb:/.test(id))return SB+'/storage/v1/object/public/fotos-originais/'+id.slice(3).split('/').map(encodeURIComponent).join('/')+'?download='+encodeURIComponent(nome||'foto.jpg');return 'https://drive.google.com/uc?export=download&id='+encodeURIComponent(id)}
 function showPaid(id,s){
   stopPoll();PAID={id,s};
   if(!$('#grid'))render();
@@ -282,10 +284,10 @@ function showPaid(id,s){
   const list=(s.itens||[]);
   openSheet('<div class="center"><div class="okmark"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>'
    +'<h2>Pagamento confirmado</h2><p>Valeu demais! Aqui estão tuas fotos em alta qualidade.</p></div>'
-   +list.map(x=>'<div class="dl"><img src="'+esc(byName[x.nome]?byName[x.nome].preview:'')+'" alt=""><span>'+esc(x.nome)+'</span><a href="'+dlUrl(x.drive_id)+'" rel="noopener">Baixar</a></div>').join('')
+   +list.map(x=>'<div class="dl"><img src="'+esc(byName[x.nome]?byName[x.nome].preview:'')+'" alt=""><span>'+esc(x.nome)+'</span><a href="'+dlUrl(x.drive_id,x.nome)+'" rel="noopener">Baixar</a></div>').join('')
    +(list.length>1?'<button class="btn" id="all" style="width:100%;margin-top:10px">Baixar todas</button>':'')
    +'<p class="note">Guarda esse link: ele continua liberando as fotos que tu comprou. Se o navegador bloquear vários downloads, baixa uma por uma. Qualquer problema, chama no <a class="link" href="'+WA+'">WhatsApp</a>.</p>');
-  const all=$('#all');if(all)all.onclick=()=>{list.forEach((x,i)=>setTimeout(()=>{const a=document.createElement('a');a.href=dlUrl(x.drive_id);a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},i*900))};
+  const all=$('#all');if(all)all.onclick=()=>{list.forEach((x,i)=>setTimeout(()=>{const a=document.createElement('a');a.href=dlUrl(x.drive_id,x.nome);a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},i*900))};
   try{localStorage.setItem('fp_'+TOKEN,id)}catch(e){}
   history.replaceState(null,'','#p='+id);
   sync();
