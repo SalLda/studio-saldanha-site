@@ -479,6 +479,9 @@ details.fold .wrap2{padding:6px 14px 14px}
 @keyframes cfall{to{transform:translateY(110vh) rotate(720deg);opacity:1}}
 @keyframes celin{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 
+.lrow{display:flex;gap:6px;margin:6px 0;align-items:center}.lrow input{flex:1;margin:0}.lseg{flex-wrap:wrap;margin:10px 0}.lseg button{flex:0 0 auto}
+dialog .fold{margin:8px 0}
+
 </style>
 </head>
 <body>
@@ -518,7 +521,7 @@ details.fold .wrap2{padding:6px 14px 14px}
 </div>
 
 <dialog id="postDlg" class="wide"><form method="dialog" id="postForm">
-  <div class="row"><h2 id="postTitle">Post</h2><div class="sp"></div><span id="postStageBadge"></span></div>
+  <div class="row"><h2 id="postTitle">Post</h2><div class="sp"></div><button type="button" class="btn small ghost" id="postLists">⚙ Listas</button><span id="postStageBadge"></span></div>
   <div class="fr3">
     <div><label>Data de publicação</label><input type="date" name="publish_date"><div class="sub" style="font-size:12px">Vazia: a data entra sozinha quando o cliente aprovar a pauta.</div></div>
     <div><label>Formato</label><select name="format"><option value="reels">Reels</option><option value="carrossel">Carrossel</option><option value="estatico">Estático</option><option value="stories">Stories</option></select></div>
@@ -640,7 +643,7 @@ const STAGES = [
 const STG = Object.fromEntries(STAGES.map((s, i) => [s[0], { i, key: s[0], label: s[1], who: s[2], tip: s[3], action: s[4] }]));
 const NEXT = { pauta: 'pauta_aprovar', copy: 'copy_aprovar', producao: 'edicao', edicao: 'revisao', revisao: 'post_aprovar', agendar: 'agendado', agendado: 'publicado' };
 const CLIENT_STAGES = ['pauta_aprovar', 'copy_aprovar', 'post_aprovar'];
-const FMT = { reels: 'Reels', carrossel: 'Carrossel', estatico: 'Estático', stories: 'Stories' };
+const FMT = soft({ reels: 'Reels', carrossel: 'Carrossel', estatico: 'Estático', stories: 'Stories' });
 const DEFAULT_CLIENTS = [
   { name: 'Weinerth', niche: 'Médico veterinário', position: 1 },
   { name: 'Clínica Varela', instagram: 'clinicavarelapelotas', niche: 'Médico', position: 2 },
@@ -965,7 +968,7 @@ const assetOf = c => ((c.planner_url || '').match(/asset_id=(\d+)/) || [])[1] ||
 const metaPlanner = c => c.planner_url || 'https://business.facebook.com/latest/content_calendar';
 const metaComposer = c => { const a = assetOf(c); return a ? `https://business.facebook.com/latest/composer/?asset_id=${a}` : metaPlanner(c); };
 const DOW = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-const FUN = { topo: 'topo de funil', meio: 'meio de funil', fundo: 'fundo de funil' };
+const FUN = soft({ topo: 'topo de funil', meio: 'meio de funil', fundo: 'fundo de funil' });
 function stKind(st) { return st === 'publicado' || st === 'agendado' ? 'done' : CLIENT_STAGES.includes(st) ? 'ready' : st === 'pauta' ? 'todo' : 'wip'; }
 function schedHtml(c, inMonth, undated, start, end) {
   const used = new Set(inMonth.map(x => x.publish_date)), today = todayS(), rows = [];
@@ -1092,7 +1095,7 @@ function openPost(p) {
   editingPost = p && p.id ? p : null; media = [...(p?.media || [])];
   $('#postTitle').textContent = editingPost ? 'Editar peça' : 'Nova pauta';
   postForm.reset();
-  postForm.publish_date.value = p?.publish_date || ''; postForm.format.value = p?.format || 'carrossel';
+  ensureOpt(postForm.format, p?.format, FMT[p?.format]); ensureOpt(postForm.funnel, p?.funnel, FUN[p?.funnel]); ensureOpt(postForm.status, p?.status, STG[p?.status]?.label); postForm.publish_date.value = p?.publish_date || ''; postForm.format.value = p?.format || (LST().formats.some(x => x.k === 'carrossel') ? 'carrossel' : LST().formats[0].k);
   ['title', 'objective', 'pillar', 'funnel', 'relation', 'copy', 'script', 'notes', 'permalink'].forEach(k => postForm[k].value = p?.[k] || '');
   cover = p?.cover || null; renderCover();
   postForm.status.value = p?.status || 'pauta';
@@ -1373,6 +1376,7 @@ const swDlg=$('#swDlg'), swForm=$('#swForm'); let editingSw=null;
 function viewSw(x){ const em=swEmbed(x.example_url); $('#swVT').textContent=x.title; $('#swVB').innerHTML=em?`<iframe src="${esc(em)}captioned/" title="${esc(x.title)}" allowtransparency="true" scrolling="yes"></iframe>`:'<div class="empty">Sem prévia. Use Abrir no Instagram.</div>'; $('#swView').showModal(); }
 $('#swVClose').onclick=()=>{ $('#swVB').innerHTML=''; $('#swView').close(); };
 function openSw(x){ editingSw=x&&x.id?x:null; swForm.reset(); const m=swM(x);
+  ensureOpt(swForm.format, x&&x.format); ensureOpt(swForm.funnel, x&&x.funnel, FUN[x&&x.funnel]);
   ['niche','format','title','hook','structure','why','example_url','funnel','theme'].forEach(k=>{ if(x&&x[k]!=null)swForm[k].value=x[k]; });
   swForm.objetivo.value=m.objetivo||''; swForm.medir.value=m.medir||''; swForm.notas.value=m.notas||''; swForm.slides.value=String(m.slides||'');
   $('#swNL').innerHTML=swNiches().map(n=>`<option value="${esc(n)}">`).join('');
@@ -1447,6 +1451,7 @@ const gDlg = $('#gDlg'), gForm = $('#gForm'); let editingGoal = null, goalClient
 function openGoal(c, g) {
   goalClient = c; editingGoal = g && g.id ? g : null; gForm.reset();
   $('#gMl').innerHTML = [...new Set([...G_METRICS, ...(S.snaps || []).map(x => x.metric)])].map(m => `<option value="${esc(m)}">`).join('');
+  ensureOpt(gForm.funnel, g && g.funnel, FUN[g && g.funnel]); ensureOpt(gForm.platform, g && g.platform);
   ['metric', 'funnel', 'platform', 'start_value', 'target_value', 'deadline'].forEach(k => { if (g && g[k] != null) gForm[k].value = g[k]; });
   $('#gDel').classList.toggle('hidden', !editingGoal); gDlg.showModal();
 }
@@ -1515,7 +1520,7 @@ async function loadV2() {
   ];
   const r = await Promise.all(q); r.forEach(x => { if (x.error) throw x.error; });
   [F.rec, F.ent, F.debts, , F.tasks, F.tpl, F.offers, F.leads, F.docs] = r.map(x => x.data || []);
-  F.set = {}; (r[3].data || []).forEach(s => F.set[s.key] = s.value);
+  F.set = {}; (r[3].data || []).forEach(s => F.set[s.key] = s.value); try { applyLists(); } catch (e) { console.error(e); }
   // saldo e fatura somam tudo que foi pago desde a data de referência; busca o que ficou de fora do período carregado
   const ref = [F.set.opening?.date, F.set.fatura?.date].filter(Boolean).sort()[0];
   if (ref && ref < from) { const x = await sb.from('fin_entries').select('*').lt('date', from).gte('paid_on', ref); if (x.error) throw x.error; F.ent.unshift(...(x.data || [])); }
@@ -2626,7 +2631,7 @@ function viewInicio() {
     <div class="gpill"><span class="bdots big" style="margin-bottom:3px">${Array.from({ length: nDots }, (_, i) => `<i class="${i < (dd.b || 0) ? 'on' : ''}"></i>`).join('')}</span><span>${dd.b || 0}/${DAY_GOAL} blocos hoje</span></div></div>
    <div class="nudge">${esc(nudge(f, dd))}</div>
    <div id="fArea"></div>
-   <div class="row" style="margin-top:12px"><button type="button" class="btn small ghost" id="rwBtn">🎁 Recompensas</button><div class="sp"></div><a href="#" data-go="tarefas">todas as tarefas ›</a></div>
+   <div class="row" style="margin-top:12px"><button type="button" class="btn small ghost" id="rwBtn">🎁 Recompensas</button><button type="button" class="btn small ghost" id="lsBtn">⚙ Listas</button><div class="sp"></div><a href="#" data-go="tarefas">todas as tarefas ›</a></div>
   </section>
   <div class="chips3">
    <button type="button" data-go="financeiro"><span>Saldo na conta</span><b>${BRL(bal)}</b></button>
@@ -2635,7 +2640,7 @@ function viewInicio() {
   </div>
   <details class="fold" data-k="in-din"><summary>Dinheiro e contas</summary><div id="oldInicio"></div></details></div>`;
   $$('#main [data-go]').forEach(a => a.onclick = ev => { ev.preventDefault(); setView(a.dataset.go); });
-  $('#rwBtn').onclick = openRewards; foldBind($('#main')); drawFocus(); if (TM.get()) startTick();
+  $('#rwBtn').onclick = openRewards; $('#lsBtn').onclick = () => openListas(); foldBind($('#main')); drawFocus(); if (TM.get()) startTick();
   const det = $('#main details[data-k="in-din"]'), load = () => { if (det.open && !det._l) { det._l = 1; viewInicioMais(); } }; det.addEventListener('toggle', load); load();
 }
 // --- Tarefas: hoje em cima, o resto guardado ---
@@ -2688,6 +2693,99 @@ function startFold() {
   foldObs = new MutationObserver(() => { if (foldBusy || q) return; q = requestAnimationFrame(() => { q = 0; autoFold(); }); });
   foldObs.observe(main, { childList: true, subtree: true }); autoFold();
   const pill = document.createElement('div'); pill.id = 'tmPill'; pill.className = 'hidden'; pill.onclick = () => setView('inicio'); document.body.appendChild(pill);
+}
+
+// ---------- listas editáveis (formatos, funil, pilares, etapas...) ----------
+function soft(o) { return new Proxy(o, { get: (t, k) => (k in t) ? t[k] : (typeof k === 'string' && k && k !== 'null' && k !== 'undefined' && k !== 'toJSON' && k !== 'then' ? k : undefined) }); }
+const L0 = {
+  formats: [['reels', 'Reels'], ['carrossel', 'Carrossel'], ['estatico', 'Estático'], ['stories', 'Stories']].map(([k, l]) => ({ k, l })),
+  funnel: [['topo', 'Topo'], ['meio', 'Meio'], ['fundo', 'Fundo']].map(([k, l]) => ({ k, l })),
+  pillars: ['Educativo', 'Bastidor', 'Prova / resultado', 'Posicionamento', 'Comercial', 'Relacionamento', 'Mito × fato'],
+  platforms: ['Instagram', 'TikTok', 'YouTube', 'Google', 'Site', 'WhatsApp'],
+  niches: SW_NICHES.slice(), metrics: G_METRICS.slice(), stages: {}, leads: {}
+};
+const STAGES0 = STAGES.map(s => s.slice()), LEADST0 = LEADST.map(s => s.slice()), GF_DESC = Object.fromEntries(GF.map(g => [g[0], g[2]])), FUN_BASE = ['topo', 'meio', 'fundo'];
+const LST = () => { const s = F.set.listas || {}; const o = {}; for (const k of Object.keys(L0)) o[k] = s[k] != null ? s[k] : L0[k]; return JSON.parse(JSON.stringify(o)); };
+function fillSel(sel, html) { if (!sel) return; const v = sel.value; sel.innerHTML = html; if (v && [...sel.options].some(o => o.value === v)) sel.value = v; }
+function ensureOpt(sel, val, label) { if (sel && val && ![...sel.options].some(o => o.value === val)) sel.insertAdjacentHTML('beforeend', `<option value="${esc(val)}">${esc(label || val)}</option>`); }
+function fillLists() {
+  const s = LST(), pf = $('#postForm'), sf = $('#swForm'), gf = $('#gForm'); if (!pf || !sf || !gf) return;
+  const fu = s.funnel.map(x => `<option value="${esc(x.k)}">${esc(x.l)}</option>`).join('');
+  fillSel(pf.format, s.formats.map(x => `<option value="${esc(x.k)}">${esc(x.l)}</option>`).join(''));
+  fillSel(pf.funnel, '<option value="">Escolher</option>' + fu);
+  fillSel(pf.status, STAGES.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join(''));
+  fillSel(sf.format, s.formats.map(x => `<option value="${esc(x.l)}">${esc(x.l)}</option>`).join(''));
+  fillSel(sf.funnel, '<option value="">—</option>' + fu);
+  fillSel(gf.funnel, '<option value="">—</option>' + fu);
+  fillSel(gf.platform, '<option value="">—</option>' + s.platforms.map(p => `<option>${esc(p)}</option>`).join(''));
+  const pb = $('#postLists'); if (pb) pb.onclick = () => openListas('formats');
+  const pl = $('#pillars'); if (pl) pl.innerHTML = s.pillars.map(p => `<option>${esc(p)}</option>`).join('');
+}
+function applyLists() {
+  const s = LST();
+  Object.keys(FMT).forEach(k => delete FMT[k]); s.formats.forEach(x => { FMT[x.k] = x.l; });
+  Object.keys(FUN).forEach(k => delete FUN[k]); s.funnel.forEach(x => { FUN[x.k] = FUN_BASE.includes(x.k) ? x.l.toLowerCase() + ' de funil' : x.l; });
+  GF.length = 0; s.funnel.forEach(x => GF.push([x.k, FUN_BASE.includes(x.k) ? x.l + ' de funil' : x.l, GF_DESC[x.k] || '']));
+  STAGES.forEach((st, i) => { const o = (s.stages || {})[st[0]] || {}, b = STAGES0[i]; st[1] = o.label || b[1]; st[3] = o.tip || b[3]; st[4] = b[4] === null ? null : (o.action || b[4]); const g = STG[st[0]]; if (g) { g.label = st[1]; g.tip = st[3]; g.action = st[4]; } });
+  LEADST.forEach((x, i) => { x[1] = (s.leads || {})[x[0]] || LEADST0[i][1]; });
+  SW_NICHES.splice(0, SW_NICHES.length, ...s.niches); G_METRICS.splice(0, G_METRICS.length, ...s.metrics);
+  fillLists();
+}
+const slugL = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'item';
+const LTABS = [['formats', 'Formatos'], ['funnel', 'Funil'], ['pillars', 'Pilares'], ['stages', 'Etapas'], ['platforms', 'Plataformas'], ['niches', 'Marcas do swipe'], ['metrics', 'Métricas'], ['leads', 'Leads']];
+const LPAIR = { formats: 1, funnel: 1 }, LHINT = {
+  formats: 'Formatos de conteúdo. Aparecem em "Editar peça", no swipe file e no calendário.',
+  funnel: 'Etapas do funil das peças e das metas.',
+  pillars: 'Sugestões do campo Pilar. Dá pra digitar outro na hora.',
+  platforms: 'Plataformas disponíveis nas metas.',
+  niches: 'Marcas/nichos para filtrar o swipe file.',
+  metrics: 'Sugestões de número a acompanhar nas metas.'
+};
+function openListas(tab0) {
+  const dr = LST(); let tab = tab0 || 'formats';
+  const d = modal(`<div class="row"><h2>Listas e etapas</h2></div><p class="sub">O que aparece nos menus da plataforma. Mudou aqui, muda em todo lugar.</p><div class="seg lseg" id="lTabs"></div><div id="lBody"></div>
+    <div class="mact"><button type="button" class="btn ghost small" id="lReset">Restaurar padrão desta aba</button><div class="sp"></div><button type="button" class="btn" id="lC">Cancelar</button><button type="button" class="btn primary" id="lS">Salvar</button></div>`, true);
+  const body = d.querySelector('#lBody');
+  const addItem = () => { const inp = d.querySelector('#lNew'); const t = inp ? inp.value.trim() : ''; if (!t) return; const arr = dr[tab]; if (LPAIR[tab]) { let k = t, n = 2; while (arr.some(x => x.k === k)) k = t + ' (' + n++ + ')'; arr.push({ k, l: t }); } else if (!arr.includes(t)) arr.push(t); render(); const n2 = d.querySelector('#lNew'); if (n2) n2.focus(); };
+  function render() {
+    d.querySelector('#lTabs').innerHTML = LTABS.map(([k, l]) => `<button type="button" data-lt="${k}" class="${k === tab ? 'on' : ''}">${l}</button>`).join('');
+    if (LHINT[tab]) {
+      const pair = !!LPAIR[tab], arr = dr[tab];
+      body.innerHTML = `<p class="sub">${LHINT[tab]}</p><div>${arr.map((x, i) => `<div class="lrow"><input data-li="${i}" value="${esc(pair ? x.l : x)}" maxlength="60"><button type="button" class="btn small ghost" data-lm="${i}:-1" ${i === 0 ? 'disabled' : ''}>↑</button><button type="button" class="btn small ghost" data-lm="${i}:1" ${i === arr.length - 1 ? 'disabled' : ''}>↓</button><button type="button" class="btn small ghost" data-ld="${i}">✕</button></div>`).join('')}</div>
+        <div class="lrow"><input id="lNew" placeholder="Novo item (Enter pra adicionar)" maxlength="60"><button type="button" class="btn small" id="lAdd">+ Adicionar</button></div><p class="sub" style="font-size:12px">O que já usa um item removido continua como estava.</p>`;
+    } else if (tab === 'stages') {
+      body.innerHTML = `<p class="sub">Nome, instrução e botão de cada etapa do fluxo de produção. A ordem e as regras do fluxo continuam as mesmas.</p>` + STAGES0.map(b => { const o = dr.stages[b[0]] || {}; return `<details class="fold"><summary>${esc(o.label || b[1])} <span class="sub">· ${esc(b[2])}</span></summary><div style="padding:6px 14px 14px"><label>Nome</label><input data-sk="${b[0]}" data-sf="label" value="${esc(o.label || b[1])}" maxlength="40"><label>O que fazer aqui</label><textarea data-sk="${b[0]}" data-sf="tip" rows="2" maxlength="300">${esc(o.tip || b[3])}</textarea>${b[4] === null ? '' : `<label>Texto do botão de avançar</label><input data-sk="${b[0]}" data-sf="action" value="${esc(o.action || b[4])}" maxlength="40">`}</div></details>`; }).join('');
+    } else {
+      body.innerHTML = `<p class="sub">Nome de cada etapa do pipeline de leads (Ofertas).</p>` + LEADST0.map(b => `<label>${esc(b[1])}</label><input data-lk="${b[0]}" value="${esc(dr.leads[b[0]] || b[1])}" maxlength="30">`).join('');
+    }
+  }
+  d.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); if (e.target.id === 'lNew') addItem(); } });
+  d.addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.li != null) { const i = +t.dataset.li; if (LPAIR[tab]) dr[tab][i].l = t.value; else dr[tab][i] = t.value; }
+    else if (t.dataset.sk) { const o = dr.stages[t.dataset.sk] = dr.stages[t.dataset.sk] || {}; o[t.dataset.sf] = t.value; }
+    else if (t.dataset.lk) dr.leads[t.dataset.lk] = t.value;
+  });
+  d.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.lt) { tab = b.dataset.lt; render(); }
+    else if (b.dataset.lm) { const [i, dir] = b.dataset.lm.split(':').map(Number), a = dr[tab], j = i + dir; if (j >= 0 && j < a.length) { [a[i], a[j]] = [a[j], a[i]]; render(); } }
+    else if (b.dataset.ld != null) { if (LPAIR[tab] && dr[tab].length <= 1) { toast('Precisa sobrar pelo menos um'); return; } dr[tab].splice(+b.dataset.ld, 1); render(); }
+    else if (b.id === 'lAdd') addItem();
+    else if (b.id === 'lReset') { if (!confirm('Voltar esta aba pro padrão?')) return; dr[tab] = JSON.parse(JSON.stringify(L0[tab])); render(); }
+    else if (b.id === 'lC') d.close();
+    else if (b.id === 'lS') save();
+  });
+  async function save() {
+    const out = {}; for (const k of Object.keys(dr)) out[k] = dr[k];
+    for (const k of ['formats', 'funnel']) out[k] = out[k].map(x => ({ k: x.k, l: (x.l || '').trim() })).filter(x => x.l);
+    for (const k of ['pillars', 'platforms', 'niches', 'metrics']) out[k] = [...new Set(out[k].map(x => String(x).trim()).filter(Boolean))];
+    if (!out.formats.length) out.formats = L0.formats; if (!out.funnel.length) out.funnel = L0.funnel;
+    for (const k of Object.keys(out.stages || {})) { const o = out.stages[k]; for (const f of Object.keys(o)) o[f] = (o[f] || '').trim(); }
+    for (const k of Object.keys(out.leads || {})) out.leads[k] = (out.leads[k] || '').trim();
+    await saveSet('listas', out); applyLists(); d.close(); toast('Listas salvas'); try { rerenderView(); } catch (_) {}
+  }
+  render();
 }
 
 // ---------- fotos (vendas das galerias privadas) ----------
@@ -2746,7 +2844,7 @@ function buildShell() {
   const bnav = `<nav id="bnav">${items.map(k => `<button data-v="${k}">${NAVI[k]}<span>${NAVL[k]}</span></button>`).join('')}</nav>`;
   $('#appView').insertAdjacentHTML('afterbegin', rail); $('#appView').insertAdjacentHTML('beforeend', bnav);
   $$('#rail [data-v], #bnav [data-v]').forEach(b => b.onclick = () => setView(b.dataset.v));
-  $('#rail .rfoot').append($('#addClient'), $('#logout'));
+  const lb = document.createElement('button'); lb.className = 'btn small ghost'; lb.textContent = 'Listas'; lb.onclick = () => openListas(); $('#rail .rfoot').append($('#addClient'), lb, $('#logout'));
 }
 
 
