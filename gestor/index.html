@@ -2593,11 +2593,12 @@ async function galSobe(gid, files, pos0, reduz, base, onProg) {
   async function one(i) {
     const f = files[i];
     try {
-      const { prev, orig, w, h } = await galPrepara(f, reduz), path = `${gid}/${rnd(14)}.jpg`;
+      const { prev, orig, w, h } = await galPrepara(f, reduz), path = `${gid}/${rnd(14)}.jpg`, opath = `${gid}/${rnd(14)}.jpg`;
       const a = await sb.storage.from('fotos-previa').upload(path, prev, { contentType: 'image/jpeg', upsert: false }); if (a.error) throw a.error;
-      const b = await sb.storage.from('fotos-originais').upload(path, orig, { contentType: 'image/jpeg', upsert: false }); if (b.error) { await sb.storage.from('fotos-previa').remove([path]); throw b.error; }
+      const b = await sb.storage.from('fotos-originais').upload(opath, orig, { contentType: 'image/jpeg', upsert: false }); if (b.error) { await sb.storage.from('fotos-previa').remove([path]); throw b.error; }
       const url = sb.storage.from('fotos-previa').getPublicUrl(path).data.publicUrl;
-      done[i] = { galeria_id: gid, drive_id: 'sb:' + path, nome: `${base}-${String(pos0 + i + 1).padStart(2, '0')}.jpg`, preview: url, w, h, pos: pos0 + i };
+      /* o original tem nome proprio, diferente do preview: quem ve o preview nao consegue achar o original */
+      done[i] = { galeria_id: gid, drive_id: 'sb:' + opath, nome: `${base}-${String(pos0 + i + 1).padStart(2, '0')}.jpg`, preview: url, w, h, pos: pos0 + i };
     } catch (e) { fails.push(f.name + ': ' + (e.message || e)); }
     onProg(++k, files.length);
   }
@@ -2691,9 +2692,11 @@ async function galDel(g, nPed) {
   if (nPed) { toast('Essa galeria já tem pedidos. Desativa o link em vez de excluir.'); return; }
   if (!confirm(`Excluir "${g.nome || g.titulo}" e todas as fotos dela? Não dá pra desfazer.`)) return;
   try {
-    const it = await sb.from('foto_itens').select('drive_id').eq('galeria_id', g.id); if (it.error) throw it.error;
+    const it = await sb.from('foto_itens').select('drive_id,preview').eq('galeria_id', g.id); if (it.error) throw it.error;
     const paths = (it.data || []).map(x => x.drive_id).filter(x => /^sb:/.test(x)).map(x => x.slice(3));
-    for (let i = 0; i < paths.length; i += 50) { const part = paths.slice(i, i + 50); await sb.storage.from('fotos-previa').remove(part); await sb.storage.from('fotos-originais').remove(part); }
+    const prevs = (it.data || []).map(x => String(x.preview || '').split('/fotos-previa/')[1]).filter(Boolean).map(x => decodeURIComponent(x.split('?')[0]));
+    for (let i = 0; i < paths.length; i += 50) await sb.storage.from('fotos-originais').remove(paths.slice(i, i + 50));
+    for (let i = 0; i < prevs.length; i += 50) await sb.storage.from('fotos-previa').remove(prevs.slice(i, i + 50));
     const a = await sb.from('foto_itens').delete().eq('galeria_id', g.id); if (a.error) throw a.error;
     const b = await sb.from('foto_galerias').delete().eq('id', g.id); if (b.error) throw b.error;
     toast('Galeria excluída'); viewFotos();
