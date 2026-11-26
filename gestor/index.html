@@ -2548,13 +2548,13 @@ async function galPrepara(file, reduz) {
   const W = bmp.width, H = bmp.height, side = (long) => { const k = Math.min(1, long / Math.max(W, H)); return [Math.round(W * k), Math.round(H * k)]; };
   const [pw, ph] = side(1000), cv = document.createElement('canvas'); cv.width = pw; cv.height = ph;
   const c = cv.getContext('2d'); c.drawImage(bmp, 0, 0, pw, ph);
-  const fs = Math.max(16, Math.round(pw / 14)); c.font = `700 ${fs}px "Space Grotesk",Arial,sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle';
+  const fs = Math.max(14, Math.round(pw / 22)); c.font = `700 ${fs}px "Space Grotesk",Arial,sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle';
   c.save(); c.translate(pw / 2, ph / 2); c.rotate(-Math.PI / 6);
-  const step = fs * 3.2, wd = Math.hypot(pw, ph);
-  for (let y = -wd; y < wd; y += step) for (let x = -wd; x < wd; x += step * 2.6) {
-    const ox = (Math.round(y / step) % 2) ? step * 1.3 : 0;
-    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillText('omatsaldanha', x + ox + 2, y + 2);
-    c.fillStyle = 'rgba(255,255,255,.42)'; c.fillText('omatsaldanha', x + ox, y);
+  const step = fs * 5.5, wd = Math.hypot(pw, ph);
+  for (let y = -wd; y < wd; y += step) for (let x = -wd; x < wd; x += step * 3.4) {
+    const ox = (Math.round(y / step) % 2) ? step * 1.7 : 0;
+    c.fillStyle = 'rgba(0,0,0,.10)'; c.fillText('omatsaldanha', x + ox + 2, y + 2);
+    c.fillStyle = 'rgba(255,255,255,.26)'; c.fillText('omatsaldanha', x + ox, y);
   }
   c.restore();
   const prev = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.8));
