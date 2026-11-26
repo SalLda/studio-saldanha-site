@@ -118,6 +118,15 @@ main{padding:20px 0 90px}
 .pc .th{aspect-ratio:4/5;background:var(--bg3);background-size:cover;background-position:center;position:relative;display:grid;place-items:center;color:var(--faint);font-family:var(--serif);font-size:15px;padding:18px;text-align:center}
 .pc .th .fmt{position:absolute;left:10px;top:10px;background:rgba(31,28,23,.75);color:#fff;font-size:11px;padding:3px 9px;border-radius:99px;letter-spacing:.04em;font-family:var(--sans)}
 .pc .th .cnt{position:absolute;right:10px;top:10px;background:rgba(31,28,23,.75);color:#fff;font-size:11px;padding:3px 9px;border-radius:99px;font-family:var(--sans)}
+.pc .th .cs{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.pc .th .cs::-webkit-scrollbar{display:none}
+.pc .th .cs img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:start;display:block;-webkit-user-drag:none;user-select:none}
+.pc .th .fmt,.pc .th .cnt{z-index:2}
+.pc .th .cn{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:32px;height:32px;border-radius:50%;border:0;background:rgba(31,28,23,.7);color:#fff;font:600 20px/1 system-ui,sans-serif;display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .15s}
+.pc:hover .th .cn,.pc .th .cn:focus-visible{opacity:1}
+.pc .th .cn:disabled{opacity:0!important;pointer-events:none}
+.pc .th .cn.pv{left:8px}.pc .th .cn.nx{right:8px}
+@media (hover:none){.pc .th .cn{opacity:1}}
 .pc .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .pc h3{font-size:17px;line-height:1.25}
 .pc .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
@@ -689,6 +698,7 @@ const S = { user: null, clients: [], tab: null, month: firstOfMonth(new Date()),
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeUrl = u => { u = String(u ?? '').trim(); if (!u) return '#'; if (/^https?:\/\//i.test(u)) return u; if (/^[a-z][a-z0-9+.\-]*:/i.test(u)) return '#'; return /^[\w.\-]+\.[a-z]{2,}/i.test(u) ? 'https://' + u : '#'; }; // bloqueia javascript:, data: etc. em links vindos de campos digitados
 const fmtN = n => (n ?? 0).toLocaleString('pt-BR');
 const pct = n => isFinite(n) ? (n * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%' : '–';
 function firstOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
@@ -852,7 +862,7 @@ async function renderClient() {
       ${avatar(c, 'xl')}
       <div style="min-width:0"><h1>${esc(c.name)}</h1><div class="sub">${esc([ig && '@' + ig, c.niche].filter(Boolean).join(' · ')) || 'Complete o perfil do cliente'}</div>
         <div class="links">
-          ${c.figma_url ? `<a class="btn small" href="${esc(c.figma_url)}" target="_blank" rel="noopener"><svg width="12" height="16" viewBox="0 0 38 57" aria-hidden="true" style="margin-right:6px"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>Figma</a>` : ''}
+          ${c.figma_url ? `<a class="btn small" href="${esc(safeUrl(c.figma_url))}" target="_blank" rel="noopener"><svg width="12" height="16" viewBox="0 0 38 57" aria-hidden="true" style="margin-right:6px"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>Figma</a>` : ''}
           ${ig ? `<a class="btn small" href="https://www.instagram.com/${esc(ig)}/" target="_blank" rel="noopener">${ICON.ig}Instagram</a>` : ''}
           ${tt ? `<a class="btn small" href="https://www.tiktok.com/@${esc(tt)}" target="_blank" rel="noopener">${ICON.tt}TikTok</a>` : ''}
           ${yt ? `<a class="btn small" href="https://www.youtube.com/@${esc(yt)}" target="_blank" rel="noopener">${ICON.yt}YouTube</a>` : ''}
@@ -929,16 +939,28 @@ async function renderClient() {
   $$('[data-stage]').forEach(b => b.onclick = () => { S.stage = S.stage === b.dataset.stage ? null : b.dataset.stage; rerender(); });
   const cs = $('#clearStage'); if (cs) cs.onclick = () => { S.stage = null; rerender(); };
   const bn = $('#bulkNext'); if (bn) bn.onclick = async () => { const to = NEXT[S.stage]; const ids = list.map(x => x.id); if (!confirm(`Mover ${ids.length} peça(s) para “${STG[to].label}”?`)) return; const { error } = await sb.from('posts').update({ status: to, needs_changes: false }).in('id', ids); if (error) return fail(error); if (CLIENT_STAGES.includes(to)) shareApproval(c, shareUrl); S.stage = to; rerender(); };
-  $$('[data-post]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-adv]')) return; openPost(S.posts.find(p => p.id === el.dataset.post)); }));
+  $$('[data-post]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-adv],[data-csgo]')) return; openPost(S.posts.find(p => p.id === el.dataset.post)); }));
   $$('[data-adv]').forEach(b => b.onclick = () => advance(S.posts.find(p => p.id === b.dataset.adv)));
   renderCalendar(); renderMetrics();
 }
+// carrossel dentro do card do painel: setas, contador e arrastar
+(function () {
+  const idx = cs => Math.max(0, Math.min(cs.children.length - 1, Math.round(cs.scrollLeft / cs.clientWidth)));
+  const sync = cs => { const th = cs.parentElement, i = idx(cs), n = cs.children.length, pv = th.querySelector('.cn.pv'), nx = th.querySelector('.cn.nx'), ct = th.querySelector('.cnt'); if (pv) pv.disabled = i === 0; if (nx) nx.disabled = i === n - 1; if (ct) ct.textContent = (i + 1) + '/' + n; };
+  document.addEventListener('click', e => { const b = e.target.closest('[data-csgo]'); if (!b) return; e.stopPropagation(); const cs = b.parentElement.querySelector('[data-cs]'); if (!cs) return; const i = Math.max(0, Math.min(cs.children.length - 1, idx(cs) + Number(b.dataset.csgo))); cs.scrollTo({ left: i * cs.clientWidth, behavior: 'smooth' }); });
+  document.addEventListener('scroll', e => { const t = e.target; if (t && t.matches && t.matches('[data-cs]')) sync(t); }, { capture: true, passive: true });
+  let dn = null, mv = false;
+  document.addEventListener('pointerdown', e => { const cs = e.target.closest && e.target.closest('[data-cs]'); if (!cs || e.pointerType !== 'mouse' || e.button !== 0) return; dn = { cs, x: e.clientX, l: cs.scrollLeft }; mv = false; });
+  window.addEventListener('pointermove', e => { if (!dn) return; const dx = e.clientX - dn.x; if (Math.abs(dx) > 5) { mv = true; dn.cs.style.scrollSnapType = 'none'; } if (mv) dn.cs.scrollLeft = dn.l - dx; });
+  window.addEventListener('pointerup', () => { if (!dn) return; const cs = dn.cs; dn = null; if (mv) { cs.style.scrollSnapType = ''; cs.scrollTo({ left: idx(cs) * cs.clientWidth, behavior: 'smooth' }); setTimeout(() => { mv = false; }, 0); } });
+  document.addEventListener('click', e => { if (mv && e.target.closest && e.target.closest('[data-cs]')) { e.stopPropagation(); e.preventDefault(); } }, true);
+})();
 function thumbOf(p) { const md = p.media || []; const img = md.find(x => x.type === 'image') || md.find(x => x.poster); return img ? (img.type === 'image' ? img.url : img.poster) : null; }
 function postCard(p) {
-  const st = STG[p.status] || STG.pauta, th = thumbOf(p), md = p.media || [];
+  const st = STG[p.status] || STG.pauta, th = thumbOf(p), md = p.media || [], imgs = md.filter(x => x.type === 'image'), slides = imgs.length > 1 && !md.some(x => x.type === 'video') ? imgs : [];
   const last = (S.approvals || []).find(a => a.post_id === p.id);
   return `<article class="pc k-${p.status}" data-post="${p.id}">
-    <div class="th" ${th ? `style="background-image:url('${esc(th)}')"` : ''}><span class="fmt">${esc(FMT[p.format] || '')}</span>${md.length ? `<span class="cnt">${md.length} arq.</span>` : ''}${th ? '' : esc(p.title || 'Sem título')}</div>
+    <div class="th" ${th && !slides.length ? `style="background-image:url('${esc(th)}')"` : ''}>${slides.length ? `<div class="cs" data-cs>${slides.map((m, i) => `<img src="${esc(m.url)}" alt="" ${i ? 'loading="lazy"' : ''} decoding="async" draggable="false">`).join('')}</div><button type="button" class="cn pv" data-csgo="-1" aria-label="Card anterior" disabled>‹</button><button type="button" class="cn nx" data-csgo="1" aria-label="Próximo card">›</button>` : ''}<span class="fmt">${esc(FMT[p.format] || '')}</span>${md.length ? `<span class="cnt">${slides.length ? '1/' + slides.length : md.length + ' arq.'}</span>` : ''}${th ? '' : esc(p.title || 'Sem título')}</div>
     <div class="bd"><div class="meta"><span class="badge">${fmtD(p.publish_date)}</span><span class="badge stg">${esc(st.label)}</span>${p.round > 1 ? `<span class="badge">Rodada ${p.round}</span>` : ''}</div>
       <h3>${esc(p.title || '(sem título)')}</h3>
       ${p.objective ? `<div class="sub">🎯 ${esc(p.objective)}</div>` : ''}
@@ -1018,7 +1040,7 @@ let progDlg = null;
 function openProgram(c, L) {
   if (!progDlg) { progDlg = document.createElement('dialog'); progDlg.className = 'wide'; document.body.appendChild(progDlg); }
   L = L.slice().sort((a, b) => String(a.publish_date).localeCompare(String(b.publish_date)));
-  const files = x => (x.media || []).map((m, i) => `<a class="btn small" href="${esc(m.url)}" download target="_blank" rel="noopener">${m.type === 'video' ? 'Vídeo' : 'Imagem ' + (i + 1)}</a>`).join('') + (x.cover ? `<a class="btn small" href="${esc(x.cover.url)}" download target="_blank" rel="noopener">Capa</a>` : '');
+  const files = x => (x.media || []).map((m, i) => `<a class="btn small" href="${esc(safeUrl(m.url))}" download target="_blank" rel="noopener">${m.type === 'video' ? 'Vídeo' : 'Imagem ' + (i + 1)}</a>`).join('') + (x.cover ? `<a class="btn small" href="${esc(safeUrl(x.cover.url))}" download target="_blank" rel="noopener">Capa</a>` : '');
   progDlg.innerHTML = `<form method="dialog"><div class="row"><h2>Programar posts · ${esc(c.name)}</h2><div class="sp"></div><button class="btn ghost" value="x">Fechar</button></div>
     <p class="sub" style="margin:6px 0 10px">Abre o Meta Business Suite do cliente com a tua conta, uma aba por post. Em cada aba: cola a legenda, sobe o vídeo ou o carrossel e a capa, e agenda no dia indicado. Se só abrir uma aba, permite pop-ups de omatsaldanha.com no Chrome (ícone na barra de endereço) e clica de novo.</p>
     <div class="row" style="gap:8px;margin-bottom:6px"><button type="button" class="btn amber" id="openAll">Abrir ${L.length} ${L.length === 1 ? 'aba' : 'abas'} no Meta</button><a class="btn small" href="${esc(metaPlanner(c))}" target="_blank" rel="noopener">Abrir Planejador</a></div>
@@ -1242,7 +1264,7 @@ function renderMetrics(){
   else if(s.shares>0) ins.push(`O público mais <b>compartilha</b> (${fmtN(s.shares)}) do que salva (${fmtN(s.saves)}): a identificação está forte; transforme os melhores em carrossel de consulta.`);
   if(p.n&&isFinite(p.avgReach)&&p.avgReach>0){ const d=(s.avgReach-p.avgReach)/p.avgReach; ins.push(`Alcance médio por post ${d>=0?'subiu':'caiu'} ${pct(Math.abs(d))} em relação ao mês anterior.`); }
   if(topER[0]) ins.push(`Post com melhor engajamento: “${esc((topER[0].caption||'').slice(0,70))}…” (${pct(topER[0]._er)}). Vale repetir o gancho ou o formato.`);
-  const row=x=>`<tr><td>${x.permalink?`<a href="${esc(x.permalink)}" target="_blank" rel="noopener">${esc((x.caption||'(sem legenda)').slice(0,60))}</a>`:esc((x.caption||'').slice(0,60))}<div class="sub">${esc(typeLabel(x.post_type))} · ${x.published_at?new Date(x.published_at).toLocaleDateString('pt-BR'):''}</div></td><td class="num">${fmtN(x.reach)}</td><td class="num">${pct(x._er)}</td></tr>`;
+  const row=x=>`<tr><td>${x.permalink?`<a href="${esc(safeUrl(x.permalink))}" target="_blank" rel="noopener">${esc((x.caption||'(sem legenda)').slice(0,60))}</a>`:esc((x.caption||'').slice(0,60))}<div class="sub">${esc(typeLabel(x.post_type))} · ${x.published_at?new Date(x.published_at).toLocaleDateString('pt-BR'):''}</div></td><td class="num">${fmtN(x.reach)}</td><td class="num">${pct(x._er)}</td></tr>`;
   el.innerHTML=`
     <div class="kpis" style="margin-top:14px">
       <div class="kpi"><span>Posts analisados</span><b>${s.n}</b>${p.n?`<em class="sub">${p.n} no mês anterior</em>`:''}</div>
@@ -1361,7 +1383,7 @@ function swCard(x){ const m=swM(x), sl=swSlides(x), em=swEmbed(x.example_url), c
       ${x.engagement?`<div class="sub">📈 ${esc(x.engagement)}</div>`:''}
       ${x.hook?`<div class="hook">${esc(x.hook)}</div>`:''}
       ${row('Objetivo',m.objetivo)}${row('O que medir',m.medir)}${row('Estrutura',x.structure)}${row('Por que funciona',x.why)}${row('Notas',m.notas)}
-      <div class="act">${x.example_url?`<button class="btn small" data-view="${x.id}">${car?'Ver carrossel':'Ver post'}</button><a class="btn small ghost" href="${esc(x.example_url)}" target="_blank" rel="noopener">Abrir no Instagram</a>`:''}<button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
+      <div class="act">${x.example_url?`<button class="btn small" data-view="${x.id}">${car?'Ver carrossel':'Ver post'}</button><a class="btn small ghost" href="${esc(safeUrl(x.example_url))}" target="_blank" rel="noopener">Abrir no Instagram</a>`:''}<button class="btn small ghost" data-edit="${x.id}">Editar</button></div>
     </article>`; }
 async function renderSwipe(){
   await swSeedOmat();
