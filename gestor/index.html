@@ -644,6 +644,7 @@ dialog .fold{margin:8px 0}
 <script src="/gestor/vendor/supabase.js"></script>
 <script src="/gestor/vendor/papaparse.min.js"></script>
 <script src="/gestor/media.js"></script>
+<script src="/gestor/faces.js"></script>
 <script>
 (() => {
 const CFG = window.GESTOR_CFG || { url: 'https://uwpbvolvzftrcnjuwoao.supabase.co', key: 'sb_publishable_Yfi_WJXhCwcNJ0DvklVjfA_Uz3RVOBu' }; // chave pública: dados protegidos por login + RLS
@@ -2588,6 +2589,47 @@ async function galPrepara(file, reduz) {
   bmp.close && bmp.close();
   return { prev, orig, w: pw, h: ph };
 }
+// ---- rostos: agrupa as pessoas de cada galeria pra o cliente achar as fotos dele ----
+function faceStatus(t) {
+  let el = document.getElementById('faceProg');
+  if (!t) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'faceProg'; el.style.cssText = 'position:fixed;left:16px;bottom:16px;z-index:9999;background:#1c1c1c;color:#f4f1ea;border:1px solid #3a3a3a;border-radius:12px;padding:10px 14px;font:13px system-ui,sans-serif;max-width:320px;box-shadow:0 6px 24px rgba(0,0,0,.35)'; document.body.appendChild(el); }
+  el.textContent = t;
+}
+async function galFoto(it) {
+  let blob = null;
+  if (/^sb:/.test(it.drive_id)) { const r = await sb.storage.from('fotos-originais').download(it.drive_id.slice(3)); if (!r.error) blob = r.data; }
+  if (!blob) { const r = await fetch(it.preview); if (!r.ok) throw new Error('foto indisponivel'); blob = await r.blob(); }
+  const bmp = await createImageBitmap(blob, { imageOrientation: 'from-image' });
+  const k = Math.min(1, 1280 / Math.max(bmp.width, bmp.height)), cv = document.createElement('canvas');
+  cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
+  cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height); bmp.close && bmp.close();
+  return cv;
+}
+let rostosRodando = false;
+async function galRostos(gid) {
+  if (rostosRodando) { toast('Já tem um reconhecimento de rostos rodando'); return; }
+  rostosRodando = true;
+  try {
+    faceStatus('Preparando o reconhecimento de rostos…');
+    await GFaces.load();
+    const r = await sb.from('foto_itens').select('id,drive_id,preview').eq('galeria_id', gid).order('pos'); if (r.error) throw r.error;
+    const its = r.data || [], faces = [];
+    for (let i = 0; i < its.length; i++) {
+      faceStatus(`Reconhecendo rostos: foto ${i + 1} de ${its.length}. Pode continuar usando o painel.`);
+      try { const cv = await galFoto(its[i]); (await GFaces.detect(cv)).forEach(f => { f.item = its[i].id; faces.push(f); }); } catch (e) { /* foto que falhar e pulada */ }
+      await new Promise(ok => setTimeout(ok));
+    }
+    const ps = GFaces.pessoas(faces, GFaces.cluster(faces, 0.5), 60);
+    const u = (await sb.auth.getUser()).data.user;
+    const del = await sb.from('foto_pessoas').delete().eq('galeria_id', gid); if (del.error) throw del.error;
+    if (ps.length) { const ins = await sb.from('foto_pessoas').insert(ps.map(p => ({ galeria_id: gid, owner: u.id, rep_item: p.rep_item, rep_box: p.rep_box, itens: p.itens, n: p.n }))); if (ins.error) throw ins.error; }
+    toast(ps.length ? `${ps.length} pessoa${ps.length === 1 ? '' : 's'} na galeria. O cliente já vê os rostos no link.` : 'Nenhum rosto encontrado nessa galeria');
+  } catch (e) {
+    if (e && (e.code === '42P01' || /foto_pessoas/.test(e.message || ''))) toast('Falta rodar o faces.sql no Supabase');
+    else fail(e);
+  } finally { rostosRodando = false; faceStatus(''); }
+}
 async function galSobe(gid, files, pos0, reduz, base, onProg) {
   const done = []; let k = 0, fails = [];
   async function one(i) {
@@ -2606,6 +2648,7 @@ async function galSobe(gid, files, pos0, reduz, base, onProg) {
   await Promise.all([worker(), worker(), worker()]);
   const rows = done.filter(Boolean);
   if (rows.length) { const r = await sb.from('foto_itens').insert(rows); if (r.error) throw r.error; }
+  if (rows.length) setTimeout(() => galRostos(gid), 400);
   return { ok: rows.length, fails };
 }
 function galFilesBox(id) { return `<div class="gdrop" id="${id}"><input type="file" accept="image/*" multiple hidden><b>Escolher fotos</b><span class="sub">ou arrasta aqui · até ${GAL_MAX} fotos · JPG</span><div class="gcount sub" data-c></div></div>`; }
@@ -3048,7 +3091,7 @@ function paintFotos() {
     <div class="kpi"><span>Ticket médio</span><b>${BRL(pagos.length ? rec / pagos.length : 0)}</b><em>por pedido pago</em></div>
   </div>
   <div class="card" style="margin-top:12px"><div class="row"><h2 class="h2">Links por grupo</h2></div>
-    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${NF[x.id] || 0} fotos · ${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><div class="gact"><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button><button class="btn small" data-gz="${x.id}">WhatsApp</button><button class="btn small ghost" data-gp="${x.id}">Preços</button><button class="btn small ghost" data-ga="${x.id}">+ Fotos</button><button class="btn small ghost" data-gt="${x.id}">${x.ativo ? 'Desativar' : 'Ativar'}</button><button class="btn small ghost" data-gd="${x.id}">Excluir</button></div></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
+    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${NF[x.id] || 0} fotos · ${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><div class="gact"><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button><button class="btn small" data-gz="${x.id}">WhatsApp</button><button class="btn small ghost" data-gp="${x.id}">Preços</button><button class="btn small ghost" data-ga="${x.id}">+ Fotos</button><button class="btn small ghost" data-gf="${x.id}">Rostos</button><button class="btn small ghost" data-gt="${x.id}">${x.ativo ? 'Desativar' : 'Ativar'}</button><button class="btn small ghost" data-gd="${x.id}">Excluir</button></div></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
   </div>
   <div class="row" style="margin:22px 0 10px"><h2 class="h2">Pedidos</h2><div class="sp"></div><div class="seg" id="fSeg">${FL.map(([k, l]) => `<button type="button" data-f="${k}" class="${flt === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
   <div class="card">${L.length ? L.map(x => { const ga = G[x.galeria_id]; return `<div class="row" style="padding:9px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap;align-items:center"><div style="min-width:0;flex:1 1 220px"><b>${esc(x.cliente_nome || 'Sem nome')}</b> <span class="sub">· ${esc(ga ? (ga.nome || ga.titulo) : '')}</span><div class="sub">${x.qtd} ${x.qtd === 1 ? 'foto' : 'fotos'} · pedido ${fotoDT(x.created_at)}${x.paid_at ? ' · pago ' + fotoDT(x.paid_at) : ''}</div></div><b>${BRL(x.valor)}</b>${stat(x)}${x.whatsapp ? `<a class="btn small ghost" href="${waLink(x.whatsapp, '')}" target="_blank" rel="noopener">WhatsApp</a>` : ''}${x.status === 'pendente' && ga ? `<button class="btn small" data-chk="${x.id}" data-tok="${esc(ga.token)}">Conferir no Asaas</button>` : ''}</div>`; }).join('') : '<div class="sub" style="padding:6px 0">Nenhum pedido nesse filtro.</div>'}</div>
@@ -3060,6 +3103,7 @@ function paintFotos() {
   $$('[data-gz]').forEach(b => b.onclick = () => openZap(gg(b.dataset.gz), NF[b.dataset.gz] || 0));
   $$('[data-gp]').forEach(b => b.onclick = () => openPrecos(gg(b.dataset.gp), NF[b.dataset.gp] || 0));
   $$('[data-ga]').forEach(b => b.onclick = () => openAddFotos(gg(b.dataset.ga), NF[b.dataset.ga] || 0));
+  $$('[data-gf]').forEach(b => b.onclick = () => galRostos(b.dataset.gf));
   $$('[data-gt]').forEach(b => b.onclick = () => galToggle(gg(b.dataset.gt)));
   $$('[data-gd]').forEach(b => b.onclick = () => galDel(gg(b.dataset.gd), npe(b.dataset.gd)));
   $$('[data-cp]').forEach(b => b.onclick = () => { const x = g.find(y => y.id === b.dataset.cp); navigator.clipboard?.writeText(link(x)).then(() => toast('Link copiado'), () => prompt('Copie o link:', link(x))); });
