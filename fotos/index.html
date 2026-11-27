@@ -181,6 +181,12 @@ var DAYS = [
     items: [["2097", "1BqXHTls_3FPMbp-zcmNcRWTGpMbA8X-1"], ["2100", "1znQVxHnSil7wFnn9g2TIuVjuYuBxBYpc"], ["2117", "1t4Tgejt5yrEKmpsVPwmcKblh-I5vS1_Y"], ["2118", "1bD2bL-2rgrc4BKB1VXU3A-TuqRZISZwT"], ["2119", "1aT_SN9qHpCcZWie5ULJayLg1hrFCx3bf"], ["2124", "1HkgGiXECZijMlEWXjah8Cwa8_nFcnjXl"], ["2126", "19JclY9-OH9n1xnQe6kXupVEIdY1vHQcZ"], ["2129", "1UYTUuQ1tGFfbuxRhMT7AvJARzVJaDdG-"], ["2130", "1MAy2fxVCSheLjI2aiBAwvR1I1gnYVKUr"], ["2131", "1_OTBLvxvAOTULB46vpKeeyfX91mHLlZy"], ["2132", "1YlZ4eNgzhIUu_HH_JAEiwsSqNKSPN-qk"], ["2155", "1WEVXmrss8-w7Jhss_fbeq3CpL2a3ko7s"], ["2156", "1VG2vXZux0VA1qXHpCYmba6IFBUoGB8Gz"], ["2159", "1nR84iySesX-CDyOzbR8Q9VMBSs-1ZTKF"], ["2160", "17vGbOqicx5PK4TOyheS8QCPjLt03AZFQ"]],
     thumb: function (it) { return '/fotos/25-de-novembro/t/IMG_' + it[0] + '.jpg'; },
     num: function (it) { return it[0]; },
+    dl: function (it) { return { href: 'https://drive.google.com/uc?export=download&id=' + it[1], ext: true }; } },
+  { id: '26-de-novembro', day: '26 de', month: 'novembro', short: '26 nov', wa: '26 de novembro',
+    lead: 'Ache a sua foto, toque em <b>Baixar</b> e ela vem em alta qualidade, pronta para postar.',
+    items: [["2202", "1sMK5EV-RrwqXEP9qXTudUNZ1pLbceN5R"], ["2246", "1NSSYydeFYpnI_95jIa9-4w1XvsQUKlL7"]],
+    thumb: function (it) { return '/fotos/26-de-novembro/t/IMG_' + it[0] + '.jpg'; },
+    num: function (it) { return it[0]; },
     dl: function (it) { return { href: 'https://drive.google.com/uc?export=download&id=' + it[1], ext: true }; } }
 ];
 DAYS.forEach(function (d) {
