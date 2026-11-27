@@ -874,17 +874,18 @@ async function renderClient() {
   const c = S.clients.find(x => x.id === S.tab); if (!c) return;
   const m = S.month, start = iso(m), end = iso(addMonths(m, 1)), prevStart = iso(addMonths(m, -1));
   try {
-    const [p, und, mt, pm, r, pl, ap] = await Promise.all([
+    const [p, und, mt, pm, r, pl, ap, wt] = await Promise.all([
       sb.from('posts').select('*').eq('client_id', c.id).gte('publish_date', start).lt('publish_date', end).order('publish_date'),
       sb.from('posts').select('*').eq('client_id', c.id).is('publish_date', null).order('created_at'),
       sb.from('metrics').select('*').eq('client_id', c.id).gte('published_at', start).lt('published_at', end),
       sb.from('metrics').select('*').eq('client_id', c.id).gte('published_at', prevStart).lt('published_at', start),
       sb.from('reports').select('*').eq('client_id', c.id).eq('month', start).maybeSingle(),
       sb.from('month_plans').select('*').eq('client_id', c.id).eq('month', start).maybeSingle(),
-      sb.from('approvals').select('*').eq('client_id', c.id).order('at', { ascending: false }).limit(200)
+      sb.from('approvals').select('*').eq('client_id', c.id).order('at', { ascending: false }).limit(200),
+      sb.from('posts').select('*').eq('client_id', c.id).in('status', CLIENT_STAGES).order('publish_date')
     ]);
-    for (const x of [p, und, mt, pm, r, pl, ap]) if (x.error) throw x.error;
-    S.posts = [...new Map(p.data.concat(und.data).map(x => [x.id, x])).values()]; S.metrics = mt.data; S.prevMetrics = pm.data; S.report = r.data; S.plan = pl.data; S.approvals = ap.data;
+    for (const x of [p, und, mt, pm, r, pl, ap, wt]) if (x.error) throw x.error;
+    S.posts = [...new Map(p.data.concat(und.data, wt.data).map(x => [x.id, x])).values()]; S.metrics = mt.data; S.prevMetrics = pm.data; S.report = r.data; S.plan = pl.data; S.approvals = ap.data;
     if (await autoDate(c)) return renderClient();
   } catch (e) { fail(e); return; }
   loadBrandFont(c);
@@ -942,7 +943,7 @@ async function renderClient() {
       <div class="sub">Cada pauta diz como ajuda nesse objetivo. O cliente vê isso na página de aprovação.</div></div></section>
 
     <section class="card">
-      <div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 class="h2">Etapas do mês</h2><span class="sub">${S.posts.length} peça(s) · toque numa etapa para filtrar</span></div>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 class="h2">Etapas</h2><span class="sub">${S.posts.length} peça(s)${S.posts.some(x => x.publish_date && (x.publish_date < start || x.publish_date >= end)) ? ' · inclui o que está no aprovador em outros meses' : ''} · toque numa etapa para filtrar</span></div>
       <div class="flow">${STAGES.map(([k, l, who], i) => `<button class="st k-${k} ${counts[k] ? 'has' : ''} ${who === 'Cliente' ? 'client' : ''} ${i < curIdx ? 'past' : ''} ${i === curIdx ? 'cur' : ''} ${S.stage === k ? 'sel' : ''}" data-stage="${k}" title="${esc(STG[k].tip)}"><span class="n">${counts[k] || i + 1}</span><span class="l">${l}</span><span class="who">${who}</span></button>`).join('')}</div>
       <div class="next">${firstOpen ? `<span style="font-size:20px">👉</span><div><b>Próximo passo: ${esc(STG[firstOpen[0]].label)}</b> <span class="sub">(${counts[firstOpen[0]]} peça(s))</span><div class="sub">${esc(STG[firstOpen[0]].tip)}</div></div>` : S.posts.length ? '<span style="font-size:20px">✅</span><div><b>Tudo publicado neste mês.</b><div class="sub">Importe o CSV do Meta para fechar o relatório.</div></div>' : '<span style="font-size:20px">✍️</span><div><b>Comece pelas pautas.</b><div class="sub">Defina o objetivo do mês e crie as pautas com “+ Pauta”.</div></div>'}</div>
       ${S.stage ? `<div class="row" style="margin-top:12px"><span class="badge stg k-${S.stage}">${esc(STG[S.stage].label)}</span><button class="btn small ghost" id="clearStage">Mostrar todas</button>${STG[S.stage].action && list.length > 1 ? `<button class="btn small" id="bulkNext">${esc(STG[S.stage].action)} (todas)</button>` : ''}</div>` : ''}
@@ -983,8 +984,10 @@ async function renderClient() {
   $$('[data-stage]').forEach(b => b.onclick = () => { S.stage = S.stage === b.dataset.stage ? null : b.dataset.stage; rerender(); });
   const cs = $('#clearStage'); if (cs) cs.onclick = () => { S.stage = null; rerender(); };
   const bn = $('#bulkNext'); if (bn) bn.onclick = async () => { const to = NEXT[S.stage]; const ids = list.map(x => x.id); if (!confirm(`Mover ${ids.length} peça(s) para “${STG[to].label}”?`)) return; const { error } = await sb.from('posts').update({ status: to, needs_changes: false }).in('id', ids); if (error) return fail(error); if (CLIENT_STAGES.includes(to)) shareApproval(c, shareUrl); S.stage = to; rerender(); };
-  $$('[data-post]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-adv],[data-csgo]')) return; openPost(S.posts.find(p => p.id === el.dataset.post)); }));
+  $$('[data-post]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-adv],[data-csgo],[data-unsend],[data-pdel]')) return; openPost(S.posts.find(p => p.id === el.dataset.post)); }));
   $$('[data-adv]').forEach(b => b.onclick = () => advance(S.posts.find(p => p.id === b.dataset.adv)));
+  $$('[data-unsend]').forEach(b => b.onclick = () => unsend(S.posts.find(p => p.id === b.dataset.unsend)));
+  $$('[data-pdel]').forEach(b => b.onclick = () => deletePost(S.posts.find(p => p.id === b.dataset.pdel)));
   renderCalendar(); renderMetrics();
 }
 // carrossel dentro do card do painel: setas, contador e arrastar
@@ -1009,7 +1012,20 @@ function postCard(p) {
       <h3>${esc(p.title || '(sem título)')}</h3>
       ${p.objective ? `<div class="sub">🎯 ${esc(p.objective)}</div>` : ''}
       ${p.needs_changes && last && last.decision === 'ajuste' ? `<div class="fb"><b>Ajuste pedido${last.target && last.target !== 'geral' ? ' (' + esc(last.target) + ')' : ''}:</b> ${esc(last.comment || '')}</div>` : ''}
-      <div class="act">${st.action ? `<button class="btn small ${CLIENT_STAGES.includes(NEXT[p.status]) ? 'amber' : ''}" data-adv="${p.id}">${esc(p.needs_changes && CLIENT_STAGES.includes(NEXT[p.status]) ? 'Reenviar com ajuste' : st.action)} →</button>` : CLIENT_STAGES.includes(p.status) ? '<span class="badge">⏳ Aguardando cliente</span>' : ''}</div></div></article>`;
+      <div class="act">${st.action ? `<button class="btn small ${CLIENT_STAGES.includes(NEXT[p.status]) ? 'amber' : ''}" data-adv="${p.id}">${esc(p.needs_changes && CLIENT_STAGES.includes(NEXT[p.status]) ? 'Reenviar com ajuste' : st.action)} →</button>` : CLIENT_STAGES.includes(p.status) ? '<span class="badge">⏳ Aguardando cliente</span>' : ''}${CLIENT_STAGES.includes(p.status) ? `<button class="btn small ghost" data-unsend="${p.id}">Tirar do aprovador</button>` : ''}<button class="btn small ghost danger" data-pdel="${p.id}" aria-label="Excluir peça">Excluir</button></div></div></article>`;
+}
+const BACK = { pauta_aprovar: 'pauta', copy_aprovar: 'copy', post_aprovar: 'revisao' };
+async function unsend(p) {
+  const to = p && BACK[p.status]; if (!to) return;
+  if (!confirm(`Tirar “${p.title || 'esta peça'}” do aprovador? Ela volta para “${STG[to].label}” e o cliente deixa de ver.`)) return;
+  const { error } = await sb.from('posts').update({ status: to, needs_changes: false }).eq('id', p.id); if (error) return fail(error);
+  toast('Voltou para ' + STG[to].label); rerender();
+}
+async function deletePost(p) {
+  if (!p || !confirm(`Excluir “${p.title || 'esta peça'}” e os arquivos dela? Não dá para desfazer.`)) return;
+  const paths = (p.media || []).flatMap(x => [x.path, x.poster_path]).filter(Boolean); if (paths.length) await sb.storage.from('media').remove(paths);
+  const { error } = await sb.from('posts').delete().eq('id', p.id); if (error) return fail(error);
+  toast('Excluído'); rerender();
 }
 async function advance(p) {
   const to = NEXT[p.status]; if (!to) return;
