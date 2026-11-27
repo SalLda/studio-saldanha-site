@@ -506,6 +506,49 @@ dialog .fold{margin:8px 0}
 .trow .tm{font-size:12.5px;color:var(--dim);min-width:110px}
 .tall{font-style:normal;font-size:11px;font-weight:700;background:var(--amber-soft);color:var(--amber-ink);border-radius:99px;padding:1px 8px;margin-left:2px}
 
+
+/* ===== usabilidade v2 (nov/26) ===== */
+:focus-visible{outline:2px solid var(--amber-ink);outline-offset:2px}
+button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* clientes: a marca já está na barra lateral, o topo duplicado sai */
+#appView>header .top{display:none}
+#appView>header .tabs{padding-top:12px}
+/* rodapé da barra lateral com cara de navegação */
+#rail .rfoot{border-top:1px solid var(--line);padding-top:10px;gap:2px}
+#rail .rfoot .btn{justify-content:flex-start;width:100%;padding:9px 12px;border-radius:12px;font-size:14px;color:var(--dim);border:0}
+#rail .rfoot .btn:hover{background:var(--bg3);color:var(--text)}
+#rail .rfoot #logout{color:var(--faint)}
+/* contas fixas: título de seção igual aos outros, sem pílula em caixa alta */
+.sep{border-top:1px solid var(--line2);padding-top:26px}
+.sechead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:none;color:var(--text);padding:0;margin:0 0 8px;border-radius:0}
+.sechead span{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em;text-transform:none}
+.sechead small{color:var(--dim);font-size:13px}
+/* abas roláveis sem barra de rolagem aparecendo */
+.seg.tabs2,.lfbar .seg,.seg{scrollbar-width:none}
+.seg.tabs2::-webkit-scrollbar,.lfbar .seg::-webkit-scrollbar,.seg::-webkit-scrollbar{display:none}
+/* fotos: ações secundárias num menu "Mais" */
+.gmore{position:relative}
+.gmore>summary{list-style:none;cursor:pointer}
+.gmore>summary::-webkit-details-marker{display:none}
+.gmore[open]>summary{background:var(--bg3)}
+.gmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:15;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);padding:6px;display:flex;flex-direction:column;min-width:170px}
+.gmenu .btn{justify-content:flex-start;border:0;border-radius:10px;width:100%}
+.gmenu .btn:hover{background:var(--bg3)}
+.gmenu hr{border:0;border-top:1px solid var(--line);margin:4px 2px}
+.gmenu .btn.danger{color:var(--red);background:transparent}
+@media(max-width:900px){
+  .phead{gap:10px 8px}
+  .phead>div:first-child{flex:1 0 100%}
+  .phead>.sp{display:none}
+  .phead .btn{padding:8px 14px;font-size:14px}
+  .phead .logoutm{margin-left:auto;background:transparent;border-color:transparent;color:var(--faint)}
+  .btn.small{min-height:36px}
+  .btn.go{white-space:nowrap;padding:14px 16px;font-size:15px}
+  .seg.tabs2{-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+  .factions .btn{flex:1 1 auto}
+  .gmenu{right:auto;left:0}
+}
 </style>
 </head>
 <body>
@@ -3083,15 +3126,15 @@ function paintFotos() {
   const stat = x => x.status === 'pago' ? '<span class="badge ok">Pago</span>'
     : x.status === 'pendente' ? (x.pix_expira && new Date(x.pix_expira) < new Date() ? '<span class="badge">Pix expirou</span>' : '<span class="badge warn">Aguardando Pix</span>')
     : '<span class="badge warn">Erro</span>';
-  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<button class="btn primary" id="gNew">+ Nova galeria</button><a class="btn" href="https://drive.google.com/drive/folders/1k94hRZ2Xm1CB6mpto-TlGgvSpNT4BeCg?usp=sharing" target="_blank" rel="noopener">Pasta das fotos no Drive</a><button class="btn" id="fRef">Atualizar</button>`)}
-  <div class="kpis3">
+  $('#main').innerHTML = `<div class="wrap2">${pageHead('Fotos', 'Vendas das galerias privadas (Pix via Asaas).', `<button class="btn amber" id="gNew">+ Nova galeria</button><a class="btn" href="https://drive.google.com/drive/folders/1k94hRZ2Xm1CB6mpto-TlGgvSpNT4BeCg?usp=sharing" target="_blank" rel="noopener">Fotos no Drive</a><button class="btn" id="fRef">Atualizar</button>`)}
+  <div class="kpis4">
     <div class="kpi"><span>Recebido (bruto)</span><b>${BRL(rec)}</b><em>antes da taxa do Asaas</em></div>
     <div class="kpi"><span>Pedidos pagos</span><b>${pagos.length}</b><em>${nfotos} ${nfotos === 1 ? 'foto vendida' : 'fotos vendidas'}</em></div>
     <div class="kpi"><span>Aguardando Pix</span><b>${pend.length}</b><em>${BRL(pend.reduce((s, x) => s + +x.valor, 0))} em aberto</em></div>
     <div class="kpi"><span>Ticket médio</span><b>${BRL(pagos.length ? rec / pagos.length : 0)}</b><em>por pedido pago</em></div>
   </div>
   <div class="card" style="margin-top:12px"><div class="row"><h2 class="h2">Links por grupo</h2></div>
-    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${NF[x.id] || 0} fotos · ${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><div class="gact"><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button><button class="btn small" data-gz="${x.id}">WhatsApp</button><button class="btn small ghost" data-gp="${x.id}">Preços</button><button class="btn small ghost" data-ga="${x.id}">+ Fotos</button><button class="btn small ghost" data-gf="${x.id}">Rostos</button><button class="btn small ghost" data-gt="${x.id}">${x.ativo ? 'Desativar' : 'Ativar'}</button><button class="btn small ghost" data-gd="${x.id}">Excluir</button></div></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
+    ${g.length ? g.map(x => { const ps = pagos.filter(o => o.galeria_id === x.id); return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap"><div style="min-width:0"><b>${esc(x.nome || x.titulo || 'Galeria')}</b><div class="sub">${NF[x.id] || 0} fotos · ${ps.length} ${ps.length === 1 ? 'pedido pago' : 'pedidos pagos'} · ${BRL(ps.reduce((s, o) => s + +o.valor, 0))}${x.ativo ? '' : ' · desativada'}</div></div><div class="sp"></div><div class="gact"><a class="btn small ghost" href="${esc(link(x))}" target="_blank" rel="noopener">Abrir</a><button class="btn small" data-cp="${x.id}">Copiar link</button><button class="btn small" data-gz="${x.id}">WhatsApp</button><details class="gmore"><summary class="btn small ghost">Mais</summary><div class="gmenu"><button class="btn small" data-ga="${x.id}">+ Fotos</button><button class="btn small" data-gp="${x.id}">Preços</button><button class="btn small" data-gf="${x.id}">Rostos</button><button class="btn small" data-gt="${x.id}">${x.ativo ? 'Desativar link' : 'Ativar link'}</button><hr><button class="btn small danger" data-gd="${x.id}">Excluir galeria</button></div></details></div></div>`; }).join('') : '<div class="sub">Nenhuma galeria criada.</div>'}
   </div>
   <div class="row" style="margin:22px 0 10px"><h2 class="h2">Pedidos</h2><div class="sp"></div><div class="seg" id="fSeg">${FL.map(([k, l]) => `<button type="button" data-f="${k}" class="${flt === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
   <div class="card">${L.length ? L.map(x => { const ga = G[x.galeria_id]; return `<div class="row" style="padding:9px 0;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap;align-items:center"><div style="min-width:0;flex:1 1 220px"><b>${esc(x.cliente_nome || 'Sem nome')}</b> <span class="sub">· ${esc(ga ? (ga.nome || ga.titulo) : '')}</span><div class="sub">${x.qtd} ${x.qtd === 1 ? 'foto' : 'fotos'} · pedido ${fotoDT(x.created_at)}${x.paid_at ? ' · pago ' + fotoDT(x.paid_at) : ''}</div></div><b>${BRL(x.valor)}</b>${stat(x)}${x.whatsapp ? `<a class="btn small ghost" href="${waLink(x.whatsapp, '')}" target="_blank" rel="noopener">WhatsApp</a>` : ''}${x.status === 'pendente' && ga ? `<button class="btn small" data-chk="${x.id}" data-tok="${esc(ga.token)}">Conferir no Asaas</button>` : ''}</div>`; }).join('') : '<div class="sub" style="padding:6px 0">Nenhum pedido nesse filtro.</div>'}</div>
@@ -3104,6 +3147,7 @@ function paintFotos() {
   $$('[data-gp]').forEach(b => b.onclick = () => openPrecos(gg(b.dataset.gp), NF[b.dataset.gp] || 0));
   $$('[data-ga]').forEach(b => b.onclick = () => openAddFotos(gg(b.dataset.ga), NF[b.dataset.ga] || 0));
   $$('[data-gf]').forEach(b => b.onclick = () => galRostos(b.dataset.gf));
+  if (!window.__gmoreBound) { window.__gmoreBound = 1; document.addEventListener('click', e => { $$('details.gmore[open]').forEach(d => { if (!d.contains(e.target) || e.target.closest('.gmenu .btn')) d.open = false; }); }); }
   $$('[data-gt]').forEach(b => b.onclick = () => galToggle(gg(b.dataset.gt)));
   $$('[data-gd]').forEach(b => b.onclick = () => galDel(gg(b.dataset.gd), npe(b.dataset.gd)));
   $$('[data-cp]').forEach(b => b.onclick = () => { const x = g.find(y => y.id === b.dataset.cp); navigator.clipboard?.writeText(link(x)).then(() => toast('Link copiado'), () => prompt('Copie o link:', link(x))); });
